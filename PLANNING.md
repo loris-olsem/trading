@@ -16,6 +16,11 @@ stage. The current work is planning and read-only testing.
   may decrease. Do not rebalance them back to their previous weights.
 - Added capital must not revive previously skipped opening alerts. How to size
   a later explicit Bravos addition remains a separate decision.
+- Carry Bravos's published stop-loss price into proposed position settings and
+  follow later explicit changes, including changes bundled with additions or
+  reductions. Compare actual eToro position stops against those values. Do not
+  reduce them to informational references. Current work remains planning-only;
+  missing or incompatible stop settings must be flagged rather than invented.
 - At startup, consider opening alerts from the preceding **30 calendar days**.
   This window applies only to the initial catch-up. Routine discovery resumes
   from the last completed scan, with its boundary date reread and deduplicated
@@ -36,8 +41,10 @@ stage. The current work is planning and read-only testing.
 Source: [Tactical Portfolio guide](https://bravosresearch.com/ideas/).
 
 - Weight 5 means 5% of the portfolio.
-- Published stops and targets are discretionary reassessment/reference levels.
-  They are not mechanical instructions to sell on a price touch.
+- The guide discusses reassessment/reference levels. The user's explicit
+  project instruction is to mirror published stop-loss settings and subsequent
+  updates; the guide's wording must not be used to omit those settings. Target
+  prices do not by themselves establish our automatic take-profit policy.
 - Explicit alerts cover opening, additions, reductions, and exits.
 - The Tactical and Quant portfolios are independent. Quant's cash signal must
   not close Tactical holdings.
@@ -93,8 +100,8 @@ capital. `scripts/inspect-etoro-funding.ps1` provides the repeatable GET diagnos
 3. Decide how an older catch-up opening is sized after subsequent Bravos changes.
 4. Decide how to handle candidates already below a Bravos reassessment level.
    Flagging for review was proposed but has not been accepted as a final rule.
-5. Decide whether any additional hard stops or loss limits are desired. These
-   would be an overlay, not literal replication of Bravos's discretionary stops.
+5. Bravos stop-loss settings are to be followed. Any additional portfolio loss
+   limits or automatic take-profit rules remain separate decisions.
 6. Define sizing of future entries and explicit Bravos additions after a funding
    increase, while preserving the no-funding-triggered-trades requirement above.
 7. Define run times, market-hours behavior, holidays, stale quotes, missed runs,

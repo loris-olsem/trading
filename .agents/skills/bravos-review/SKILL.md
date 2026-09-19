@@ -26,7 +26,7 @@ Use `state/bravos/ledger.json` as memory; conversation history and previous
 Markdown reports are not authoritative state. Acquire the exclusive run claim
 and read a valid ledger as described in the state contract before updating it.
 Record a unique run ID, UTC start time, Luxembourg calendar date, procedure
-version `1`, and starting ledger generation.
+version `2`, and starting ledger generation.
 
 If no ledger exists, create an uninitialized planning ledger. Never interpret
 missing state as permission to open every current Bravos holding. Do not import
@@ -100,9 +100,11 @@ review; never silently overwrite the original opening price.
 
 ## 4. Reconstruct each trade's history
 
-Extract strategy, event kind (`open`, `add`, `reduce`, `close`, `reference_update`
+Extract strategy, event kind (`open`, `add`, `reduce`, `close`, `stop_update`, `reference_update`
 or `ambiguous`), exact asset identity, currency, source date/time precision,
-original entry, before/after weights and reference levels where stated.
+original entry, before/after weights, published stop-loss price and target levels
+where stated. A stop change accompanying an addition or reduction must also be
+recorded; do not lose it by classifying the article only by its headline action.
 Missing values remain null. An article with several instructions produces one
 event per unambiguous instruction; retain links back to the article revision.
 
@@ -127,7 +129,11 @@ inferred trade. If unresolved, block affected proposals and report the mismatch.
 Run `scripts/inspect-etoro-funding.ps1`. Require successful identity and mirror
 matching; read the timestamped result, not an old successful report after a
 failed call. Record actual net contributions, available mirror cash, position
-IDs/units and order-data completeness. The agent's $10,000 is not owner funding.
+IDs/units, position stop settings and order-data completeness. The agent's
+$10,000 is not owner funding. Compare each linked position's actual stop-loss
+price and enabled status with the latest applicable published Bravos stop.
+Missing stop data means unknown, not an enabled or matching stop. Portfolio-level
+copy stop-loss settings are separate and do not satisfy a position's stop rule.
 
 The existing diagnostic exposes position quantities and order counts, not a
 complete order/execution history. If positions, pending orders or unexplained
@@ -169,7 +175,25 @@ Use the original opening entry ceiling, not an average cost or later add price.
 Use the exact instrument/currency and broker ask with its source timestamp.
 Verify market status separately from a quote labelled realtime. For ETHA,
 eToro's ETF is `ETHA.US`/12152; plain ETHA is a crypto pair. Reverify mappings if
-metadata changes. Bravos stops/targets are reference levels, not automatic exits.
+metadata changes.
+
+Carry Bravos's published stop-loss price into each opening proposal. Track each
+subsequent explicit stop change and prepare a `set_stop` proposal for affected
+existing positions when the broker setting differs. Use the latest unambiguous
+published stop for that position cycle, including changes bundled with a trim
+or addition. Do not replace it with a percentage based on our later entry,
+silently remove it, or merely record it as an informational reference.
+
+Verify exact instrument/currency, broker-supported stop settings and price
+precision. If the source stop is absent or ambiguous, broker data are incomplete,
+or that stop cannot validly be set at current prices, flag the affected proposal
+as blocked rather than inventing a stop or changing its level. An observed stop
+execution must be reconciled as an exit; it is not permission to reopen the
+position. Target-price execution remains a separate, unsettled policy.
+
+In planning mode these are explicit proposed stop settings and discrepancy
+reports, not submitted broker changes. Mark a stop as applied only after reading
+back the actual setting from eToro. Funding changes alone never change stops.
 
 Do not choose new sizing, reduction, late-add, below-reference-level or expiry
 rules when `PLANNING.md` leaves them unsettled. Produce conditional arithmetic
@@ -185,8 +209,9 @@ items for the same source event. A later closure supersedes an unexecuted openin
 
 This skill creates **planning proposals only**. Actual execution is outside its
 scope. Record an externally completed action only from verified broker evidence,
-including order/position IDs and filled quantities; record partial completion
-as partial. A submitted request, user intention or timeout is not completion.
+including order/position IDs and filled quantities for trades, or position IDs
+and read-back stop settings for stop changes. Record partial completion as
+partial. A submitted request, user intention or timeout is not completion.
 
 ## 8. Save consistently
 

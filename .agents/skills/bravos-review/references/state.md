@@ -31,10 +31,10 @@ values are JSON null, never an invented zero, empty success or timestamp.
 | `policyVersion` | Version/hash of the actual decision rules used; do not silently relabel old evaluations |
 | `discovery` | `lastCompleteDiscoveryAtUtc`, `lastHistoricalRevisionAuditAtUtc`, and latest attempt's floor, visited URLs, boundary evidence, status and errors |
 | `articles` | Map from stable article key to canonical URL, aliases, post ID, first/last seen UTC, publication value/precision, strategy and immutable revisions |
-| `cycles` | Map from opening event key to exact asset, source event links, latest source weight/status, and verified actual position links |
+| `cycles` | Map from opening event key to exact asset, source event links, latest source weight/status, latest published stop price/currency and its source revision, and verified actual position links |
 | `evaluations` | Append-only records of conclusions, evidence references and reasons |
 | `proposals` | Map from stable intent key to proposal history and current planning/reconciliation status |
-| `accountSnapshots` | Timestamped Bravos-only funding, cash, actual positions and order completeness; no unrelated owner holdings |
+| `accountSnapshots` | Timestamped Bravos-only funding, cash, actual positions including stop price/enabled/trailing status and order completeness; no unrelated owner holdings |
 | `runs` | Run IDs, start/end UTC, base generation, independent discovery/reconciliation/evaluation statuses and report path |
 
 Do not call one Boolean `processed` the state of an alert. Seeing, understanding,
@@ -65,7 +65,7 @@ evaluations; identify the replacement explicitly. Never infer a permanent skip
 from a planning evaluation such as `would_skip_above_entry`.
 
 A proposal intent key is `cycleKey + eventKey + operation`, with operations such
-as `open`, `add`, `reduce`, `close`, or `review_reference`. New quotes, reruns,
+as `open`, `add`, `reduce`, `close`, `set_stop`, or `review_reference`. New quotes, reruns,
 policy revisions and added cash do not make a new intent. Revised proposals are
 versions of that intent; completed/partially completed intents cannot be reissued
 without reconciling remaining quantities. If multiple source events are combined,
@@ -127,6 +127,10 @@ These are paper scenarios, not executed broker tests:
 | Page 2 fails after page 1 was read | Preserve partial observations; do not advance complete-discovery time |
 | Quote says realtime but exchange is closed | Waiting quote; no permanent entry decision |
 | User adds $200 | Record funding delta; no trade proposal from funding alone |
+| Bravos reduces CF and raises its stop in the same article | Record both instructions; compare actual stop with the new published price |
+| New position proposal has no verified published stop | Block stop readiness; never invent or omit a protective setting silently |
+| Broker stop differs from the latest Bravos stop | Maintain a stop-update proposal; require broker read-back before recording it as applied |
+| Broker reports the position exited by its stop | Reconcile the exit; do not automatically reopen from the old opening alert |
 | Broker shows an unexplained position after a crash | Reconcile; do not issue another opening |
 | Ledger committed but report write failed | Keep committed generation; regenerate report |
 | Another invocation already holds the run claim | No competing ledger/snapshot writes |

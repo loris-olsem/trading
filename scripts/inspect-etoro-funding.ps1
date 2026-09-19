@@ -85,7 +85,7 @@ try {
     $report.netContributedUsd = [decimal]$mirror.initialInvestment + [decimal]$mirror.depositSummary - [decimal]$mirror.withdrawalSummary
     $report.availableMirrorCashUsd = [decimal]$mirror.availableAmount
     $report.positions = @($mirror.positions | ForEach-Object {
-        Select-Fields $_ @('positionID', 'instrumentID', 'parentPositionID', 'units', 'amount', 'isBuy', 'leverage')
+        Select-Fields $_ @('positionID', 'instrumentID', 'parentPositionID', 'units', 'amount', 'isBuy', 'leverage', 'stopLossRate', 'isNoStopLoss', 'isTslEnabled')
     })
     $report.orderCounts = [ordered]@{}
     foreach ($name in @('ordersForOpen', 'ordersForClose', 'ordersForCloseMultiple', 'delayedOrderForOpen', 'delayedOrderForClose', 'entryOrders', 'exitOrders')) {
