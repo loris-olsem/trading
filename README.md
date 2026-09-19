@@ -3,13 +3,16 @@
 Current stage: **planning and read-only testing**. There is no trading executor,
 scheduled job, or automated Bravos scraper in this project.
 
-Latest owner snapshot (2026-09-19 07:57 UTC): **$4,610 allocated, all available
+Latest owner snapshot (2026-09-19 08:36 UTC): **$4,610 allocated, all available
 cash, zero positions**. The $500 results below are historical observations.
 
-Latest planning snapshot: [30-day Bravos review, 19 September 2026](BRAVOS-REVIEW-2026-09-19.md).
-That report uses old closed-market quotes and the former zero-tolerance rule.
-Current policy allows opening entry +2% and watches missed openings while Bravos
-holds. No orders or initial baseline were created.
+Latest planning snapshot: [expanded missed-trade preparation, 19 September 2026](BRAVOS-PREPARATION-2026-09-19.md).
+The user authorized a broader preparatory scan, extending to May 8 to reconstruct
+all 15 current Tactical holdings. Four conditional candidates pass the +2% price
+comparison using Friday quotes; none is execution-ready. Source facts and planning
+results are saved in ledger generation 1. No orders, initial enrollment or routine
+discovery baseline were created. The earlier [30-day report](BRAVOS-REVIEW-2026-09-19.md)
+is historical and used the former zero-tolerance rule.
 
 ## Repeatable review procedure
 

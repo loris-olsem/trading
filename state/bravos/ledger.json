@@ -1,0 +1,3459 @@
+{
+  "schemaVersion": 2,
+  "mode": "planning",
+  "activationAtUtc": null,
+  "discovery": {
+    "lastCompleteDiscoveryAtUtc": null,
+    "lastHistoricalRevisionAuditAtUtc": null,
+    "attempt": {
+      "status": "preparation_complete",
+      "scope": "Current Tactical holdings reconstruction, not routine activation or historical enrollment.",
+      "authorization": "User requested missed-trade preparation, allowing 90 days or farther at assistant discretion; explicitly prohibited trades.",
+      "floor": "2026-05-08",
+      "through": "2026-09-19",
+      "initial90CalendarDayFloor": "2026-06-22",
+      "visitedUrls": [
+        "https://bravosresearch.com/category/portfolio-update/",
+        "https://bravosresearch.com/category/portfolio-update/page/2/",
+        "https://bravosresearch.com/category/portfolio-update/page/3/",
+        "https://bravosresearch.com/category/portfolio-update/page/4/",
+        "https://bravosresearch.com/category/portfolio-update/page/5/",
+        "https://bravosresearch.com/category/portfolio-update/page/6/",
+        "https://bravosresearch.com/category/portfolio-update/page/7/",
+        "https://bravosresearch.com/category/portfolio-update/page/8/",
+        "https://bravosresearch.com/category/portfolio-update/page/9/",
+        "https://bravosresearch.com/category/portfolio-update/page/10/",
+        "https://bravosresearch.com/category/portfolio-update/page/11/",
+        "https://bravosresearch.com/category/portfolio-update/page/12/",
+        "https://bravosresearch.com/category/portfolio-update/page/13/",
+        "https://bravosresearch.com/category/portfolio-update/page/14/",
+        "https://bravosresearch.com/category/portfolio-update/page/15/"
+      ],
+      "boundaryEvidence": "Page 15 dated May 4 through April 22, wholly older than earliest current opening May 8.",
+      "archiveListingsObserved": 150,
+      "listingsIn90DayWindow": 83,
+      "listingsInExpandedWindow": 131,
+      "fullCurrentCycleArticlesRead": 34,
+      "otherArchiveArticlesFullRead": false,
+      "firstPageRecheck": "unchanged",
+      "dashboardUrl": "https://bravosresearch.com/research/",
+      "dashboardPublishedUpdate": "2026-09-18",
+      "dashboardReconciliation": "All 15 current weights match reconstructed histories; sum 67.",
+      "historicalClosedCyclePolicy": "Exclude from present candidate list; historical closures and later same-ticker reopens remain separate cycles.",
+      "coverageLimitation": "Not a complete trade-by-trade audit of every closed cycle, source backdating, or posts outside this archive. No routine checkpoint or initial enrollment advanced.",
+      "errors": []
+    }
+  },
+  "articles": {
+    "bravos:post:482091": {
+      "canonicalUrl": "https://bravosresearch.com/news-feed/initiating-long-on-ishares-msci-japan-etf-ewj-breakout/",
+      "aliases": [],
+      "postId": 482091,
+      "firstSeenAtUtc": "2026-09-19T08:39:35.195Z",
+      "lastSeenAtUtc": "2026-09-19T08:39:35.195Z",
+      "publicationValue": "2026-05-08",
+      "publicationPrecision": "date",
+      "strategy": "Tactical",
+      "revisions": [
+        {
+          "revisionId": "sha256:9d99e6324da877b96a90ac05988b280367b463859a79ad6a82961baab08c9dfa",
+          "observedAtUtc": "2026-09-19T08:39:35.195Z",
+          "bodySha256": "9d99e6324da877b96a90ac05988b280367b463859a79ad6a82961baab08c9dfa",
+          "normalizationVersion": 1,
+          "sourceUrl": "https://bravosresearch.com/news-feed/initiating-long-on-ishares-msci-japan-etf-ewj-breakout/",
+          "facts": {
+            "symbol": "EWJ",
+            "kind": "open",
+            "price": 92.0,
+            "weightBefore": 0,
+            "sourceWeight": 5,
+            "stopLossRate": 83.5,
+            "targets": [
+              105,
+              112,
+              120
+            ]
+          },
+          "supportingExcerpts": [
+            "$92",
+            "Weight Allocation: 5",
+            "Suggested Stop Loss (SL): $83.5"
+          ],
+          "extractionVersion": "bravos-entry-content-1",
+          "extractionNote": "Authored entry-content after Trade Alert/date/Save Post header; excludes comments and surrounding page chrome. Whitespace collapsed per normalizationVersion 1."
+        }
+      ]
+    },
+    "bravos:post:483800": {
+      "canonicalUrl": "https://bravosresearch.com/news-feed/initiating-long-on-natera-inc-ntra-breakout-2/",
+      "aliases": [],
+      "postId": 483800,
+      "firstSeenAtUtc": "2026-09-19T08:39:34.397Z",
+      "lastSeenAtUtc": "2026-09-19T08:39:34.397Z",
+      "publicationValue": "2026-05-29",
+      "publicationPrecision": "date",
+      "strategy": "Tactical",
+      "revisions": [
+        {
+          "revisionId": "sha256:bb003e39145683831acb023163e467ceae09f3fa70b513e84f2e23f5739a047c",
+          "observedAtUtc": "2026-09-19T08:39:34.397Z",
+          "bodySha256": "bb003e39145683831acb023163e467ceae09f3fa70b513e84f2e23f5739a047c",
+          "normalizationVersion": 1,
+          "sourceUrl": "https://bravosresearch.com/news-feed/initiating-long-on-natera-inc-ntra-breakout-2/",
+          "facts": {
+            "symbol": "NTRA",
+            "kind": "open",
+            "price": 221.0,
+            "weightBefore": 0,
+            "sourceWeight": 5,
+            "stopLossRate": 200.0,
+            "targets": [
+              265,
+              285,
+              300
+            ]
+          },
+          "supportingExcerpts": [
+            "$221",
+            "Weight Allocation: 5",
+            "Suggested Stop Loss (SL): $200"
+          ],
+          "extractionVersion": "bravos-entry-content-1",
+          "extractionNote": "Authored entry-content after Trade Alert/date/Save Post header; excludes comments and surrounding page chrome. Whitespace collapsed per normalizationVersion 1."
+        }
+      ]
+    },
+    "bravos:post:484661": {
+      "canonicalUrl": "https://bravosresearch.com/news-feed/initiating-long-on-financial-select-sector-spdr-fund-xlf-breakout-2/",
+      "aliases": [],
+      "postId": 484661,
+      "firstSeenAtUtc": "2026-09-19T08:39:33.570Z",
+      "lastSeenAtUtc": "2026-09-19T08:39:33.570Z",
+      "publicationValue": "2026-06-12",
+      "publicationPrecision": "date",
+      "strategy": "Tactical",
+      "revisions": [
+        {
+          "revisionId": "sha256:ab14753fa965b899d0e5c6d00e556dd568850542e8146007c39712e2b3f13a53",
+          "observedAtUtc": "2026-09-19T08:39:33.570Z",
+          "bodySha256": "ab14753fa965b899d0e5c6d00e556dd568850542e8146007c39712e2b3f13a53",
+          "normalizationVersion": 1,
+          "sourceUrl": "https://bravosresearch.com/news-feed/initiating-long-on-financial-select-sector-spdr-fund-xlf-breakout-2/",
+          "facts": {
+            "symbol": "XLF",
+            "kind": "open",
+            "price": 52.92,
+            "weightBefore": 0,
+            "sourceWeight": 8,
+            "stopLossRate": 50.0,
+            "targets": [
+              57.5,
+              59,
+              62
+            ]
+          },
+          "supportingExcerpts": [
+            "$52.92",
+            "Weight Allocation: 8",
+            "Suggested Stop Loss (SL): $50"
+          ],
+          "extractionVersion": "bravos-entry-content-1",
+          "extractionNote": "Authored entry-content after Trade Alert/date/Save Post header; excludes comments and surrounding page chrome. Whitespace collapsed per normalizationVersion 1."
+        }
+      ]
+    },
+    "bravos:post:484833": {
+      "canonicalUrl": "https://bravosresearch.com/news-feed/increasing-exposure-to-ishares-msci-japan-etf-ewj-technical-strength/",
+      "aliases": [],
+      "postId": 484833,
+      "firstSeenAtUtc": "2026-09-19T08:39:32.658Z",
+      "lastSeenAtUtc": "2026-09-19T08:39:32.658Z",
+      "publicationValue": "2026-06-16",
+      "publicationPrecision": "date",
+      "strategy": "Tactical",
+      "revisions": [
+        {
+          "revisionId": "sha256:6daf6687cbd05c826e80202c3e78fbd71924912af2e8ea67187a2915ce90135e",
+          "observedAtUtc": "2026-09-19T08:39:32.658Z",
+          "bodySha256": "6daf6687cbd05c826e80202c3e78fbd71924912af2e8ea67187a2915ce90135e",
+          "normalizationVersion": 1,
+          "sourceUrl": "https://bravosresearch.com/news-feed/increasing-exposure-to-ishares-msci-japan-etf-ewj-technical-strength/",
+          "facts": {
+            "symbol": "EWJ",
+            "kind": "add",
+            "price": 94.65,
+            "weightBefore": 5,
+            "sourceWeight": 8,
+            "stopLossRate": null
+          },
+          "supportingExcerpts": [
+            "$94.65"
+          ],
+          "extractionVersion": "bravos-entry-content-1",
+          "extractionNote": "Authored entry-content after Trade Alert/date/Save Post header; excludes comments and surrounding page chrome. Whitespace collapsed per normalizationVersion 1."
+        }
+      ]
+    },
+    "bravos:post:484911": {
+      "canonicalUrl": "https://bravosresearch.com/news-feed/increasing-exposure-to-natera-inc-ntra-technical-strength/",
+      "aliases": [],
+      "postId": 484911,
+      "firstSeenAtUtc": "2026-09-19T08:39:31.706Z",
+      "lastSeenAtUtc": "2026-09-19T08:39:31.706Z",
+      "publicationValue": "2026-06-17",
+      "publicationPrecision": "date",
+      "strategy": "Tactical",
+      "revisions": [
+        {
+          "revisionId": "sha256:8615302e278fabfda3735cc95a6feb595e4c7da76b74d0cea71a74e7649645ee",
+          "observedAtUtc": "2026-09-19T08:39:31.706Z",
+          "bodySha256": "8615302e278fabfda3735cc95a6feb595e4c7da76b74d0cea71a74e7649645ee",
+          "normalizationVersion": 1,
+          "sourceUrl": "https://bravosresearch.com/news-feed/increasing-exposure-to-natera-inc-ntra-technical-strength/",
+          "facts": {
+            "symbol": "NTRA",
+            "kind": "add",
+            "price": 229.1,
+            "weightBefore": 5,
+            "sourceWeight": 8,
+            "stopLossRate": null
+          },
+          "supportingExcerpts": [
+            "$229.1"
+          ],
+          "extractionVersion": "bravos-entry-content-1",
+          "extractionNote": "Authored entry-content after Trade Alert/date/Save Post header; excludes comments and surrounding page chrome. Whitespace collapsed per normalizationVersion 1."
+        }
+      ]
+    },
+    "bravos:post:485154": {
+      "canonicalUrl": "https://bravosresearch.com/news-feed/initiating-long-on-ishares-biotechnology-etf-ibb-breakout/",
+      "aliases": [],
+      "postId": 485154,
+      "firstSeenAtUtc": "2026-09-19T08:39:30.790Z",
+      "lastSeenAtUtc": "2026-09-19T08:39:30.790Z",
+      "publicationValue": "2026-06-23",
+      "publicationPrecision": "date",
+      "strategy": "Tactical",
+      "revisions": [
+        {
+          "revisionId": "sha256:482374b0ffed5f28f9912a374eeef26f815d94dcc61c8d4dd7b52649acda4ec2",
+          "observedAtUtc": "2026-09-19T08:39:30.790Z",
+          "bodySha256": "482374b0ffed5f28f9912a374eeef26f815d94dcc61c8d4dd7b52649acda4ec2",
+          "normalizationVersion": 1,
+          "sourceUrl": "https://bravosresearch.com/news-feed/initiating-long-on-ishares-biotechnology-etf-ibb-breakout/",
+          "facts": {
+            "symbol": "IBB",
+            "kind": "open",
+            "price": 178.29,
+            "weightBefore": 0,
+            "sourceWeight": 5,
+            "stopLossRate": 162.0,
+            "targets": [
+              200,
+              215,
+              230
+            ]
+          },
+          "supportingExcerpts": [
+            "$178.29",
+            "Weight Allocation: 5",
+            "Suggested Stop Loss (SL): $162"
+          ],
+          "extractionVersion": "bravos-entry-content-1",
+          "extractionNote": "Authored entry-content after Trade Alert/date/Save Post header; excludes comments and surrounding page chrome. Whitespace collapsed per normalizationVersion 1."
+        }
+      ]
+    },
+    "bravos:post:485190": {
+      "canonicalUrl": "https://bravosresearch.com/news-feed/booking-partial-profits-in-natera-inc-ntra-profit-booking/",
+      "aliases": [],
+      "postId": 485190,
+      "firstSeenAtUtc": "2026-09-19T08:39:29.932Z",
+      "lastSeenAtUtc": "2026-09-19T08:39:29.932Z",
+      "publicationValue": "2026-06-24",
+      "publicationPrecision": "date",
+      "strategy": "Tactical",
+      "revisions": [
+        {
+          "revisionId": "sha256:8867c92721c9acc4cc973337df7ac483ff74ef87cbb4ae30b061ff3c9a9ac593",
+          "observedAtUtc": "2026-09-19T08:39:29.932Z",
+          "bodySha256": "8867c92721c9acc4cc973337df7ac483ff74ef87cbb4ae30b061ff3c9a9ac593",
+          "normalizationVersion": 1,
+          "sourceUrl": "https://bravosresearch.com/news-feed/booking-partial-profits-in-natera-inc-ntra-profit-booking/",
+          "facts": {
+            "symbol": "NTRA",
+            "kind": "reduce",
+            "price": 255.0,
+            "weightBefore": 8,
+            "sourceWeight": 6,
+            "stopLossRate": 210.0
+          },
+          "supportingExcerpts": [
+            "$255",
+            "$210"
+          ],
+          "extractionVersion": "bravos-entry-content-1",
+          "extractionNote": "Authored entry-content after Trade Alert/date/Save Post header; excludes comments and surrounding page chrome. Whitespace collapsed per normalizationVersion 1."
+        }
+      ]
+    },
+    "bravos:post:485547": {
+      "canonicalUrl": "https://bravosresearch.com/news-feed/booking-partial-profits-in-ishares-biotechnology-etf-ibb-profit-booking/",
+      "aliases": [],
+      "postId": 485547,
+      "firstSeenAtUtc": "2026-09-19T08:39:18.721Z",
+      "lastSeenAtUtc": "2026-09-19T08:39:18.721Z",
+      "publicationValue": "2026-07-02",
+      "publicationPrecision": "date",
+      "strategy": "Tactical",
+      "revisions": [
+        {
+          "revisionId": "sha256:9cc9722586d70a8ba7ef2d38a8d1aa5af9582eaf50433973892344ac0227d0cf",
+          "observedAtUtc": "2026-09-19T08:39:18.721Z",
+          "bodySha256": "9cc9722586d70a8ba7ef2d38a8d1aa5af9582eaf50433973892344ac0227d0cf",
+          "normalizationVersion": 1,
+          "sourceUrl": "https://bravosresearch.com/news-feed/booking-partial-profits-in-ishares-biotechnology-etf-ibb-profit-booking/",
+          "facts": {
+            "symbol": "IBB",
+            "kind": "reduce",
+            "price": 194.86,
+            "weightBefore": 5,
+            "sourceWeight": 4,
+            "stopLossRate": 166.0
+          },
+          "supportingExcerpts": [
+            "$194.86",
+            "$166"
+          ],
+          "extractionVersion": "bravos-entry-content-1",
+          "extractionNote": "Authored entry-content after Trade Alert/date/Save Post header; excludes comments and surrounding page chrome. Whitespace collapsed per normalizationVersion 1."
+        }
+      ]
+    },
+    "bravos:post:485919": {
+      "canonicalUrl": "https://bravosresearch.com/news-feed/initiating-long-on-bbb-foods-inc-tbbb-breakout/",
+      "aliases": [],
+      "postId": 485919,
+      "firstSeenAtUtc": "2026-09-19T08:39:17.798Z",
+      "lastSeenAtUtc": "2026-09-19T08:39:17.798Z",
+      "publicationValue": "2026-07-10",
+      "publicationPrecision": "date",
+      "strategy": "Tactical",
+      "revisions": [
+        {
+          "revisionId": "sha256:f7811cc82b58b774ad706d3fa188f94b9faf95454233fb8da9aae044b7bea518",
+          "observedAtUtc": "2026-09-19T08:39:17.798Z",
+          "bodySha256": "f7811cc82b58b774ad706d3fa188f94b9faf95454233fb8da9aae044b7bea518",
+          "normalizationVersion": 1,
+          "sourceUrl": "https://bravosresearch.com/news-feed/initiating-long-on-bbb-foods-inc-tbbb-breakout/",
+          "facts": {
+            "symbol": "TBBB",
+            "kind": "open",
+            "price": 42.43,
+            "weightBefore": 0,
+            "sourceWeight": 5,
+            "stopLossRate": 38.5,
+            "targets": [
+              50,
+              54,
+              62
+            ]
+          },
+          "supportingExcerpts": [
+            "$42.43",
+            "Weight Allocation: 5",
+            "Suggested Stop Loss (SL): $38.5"
+          ],
+          "extractionVersion": "bravos-entry-content-1",
+          "extractionNote": "Authored entry-content after Trade Alert/date/Save Post header; excludes comments and surrounding page chrome. Whitespace collapsed per normalizationVersion 1."
+        }
+      ]
+    },
+    "bravos:post:485930": {
+      "canonicalUrl": "https://bravosresearch.com/news-feed/initiating-long-on-nvidia-nvda-breakout-2/",
+      "aliases": [],
+      "postId": 485930,
+      "firstSeenAtUtc": "2026-09-19T08:39:16.929Z",
+      "lastSeenAtUtc": "2026-09-19T08:39:16.929Z",
+      "publicationValue": "2026-07-10",
+      "publicationPrecision": "date",
+      "strategy": "Tactical",
+      "revisions": [
+        {
+          "revisionId": "sha256:b18fbfb8f22de61f4abfea05b32c382b2b44ca26140fb7572f2598b4cef018b6",
+          "observedAtUtc": "2026-09-19T08:39:16.929Z",
+          "bodySha256": "b18fbfb8f22de61f4abfea05b32c382b2b44ca26140fb7572f2598b4cef018b6",
+          "normalizationVersion": 1,
+          "sourceUrl": "https://bravosresearch.com/news-feed/initiating-long-on-nvidia-nvda-breakout-2/",
+          "facts": {
+            "symbol": "NVDA",
+            "kind": "open",
+            "price": 209.5,
+            "weightBefore": 0,
+            "sourceWeight": 5,
+            "stopLossRate": 190.0,
+            "targets": [
+              250,
+              275,
+              300
+            ]
+          },
+          "supportingExcerpts": [
+            "$209.50",
+            "Weight Allocation: 5",
+            "Suggested Stop Loss (SL): $190"
+          ],
+          "extractionVersion": "bravos-entry-content-1",
+          "extractionNote": "Authored entry-content after Trade Alert/date/Save Post header; excludes comments and surrounding page chrome. Whitespace collapsed per normalizationVersion 1."
+        }
+      ]
+    },
+    "bravos:post:486417": {
+      "canonicalUrl": "https://bravosresearch.com/news-feed/initiating-long-on-health-care-select-sector-spdr-fund-xlv-breakout/",
+      "aliases": [],
+      "postId": 486417,
+      "firstSeenAtUtc": "2026-09-19T08:39:16.071Z",
+      "lastSeenAtUtc": "2026-09-19T08:39:16.071Z",
+      "publicationValue": "2026-07-24",
+      "publicationPrecision": "date",
+      "strategy": "Tactical",
+      "revisions": [
+        {
+          "revisionId": "sha256:0de44a64d9bc89dd1ca7c4e3e96b9870fd662c765397f11509d15faa29d89ede",
+          "observedAtUtc": "2026-09-19T08:39:16.071Z",
+          "bodySha256": "0de44a64d9bc89dd1ca7c4e3e96b9870fd662c765397f11509d15faa29d89ede",
+          "normalizationVersion": 1,
+          "sourceUrl": "https://bravosresearch.com/news-feed/initiating-long-on-health-care-select-sector-spdr-fund-xlv-breakout/",
+          "facts": {
+            "symbol": "XLV",
+            "kind": "open",
+            "price": 162.07,
+            "weightBefore": 0,
+            "sourceWeight": 5,
+            "stopLossRate": 150.0,
+            "targets": [
+              182,
+              190,
+              200
+            ]
+          },
+          "supportingExcerpts": [
+            "$162.07",
+            "Weight Allocation: 5",
+            "Suggested Stop Loss (SL): $150"
+          ],
+          "extractionVersion": "bravos-entry-content-1",
+          "extractionNote": "Authored entry-content after Trade Alert/date/Save Post header; excludes comments and surrounding page chrome. Whitespace collapsed per normalizationVersion 1."
+        }
+      ]
+    },
+    "bravos:post:486593": {
+      "canonicalUrl": "https://bravosresearch.com/news-feed/booking-partial-profits-in-natera-inc-ntra-profit-booking-2/",
+      "aliases": [],
+      "postId": 486593,
+      "firstSeenAtUtc": "2026-09-19T08:39:15.093Z",
+      "lastSeenAtUtc": "2026-09-19T08:39:15.093Z",
+      "publicationValue": "2026-07-28",
+      "publicationPrecision": "date",
+      "strategy": "Tactical",
+      "revisions": [
+        {
+          "revisionId": "sha256:7a9669755238bd6f91949a044d258422ee67f9c4d171a5546e0c2b32dd22aec2",
+          "observedAtUtc": "2026-09-19T08:39:15.093Z",
+          "bodySha256": "7a9669755238bd6f91949a044d258422ee67f9c4d171a5546e0c2b32dd22aec2",
+          "normalizationVersion": 1,
+          "sourceUrl": "https://bravosresearch.com/news-feed/booking-partial-profits-in-natera-inc-ntra-profit-booking-2/",
+          "facts": {
+            "symbol": "NTRA",
+            "kind": "reduce",
+            "price": 251.69,
+            "weightBefore": 6,
+            "sourceWeight": 4,
+            "stopLossRate": 220.0
+          },
+          "supportingExcerpts": [
+            "$251.69",
+            "$220"
+          ],
+          "extractionVersion": "bravos-entry-content-1",
+          "extractionNote": "Authored entry-content after Trade Alert/date/Save Post header; excludes comments and surrounding page chrome. Whitespace collapsed per normalizationVersion 1."
+        }
+      ]
+    },
+    "bravos:post:486606": {
+      "canonicalUrl": "https://bravosresearch.com/news-feed/booking-partial-profits-in-financial-select-sector-spdr-fund-xlf-profit-booking/",
+      "aliases": [],
+      "postId": 486606,
+      "firstSeenAtUtc": "2026-09-19T08:39:14.180Z",
+      "lastSeenAtUtc": "2026-09-19T08:39:14.180Z",
+      "publicationValue": "2026-07-28",
+      "publicationPrecision": "date",
+      "strategy": "Tactical",
+      "revisions": [
+        {
+          "revisionId": "sha256:1e9bdfa2a9a925c24059bb43eee55bce68b3627e4edeb81152ce6a423ad5a725",
+          "observedAtUtc": "2026-09-19T08:39:14.180Z",
+          "bodySha256": "1e9bdfa2a9a925c24059bb43eee55bce68b3627e4edeb81152ce6a423ad5a725",
+          "normalizationVersion": 1,
+          "sourceUrl": "https://bravosresearch.com/news-feed/booking-partial-profits-in-financial-select-sector-spdr-fund-xlf-profit-booking/",
+          "facts": {
+            "symbol": "XLF",
+            "kind": "reduce",
+            "price": 57.5,
+            "weightBefore": 8,
+            "sourceWeight": 6,
+            "stopLossRate": 52.5
+          },
+          "supportingExcerpts": [
+            "$57.5",
+            "$52.5"
+          ],
+          "extractionVersion": "bravos-entry-content-1",
+          "extractionNote": "Authored entry-content after Trade Alert/date/Save Post header; excludes comments and surrounding page chrome. Whitespace collapsed per normalizationVersion 1."
+        }
+      ]
+    },
+    "bravos:post:486900": {
+      "canonicalUrl": "https://bravosresearch.com/news-feed/increasing-exposure-to-ishares-biotechnology-etf-ibb-technical-strength/",
+      "aliases": [],
+      "postId": 486900,
+      "firstSeenAtUtc": "2026-09-19T08:39:13.280Z",
+      "lastSeenAtUtc": "2026-09-19T08:39:13.280Z",
+      "publicationValue": "2026-08-05",
+      "publicationPrecision": "date",
+      "strategy": "Tactical",
+      "revisions": [
+        {
+          "revisionId": "sha256:d1a1e9486ddff430ed8bddf6a7be4b59ae1159166466d942a10bb98809434286",
+          "observedAtUtc": "2026-09-19T08:39:13.280Z",
+          "bodySha256": "d1a1e9486ddff430ed8bddf6a7be4b59ae1159166466d942a10bb98809434286",
+          "normalizationVersion": 1,
+          "sourceUrl": "https://bravosresearch.com/news-feed/increasing-exposure-to-ishares-biotechnology-etf-ibb-technical-strength/",
+          "facts": {
+            "symbol": "IBB",
+            "kind": "add",
+            "price": 192.3,
+            "weightBefore": 4,
+            "sourceWeight": 7,
+            "stopLossRate": 170.0
+          },
+          "supportingExcerpts": [
+            "$192.3",
+            "$170"
+          ],
+          "extractionVersion": "bravos-entry-content-1",
+          "extractionNote": "Authored entry-content after Trade Alert/date/Save Post header; excludes comments and surrounding page chrome. Whitespace collapsed per normalizationVersion 1."
+        }
+      ]
+    },
+    "bravos:post:486903": {
+      "canonicalUrl": "https://bravosresearch.com/news-feed/increasing-exposure-to-nvidia-nvda-technical-strength/",
+      "aliases": [],
+      "postId": 486903,
+      "firstSeenAtUtc": "2026-09-19T08:39:12.380Z",
+      "lastSeenAtUtc": "2026-09-19T08:39:12.380Z",
+      "publicationValue": "2026-08-05",
+      "publicationPrecision": "date",
+      "strategy": "Tactical",
+      "revisions": [
+        {
+          "revisionId": "sha256:9b0528f1354f2e2091573e72f48b07eea6c8ebd74deafc67dff19fd1972e285c",
+          "observedAtUtc": "2026-09-19T08:39:12.380Z",
+          "bodySha256": "9b0528f1354f2e2091573e72f48b07eea6c8ebd74deafc67dff19fd1972e285c",
+          "normalizationVersion": 1,
+          "sourceUrl": "https://bravosresearch.com/news-feed/increasing-exposure-to-nvidia-nvda-technical-strength/",
+          "facts": {
+            "symbol": "NVDA",
+            "kind": "add",
+            "price": 217.97,
+            "weightBefore": 5,
+            "sourceWeight": 8,
+            "stopLossRate": null
+          },
+          "supportingExcerpts": [
+            "$217.97"
+          ],
+          "extractionVersion": "bravos-entry-content-1",
+          "extractionNote": "Authored entry-content after Trade Alert/date/Save Post header; excludes comments and surrounding page chrome. Whitespace collapsed per normalizationVersion 1."
+        }
+      ]
+    },
+    "bravos:post:486962": {
+      "canonicalUrl": "https://bravosresearch.com/portfolio-update/booking-partial-profits-in-natera-inc-ntra-profit-booking-3/",
+      "aliases": [],
+      "postId": 486962,
+      "firstSeenAtUtc": "2026-09-19T08:39:11.546Z",
+      "lastSeenAtUtc": "2026-09-19T08:39:11.546Z",
+      "publicationValue": "2026-08-06",
+      "publicationPrecision": "date",
+      "strategy": "Tactical",
+      "revisions": [
+        {
+          "revisionId": "sha256:b6c1c4b460c90409a7d96b569a68cafdda5417e4ef6037fa8b3ac6f5f20c0d6e",
+          "observedAtUtc": "2026-09-19T08:39:11.546Z",
+          "bodySha256": "b6c1c4b460c90409a7d96b569a68cafdda5417e4ef6037fa8b3ac6f5f20c0d6e",
+          "normalizationVersion": 1,
+          "sourceUrl": "https://bravosresearch.com/portfolio-update/booking-partial-profits-in-natera-inc-ntra-profit-booking-3/",
+          "facts": {
+            "symbol": "NTRA",
+            "kind": "reduce",
+            "price": 325.6,
+            "weightBefore": 4,
+            "sourceWeight": 2,
+            "stopLossRate": 250.0
+          },
+          "supportingExcerpts": [
+            "$325.60",
+            "$250"
+          ],
+          "extractionVersion": "bravos-entry-content-1",
+          "extractionNote": "Authored entry-content after Trade Alert/date/Save Post header; excludes comments and surrounding page chrome. Whitespace collapsed per normalizationVersion 1."
+        }
+      ]
+    },
+    "bravos:post:486999": {
+      "canonicalUrl": "https://bravosresearch.com/news-feed/initiating-long-on-teva-pharmaceutical-limited-teva-potential-breakout/",
+      "aliases": [],
+      "postId": 486999,
+      "firstSeenAtUtc": "2026-09-19T08:39:03.431Z",
+      "lastSeenAtUtc": "2026-09-19T08:39:03.431Z",
+      "publicationValue": "2026-08-07",
+      "publicationPrecision": "date",
+      "strategy": "Tactical",
+      "revisions": [
+        {
+          "revisionId": "sha256:43d4bd7c2c3b95beb3440f37ec008488bf22c0a97cea2303f555bcea7d72e65f",
+          "observedAtUtc": "2026-09-19T08:39:03.431Z",
+          "bodySha256": "43d4bd7c2c3b95beb3440f37ec008488bf22c0a97cea2303f555bcea7d72e65f",
+          "normalizationVersion": 1,
+          "sourceUrl": "https://bravosresearch.com/news-feed/initiating-long-on-teva-pharmaceutical-limited-teva-potential-breakout/",
+          "facts": {
+            "symbol": "TEVA",
+            "kind": "open",
+            "price": 35.37,
+            "weightBefore": 0,
+            "sourceWeight": 3,
+            "stopLossRate": 32.0,
+            "targets": [
+              41.5,
+              45.5,
+              50
+            ]
+          },
+          "supportingExcerpts": [
+            "$35.37",
+            "Weight Allocation: 3",
+            "Suggested Stop Loss (SL): $32"
+          ],
+          "extractionVersion": "bravos-entry-content-1",
+          "extractionNote": "Authored entry-content after Trade Alert/date/Save Post header; excludes comments and surrounding page chrome. Whitespace collapsed per normalizationVersion 1."
+        }
+      ]
+    },
+    "bravos:post:487212": {
+      "canonicalUrl": "https://bravosresearch.com/news-feed/booking-partial-profits-in-bbb-foods-inc-tbbb-profit-booking/",
+      "aliases": [],
+      "postId": 487212,
+      "firstSeenAtUtc": "2026-09-19T08:39:01.989Z",
+      "lastSeenAtUtc": "2026-09-19T08:39:01.989Z",
+      "publicationValue": "2026-08-13",
+      "publicationPrecision": "date",
+      "strategy": "Tactical",
+      "revisions": [
+        {
+          "revisionId": "sha256:cfdbf034d2a1249809bbdae2060d3423cd747cda73697ec179034cbb391d1568",
+          "observedAtUtc": "2026-09-19T08:39:01.989Z",
+          "bodySha256": "cfdbf034d2a1249809bbdae2060d3423cd747cda73697ec179034cbb391d1568",
+          "normalizationVersion": 1,
+          "sourceUrl": "https://bravosresearch.com/news-feed/booking-partial-profits-in-bbb-foods-inc-tbbb-profit-booking/",
+          "facts": {
+            "symbol": "TBBB",
+            "kind": "reduce",
+            "price": 49.43,
+            "weightBefore": 5,
+            "sourceWeight": 4,
+            "stopLossRate": 40.0
+          },
+          "supportingExcerpts": [
+            "$49.43",
+            "$40"
+          ],
+          "extractionVersion": "bravos-entry-content-1",
+          "extractionNote": "Authored entry-content after Trade Alert/date/Save Post header; excludes comments and surrounding page chrome. Whitespace collapsed per normalizationVersion 1."
+        }
+      ]
+    },
+    "bravos:post:487450": {
+      "canonicalUrl": "https://bravosresearch.com/news-feed/booking-partial-profits-in-ishares-biotechnology-etf-ibb-profit-booking-2/",
+      "aliases": [],
+      "postId": 487450,
+      "firstSeenAtUtc": "2026-09-19T08:39:01.061Z",
+      "lastSeenAtUtc": "2026-09-19T08:39:01.061Z",
+      "publicationValue": "2026-08-19",
+      "publicationPrecision": "date",
+      "strategy": "Tactical",
+      "revisions": [
+        {
+          "revisionId": "sha256:aa14880ab57629be0660bd529a392773d874d834b343d6e03a4ad2bb4c2a1719",
+          "observedAtUtc": "2026-09-19T08:39:01.061Z",
+          "bodySha256": "aa14880ab57629be0660bd529a392773d874d834b343d6e03a4ad2bb4c2a1719",
+          "normalizationVersion": 1,
+          "sourceUrl": "https://bravosresearch.com/news-feed/booking-partial-profits-in-ishares-biotechnology-etf-ibb-profit-booking-2/",
+          "facts": {
+            "symbol": "IBB",
+            "kind": "reduce",
+            "price": 211.5,
+            "weightBefore": 7,
+            "sourceWeight": 5,
+            "stopLossRate": null
+          },
+          "supportingExcerpts": [
+            "$211.5"
+          ],
+          "extractionVersion": "bravos-entry-content-1",
+          "extractionNote": "Authored entry-content after Trade Alert/date/Save Post header; excludes comments and surrounding page chrome. Whitespace collapsed per normalizationVersion 1."
+        }
+      ]
+    },
+    "bravos:post:487469": {
+      "canonicalUrl": "https://bravosresearch.com/news-feed/increasing-exposure-to-teva-pharmaceutical-limited-teva-breakout-2/",
+      "aliases": [],
+      "postId": 487469,
+      "firstSeenAtUtc": "2026-09-19T08:39:00.140Z",
+      "lastSeenAtUtc": "2026-09-19T08:39:00.140Z",
+      "publicationValue": "2026-08-19",
+      "publicationPrecision": "date",
+      "strategy": "Tactical",
+      "revisions": [
+        {
+          "revisionId": "sha256:7a0b6b4efca59ade0c0deb81d016f6264aca353b6391e24f30ae1b14d42686ed",
+          "observedAtUtc": "2026-09-19T08:39:00.140Z",
+          "bodySha256": "7a0b6b4efca59ade0c0deb81d016f6264aca353b6391e24f30ae1b14d42686ed",
+          "normalizationVersion": 1,
+          "sourceUrl": "https://bravosresearch.com/news-feed/increasing-exposure-to-teva-pharmaceutical-limited-teva-breakout-2/",
+          "facts": {
+            "symbol": "TEVA",
+            "kind": "add",
+            "price": 37.67,
+            "weightBefore": 3,
+            "sourceWeight": 5,
+            "stopLossRate": 33.0
+          },
+          "supportingExcerpts": [
+            "$37,67",
+            "$33"
+          ],
+          "normalizationNote": "Source uses decimal comma $37,67, interpreted as $37.67; opening ceiling remains $35.37 x 1.02.",
+          "extractionVersion": "bravos-entry-content-1",
+          "extractionNote": "Authored entry-content after Trade Alert/date/Save Post header; excludes comments and surrounding page chrome. Whitespace collapsed per normalizationVersion 1."
+        }
+      ]
+    },
+    "bravos:post:487697": {
+      "canonicalUrl": "https://bravosresearch.com/portfolio-update/booking-partial-profits-in-bbb-foods-inc-tbbb-profit-booking-2/",
+      "aliases": [],
+      "postId": 487697,
+      "firstSeenAtUtc": "2026-09-19T08:38:59.324Z",
+      "lastSeenAtUtc": "2026-09-19T08:38:59.324Z",
+      "publicationValue": "2026-08-25",
+      "publicationPrecision": "date",
+      "strategy": "Tactical",
+      "revisions": [
+        {
+          "revisionId": "sha256:cd93eec095daf412dc263bbf992319f9d35faeb59c9f85b96b0b496a7f26ec6a",
+          "observedAtUtc": "2026-09-19T08:38:59.324Z",
+          "bodySha256": "cd93eec095daf412dc263bbf992319f9d35faeb59c9f85b96b0b496a7f26ec6a",
+          "normalizationVersion": 1,
+          "sourceUrl": "https://bravosresearch.com/portfolio-update/booking-partial-profits-in-bbb-foods-inc-tbbb-profit-booking-2/",
+          "facts": {
+            "symbol": "TBBB",
+            "kind": "reduce",
+            "price": 51.6,
+            "weightBefore": 4,
+            "sourceWeight": 3,
+            "stopLossRate": null
+          },
+          "supportingExcerpts": [
+            "$51.60"
+          ],
+          "extractionVersion": "bravos-entry-content-1",
+          "extractionNote": "Authored entry-content after Trade Alert/date/Save Post header; excludes comments and surrounding page chrome. Whitespace collapsed per normalizationVersion 1."
+        }
+      ]
+    },
+    "bravos:post:487716": {
+      "canonicalUrl": "https://bravosresearch.com/news-feed/reducing-exposure-to-nvidia-nvda-earnings-release/",
+      "aliases": [],
+      "postId": 487716,
+      "firstSeenAtUtc": "2026-09-19T08:38:58.159Z",
+      "lastSeenAtUtc": "2026-09-19T08:38:58.159Z",
+      "publicationValue": "2026-08-26",
+      "publicationPrecision": "date",
+      "strategy": "Tactical",
+      "revisions": [
+        {
+          "revisionId": "sha256:3e6422bbccc22edfd60d178379534fcb926dd82a050df9c3926a7f0b2df7ada8",
+          "observedAtUtc": "2026-09-19T08:38:58.159Z",
+          "bodySha256": "3e6422bbccc22edfd60d178379534fcb926dd82a050df9c3926a7f0b2df7ada8",
+          "normalizationVersion": 1,
+          "sourceUrl": "https://bravosresearch.com/news-feed/reducing-exposure-to-nvidia-nvda-earnings-release/",
+          "facts": {
+            "symbol": "NVDA",
+            "kind": "reduce",
+            "price": 213.42,
+            "weightBefore": 8,
+            "sourceWeight": 6,
+            "stopLossRate": null
+          },
+          "supportingExcerpts": [
+            "$213.42"
+          ],
+          "extractionVersion": "bravos-entry-content-1",
+          "extractionNote": "Authored entry-content after Trade Alert/date/Save Post header; excludes comments and surrounding page chrome. Whitespace collapsed per normalizationVersion 1."
+        }
+      ]
+    },
+    "bravos:post:487816": {
+      "canonicalUrl": "https://bravosresearch.com/news-feed/initiating-long-on-cf-industries-holdings-inc-cf-breakout/",
+      "aliases": [],
+      "postId": 487816,
+      "firstSeenAtUtc": "2026-09-19T08:38:57.287Z",
+      "lastSeenAtUtc": "2026-09-19T08:38:57.287Z",
+      "publicationValue": "2026-08-31",
+      "publicationPrecision": "date",
+      "strategy": "Tactical",
+      "revisions": [
+        {
+          "revisionId": "sha256:0449d8e6455e8b71108ea998d0d74791f1c43716962176d71132a1d2b714fa98",
+          "observedAtUtc": "2026-09-19T08:38:57.287Z",
+          "bodySha256": "0449d8e6455e8b71108ea998d0d74791f1c43716962176d71132a1d2b714fa98",
+          "normalizationVersion": 1,
+          "sourceUrl": "https://bravosresearch.com/news-feed/initiating-long-on-cf-industries-holdings-inc-cf-breakout/",
+          "facts": {
+            "symbol": "CF",
+            "kind": "open",
+            "price": 130.37,
+            "weightBefore": 0,
+            "sourceWeight": 5,
+            "stopLossRate": 119.5,
+            "targets": [
+              147.5,
+              153,
+              160
+            ]
+          },
+          "supportingExcerpts": [
+            "$130.37",
+            "Weight Allocation: 5",
+            "Suggested Stop Loss (SL): $119.5"
+          ],
+          "extractionVersion": "bravos-entry-content-1",
+          "extractionNote": "Authored entry-content after Trade Alert/date/Save Post header; excludes comments and surrounding page chrome. Whitespace collapsed per normalizationVersion 1."
+        }
+      ]
+    },
+    "bravos:post:487910": {
+      "canonicalUrl": "https://bravosresearch.com/news-feed/initiating-long-on-berkshire-hathaway-inc-brk-b-breakout-2/",
+      "aliases": [],
+      "postId": 487910,
+      "firstSeenAtUtc": "2026-09-19T08:38:56.367Z",
+      "lastSeenAtUtc": "2026-09-19T08:38:56.367Z",
+      "publicationValue": "2026-09-02",
+      "publicationPrecision": "date",
+      "strategy": "Tactical",
+      "revisions": [
+        {
+          "revisionId": "sha256:6fd2851a7a3a2ae6955a7c2df7bbd35e5bed9a221e5a5a4242b6892d44800f96",
+          "observedAtUtc": "2026-09-19T08:38:56.367Z",
+          "bodySha256": "6fd2851a7a3a2ae6955a7c2df7bbd35e5bed9a221e5a5a4242b6892d44800f96",
+          "normalizationVersion": 1,
+          "sourceUrl": "https://bravosresearch.com/news-feed/initiating-long-on-berkshire-hathaway-inc-brk-b-breakout-2/",
+          "facts": {
+            "symbol": "BRK.B",
+            "kind": "open",
+            "price": 506.5,
+            "weightBefore": 0,
+            "sourceWeight": 5,
+            "stopLossRate": 480.0,
+            "targets": [
+              550,
+              575,
+              600
+            ]
+          },
+          "supportingExcerpts": [
+            "$506.5",
+            "Weight Allocation: 5",
+            "Suggested Stop Loss (SL): $480"
+          ],
+          "extractionVersion": "bravos-entry-content-1",
+          "extractionNote": "Authored entry-content after Trade Alert/date/Save Post header; excludes comments and surrounding page chrome. Whitespace collapsed per normalizationVersion 1."
+        }
+      ]
+    },
+    "bravos:post:487920": {
+      "canonicalUrl": "https://bravosresearch.com/news-feed/initiating-long-on-global-x-msci-argentina-etf-argt-breakout/",
+      "aliases": [],
+      "postId": 487920,
+      "firstSeenAtUtc": "2026-09-19T08:38:55.558Z",
+      "lastSeenAtUtc": "2026-09-19T08:38:55.558Z",
+      "publicationValue": "2026-09-02",
+      "publicationPrecision": "date",
+      "strategy": "Tactical",
+      "revisions": [
+        {
+          "revisionId": "sha256:373b7eef8d4133059e34c83dce45c5abb0f151300bfa93e5a901b452b56fe147",
+          "observedAtUtc": "2026-09-19T08:38:55.558Z",
+          "bodySha256": "373b7eef8d4133059e34c83dce45c5abb0f151300bfa93e5a901b452b56fe147",
+          "normalizationVersion": 1,
+          "sourceUrl": "https://bravosresearch.com/news-feed/initiating-long-on-global-x-msci-argentina-etf-argt-breakout/",
+          "facts": {
+            "symbol": "ARGT",
+            "kind": "open",
+            "price": 96.44,
+            "weightBefore": 0,
+            "sourceWeight": 5,
+            "stopLossRate": 89.0,
+            "targets": [
+              108,
+              112.5,
+              118
+            ]
+          },
+          "supportingExcerpts": [
+            "$96.44",
+            "Weight Allocation: 5",
+            "Suggested Stop Loss (SL): $89"
+          ],
+          "extractionVersion": "bravos-entry-content-1",
+          "extractionNote": "Authored entry-content after Trade Alert/date/Save Post header; excludes comments and surrounding page chrome. Whitespace collapsed per normalizationVersion 1."
+        }
+      ]
+    },
+    "bravos:post:487942": {
+      "canonicalUrl": "https://bravosresearch.com/portfolio-update/booking-partial-profits-in-cf-industries-holdings-cf-profit-booking/",
+      "aliases": [],
+      "postId": 487942,
+      "firstSeenAtUtc": "2026-09-19T08:38:45.212Z",
+      "lastSeenAtUtc": "2026-09-19T08:38:45.212Z",
+      "publicationValue": "2026-09-02",
+      "publicationPrecision": "date",
+      "strategy": "Tactical",
+      "revisions": [
+        {
+          "revisionId": "sha256:f6277356cf7f2aebe6fbdfb64759713c6042cda170ebb1d4bcabd6574ce37d08",
+          "observedAtUtc": "2026-09-19T08:38:45.212Z",
+          "bodySha256": "f6277356cf7f2aebe6fbdfb64759713c6042cda170ebb1d4bcabd6574ce37d08",
+          "normalizationVersion": 1,
+          "sourceUrl": "https://bravosresearch.com/portfolio-update/booking-partial-profits-in-cf-industries-holdings-cf-profit-booking/",
+          "facts": {
+            "symbol": "CF",
+            "kind": "reduce",
+            "price": 141.12,
+            "weightBefore": 5,
+            "sourceWeight": 4,
+            "stopLossRate": 121.5
+          },
+          "supportingExcerpts": [
+            "$141.12",
+            "$121.5"
+          ],
+          "extractionVersion": "bravos-entry-content-1",
+          "extractionNote": "Authored entry-content after Trade Alert/date/Save Post header; excludes comments and surrounding page chrome. Whitespace collapsed per normalizationVersion 1."
+        }
+      ]
+    },
+    "bravos:post:487974": {
+      "canonicalUrl": "https://bravosresearch.com/news-feed/initiating-long-on-roundhill-magnificent-seven-etf-mags-breakout/",
+      "aliases": [],
+      "postId": 487974,
+      "firstSeenAtUtc": "2026-09-19T08:38:44.342Z",
+      "lastSeenAtUtc": "2026-09-19T08:38:44.342Z",
+      "publicationValue": "2026-09-03",
+      "publicationPrecision": "date",
+      "strategy": "Tactical",
+      "revisions": [
+        {
+          "revisionId": "sha256:bf56843c5bf7dd20aec1163a674fb800cc7a0acb71c1c2ecf111821f72954794",
+          "observedAtUtc": "2026-09-19T08:38:44.342Z",
+          "bodySha256": "bf56843c5bf7dd20aec1163a674fb800cc7a0acb71c1c2ecf111821f72954794",
+          "normalizationVersion": 1,
+          "sourceUrl": "https://bravosresearch.com/news-feed/initiating-long-on-roundhill-magnificent-seven-etf-mags-breakout/",
+          "facts": {
+            "symbol": "MAGS",
+            "kind": "open",
+            "price": 70.26,
+            "weightBefore": 0,
+            "sourceWeight": 5,
+            "stopLossRate": 64.5,
+            "targets": [
+              80,
+              87.5,
+              95
+            ]
+          },
+          "supportingExcerpts": [
+            "$70.26",
+            "Weight Allocation: 5",
+            "Suggested Stop Loss (SL): $64.5"
+          ],
+          "extractionVersion": "bravos-entry-content-1",
+          "extractionNote": "Authored entry-content after Trade Alert/date/Save Post header; excludes comments and surrounding page chrome. Whitespace collapsed per normalizationVersion 1."
+        }
+      ]
+    },
+    "bravos:post:487982": {
+      "canonicalUrl": "https://bravosresearch.com/news-feed/initiating-long-on-ishares-bitcoin-trust-ibit-breakout/",
+      "aliases": [],
+      "postId": 487982,
+      "firstSeenAtUtc": "2026-09-19T08:38:43.445Z",
+      "lastSeenAtUtc": "2026-09-19T08:38:43.445Z",
+      "publicationValue": "2026-09-03",
+      "publicationPrecision": "date",
+      "strategy": "Tactical",
+      "revisions": [
+        {
+          "revisionId": "sha256:1656ca4505a5be02ff6f77484df91447eb4d7530cdd3d08e993bdcbb78f10438",
+          "observedAtUtc": "2026-09-19T08:38:43.445Z",
+          "bodySha256": "1656ca4505a5be02ff6f77484df91447eb4d7530cdd3d08e993bdcbb78f10438",
+          "normalizationVersion": 1,
+          "sourceUrl": "https://bravosresearch.com/news-feed/initiating-long-on-ishares-bitcoin-trust-ibit-breakout/",
+          "facts": {
+            "symbol": "IBIT",
+            "kind": "open",
+            "price": 44.86,
+            "weightBefore": 0,
+            "sourceWeight": 3,
+            "stopLossRate": 41.0,
+            "targets": [
+              52,
+              56,
+              60
+            ]
+          },
+          "supportingExcerpts": [
+            "$44.86",
+            "Weight Allocation: 3",
+            "Suggested Stop Loss (SL): $41"
+          ],
+          "extractionVersion": "bravos-entry-content-1",
+          "extractionNote": "Authored entry-content after Trade Alert/date/Save Post header; excludes comments and surrounding page chrome. Whitespace collapsed per normalizationVersion 1."
+        }
+      ]
+    },
+    "bravos:post:488177": {
+      "canonicalUrl": "https://bravosresearch.com/portfolio-update/booking-partial-profits-in-health-care-select-sector-spdr-fund-xlv-profit-booking/",
+      "aliases": [],
+      "postId": 488177,
+      "firstSeenAtUtc": "2026-09-19T08:38:42.603Z",
+      "lastSeenAtUtc": "2026-09-19T08:38:42.603Z",
+      "publicationValue": "2026-09-08",
+      "publicationPrecision": "date",
+      "strategy": "Tactical",
+      "revisions": [
+        {
+          "revisionId": "sha256:249eff149921c6ad15d07e4f70955d3eebbbf0d6378df108ae100af37b5dd428",
+          "observedAtUtc": "2026-09-19T08:38:42.603Z",
+          "bodySha256": "249eff149921c6ad15d07e4f70955d3eebbbf0d6378df108ae100af37b5dd428",
+          "normalizationVersion": 1,
+          "sourceUrl": "https://bravosresearch.com/portfolio-update/booking-partial-profits-in-health-care-select-sector-spdr-fund-xlv-profit-booking/",
+          "facts": {
+            "symbol": "XLV",
+            "kind": "reduce",
+            "price": 167.91,
+            "weightBefore": 5,
+            "sourceWeight": 3,
+            "stopLossRate": null
+          },
+          "supportingExcerpts": [
+            "$167.91"
+          ],
+          "extractionVersion": "bravos-entry-content-1",
+          "extractionNote": "Authored entry-content after Trade Alert/date/Save Post header; excludes comments and surrounding page chrome. Whitespace collapsed per normalizationVersion 1."
+        }
+      ]
+    },
+    "bravos:post:488207": {
+      "canonicalUrl": "https://bravosresearch.com/news-feed/booking-partial-profits-in-financial-select-sector-spdr-fund-xlf-profit-booking-2/",
+      "aliases": [],
+      "postId": 488207,
+      "firstSeenAtUtc": "2026-09-19T08:38:41.763Z",
+      "lastSeenAtUtc": "2026-09-19T08:38:41.763Z",
+      "publicationValue": "2026-09-09",
+      "publicationPrecision": "date",
+      "strategy": "Tactical",
+      "revisions": [
+        {
+          "revisionId": "sha256:cbedebe980564d26e140e38b8cecd4a2d98ba534aa657066d6d222344ca031a3",
+          "observedAtUtc": "2026-09-19T08:38:41.763Z",
+          "bodySha256": "cbedebe980564d26e140e38b8cecd4a2d98ba534aa657066d6d222344ca031a3",
+          "normalizationVersion": 1,
+          "sourceUrl": "https://bravosresearch.com/news-feed/booking-partial-profits-in-financial-select-sector-spdr-fund-xlf-profit-booking-2/",
+          "facts": {
+            "symbol": "XLF",
+            "kind": "reduce",
+            "price": 57.07,
+            "weightBefore": 6,
+            "sourceWeight": 3,
+            "stopLossRate": null
+          },
+          "supportingExcerpts": [
+            "$57.07"
+          ],
+          "extractionVersion": "bravos-entry-content-1",
+          "extractionNote": "Authored entry-content after Trade Alert/date/Save Post header; excludes comments and surrounding page chrome. Whitespace collapsed per normalizationVersion 1."
+        }
+      ]
+    },
+    "bravos:post:488320": {
+      "canonicalUrl": "https://bravosresearch.com/news-feed/increasing-exposure-to-berkshire-hathaway-inc-brk-b-technical-strength/",
+      "aliases": [],
+      "postId": 488320,
+      "firstSeenAtUtc": "2026-09-19T08:38:40.883Z",
+      "lastSeenAtUtc": "2026-09-19T08:38:40.883Z",
+      "publicationValue": "2026-09-14",
+      "publicationPrecision": "date",
+      "strategy": "Tactical",
+      "revisions": [
+        {
+          "revisionId": "sha256:d3fcb80ca705689efd111f73153160de4e9569c1e48fcdc048162a22a59e476f",
+          "observedAtUtc": "2026-09-19T08:38:40.883Z",
+          "bodySha256": "d3fcb80ca705689efd111f73153160de4e9569c1e48fcdc048162a22a59e476f",
+          "normalizationVersion": 1,
+          "sourceUrl": "https://bravosresearch.com/news-feed/increasing-exposure-to-berkshire-hathaway-inc-brk-b-technical-strength/",
+          "facts": {
+            "symbol": "BRK.B",
+            "kind": "add",
+            "price": 513.55,
+            "weightBefore": 5,
+            "sourceWeight": 8,
+            "stopLossRate": null
+          },
+          "supportingExcerpts": [
+            "$513.55"
+          ],
+          "extractionVersion": "bravos-entry-content-1",
+          "extractionNote": "Authored entry-content after Trade Alert/date/Save Post header; excludes comments and surrounding page chrome. Whitespace collapsed per normalizationVersion 1."
+        }
+      ]
+    },
+    "bravos:post:488325": {
+      "canonicalUrl": "https://bravosresearch.com/news-feed/initiating-long-on-eog-resources-inc-eog-breakout/",
+      "aliases": [],
+      "postId": 488325,
+      "firstSeenAtUtc": "2026-09-19T08:38:40.033Z",
+      "lastSeenAtUtc": "2026-09-19T08:38:40.033Z",
+      "publicationValue": "2026-09-14",
+      "publicationPrecision": "date",
+      "strategy": "Tactical",
+      "revisions": [
+        {
+          "revisionId": "sha256:ca665f1868daad95a6f3d5ceb349c05a4a4f010798ca1d2265a826f632d12aa6",
+          "observedAtUtc": "2026-09-19T08:38:40.033Z",
+          "bodySha256": "ca665f1868daad95a6f3d5ceb349c05a4a4f010798ca1d2265a826f632d12aa6",
+          "normalizationVersion": 1,
+          "sourceUrl": "https://bravosresearch.com/news-feed/initiating-long-on-eog-resources-inc-eog-breakout/",
+          "facts": {
+            "symbol": "EOG",
+            "kind": "open",
+            "price": 150.17,
+            "weightBefore": 0,
+            "sourceWeight": 5,
+            "stopLossRate": 138.0,
+            "targets": [
+              170,
+              178,
+              190
+            ]
+          },
+          "supportingExcerpts": [
+            "$150.17",
+            "Weight Allocation: 5",
+            "Suggested Stop Loss (SL): $138"
+          ],
+          "extractionVersion": "bravos-entry-content-1",
+          "extractionNote": "Authored entry-content after Trade Alert/date/Save Post header; excludes comments and surrounding page chrome. Whitespace collapsed per normalizationVersion 1."
+        }
+      ]
+    },
+    "bravos:post:488478": {
+      "canonicalUrl": "https://bravosresearch.com/news-feed/booking-partial-profits-in-natera-inc-ntra-profit-booking-4/",
+      "aliases": [],
+      "postId": 488478,
+      "firstSeenAtUtc": "2026-09-19T08:38:39.169Z",
+      "lastSeenAtUtc": "2026-09-19T08:38:39.169Z",
+      "publicationValue": "2026-09-17",
+      "publicationPrecision": "date",
+      "strategy": "Tactical",
+      "revisions": [
+        {
+          "revisionId": "sha256:1e13838b665be6ea6c29758b6d9471537edaa83b7da4b9fd2dfdf99af3c39883",
+          "observedAtUtc": "2026-09-19T08:38:39.169Z",
+          "bodySha256": "1e13838b665be6ea6c29758b6d9471537edaa83b7da4b9fd2dfdf99af3c39883",
+          "normalizationVersion": 1,
+          "sourceUrl": "https://bravosresearch.com/news-feed/booking-partial-profits-in-natera-inc-ntra-profit-booking-4/",
+          "facts": {
+            "symbol": "NTRA",
+            "kind": "reduce",
+            "price": 360.0,
+            "weightBefore": 2,
+            "sourceWeight": 1,
+            "stopLossRate": null
+          },
+          "supportingExcerpts": [
+            "$360"
+          ],
+          "extractionVersion": "bravos-entry-content-1",
+          "extractionNote": "Authored entry-content after Trade Alert/date/Save Post header; excludes comments and surrounding page chrome. Whitespace collapsed per normalizationVersion 1."
+        }
+      ]
+    },
+    "bravos:post:488521": {
+      "canonicalUrl": "https://bravosresearch.com/news-feed/initiating-long-on-ishares-ethereum-trust-etf-etha-breakout/",
+      "aliases": [],
+      "postId": 488521,
+      "firstSeenAtUtc": "2026-09-19T08:38:38.272Z",
+      "lastSeenAtUtc": "2026-09-19T08:38:38.272Z",
+      "publicationValue": "2026-09-18",
+      "publicationPrecision": "date",
+      "strategy": "Tactical",
+      "revisions": [
+        {
+          "revisionId": "sha256:45fed135b33c4c2469f6112a0a1354e40b1cf704fa4cab3a783f8bbb851cb66e",
+          "observedAtUtc": "2026-09-19T08:38:38.272Z",
+          "bodySha256": "45fed135b33c4c2469f6112a0a1354e40b1cf704fa4cab3a783f8bbb851cb66e",
+          "normalizationVersion": 1,
+          "sourceUrl": "https://bravosresearch.com/news-feed/initiating-long-on-ishares-ethereum-trust-etf-etha-breakout/",
+          "facts": {
+            "symbol": "ETHA",
+            "kind": "open",
+            "price": 19.23,
+            "weightBefore": 0,
+            "sourceWeight": 3,
+            "stopLossRate": 17.6,
+            "targets": [
+              22,
+              24,
+              26
+            ]
+          },
+          "supportingExcerpts": [
+            "$19.23",
+            "Weight Allocation: 3",
+            "Suggested Stop Loss (SL): $17.6"
+          ],
+          "extractionVersion": "bravos-entry-content-1",
+          "extractionNote": "Authored entry-content after Trade Alert/date/Save Post header; excludes comments and surrounding page chrome. Whitespace collapsed per normalizationVersion 1."
+        }
+      ]
+    }
+  },
+  "events": {
+    "bravos:post:482091:event:1": {
+      "articleKey": "bravos:post:482091",
+      "revisionId": "sha256:9d99e6324da877b96a90ac05988b280367b463859a79ad6a82961baab08c9dfa",
+      "symbol": "EWJ",
+      "kind": "open",
+      "price": 92.0,
+      "weightBefore": 0,
+      "sourceWeight": 5,
+      "stopLossRate": 83.5,
+      "targets": [
+        105,
+        112,
+        120
+      ]
+    },
+    "bravos:post:483800:event:1": {
+      "articleKey": "bravos:post:483800",
+      "revisionId": "sha256:bb003e39145683831acb023163e467ceae09f3fa70b513e84f2e23f5739a047c",
+      "symbol": "NTRA",
+      "kind": "open",
+      "price": 221.0,
+      "weightBefore": 0,
+      "sourceWeight": 5,
+      "stopLossRate": 200.0,
+      "targets": [
+        265,
+        285,
+        300
+      ]
+    },
+    "bravos:post:484661:event:1": {
+      "articleKey": "bravos:post:484661",
+      "revisionId": "sha256:ab14753fa965b899d0e5c6d00e556dd568850542e8146007c39712e2b3f13a53",
+      "symbol": "XLF",
+      "kind": "open",
+      "price": 52.92,
+      "weightBefore": 0,
+      "sourceWeight": 8,
+      "stopLossRate": 50.0,
+      "targets": [
+        57.5,
+        59,
+        62
+      ]
+    },
+    "bravos:post:484833:event:1": {
+      "articleKey": "bravos:post:484833",
+      "revisionId": "sha256:6daf6687cbd05c826e80202c3e78fbd71924912af2e8ea67187a2915ce90135e",
+      "symbol": "EWJ",
+      "kind": "add",
+      "price": 94.65,
+      "weightBefore": 5,
+      "sourceWeight": 8,
+      "stopLossRate": null
+    },
+    "bravos:post:484911:event:1": {
+      "articleKey": "bravos:post:484911",
+      "revisionId": "sha256:8615302e278fabfda3735cc95a6feb595e4c7da76b74d0cea71a74e7649645ee",
+      "symbol": "NTRA",
+      "kind": "add",
+      "price": 229.1,
+      "weightBefore": 5,
+      "sourceWeight": 8,
+      "stopLossRate": null
+    },
+    "bravos:post:485154:event:1": {
+      "articleKey": "bravos:post:485154",
+      "revisionId": "sha256:482374b0ffed5f28f9912a374eeef26f815d94dcc61c8d4dd7b52649acda4ec2",
+      "symbol": "IBB",
+      "kind": "open",
+      "price": 178.29,
+      "weightBefore": 0,
+      "sourceWeight": 5,
+      "stopLossRate": 162.0,
+      "targets": [
+        200,
+        215,
+        230
+      ]
+    },
+    "bravos:post:485190:event:1": {
+      "articleKey": "bravos:post:485190",
+      "revisionId": "sha256:8867c92721c9acc4cc973337df7ac483ff74ef87cbb4ae30b061ff3c9a9ac593",
+      "symbol": "NTRA",
+      "kind": "reduce",
+      "price": 255.0,
+      "weightBefore": 8,
+      "sourceWeight": 6,
+      "stopLossRate": 210.0
+    },
+    "bravos:post:485190:event:2": {
+      "articleKey": "bravos:post:485190",
+      "revisionId": "sha256:8867c92721c9acc4cc973337df7ac483ff74ef87cbb4ae30b061ff3c9a9ac593",
+      "kind": "set_stop",
+      "symbol": "NTRA",
+      "previousStopLossRate": 200.0,
+      "stopLossRate": 210.0,
+      "bundledWithEventKey": "bravos:post:485190:event:1"
+    },
+    "bravos:post:485547:event:1": {
+      "articleKey": "bravos:post:485547",
+      "revisionId": "sha256:9cc9722586d70a8ba7ef2d38a8d1aa5af9582eaf50433973892344ac0227d0cf",
+      "symbol": "IBB",
+      "kind": "reduce",
+      "price": 194.86,
+      "weightBefore": 5,
+      "sourceWeight": 4,
+      "stopLossRate": 166.0
+    },
+    "bravos:post:485547:event:2": {
+      "articleKey": "bravos:post:485547",
+      "revisionId": "sha256:9cc9722586d70a8ba7ef2d38a8d1aa5af9582eaf50433973892344ac0227d0cf",
+      "kind": "set_stop",
+      "symbol": "IBB",
+      "previousStopLossRate": 162.0,
+      "stopLossRate": 166.0,
+      "bundledWithEventKey": "bravos:post:485547:event:1"
+    },
+    "bravos:post:485919:event:1": {
+      "articleKey": "bravos:post:485919",
+      "revisionId": "sha256:f7811cc82b58b774ad706d3fa188f94b9faf95454233fb8da9aae044b7bea518",
+      "symbol": "TBBB",
+      "kind": "open",
+      "price": 42.43,
+      "weightBefore": 0,
+      "sourceWeight": 5,
+      "stopLossRate": 38.5,
+      "targets": [
+        50,
+        54,
+        62
+      ]
+    },
+    "bravos:post:485930:event:1": {
+      "articleKey": "bravos:post:485930",
+      "revisionId": "sha256:b18fbfb8f22de61f4abfea05b32c382b2b44ca26140fb7572f2598b4cef018b6",
+      "symbol": "NVDA",
+      "kind": "open",
+      "price": 209.5,
+      "weightBefore": 0,
+      "sourceWeight": 5,
+      "stopLossRate": 190.0,
+      "targets": [
+        250,
+        275,
+        300
+      ]
+    },
+    "bravos:post:486417:event:1": {
+      "articleKey": "bravos:post:486417",
+      "revisionId": "sha256:0de44a64d9bc89dd1ca7c4e3e96b9870fd662c765397f11509d15faa29d89ede",
+      "symbol": "XLV",
+      "kind": "open",
+      "price": 162.07,
+      "weightBefore": 0,
+      "sourceWeight": 5,
+      "stopLossRate": 150.0,
+      "targets": [
+        182,
+        190,
+        200
+      ]
+    },
+    "bravos:post:486593:event:1": {
+      "articleKey": "bravos:post:486593",
+      "revisionId": "sha256:7a9669755238bd6f91949a044d258422ee67f9c4d171a5546e0c2b32dd22aec2",
+      "symbol": "NTRA",
+      "kind": "reduce",
+      "price": 251.69,
+      "weightBefore": 6,
+      "sourceWeight": 4,
+      "stopLossRate": 220.0
+    },
+    "bravos:post:486593:event:2": {
+      "articleKey": "bravos:post:486593",
+      "revisionId": "sha256:7a9669755238bd6f91949a044d258422ee67f9c4d171a5546e0c2b32dd22aec2",
+      "kind": "set_stop",
+      "symbol": "NTRA",
+      "previousStopLossRate": 210.0,
+      "stopLossRate": 220.0,
+      "bundledWithEventKey": "bravos:post:486593:event:1"
+    },
+    "bravos:post:486606:event:1": {
+      "articleKey": "bravos:post:486606",
+      "revisionId": "sha256:1e9bdfa2a9a925c24059bb43eee55bce68b3627e4edeb81152ce6a423ad5a725",
+      "symbol": "XLF",
+      "kind": "reduce",
+      "price": 57.5,
+      "weightBefore": 8,
+      "sourceWeight": 6,
+      "stopLossRate": 52.5
+    },
+    "bravos:post:486606:event:2": {
+      "articleKey": "bravos:post:486606",
+      "revisionId": "sha256:1e9bdfa2a9a925c24059bb43eee55bce68b3627e4edeb81152ce6a423ad5a725",
+      "kind": "set_stop",
+      "symbol": "XLF",
+      "previousStopLossRate": 50.0,
+      "stopLossRate": 52.5,
+      "bundledWithEventKey": "bravos:post:486606:event:1"
+    },
+    "bravos:post:486900:event:1": {
+      "articleKey": "bravos:post:486900",
+      "revisionId": "sha256:d1a1e9486ddff430ed8bddf6a7be4b59ae1159166466d942a10bb98809434286",
+      "symbol": "IBB",
+      "kind": "add",
+      "price": 192.3,
+      "weightBefore": 4,
+      "sourceWeight": 7,
+      "stopLossRate": 170.0
+    },
+    "bravos:post:486900:event:2": {
+      "articleKey": "bravos:post:486900",
+      "revisionId": "sha256:d1a1e9486ddff430ed8bddf6a7be4b59ae1159166466d942a10bb98809434286",
+      "kind": "set_stop",
+      "symbol": "IBB",
+      "previousStopLossRate": 166.0,
+      "stopLossRate": 170.0,
+      "bundledWithEventKey": "bravos:post:486900:event:1"
+    },
+    "bravos:post:486903:event:1": {
+      "articleKey": "bravos:post:486903",
+      "revisionId": "sha256:9b0528f1354f2e2091573e72f48b07eea6c8ebd74deafc67dff19fd1972e285c",
+      "symbol": "NVDA",
+      "kind": "add",
+      "price": 217.97,
+      "weightBefore": 5,
+      "sourceWeight": 8,
+      "stopLossRate": null
+    },
+    "bravos:post:486962:event:1": {
+      "articleKey": "bravos:post:486962",
+      "revisionId": "sha256:b6c1c4b460c90409a7d96b569a68cafdda5417e4ef6037fa8b3ac6f5f20c0d6e",
+      "symbol": "NTRA",
+      "kind": "reduce",
+      "price": 325.6,
+      "weightBefore": 4,
+      "sourceWeight": 2,
+      "stopLossRate": 250.0
+    },
+    "bravos:post:486962:event:2": {
+      "articleKey": "bravos:post:486962",
+      "revisionId": "sha256:b6c1c4b460c90409a7d96b569a68cafdda5417e4ef6037fa8b3ac6f5f20c0d6e",
+      "kind": "set_stop",
+      "symbol": "NTRA",
+      "previousStopLossRate": 220.0,
+      "stopLossRate": 250.0,
+      "bundledWithEventKey": "bravos:post:486962:event:1"
+    },
+    "bravos:post:486999:event:1": {
+      "articleKey": "bravos:post:486999",
+      "revisionId": "sha256:43d4bd7c2c3b95beb3440f37ec008488bf22c0a97cea2303f555bcea7d72e65f",
+      "symbol": "TEVA",
+      "kind": "open",
+      "price": 35.37,
+      "weightBefore": 0,
+      "sourceWeight": 3,
+      "stopLossRate": 32.0,
+      "targets": [
+        41.5,
+        45.5,
+        50
+      ]
+    },
+    "bravos:post:487212:event:1": {
+      "articleKey": "bravos:post:487212",
+      "revisionId": "sha256:cfdbf034d2a1249809bbdae2060d3423cd747cda73697ec179034cbb391d1568",
+      "symbol": "TBBB",
+      "kind": "reduce",
+      "price": 49.43,
+      "weightBefore": 5,
+      "sourceWeight": 4,
+      "stopLossRate": 40.0
+    },
+    "bravos:post:487212:event:2": {
+      "articleKey": "bravos:post:487212",
+      "revisionId": "sha256:cfdbf034d2a1249809bbdae2060d3423cd747cda73697ec179034cbb391d1568",
+      "kind": "set_stop",
+      "symbol": "TBBB",
+      "previousStopLossRate": 38.5,
+      "stopLossRate": 40.0,
+      "bundledWithEventKey": "bravos:post:487212:event:1"
+    },
+    "bravos:post:487450:event:1": {
+      "articleKey": "bravos:post:487450",
+      "revisionId": "sha256:aa14880ab57629be0660bd529a392773d874d834b343d6e03a4ad2bb4c2a1719",
+      "symbol": "IBB",
+      "kind": "reduce",
+      "price": 211.5,
+      "weightBefore": 7,
+      "sourceWeight": 5,
+      "stopLossRate": null
+    },
+    "bravos:post:487469:event:1": {
+      "articleKey": "bravos:post:487469",
+      "revisionId": "sha256:7a0b6b4efca59ade0c0deb81d016f6264aca353b6391e24f30ae1b14d42686ed",
+      "symbol": "TEVA",
+      "kind": "add",
+      "price": 37.67,
+      "weightBefore": 3,
+      "sourceWeight": 5,
+      "stopLossRate": 33.0
+    },
+    "bravos:post:487469:event:2": {
+      "articleKey": "bravos:post:487469",
+      "revisionId": "sha256:7a0b6b4efca59ade0c0deb81d016f6264aca353b6391e24f30ae1b14d42686ed",
+      "kind": "set_stop",
+      "symbol": "TEVA",
+      "previousStopLossRate": 32.0,
+      "stopLossRate": 33.0,
+      "bundledWithEventKey": "bravos:post:487469:event:1"
+    },
+    "bravos:post:487697:event:1": {
+      "articleKey": "bravos:post:487697",
+      "revisionId": "sha256:cd93eec095daf412dc263bbf992319f9d35faeb59c9f85b96b0b496a7f26ec6a",
+      "symbol": "TBBB",
+      "kind": "reduce",
+      "price": 51.6,
+      "weightBefore": 4,
+      "sourceWeight": 3,
+      "stopLossRate": null
+    },
+    "bravos:post:487716:event:1": {
+      "articleKey": "bravos:post:487716",
+      "revisionId": "sha256:3e6422bbccc22edfd60d178379534fcb926dd82a050df9c3926a7f0b2df7ada8",
+      "symbol": "NVDA",
+      "kind": "reduce",
+      "price": 213.42,
+      "weightBefore": 8,
+      "sourceWeight": 6,
+      "stopLossRate": null
+    },
+    "bravos:post:487816:event:1": {
+      "articleKey": "bravos:post:487816",
+      "revisionId": "sha256:0449d8e6455e8b71108ea998d0d74791f1c43716962176d71132a1d2b714fa98",
+      "symbol": "CF",
+      "kind": "open",
+      "price": 130.37,
+      "weightBefore": 0,
+      "sourceWeight": 5,
+      "stopLossRate": 119.5,
+      "targets": [
+        147.5,
+        153,
+        160
+      ]
+    },
+    "bravos:post:487910:event:1": {
+      "articleKey": "bravos:post:487910",
+      "revisionId": "sha256:6fd2851a7a3a2ae6955a7c2df7bbd35e5bed9a221e5a5a4242b6892d44800f96",
+      "symbol": "BRK.B",
+      "kind": "open",
+      "price": 506.5,
+      "weightBefore": 0,
+      "sourceWeight": 5,
+      "stopLossRate": 480.0,
+      "targets": [
+        550,
+        575,
+        600
+      ]
+    },
+    "bravos:post:487920:event:1": {
+      "articleKey": "bravos:post:487920",
+      "revisionId": "sha256:373b7eef8d4133059e34c83dce45c5abb0f151300bfa93e5a901b452b56fe147",
+      "symbol": "ARGT",
+      "kind": "open",
+      "price": 96.44,
+      "weightBefore": 0,
+      "sourceWeight": 5,
+      "stopLossRate": 89.0,
+      "targets": [
+        108,
+        112.5,
+        118
+      ]
+    },
+    "bravos:post:487942:event:1": {
+      "articleKey": "bravos:post:487942",
+      "revisionId": "sha256:f6277356cf7f2aebe6fbdfb64759713c6042cda170ebb1d4bcabd6574ce37d08",
+      "symbol": "CF",
+      "kind": "reduce",
+      "price": 141.12,
+      "weightBefore": 5,
+      "sourceWeight": 4,
+      "stopLossRate": 121.5
+    },
+    "bravos:post:487942:event:2": {
+      "articleKey": "bravos:post:487942",
+      "revisionId": "sha256:f6277356cf7f2aebe6fbdfb64759713c6042cda170ebb1d4bcabd6574ce37d08",
+      "kind": "set_stop",
+      "symbol": "CF",
+      "previousStopLossRate": 119.5,
+      "stopLossRate": 121.5,
+      "bundledWithEventKey": "bravos:post:487942:event:1"
+    },
+    "bravos:post:487974:event:1": {
+      "articleKey": "bravos:post:487974",
+      "revisionId": "sha256:bf56843c5bf7dd20aec1163a674fb800cc7a0acb71c1c2ecf111821f72954794",
+      "symbol": "MAGS",
+      "kind": "open",
+      "price": 70.26,
+      "weightBefore": 0,
+      "sourceWeight": 5,
+      "stopLossRate": 64.5,
+      "targets": [
+        80,
+        87.5,
+        95
+      ]
+    },
+    "bravos:post:487982:event:1": {
+      "articleKey": "bravos:post:487982",
+      "revisionId": "sha256:1656ca4505a5be02ff6f77484df91447eb4d7530cdd3d08e993bdcbb78f10438",
+      "symbol": "IBIT",
+      "kind": "open",
+      "price": 44.86,
+      "weightBefore": 0,
+      "sourceWeight": 3,
+      "stopLossRate": 41.0,
+      "targets": [
+        52,
+        56,
+        60
+      ]
+    },
+    "bravos:post:488177:event:1": {
+      "articleKey": "bravos:post:488177",
+      "revisionId": "sha256:249eff149921c6ad15d07e4f70955d3eebbbf0d6378df108ae100af37b5dd428",
+      "symbol": "XLV",
+      "kind": "reduce",
+      "price": 167.91,
+      "weightBefore": 5,
+      "sourceWeight": 3,
+      "stopLossRate": null
+    },
+    "bravos:post:488207:event:1": {
+      "articleKey": "bravos:post:488207",
+      "revisionId": "sha256:cbedebe980564d26e140e38b8cecd4a2d98ba534aa657066d6d222344ca031a3",
+      "symbol": "XLF",
+      "kind": "reduce",
+      "price": 57.07,
+      "weightBefore": 6,
+      "sourceWeight": 3,
+      "stopLossRate": null
+    },
+    "bravos:post:488320:event:1": {
+      "articleKey": "bravos:post:488320",
+      "revisionId": "sha256:d3fcb80ca705689efd111f73153160de4e9569c1e48fcdc048162a22a59e476f",
+      "symbol": "BRK.B",
+      "kind": "add",
+      "price": 513.55,
+      "weightBefore": 5,
+      "sourceWeight": 8,
+      "stopLossRate": null
+    },
+    "bravos:post:488325:event:1": {
+      "articleKey": "bravos:post:488325",
+      "revisionId": "sha256:ca665f1868daad95a6f3d5ceb349c05a4a4f010798ca1d2265a826f632d12aa6",
+      "symbol": "EOG",
+      "kind": "open",
+      "price": 150.17,
+      "weightBefore": 0,
+      "sourceWeight": 5,
+      "stopLossRate": 138.0,
+      "targets": [
+        170,
+        178,
+        190
+      ]
+    },
+    "bravos:post:488478:event:1": {
+      "articleKey": "bravos:post:488478",
+      "revisionId": "sha256:1e13838b665be6ea6c29758b6d9471537edaa83b7da4b9fd2dfdf99af3c39883",
+      "symbol": "NTRA",
+      "kind": "reduce",
+      "price": 360.0,
+      "weightBefore": 2,
+      "sourceWeight": 1,
+      "stopLossRate": null
+    },
+    "bravos:post:488521:event:1": {
+      "articleKey": "bravos:post:488521",
+      "revisionId": "sha256:45fed135b33c4c2469f6112a0a1354e40b1cf704fa4cab3a783f8bbb851cb66e",
+      "symbol": "ETHA",
+      "kind": "open",
+      "price": 19.23,
+      "weightBefore": 0,
+      "sourceWeight": 3,
+      "stopLossRate": 17.6,
+      "targets": [
+        22,
+        24,
+        26
+      ]
+    }
+  },
+  "cycles": {
+    "bravos:post:482091:event:1": {
+      "cycleKey": "bravos:post:482091:event:1",
+      "symbol": "EWJ",
+      "eventKeys": [
+        "bravos:post:482091:event:1",
+        "bravos:post:484833:event:1"
+      ],
+      "originalEntry": 92.0,
+      "openedOn": "2026-05-08",
+      "direction": "long",
+      "currency": "USD",
+      "sourceStatus": "open",
+      "participationStatus": "preparation_only_never_entered",
+      "initialEnrollment": "not_activated",
+      "actualPositionLinks": [],
+      "targets": [
+        105,
+        112,
+        120
+      ],
+      "targetQuantities": null,
+      "latestSourceWeight": 8,
+      "latestPublishedStop": 83.5,
+      "latestStopSourceEventKey": "bravos:post:482091:event:1",
+      "latestStopRevisionId": "sha256:9d99e6324da877b96a90ac05988b280367b463859a79ad6a82961baab08c9dfa",
+      "latestSourceEventKey": "bravos:post:484833:event:1",
+      "preparationPriceResult": "watching_price",
+      "brokerInstrumentId": 3003,
+      "brokerSymbol": "EWJ"
+    },
+    "bravos:post:483800:event:1": {
+      "cycleKey": "bravos:post:483800:event:1",
+      "symbol": "NTRA",
+      "eventKeys": [
+        "bravos:post:483800:event:1",
+        "bravos:post:484911:event:1",
+        "bravos:post:485190:event:1",
+        "bravos:post:485190:event:2",
+        "bravos:post:486593:event:1",
+        "bravos:post:486593:event:2",
+        "bravos:post:486962:event:1",
+        "bravos:post:486962:event:2",
+        "bravos:post:488478:event:1"
+      ],
+      "originalEntry": 221.0,
+      "openedOn": "2026-05-29",
+      "direction": "long",
+      "currency": "USD",
+      "sourceStatus": "open",
+      "participationStatus": "preparation_only_never_entered",
+      "initialEnrollment": "not_activated",
+      "actualPositionLinks": [],
+      "targets": [
+        265,
+        285,
+        300
+      ],
+      "targetQuantities": null,
+      "latestSourceWeight": 1,
+      "latestPublishedStop": 250.0,
+      "latestStopSourceEventKey": "bravos:post:486962:event:2",
+      "latestStopRevisionId": "sha256:b6c1c4b460c90409a7d96b569a68cafdda5417e4ef6037fa8b3ac6f5f20c0d6e",
+      "latestSourceEventKey": "bravos:post:488478:event:1",
+      "targetNote": "Source reports trading beyond the final original target; remaining exposure is retained with the raised $250 stop. Do not invent target sale quantities.",
+      "preparationPriceResult": "no_valid_entry_band",
+      "brokerInstrumentId": 6086,
+      "brokerSymbol": "NTRA"
+    },
+    "bravos:post:484661:event:1": {
+      "cycleKey": "bravos:post:484661:event:1",
+      "symbol": "XLF",
+      "eventKeys": [
+        "bravos:post:484661:event:1",
+        "bravos:post:486606:event:1",
+        "bravos:post:486606:event:2",
+        "bravos:post:488207:event:1"
+      ],
+      "originalEntry": 52.92,
+      "openedOn": "2026-06-12",
+      "direction": "long",
+      "currency": "USD",
+      "sourceStatus": "open",
+      "participationStatus": "preparation_only_never_entered",
+      "initialEnrollment": "not_activated",
+      "actualPositionLinks": [],
+      "targets": [
+        57.5,
+        59,
+        62
+      ],
+      "targetQuantities": null,
+      "latestSourceWeight": 3,
+      "latestPublishedStop": 52.5,
+      "latestStopSourceEventKey": "bravos:post:486606:event:2",
+      "latestStopRevisionId": "sha256:1e9bdfa2a9a925c24059bb43eee55bce68b3627e4edeb81152ce6a423ad5a725",
+      "latestSourceEventKey": "bravos:post:488207:event:1",
+      "preparationPriceResult": "watching_price",
+      "brokerInstrumentId": 3004,
+      "brokerSymbol": "XLF"
+    },
+    "bravos:post:485154:event:1": {
+      "cycleKey": "bravos:post:485154:event:1",
+      "symbol": "IBB",
+      "eventKeys": [
+        "bravos:post:485154:event:1",
+        "bravos:post:485547:event:1",
+        "bravos:post:485547:event:2",
+        "bravos:post:486900:event:1",
+        "bravos:post:486900:event:2",
+        "bravos:post:487450:event:1"
+      ],
+      "originalEntry": 178.29,
+      "openedOn": "2026-06-23",
+      "direction": "long",
+      "currency": "USD",
+      "sourceStatus": "open",
+      "participationStatus": "preparation_only_never_entered",
+      "initialEnrollment": "not_activated",
+      "actualPositionLinks": [],
+      "targets": [
+        200,
+        215,
+        230
+      ],
+      "targetQuantities": null,
+      "latestSourceWeight": 5,
+      "latestPublishedStop": 170.0,
+      "latestStopSourceEventKey": "bravos:post:486900:event:2",
+      "latestStopRevisionId": "sha256:d1a1e9486ddff430ed8bddf6a7be4b59ae1159166466d942a10bb98809434286",
+      "latestSourceEventKey": "bravos:post:487450:event:1",
+      "preparationPriceResult": "watching_price",
+      "brokerInstrumentId": 3028,
+      "brokerSymbol": "IBB"
+    },
+    "bravos:post:485919:event:1": {
+      "cycleKey": "bravos:post:485919:event:1",
+      "symbol": "TBBB",
+      "eventKeys": [
+        "bravos:post:485919:event:1",
+        "bravos:post:487212:event:1",
+        "bravos:post:487212:event:2",
+        "bravos:post:487697:event:1"
+      ],
+      "originalEntry": 42.43,
+      "openedOn": "2026-07-10",
+      "direction": "long",
+      "currency": "USD",
+      "sourceStatus": "open",
+      "participationStatus": "preparation_only_never_entered",
+      "initialEnrollment": "not_activated",
+      "actualPositionLinks": [],
+      "targets": [
+        50,
+        54,
+        62
+      ],
+      "targetQuantities": null,
+      "latestSourceWeight": 3,
+      "latestPublishedStop": 40.0,
+      "latestStopSourceEventKey": "bravos:post:487212:event:2",
+      "latestStopRevisionId": "sha256:cfdbf034d2a1249809bbdae2060d3423cd747cda73697ec179034cbb391d1568",
+      "latestSourceEventKey": "bravos:post:487697:event:1",
+      "preparationPriceResult": "watching_price",
+      "brokerInstrumentId": 15222,
+      "brokerSymbol": "TBBB"
+    },
+    "bravos:post:485930:event:1": {
+      "cycleKey": "bravos:post:485930:event:1",
+      "symbol": "NVDA",
+      "eventKeys": [
+        "bravos:post:485930:event:1",
+        "bravos:post:486903:event:1",
+        "bravos:post:487716:event:1"
+      ],
+      "originalEntry": 209.5,
+      "openedOn": "2026-07-10",
+      "direction": "long",
+      "currency": "USD",
+      "sourceStatus": "open",
+      "participationStatus": "preparation_only_never_entered",
+      "initialEnrollment": "not_activated",
+      "actualPositionLinks": [],
+      "targets": [
+        250,
+        275,
+        300
+      ],
+      "targetQuantities": null,
+      "latestSourceWeight": 6,
+      "latestPublishedStop": 190.0,
+      "latestStopSourceEventKey": "bravos:post:485930:event:1",
+      "latestStopRevisionId": "sha256:b18fbfb8f22de61f4abfea05b32c382b2b44ca26140fb7572f2598b4cef018b6",
+      "latestSourceEventKey": "bravos:post:487716:event:1",
+      "preparationPriceResult": "watching_price",
+      "brokerInstrumentId": 1137,
+      "brokerSymbol": "NVDA"
+    },
+    "bravos:post:486417:event:1": {
+      "cycleKey": "bravos:post:486417:event:1",
+      "symbol": "XLV",
+      "eventKeys": [
+        "bravos:post:486417:event:1",
+        "bravos:post:488177:event:1"
+      ],
+      "originalEntry": 162.07,
+      "openedOn": "2026-07-24",
+      "direction": "long",
+      "currency": "USD",
+      "sourceStatus": "open",
+      "participationStatus": "preparation_only_never_entered",
+      "initialEnrollment": "not_activated",
+      "actualPositionLinks": [],
+      "targets": [
+        182,
+        190,
+        200
+      ],
+      "targetQuantities": null,
+      "latestSourceWeight": 3,
+      "latestPublishedStop": 150.0,
+      "latestStopSourceEventKey": "bravos:post:486417:event:1",
+      "latestStopRevisionId": "sha256:0de44a64d9bc89dd1ca7c4e3e96b9870fd662c765397f11509d15faa29d89ede",
+      "latestSourceEventKey": "bravos:post:488177:event:1",
+      "preparationPriceResult": "watching_price",
+      "brokerInstrumentId": 3017,
+      "brokerSymbol": "XLV"
+    },
+    "bravos:post:486999:event:1": {
+      "cycleKey": "bravos:post:486999:event:1",
+      "symbol": "TEVA",
+      "eventKeys": [
+        "bravos:post:486999:event:1",
+        "bravos:post:487469:event:1",
+        "bravos:post:487469:event:2"
+      ],
+      "originalEntry": 35.37,
+      "openedOn": "2026-08-07",
+      "direction": "long",
+      "currency": "USD",
+      "sourceStatus": "open",
+      "participationStatus": "preparation_only_never_entered",
+      "initialEnrollment": "not_activated",
+      "actualPositionLinks": [],
+      "targets": [
+        41.5,
+        45.5,
+        50
+      ],
+      "targetQuantities": null,
+      "latestSourceWeight": 5,
+      "latestPublishedStop": 33.0,
+      "latestStopSourceEventKey": "bravos:post:487469:event:2",
+      "latestStopRevisionId": "sha256:7a0b6b4efca59ade0c0deb81d016f6264aca353b6391e24f30ae1b14d42686ed",
+      "latestSourceEventKey": "bravos:post:487469:event:1",
+      "preparationPriceResult": "watching_price",
+      "brokerInstrumentId": 4336,
+      "brokerSymbol": "TEVA"
+    },
+    "bravos:post:487816:event:1": {
+      "cycleKey": "bravos:post:487816:event:1",
+      "symbol": "CF",
+      "eventKeys": [
+        "bravos:post:487816:event:1",
+        "bravos:post:487942:event:1",
+        "bravos:post:487942:event:2"
+      ],
+      "originalEntry": 130.37,
+      "openedOn": "2026-08-31",
+      "direction": "long",
+      "currency": "USD",
+      "sourceStatus": "open",
+      "participationStatus": "preparation_only_never_entered",
+      "initialEnrollment": "not_activated",
+      "actualPositionLinks": [],
+      "targets": [
+        147.5,
+        153,
+        160
+      ],
+      "targetQuantities": null,
+      "latestSourceWeight": 4,
+      "latestPublishedStop": 121.5,
+      "latestStopSourceEventKey": "bravos:post:487942:event:2",
+      "latestStopRevisionId": "sha256:f6277356cf7f2aebe6fbdfb64759713c6042cda170ebb1d4bcabd6574ce37d08",
+      "latestSourceEventKey": "bravos:post:487942:event:1",
+      "preparationPriceResult": "indicative_price_pass",
+      "brokerInstrumentId": 1890,
+      "brokerSymbol": "CF"
+    },
+    "bravos:post:487910:event:1": {
+      "cycleKey": "bravos:post:487910:event:1",
+      "symbol": "BRK.B",
+      "eventKeys": [
+        "bravos:post:487910:event:1",
+        "bravos:post:488320:event:1"
+      ],
+      "originalEntry": 506.5,
+      "openedOn": "2026-09-02",
+      "direction": "long",
+      "currency": "USD",
+      "sourceStatus": "open",
+      "participationStatus": "preparation_only_never_entered",
+      "initialEnrollment": "not_activated",
+      "actualPositionLinks": [],
+      "targets": [
+        550,
+        575,
+        600
+      ],
+      "targetQuantities": null,
+      "latestSourceWeight": 8,
+      "latestPublishedStop": 480.0,
+      "latestStopSourceEventKey": "bravos:post:487910:event:1",
+      "latestStopRevisionId": "sha256:6fd2851a7a3a2ae6955a7c2df7bbd35e5bed9a221e5a5a4242b6892d44800f96",
+      "latestSourceEventKey": "bravos:post:488320:event:1",
+      "preparationPriceResult": "indicative_price_pass",
+      "brokerInstrumentId": 1118,
+      "brokerSymbol": "BRK.B"
+    },
+    "bravos:post:487920:event:1": {
+      "cycleKey": "bravos:post:487920:event:1",
+      "symbol": "ARGT",
+      "eventKeys": [
+        "bravos:post:487920:event:1"
+      ],
+      "originalEntry": 96.44,
+      "openedOn": "2026-09-02",
+      "direction": "long",
+      "currency": "USD",
+      "sourceStatus": "open",
+      "participationStatus": "preparation_only_never_entered",
+      "initialEnrollment": "not_activated",
+      "actualPositionLinks": [],
+      "targets": [
+        108,
+        112.5,
+        118
+      ],
+      "targetQuantities": null,
+      "latestSourceWeight": 5,
+      "latestPublishedStop": 89.0,
+      "latestStopSourceEventKey": "bravos:post:487920:event:1",
+      "latestStopRevisionId": "sha256:373b7eef8d4133059e34c83dce45c5abb0f151300bfa93e5a901b452b56fe147",
+      "latestSourceEventKey": "bravos:post:487920:event:1",
+      "preparationPriceResult": "indicative_price_pass",
+      "brokerInstrumentId": 3421,
+      "brokerSymbol": "ARGT"
+    },
+    "bravos:post:487974:event:1": {
+      "cycleKey": "bravos:post:487974:event:1",
+      "symbol": "MAGS",
+      "eventKeys": [
+        "bravos:post:487974:event:1"
+      ],
+      "originalEntry": 70.26,
+      "openedOn": "2026-09-03",
+      "direction": "long",
+      "currency": "USD",
+      "sourceStatus": "open",
+      "participationStatus": "preparation_only_never_entered",
+      "initialEnrollment": "not_activated",
+      "actualPositionLinks": [],
+      "targets": [
+        80,
+        87.5,
+        95
+      ],
+      "targetQuantities": null,
+      "latestSourceWeight": 5,
+      "latestPublishedStop": 64.5,
+      "latestStopSourceEventKey": "bravos:post:487974:event:1",
+      "latestStopRevisionId": "sha256:bf56843c5bf7dd20aec1163a674fb800cc7a0acb71c1c2ecf111821f72954794",
+      "latestSourceEventKey": "bravos:post:487974:event:1",
+      "preparationPriceResult": "instrument_not_found",
+      "brokerInstrumentId": null,
+      "brokerSymbol": null
+    },
+    "bravos:post:487982:event:1": {
+      "cycleKey": "bravos:post:487982:event:1",
+      "symbol": "IBIT",
+      "eventKeys": [
+        "bravos:post:487982:event:1"
+      ],
+      "originalEntry": 44.86,
+      "openedOn": "2026-09-03",
+      "direction": "long",
+      "currency": "USD",
+      "sourceStatus": "open",
+      "participationStatus": "preparation_only_never_entered",
+      "initialEnrollment": "not_activated",
+      "actualPositionLinks": [],
+      "targets": [
+        52,
+        56,
+        60
+      ],
+      "targetQuantities": null,
+      "latestSourceWeight": 3,
+      "latestPublishedStop": 41.0,
+      "latestStopSourceEventKey": "bravos:post:487982:event:1",
+      "latestStopRevisionId": "sha256:1656ca4505a5be02ff6f77484df91447eb4d7530cdd3d08e993bdcbb78f10438",
+      "latestSourceEventKey": "bravos:post:487982:event:1",
+      "preparationPriceResult": "watching_price",
+      "brokerInstrumentId": 1367,
+      "brokerSymbol": "IBIT"
+    },
+    "bravos:post:488325:event:1": {
+      "cycleKey": "bravos:post:488325:event:1",
+      "symbol": "EOG",
+      "eventKeys": [
+        "bravos:post:488325:event:1"
+      ],
+      "originalEntry": 150.17,
+      "openedOn": "2026-09-14",
+      "direction": "long",
+      "currency": "USD",
+      "sourceStatus": "open",
+      "participationStatus": "preparation_only_never_entered",
+      "initialEnrollment": "not_activated",
+      "actualPositionLinks": [],
+      "targets": [
+        170,
+        178,
+        190
+      ],
+      "targetQuantities": null,
+      "latestSourceWeight": 5,
+      "latestPublishedStop": 138.0,
+      "latestStopSourceEventKey": "bravos:post:488325:event:1",
+      "latestStopRevisionId": "sha256:ca665f1868daad95a6f3d5ceb349c05a4a4f010798ca1d2265a826f632d12aa6",
+      "latestSourceEventKey": "bravos:post:488325:event:1",
+      "preparationPriceResult": "indicative_price_pass",
+      "brokerInstrumentId": 1581,
+      "brokerSymbol": "EOG"
+    },
+    "bravos:post:488521:event:1": {
+      "cycleKey": "bravos:post:488521:event:1",
+      "symbol": "ETHA",
+      "eventKeys": [
+        "bravos:post:488521:event:1"
+      ],
+      "originalEntry": 19.23,
+      "openedOn": "2026-09-18",
+      "direction": "long",
+      "currency": "USD",
+      "sourceStatus": "open",
+      "participationStatus": "preparation_only_never_entered",
+      "initialEnrollment": "not_activated",
+      "actualPositionLinks": [],
+      "targets": [
+        22,
+        24,
+        26
+      ],
+      "targetQuantities": null,
+      "latestSourceWeight": 3,
+      "latestPublishedStop": 17.6,
+      "latestStopSourceEventKey": "bravos:post:488521:event:1",
+      "latestStopRevisionId": "sha256:45fed135b33c4c2469f6112a0a1354e40b1cf704fa4cab3a783f8bbb851cb66e",
+      "latestSourceEventKey": "bravos:post:488521:event:1",
+      "preparationPriceResult": "watching_price",
+      "brokerInstrumentId": 12152,
+      "brokerSymbol": "ETHA.US"
+    }
+  },
+  "evaluations": [
+    {
+      "id": "0e20b29e-e78c-4bd0-b971-92bdd31e15da:evaluation:EWJ",
+      "runId": "0e20b29e-e78c-4bd0-b971-92bdd31e15da",
+      "evaluatedAtUtc": "2026-09-19T08:51:57.843743+00:00",
+      "policyVersion": "2026-09-19.3",
+      "cycleKey": "bravos:post:482091:event:1",
+      "eventKey": "bravos:post:482091:event:1",
+      "articleKey": "bravos:post:482091",
+      "revisionId": "sha256:9d99e6324da877b96a90ac05988b280367b463859a79ad6a82961baab08c9dfa",
+      "accountSnapshotId": "0e20b29e-e78c-4bd0-b971-92bdd31e15da:account:1",
+      "sourceStatus": "current_cycle_reconstructed_and_dashboard_reconciled",
+      "quoteStatus": "closed_market_stale",
+      "quote": {
+        "instrumentId": 3003,
+        "bid": 96.98,
+        "ask": 97.0,
+        "date": "2026-09-18T19:59:53.927",
+        "quoteType": "realtime"
+      },
+      "marketStatus": {
+        "displayname": "Ishares MSCI JAPAN ETF",
+        "internalSymbolFull": "EWJ",
+        "instrumentId": 3003,
+        "internalExchangeName": "NYSE",
+        "isCurrentlyTradable": false,
+        "isExchangeOpen": false,
+        "cvtAsk": 1
+      },
+      "priceResult": "watching_price",
+      "originalEntry": 92.0,
+      "openingCeilingExact": "93.840",
+      "latestStop": 83.5,
+      "sizingResult": "conditional_owner_notional_only",
+      "conditionalOwnerAmountUsd": 368.8,
+      "readinessResult": "blocked",
+      "blockers": [
+        "initial_allocation_not_activated",
+        "market_closed_and_no_fresh_executable_quote",
+        "account_specific_unleveraged_eligibility_unverified",
+        "actual_copied_size_costs_minimums_unverified",
+        "ceiling_enforcing_order_method_unverified",
+        "copied_stop_propagation_and_readback_unverified",
+        "owner_order_collection_incomplete",
+        "watching_price"
+      ],
+      "ruleIds": [
+        "O1",
+        "O2",
+        "O3",
+        "O4",
+        "O5",
+        "O6",
+        "O7",
+        "O8",
+        "O9",
+        "S1",
+        "S2",
+        "S6",
+        "T1",
+        "T4",
+        "T6",
+        "R4",
+        "R6"
+      ],
+      "evidenceEventKeys": [
+        "bravos:post:482091:event:1",
+        "bravos:post:484833:event:1"
+      ],
+      "reason": "Broad user-authorized preparatory assessment. No baseline activation, historic execution, or fresh executable price implied."
+    },
+    {
+      "id": "0e20b29e-e78c-4bd0-b971-92bdd31e15da:evaluation:NTRA",
+      "runId": "0e20b29e-e78c-4bd0-b971-92bdd31e15da",
+      "evaluatedAtUtc": "2026-09-19T08:51:57.843743+00:00",
+      "policyVersion": "2026-09-19.3",
+      "cycleKey": "bravos:post:483800:event:1",
+      "eventKey": "bravos:post:483800:event:1",
+      "articleKey": "bravos:post:483800",
+      "revisionId": "sha256:bb003e39145683831acb023163e467ceae09f3fa70b513e84f2e23f5739a047c",
+      "accountSnapshotId": "0e20b29e-e78c-4bd0-b971-92bdd31e15da:account:1",
+      "sourceStatus": "current_cycle_reconstructed_and_dashboard_reconciled",
+      "quoteStatus": "closed_market_stale",
+      "quote": {
+        "instrumentId": 6086,
+        "bid": 368.74,
+        "ask": 369.2,
+        "date": "2026-09-18T19:59:55.54",
+        "quoteType": "realtime"
+      },
+      "marketStatus": {
+        "displayname": "Natera Inc",
+        "internalSymbolFull": "NTRA",
+        "instrumentId": 6086,
+        "internalExchangeName": "Nasdaq",
+        "isCurrentlyTradable": false,
+        "isExchangeOpen": false,
+        "cvtAsk": 1
+      },
+      "priceResult": "no_valid_entry_band",
+      "originalEntry": 221.0,
+      "openingCeilingExact": "225.420",
+      "latestStop": 250.0,
+      "sizingResult": "conditional_owner_notional_only",
+      "conditionalOwnerAmountUsd": 46.1,
+      "readinessResult": "blocked",
+      "blockers": [
+        "initial_allocation_not_activated",
+        "market_closed_and_no_fresh_executable_quote",
+        "account_specific_unleveraged_eligibility_unverified",
+        "actual_copied_size_costs_minimums_unverified",
+        "ceiling_enforcing_order_method_unverified",
+        "copied_stop_propagation_and_readback_unverified",
+        "owner_order_collection_incomplete",
+        "no_valid_entry_band"
+      ],
+      "ruleIds": [
+        "O1",
+        "O2",
+        "O3",
+        "O4",
+        "O5",
+        "O6",
+        "O7",
+        "O8",
+        "O9",
+        "S1",
+        "S2",
+        "S6",
+        "T1",
+        "T4",
+        "T6",
+        "R4",
+        "R6"
+      ],
+      "evidenceEventKeys": [
+        "bravos:post:483800:event:1",
+        "bravos:post:484911:event:1",
+        "bravos:post:485190:event:1",
+        "bravos:post:485190:event:2",
+        "bravos:post:486593:event:1",
+        "bravos:post:486593:event:2",
+        "bravos:post:486962:event:1",
+        "bravos:post:486962:event:2",
+        "bravos:post:488478:event:1"
+      ],
+      "reason": "Broad user-authorized preparatory assessment. No baseline activation, historic execution, or fresh executable price implied."
+    },
+    {
+      "id": "0e20b29e-e78c-4bd0-b971-92bdd31e15da:evaluation:XLF",
+      "runId": "0e20b29e-e78c-4bd0-b971-92bdd31e15da",
+      "evaluatedAtUtc": "2026-09-19T08:51:57.843743+00:00",
+      "policyVersion": "2026-09-19.3",
+      "cycleKey": "bravos:post:484661:event:1",
+      "eventKey": "bravos:post:484661:event:1",
+      "articleKey": "bravos:post:484661",
+      "revisionId": "sha256:ab14753fa965b899d0e5c6d00e556dd568850542e8146007c39712e2b3f13a53",
+      "accountSnapshotId": "0e20b29e-e78c-4bd0-b971-92bdd31e15da:account:1",
+      "sourceStatus": "current_cycle_reconstructed_and_dashboard_reconciled",
+      "quoteStatus": "closed_market_stale",
+      "quote": {
+        "instrumentId": 3004,
+        "bid": 55.87,
+        "ask": 55.88,
+        "date": "2026-09-18T19:59:54.11",
+        "quoteType": "realtime"
+      },
+      "marketStatus": {
+        "displayname": "State Street Financial Select Sector SPDR ETF",
+        "internalSymbolFull": "XLF",
+        "instrumentId": 3004,
+        "internalExchangeName": "NYSE",
+        "isCurrentlyTradable": false,
+        "isExchangeOpen": false,
+        "cvtAsk": 1
+      },
+      "priceResult": "watching_price",
+      "originalEntry": 52.92,
+      "openingCeilingExact": "53.9784",
+      "latestStop": 52.5,
+      "sizingResult": "conditional_owner_notional_only",
+      "conditionalOwnerAmountUsd": 138.3,
+      "readinessResult": "blocked",
+      "blockers": [
+        "initial_allocation_not_activated",
+        "market_closed_and_no_fresh_executable_quote",
+        "account_specific_unleveraged_eligibility_unverified",
+        "actual_copied_size_costs_minimums_unverified",
+        "ceiling_enforcing_order_method_unverified",
+        "copied_stop_propagation_and_readback_unverified",
+        "owner_order_collection_incomplete",
+        "watching_price"
+      ],
+      "ruleIds": [
+        "O1",
+        "O2",
+        "O3",
+        "O4",
+        "O5",
+        "O6",
+        "O7",
+        "O8",
+        "O9",
+        "S1",
+        "S2",
+        "S6",
+        "T1",
+        "T4",
+        "T6",
+        "R4",
+        "R6"
+      ],
+      "evidenceEventKeys": [
+        "bravos:post:484661:event:1",
+        "bravos:post:486606:event:1",
+        "bravos:post:486606:event:2",
+        "bravos:post:488207:event:1"
+      ],
+      "reason": "Broad user-authorized preparatory assessment. No baseline activation, historic execution, or fresh executable price implied."
+    },
+    {
+      "id": "0e20b29e-e78c-4bd0-b971-92bdd31e15da:evaluation:IBB",
+      "runId": "0e20b29e-e78c-4bd0-b971-92bdd31e15da",
+      "evaluatedAtUtc": "2026-09-19T08:51:57.843743+00:00",
+      "policyVersion": "2026-09-19.3",
+      "cycleKey": "bravos:post:485154:event:1",
+      "eventKey": "bravos:post:485154:event:1",
+      "articleKey": "bravos:post:485154",
+      "revisionId": "sha256:482374b0ffed5f28f9912a374eeef26f815d94dcc61c8d4dd7b52649acda4ec2",
+      "accountSnapshotId": "0e20b29e-e78c-4bd0-b971-92bdd31e15da:account:1",
+      "sourceStatus": "current_cycle_reconstructed_and_dashboard_reconciled",
+      "quoteStatus": "closed_market_stale",
+      "quote": {
+        "instrumentId": 3028,
+        "bid": 204.72,
+        "ask": 204.79,
+        "date": "2026-09-18T19:59:55.777",
+        "quoteType": "realtime"
+      },
+      "marketStatus": {
+        "displayname": "Ishares Nasdaq Biotechnology ",
+        "internalSymbolFull": "IBB",
+        "instrumentId": 3028,
+        "internalExchangeName": "Nasdaq",
+        "isCurrentlyTradable": false,
+        "isExchangeOpen": false,
+        "cvtAsk": 1
+      },
+      "priceResult": "watching_price",
+      "originalEntry": 178.29,
+      "openingCeilingExact": "181.8558",
+      "latestStop": 170.0,
+      "sizingResult": "conditional_owner_notional_only",
+      "conditionalOwnerAmountUsd": 230.5,
+      "readinessResult": "blocked",
+      "blockers": [
+        "initial_allocation_not_activated",
+        "market_closed_and_no_fresh_executable_quote",
+        "account_specific_unleveraged_eligibility_unverified",
+        "actual_copied_size_costs_minimums_unverified",
+        "ceiling_enforcing_order_method_unverified",
+        "copied_stop_propagation_and_readback_unverified",
+        "owner_order_collection_incomplete",
+        "watching_price"
+      ],
+      "ruleIds": [
+        "O1",
+        "O2",
+        "O3",
+        "O4",
+        "O5",
+        "O6",
+        "O7",
+        "O8",
+        "O9",
+        "S1",
+        "S2",
+        "S6",
+        "T1",
+        "T4",
+        "T6",
+        "R4",
+        "R6"
+      ],
+      "evidenceEventKeys": [
+        "bravos:post:485154:event:1",
+        "bravos:post:485547:event:1",
+        "bravos:post:485547:event:2",
+        "bravos:post:486900:event:1",
+        "bravos:post:486900:event:2",
+        "bravos:post:487450:event:1"
+      ],
+      "reason": "Broad user-authorized preparatory assessment. No baseline activation, historic execution, or fresh executable price implied."
+    },
+    {
+      "id": "0e20b29e-e78c-4bd0-b971-92bdd31e15da:evaluation:TBBB",
+      "runId": "0e20b29e-e78c-4bd0-b971-92bdd31e15da",
+      "evaluatedAtUtc": "2026-09-19T08:51:57.843743+00:00",
+      "policyVersion": "2026-09-19.3",
+      "cycleKey": "bravos:post:485919:event:1",
+      "eventKey": "bravos:post:485919:event:1",
+      "articleKey": "bravos:post:485919",
+      "revisionId": "sha256:f7811cc82b58b774ad706d3fa188f94b9faf95454233fb8da9aae044b7bea518",
+      "accountSnapshotId": "0e20b29e-e78c-4bd0-b971-92bdd31e15da:account:1",
+      "sourceStatus": "current_cycle_reconstructed_and_dashboard_reconciled",
+      "quoteStatus": "closed_market_stale",
+      "quote": {
+        "instrumentId": 15222,
+        "bid": 51.01,
+        "ask": 51.42,
+        "date": "2026-09-18T19:59:50.46",
+        "quoteType": "realtime"
+      },
+      "marketStatus": {
+        "displayname": "BBB Foods Inc",
+        "internalSymbolFull": "TBBB",
+        "instrumentId": 15222,
+        "internalExchangeName": "NYSE",
+        "isCurrentlyTradable": false,
+        "isExchangeOpen": false,
+        "cvtAsk": 1
+      },
+      "priceResult": "watching_price",
+      "originalEntry": 42.43,
+      "openingCeilingExact": "43.2786",
+      "latestStop": 40.0,
+      "sizingResult": "conditional_owner_notional_only",
+      "conditionalOwnerAmountUsd": 138.3,
+      "readinessResult": "blocked",
+      "blockers": [
+        "initial_allocation_not_activated",
+        "market_closed_and_no_fresh_executable_quote",
+        "account_specific_unleveraged_eligibility_unverified",
+        "actual_copied_size_costs_minimums_unverified",
+        "ceiling_enforcing_order_method_unverified",
+        "copied_stop_propagation_and_readback_unverified",
+        "owner_order_collection_incomplete",
+        "watching_price"
+      ],
+      "ruleIds": [
+        "O1",
+        "O2",
+        "O3",
+        "O4",
+        "O5",
+        "O6",
+        "O7",
+        "O8",
+        "O9",
+        "S1",
+        "S2",
+        "S6",
+        "T1",
+        "T4",
+        "T6",
+        "R4",
+        "R6"
+      ],
+      "evidenceEventKeys": [
+        "bravos:post:485919:event:1",
+        "bravos:post:487212:event:1",
+        "bravos:post:487212:event:2",
+        "bravos:post:487697:event:1"
+      ],
+      "reason": "Broad user-authorized preparatory assessment. No baseline activation, historic execution, or fresh executable price implied."
+    },
+    {
+      "id": "0e20b29e-e78c-4bd0-b971-92bdd31e15da:evaluation:NVDA",
+      "runId": "0e20b29e-e78c-4bd0-b971-92bdd31e15da",
+      "evaluatedAtUtc": "2026-09-19T08:51:57.843743+00:00",
+      "policyVersion": "2026-09-19.3",
+      "cycleKey": "bravos:post:485930:event:1",
+      "eventKey": "bravos:post:485930:event:1",
+      "articleKey": "bravos:post:485930",
+      "revisionId": "sha256:b18fbfb8f22de61f4abfea05b32c382b2b44ca26140fb7572f2598b4cef018b6",
+      "accountSnapshotId": "0e20b29e-e78c-4bd0-b971-92bdd31e15da:account:1",
+      "sourceStatus": "current_cycle_reconstructed_and_dashboard_reconciled",
+      "quoteStatus": "closed_market_stale",
+      "quote": {
+        "instrumentId": 1137,
+        "bid": 222.16,
+        "ask": 222.17,
+        "date": "2026-09-18T19:59:56.383",
+        "quoteType": "realtime"
+      },
+      "marketStatus": {
+        "displayname": "NVIDIA Corporation",
+        "internalSymbolFull": "NVDA",
+        "instrumentId": 1137,
+        "internalExchangeName": "Nasdaq",
+        "isCurrentlyTradable": false,
+        "isExchangeOpen": false,
+        "cvtAsk": 1
+      },
+      "priceResult": "watching_price",
+      "originalEntry": 209.5,
+      "openingCeilingExact": "213.690",
+      "latestStop": 190.0,
+      "sizingResult": "conditional_owner_notional_only",
+      "conditionalOwnerAmountUsd": 276.6,
+      "readinessResult": "blocked",
+      "blockers": [
+        "initial_allocation_not_activated",
+        "market_closed_and_no_fresh_executable_quote",
+        "account_specific_unleveraged_eligibility_unverified",
+        "actual_copied_size_costs_minimums_unverified",
+        "ceiling_enforcing_order_method_unverified",
+        "copied_stop_propagation_and_readback_unverified",
+        "owner_order_collection_incomplete",
+        "watching_price"
+      ],
+      "ruleIds": [
+        "O1",
+        "O2",
+        "O3",
+        "O4",
+        "O5",
+        "O6",
+        "O7",
+        "O8",
+        "O9",
+        "S1",
+        "S2",
+        "S6",
+        "T1",
+        "T4",
+        "T6",
+        "R4",
+        "R6"
+      ],
+      "evidenceEventKeys": [
+        "bravos:post:485930:event:1",
+        "bravos:post:486903:event:1",
+        "bravos:post:487716:event:1"
+      ],
+      "reason": "Broad user-authorized preparatory assessment. No baseline activation, historic execution, or fresh executable price implied."
+    },
+    {
+      "id": "0e20b29e-e78c-4bd0-b971-92bdd31e15da:evaluation:XLV",
+      "runId": "0e20b29e-e78c-4bd0-b971-92bdd31e15da",
+      "evaluatedAtUtc": "2026-09-19T08:51:57.843743+00:00",
+      "policyVersion": "2026-09-19.3",
+      "cycleKey": "bravos:post:486417:event:1",
+      "eventKey": "bravos:post:486417:event:1",
+      "articleKey": "bravos:post:486417",
+      "revisionId": "sha256:0de44a64d9bc89dd1ca7c4e3e96b9870fd662c765397f11509d15faa29d89ede",
+      "accountSnapshotId": "0e20b29e-e78c-4bd0-b971-92bdd31e15da:account:1",
+      "sourceStatus": "current_cycle_reconstructed_and_dashboard_reconciled",
+      "quoteStatus": "closed_market_stale",
+      "quote": {
+        "instrumentId": 3017,
+        "bid": 168.39,
+        "ask": 168.42,
+        "date": "2026-09-18T19:59:54.747",
+        "quoteType": "realtime"
+      },
+      "marketStatus": {
+        "displayname": "State Street Health Care Select Sector SPDR ETF",
+        "internalSymbolFull": "XLV",
+        "instrumentId": 3017,
+        "internalExchangeName": "NYSE",
+        "isCurrentlyTradable": false,
+        "isExchangeOpen": false,
+        "cvtAsk": 1
+      },
+      "priceResult": "watching_price",
+      "originalEntry": 162.07,
+      "openingCeilingExact": "165.3114",
+      "latestStop": 150.0,
+      "sizingResult": "conditional_owner_notional_only",
+      "conditionalOwnerAmountUsd": 138.3,
+      "readinessResult": "blocked",
+      "blockers": [
+        "initial_allocation_not_activated",
+        "market_closed_and_no_fresh_executable_quote",
+        "account_specific_unleveraged_eligibility_unverified",
+        "actual_copied_size_costs_minimums_unverified",
+        "ceiling_enforcing_order_method_unverified",
+        "copied_stop_propagation_and_readback_unverified",
+        "owner_order_collection_incomplete",
+        "watching_price"
+      ],
+      "ruleIds": [
+        "O1",
+        "O2",
+        "O3",
+        "O4",
+        "O5",
+        "O6",
+        "O7",
+        "O8",
+        "O9",
+        "S1",
+        "S2",
+        "S6",
+        "T1",
+        "T4",
+        "T6",
+        "R4",
+        "R6"
+      ],
+      "evidenceEventKeys": [
+        "bravos:post:486417:event:1",
+        "bravos:post:488177:event:1"
+      ],
+      "reason": "Broad user-authorized preparatory assessment. No baseline activation, historic execution, or fresh executable price implied."
+    },
+    {
+      "id": "0e20b29e-e78c-4bd0-b971-92bdd31e15da:evaluation:TEVA",
+      "runId": "0e20b29e-e78c-4bd0-b971-92bdd31e15da",
+      "evaluatedAtUtc": "2026-09-19T08:51:57.843743+00:00",
+      "policyVersion": "2026-09-19.3",
+      "cycleKey": "bravos:post:486999:event:1",
+      "eventKey": "bravos:post:486999:event:1",
+      "articleKey": "bravos:post:486999",
+      "revisionId": "sha256:43d4bd7c2c3b95beb3440f37ec008488bf22c0a97cea2303f555bcea7d72e65f",
+      "accountSnapshotId": "0e20b29e-e78c-4bd0-b971-92bdd31e15da:account:1",
+      "sourceStatus": "current_cycle_reconstructed_and_dashboard_reconciled",
+      "quoteStatus": "closed_market_stale",
+      "quote": {
+        "instrumentId": 4336,
+        "bid": 38.99,
+        "ask": 39.04,
+        "date": "2026-09-18T19:59:54.74",
+        "quoteType": "realtime"
+      },
+      "marketStatus": {
+        "displayname": "Teva Pharmaceutical Industries ADR",
+        "internalSymbolFull": "TEVA",
+        "instrumentId": 4336,
+        "internalExchangeName": "NYSE",
+        "isCurrentlyTradable": false,
+        "isExchangeOpen": false,
+        "cvtAsk": 1
+      },
+      "priceResult": "watching_price",
+      "originalEntry": 35.37,
+      "openingCeilingExact": "36.0774",
+      "latestStop": 33.0,
+      "sizingResult": "conditional_owner_notional_only",
+      "conditionalOwnerAmountUsd": 230.5,
+      "readinessResult": "blocked",
+      "blockers": [
+        "initial_allocation_not_activated",
+        "market_closed_and_no_fresh_executable_quote",
+        "account_specific_unleveraged_eligibility_unverified",
+        "actual_copied_size_costs_minimums_unverified",
+        "ceiling_enforcing_order_method_unverified",
+        "copied_stop_propagation_and_readback_unverified",
+        "owner_order_collection_incomplete",
+        "watching_price"
+      ],
+      "ruleIds": [
+        "O1",
+        "O2",
+        "O3",
+        "O4",
+        "O5",
+        "O6",
+        "O7",
+        "O8",
+        "O9",
+        "S1",
+        "S2",
+        "S6",
+        "T1",
+        "T4",
+        "T6",
+        "R4",
+        "R6"
+      ],
+      "evidenceEventKeys": [
+        "bravos:post:486999:event:1",
+        "bravos:post:487469:event:1",
+        "bravos:post:487469:event:2"
+      ],
+      "reason": "Broad user-authorized preparatory assessment. No baseline activation, historic execution, or fresh executable price implied."
+    },
+    {
+      "id": "0e20b29e-e78c-4bd0-b971-92bdd31e15da:evaluation:CF",
+      "runId": "0e20b29e-e78c-4bd0-b971-92bdd31e15da",
+      "evaluatedAtUtc": "2026-09-19T08:51:57.843743+00:00",
+      "policyVersion": "2026-09-19.3",
+      "cycleKey": "bravos:post:487816:event:1",
+      "eventKey": "bravos:post:487816:event:1",
+      "articleKey": "bravos:post:487816",
+      "revisionId": "sha256:0449d8e6455e8b71108ea998d0d74791f1c43716962176d71132a1d2b714fa98",
+      "accountSnapshotId": "0e20b29e-e78c-4bd0-b971-92bdd31e15da:account:1",
+      "sourceStatus": "current_cycle_reconstructed_and_dashboard_reconciled",
+      "quoteStatus": "closed_market_stale",
+      "quote": {
+        "instrumentId": 1890,
+        "bid": 127.72,
+        "ask": 127.79,
+        "date": "2026-09-18T19:59:56.407",
+        "quoteType": "realtime"
+      },
+      "marketStatus": {
+        "displayname": "CF Industries Holdings Inc",
+        "internalSymbolFull": "CF",
+        "instrumentId": 1890,
+        "internalExchangeName": "NYSE",
+        "isCurrentlyTradable": false,
+        "isExchangeOpen": false,
+        "cvtAsk": 1
+      },
+      "priceResult": "indicative_price_pass",
+      "originalEntry": 130.37,
+      "openingCeilingExact": "132.9774",
+      "latestStop": 121.5,
+      "sizingResult": "conditional_owner_notional_only",
+      "conditionalOwnerAmountUsd": 184.4,
+      "readinessResult": "blocked",
+      "blockers": [
+        "initial_allocation_not_activated",
+        "market_closed_and_no_fresh_executable_quote",
+        "account_specific_unleveraged_eligibility_unverified",
+        "actual_copied_size_costs_minimums_unverified",
+        "ceiling_enforcing_order_method_unverified",
+        "copied_stop_propagation_and_readback_unverified",
+        "owner_order_collection_incomplete"
+      ],
+      "ruleIds": [
+        "O1",
+        "O2",
+        "O3",
+        "O4",
+        "O5",
+        "O6",
+        "O7",
+        "O8",
+        "O9",
+        "S1",
+        "S2",
+        "S6",
+        "T1",
+        "T4",
+        "T6",
+        "R4",
+        "R6"
+      ],
+      "evidenceEventKeys": [
+        "bravos:post:487816:event:1",
+        "bravos:post:487942:event:1",
+        "bravos:post:487942:event:2"
+      ],
+      "reason": "Broad user-authorized preparatory assessment. No baseline activation, historic execution, or fresh executable price implied."
+    },
+    {
+      "id": "0e20b29e-e78c-4bd0-b971-92bdd31e15da:evaluation:BRK.B",
+      "runId": "0e20b29e-e78c-4bd0-b971-92bdd31e15da",
+      "evaluatedAtUtc": "2026-09-19T08:51:57.843743+00:00",
+      "policyVersion": "2026-09-19.3",
+      "cycleKey": "bravos:post:487910:event:1",
+      "eventKey": "bravos:post:487910:event:1",
+      "articleKey": "bravos:post:487910",
+      "revisionId": "sha256:6fd2851a7a3a2ae6955a7c2df7bbd35e5bed9a221e5a5a4242b6892d44800f96",
+      "accountSnapshotId": "0e20b29e-e78c-4bd0-b971-92bdd31e15da:account:1",
+      "sourceStatus": "current_cycle_reconstructed_and_dashboard_reconciled",
+      "quoteStatus": "closed_market_stale",
+      "quote": {
+        "instrumentId": 1118,
+        "bid": 509.73,
+        "ask": 509.84,
+        "date": "2026-09-18T19:59:55.573",
+        "quoteType": "realtime"
+      },
+      "marketStatus": {
+        "displayname": "Berkshire Hathaway Inc",
+        "internalSymbolFull": "BRK.B",
+        "instrumentId": 1118,
+        "internalExchangeName": "NYSE",
+        "isCurrentlyTradable": false,
+        "isExchangeOpen": false,
+        "cvtAsk": 1
+      },
+      "priceResult": "indicative_price_pass",
+      "originalEntry": 506.5,
+      "openingCeilingExact": "516.630",
+      "latestStop": 480.0,
+      "sizingResult": "conditional_owner_notional_only",
+      "conditionalOwnerAmountUsd": 368.8,
+      "readinessResult": "blocked",
+      "blockers": [
+        "initial_allocation_not_activated",
+        "market_closed_and_no_fresh_executable_quote",
+        "account_specific_unleveraged_eligibility_unverified",
+        "actual_copied_size_costs_minimums_unverified",
+        "ceiling_enforcing_order_method_unverified",
+        "copied_stop_propagation_and_readback_unverified",
+        "owner_order_collection_incomplete"
+      ],
+      "ruleIds": [
+        "O1",
+        "O2",
+        "O3",
+        "O4",
+        "O5",
+        "O6",
+        "O7",
+        "O8",
+        "O9",
+        "S1",
+        "S2",
+        "S6",
+        "T1",
+        "T4",
+        "T6",
+        "R4",
+        "R6"
+      ],
+      "evidenceEventKeys": [
+        "bravos:post:487910:event:1",
+        "bravos:post:488320:event:1"
+      ],
+      "reason": "Broad user-authorized preparatory assessment. No baseline activation, historic execution, or fresh executable price implied."
+    },
+    {
+      "id": "0e20b29e-e78c-4bd0-b971-92bdd31e15da:evaluation:ARGT",
+      "runId": "0e20b29e-e78c-4bd0-b971-92bdd31e15da",
+      "evaluatedAtUtc": "2026-09-19T08:51:57.843743+00:00",
+      "policyVersion": "2026-09-19.3",
+      "cycleKey": "bravos:post:487920:event:1",
+      "eventKey": "bravos:post:487920:event:1",
+      "articleKey": "bravos:post:487920",
+      "revisionId": "sha256:373b7eef8d4133059e34c83dce45c5abb0f151300bfa93e5a901b452b56fe147",
+      "accountSnapshotId": "0e20b29e-e78c-4bd0-b971-92bdd31e15da:account:1",
+      "sourceStatus": "current_cycle_reconstructed_and_dashboard_reconciled",
+      "quoteStatus": "closed_market_stale",
+      "quote": {
+        "instrumentId": 3421,
+        "bid": 92.18,
+        "ask": 92.98,
+        "date": "2026-09-18T19:59:39.203",
+        "quoteType": "realtime"
+      },
+      "marketStatus": {
+        "displayname": "Global X MSCI Argentina ETF",
+        "internalSymbolFull": "ARGT",
+        "instrumentId": 3421,
+        "internalExchangeName": "NYSE",
+        "isCurrentlyTradable": false,
+        "isExchangeOpen": false,
+        "cvtAsk": 1
+      },
+      "priceResult": "indicative_price_pass",
+      "originalEntry": 96.44,
+      "openingCeilingExact": "98.3688",
+      "latestStop": 89.0,
+      "sizingResult": "conditional_owner_notional_only",
+      "conditionalOwnerAmountUsd": 230.5,
+      "readinessResult": "blocked",
+      "blockers": [
+        "initial_allocation_not_activated",
+        "market_closed_and_no_fresh_executable_quote",
+        "account_specific_unleveraged_eligibility_unverified",
+        "actual_copied_size_costs_minimums_unverified",
+        "ceiling_enforcing_order_method_unverified",
+        "copied_stop_propagation_and_readback_unverified",
+        "owner_order_collection_incomplete"
+      ],
+      "ruleIds": [
+        "O1",
+        "O2",
+        "O3",
+        "O4",
+        "O5",
+        "O6",
+        "O7",
+        "O8",
+        "O9",
+        "S1",
+        "S2",
+        "S6",
+        "T1",
+        "T4",
+        "T6",
+        "R4",
+        "R6"
+      ],
+      "evidenceEventKeys": [
+        "bravos:post:487920:event:1"
+      ],
+      "reason": "Broad user-authorized preparatory assessment. No baseline activation, historic execution, or fresh executable price implied."
+    },
+    {
+      "id": "0e20b29e-e78c-4bd0-b971-92bdd31e15da:evaluation:MAGS",
+      "runId": "0e20b29e-e78c-4bd0-b971-92bdd31e15da",
+      "evaluatedAtUtc": "2026-09-19T08:51:57.843743+00:00",
+      "policyVersion": "2026-09-19.3",
+      "cycleKey": "bravos:post:487974:event:1",
+      "eventKey": "bravos:post:487974:event:1",
+      "articleKey": "bravos:post:487974",
+      "revisionId": "sha256:bf56843c5bf7dd20aec1163a674fb800cc7a0acb71c1c2ecf111821f72954794",
+      "accountSnapshotId": "0e20b29e-e78c-4bd0-b971-92bdd31e15da:account:1",
+      "sourceStatus": "current_cycle_reconstructed_and_dashboard_reconciled",
+      "quoteStatus": "unavailable",
+      "quote": null,
+      "marketStatus": null,
+      "priceResult": "instrument_not_found",
+      "originalEntry": 70.26,
+      "openingCeilingExact": "71.6652",
+      "latestStop": 64.5,
+      "sizingResult": "conditional_owner_notional_only",
+      "conditionalOwnerAmountUsd": 230.5,
+      "readinessResult": "blocked",
+      "blockers": [
+        "initial_allocation_not_activated",
+        "market_closed_and_no_fresh_executable_quote",
+        "account_specific_unleveraged_eligibility_unverified",
+        "actual_copied_size_costs_minimums_unverified",
+        "ceiling_enforcing_order_method_unverified",
+        "copied_stop_propagation_and_readback_unverified",
+        "owner_order_collection_incomplete",
+        "instrument_not_found"
+      ],
+      "ruleIds": [
+        "O1",
+        "O2",
+        "O3",
+        "O4",
+        "O5",
+        "O6",
+        "O7",
+        "O8",
+        "O9",
+        "S1",
+        "S2",
+        "S6",
+        "T1",
+        "T4",
+        "T6",
+        "R4",
+        "R6"
+      ],
+      "evidenceEventKeys": [
+        "bravos:post:487974:event:1"
+      ],
+      "reason": "Broad user-authorized preparatory assessment. No baseline activation, historic execution, or fresh executable price implied."
+    },
+    {
+      "id": "0e20b29e-e78c-4bd0-b971-92bdd31e15da:evaluation:IBIT",
+      "runId": "0e20b29e-e78c-4bd0-b971-92bdd31e15da",
+      "evaluatedAtUtc": "2026-09-19T08:51:57.843743+00:00",
+      "policyVersion": "2026-09-19.3",
+      "cycleKey": "bravos:post:487982:event:1",
+      "eventKey": "bravos:post:487982:event:1",
+      "articleKey": "bravos:post:487982",
+      "revisionId": "sha256:1656ca4505a5be02ff6f77484df91447eb4d7530cdd3d08e993bdcbb78f10438",
+      "accountSnapshotId": "0e20b29e-e78c-4bd0-b971-92bdd31e15da:account:1",
+      "sourceStatus": "current_cycle_reconstructed_and_dashboard_reconciled",
+      "quoteStatus": "closed_market_stale",
+      "quote": {
+        "instrumentId": 1367,
+        "bid": 46.01,
+        "ask": 46.02,
+        "date": "2026-09-18T19:59:54.963",
+        "quoteType": "realtime"
+      },
+      "marketStatus": {
+        "displayname": "iShares Bitcoin Trust",
+        "internalSymbolFull": "IBIT",
+        "instrumentId": 1367,
+        "internalExchangeName": "Nasdaq",
+        "isCurrentlyTradable": false,
+        "isExchangeOpen": false,
+        "cvtAsk": 1
+      },
+      "priceResult": "watching_price",
+      "originalEntry": 44.86,
+      "openingCeilingExact": "45.7572",
+      "latestStop": 41.0,
+      "sizingResult": "conditional_owner_notional_only",
+      "conditionalOwnerAmountUsd": 138.3,
+      "readinessResult": "blocked",
+      "blockers": [
+        "initial_allocation_not_activated",
+        "market_closed_and_no_fresh_executable_quote",
+        "account_specific_unleveraged_eligibility_unverified",
+        "actual_copied_size_costs_minimums_unverified",
+        "ceiling_enforcing_order_method_unverified",
+        "copied_stop_propagation_and_readback_unverified",
+        "owner_order_collection_incomplete",
+        "watching_price"
+      ],
+      "ruleIds": [
+        "O1",
+        "O2",
+        "O3",
+        "O4",
+        "O5",
+        "O6",
+        "O7",
+        "O8",
+        "O9",
+        "S1",
+        "S2",
+        "S6",
+        "T1",
+        "T4",
+        "T6",
+        "R4",
+        "R6"
+      ],
+      "evidenceEventKeys": [
+        "bravos:post:487982:event:1"
+      ],
+      "reason": "Broad user-authorized preparatory assessment. No baseline activation, historic execution, or fresh executable price implied."
+    },
+    {
+      "id": "0e20b29e-e78c-4bd0-b971-92bdd31e15da:evaluation:EOG",
+      "runId": "0e20b29e-e78c-4bd0-b971-92bdd31e15da",
+      "evaluatedAtUtc": "2026-09-19T08:51:57.843743+00:00",
+      "policyVersion": "2026-09-19.3",
+      "cycleKey": "bravos:post:488325:event:1",
+      "eventKey": "bravos:post:488325:event:1",
+      "articleKey": "bravos:post:488325",
+      "revisionId": "sha256:ca665f1868daad95a6f3d5ceb349c05a4a4f010798ca1d2265a826f632d12aa6",
+      "accountSnapshotId": "0e20b29e-e78c-4bd0-b971-92bdd31e15da:account:1",
+      "sourceStatus": "current_cycle_reconstructed_and_dashboard_reconciled",
+      "quoteStatus": "closed_market_stale",
+      "quote": {
+        "instrumentId": 1581,
+        "bid": 144.16,
+        "ask": 144.19,
+        "date": "2026-09-18T19:59:54.33",
+        "quoteType": "realtime"
+      },
+      "marketStatus": {
+        "displayname": "EOG Resources Inc",
+        "internalSymbolFull": "EOG",
+        "instrumentId": 1581,
+        "internalExchangeName": "NYSE",
+        "isCurrentlyTradable": false,
+        "isExchangeOpen": false,
+        "cvtAsk": 1
+      },
+      "priceResult": "indicative_price_pass",
+      "originalEntry": 150.17,
+      "openingCeilingExact": "153.1734",
+      "latestStop": 138.0,
+      "sizingResult": "conditional_owner_notional_only",
+      "conditionalOwnerAmountUsd": 230.5,
+      "readinessResult": "blocked",
+      "blockers": [
+        "initial_allocation_not_activated",
+        "market_closed_and_no_fresh_executable_quote",
+        "account_specific_unleveraged_eligibility_unverified",
+        "actual_copied_size_costs_minimums_unverified",
+        "ceiling_enforcing_order_method_unverified",
+        "copied_stop_propagation_and_readback_unverified",
+        "owner_order_collection_incomplete"
+      ],
+      "ruleIds": [
+        "O1",
+        "O2",
+        "O3",
+        "O4",
+        "O5",
+        "O6",
+        "O7",
+        "O8",
+        "O9",
+        "S1",
+        "S2",
+        "S6",
+        "T1",
+        "T4",
+        "T6",
+        "R4",
+        "R6"
+      ],
+      "evidenceEventKeys": [
+        "bravos:post:488325:event:1"
+      ],
+      "reason": "Broad user-authorized preparatory assessment. No baseline activation, historic execution, or fresh executable price implied."
+    },
+    {
+      "id": "0e20b29e-e78c-4bd0-b971-92bdd31e15da:evaluation:ETHA",
+      "runId": "0e20b29e-e78c-4bd0-b971-92bdd31e15da",
+      "evaluatedAtUtc": "2026-09-19T08:51:57.843743+00:00",
+      "policyVersion": "2026-09-19.3",
+      "cycleKey": "bravos:post:488521:event:1",
+      "eventKey": "bravos:post:488521:event:1",
+      "articleKey": "bravos:post:488521",
+      "revisionId": "sha256:45fed135b33c4c2469f6112a0a1354e40b1cf704fa4cab3a783f8bbb851cb66e",
+      "accountSnapshotId": "0e20b29e-e78c-4bd0-b971-92bdd31e15da:account:1",
+      "sourceStatus": "current_cycle_reconstructed_and_dashboard_reconciled",
+      "quoteStatus": "closed_market_stale",
+      "quote": {
+        "instrumentId": 12152,
+        "bid": 19.91,
+        "ask": 19.92,
+        "date": "2026-09-18T19:59:56.9",
+        "quoteType": "realtime"
+      },
+      "marketStatus": {
+        "displayname": "iShares Ethereum Trust ETF",
+        "internalSymbolFull": "ETHA.US",
+        "instrumentId": 12152,
+        "internalExchangeName": "Nasdaq",
+        "isCurrentlyTradable": false,
+        "isExchangeOpen": false,
+        "cvtAsk": 1
+      },
+      "priceResult": "watching_price",
+      "originalEntry": 19.23,
+      "openingCeilingExact": "19.6146",
+      "latestStop": 17.6,
+      "sizingResult": "conditional_owner_notional_only",
+      "conditionalOwnerAmountUsd": 138.3,
+      "readinessResult": "blocked",
+      "blockers": [
+        "initial_allocation_not_activated",
+        "market_closed_and_no_fresh_executable_quote",
+        "account_specific_unleveraged_eligibility_unverified",
+        "actual_copied_size_costs_minimums_unverified",
+        "ceiling_enforcing_order_method_unverified",
+        "copied_stop_propagation_and_readback_unverified",
+        "owner_order_collection_incomplete",
+        "watching_price"
+      ],
+      "ruleIds": [
+        "O1",
+        "O2",
+        "O3",
+        "O4",
+        "O5",
+        "O6",
+        "O7",
+        "O8",
+        "O9",
+        "S1",
+        "S2",
+        "S6",
+        "T1",
+        "T4",
+        "T6",
+        "R4",
+        "R6"
+      ],
+      "evidenceEventKeys": [
+        "bravos:post:488521:event:1"
+      ],
+      "reason": "Broad user-authorized preparatory assessment. No baseline activation, historic execution, or fresh executable price implied."
+    }
+  ],
+  "proposals": {
+    "bravos:post:487816:event:1|bravos:post:487816:event:1|open": {
+      "cycleKey": "bravos:post:487816:event:1",
+      "eventKey": "bravos:post:487816:event:1",
+      "operation": "open",
+      "status": "blocked",
+      "planningScope": "conditional_preparation_only",
+      "accountSnapshotId": "0e20b29e-e78c-4bd0-b971-92bdd31e15da:account:1",
+      "consumedEventKeys": [
+        "bravos:post:487816:event:1",
+        "bravos:post:487942:event:1",
+        "bravos:post:487942:event:2"
+      ],
+      "policyVersion": "2026-09-19.3",
+      "versions": [
+        {
+          "version": 1,
+          "observedAtUtc": "2026-09-19T08:51:57.843743+00:00",
+          "evaluationId": "0e20b29e-e78c-4bd0-b971-92bdd31e15da:evaluation:CF",
+          "conditionalOwnerAmountUsd": 184.4,
+          "units": null,
+          "agentOrderAmount": null,
+          "stopLossRate": 121.5,
+          "ceilingExact": "132.9774",
+          "blockers": [
+            "initial_allocation_not_activated",
+            "market_closed_and_no_fresh_executable_quote",
+            "account_specific_unleveraged_eligibility_unverified",
+            "actual_copied_size_costs_minimums_unverified",
+            "ceiling_enforcing_order_method_unverified",
+            "copied_stop_propagation_and_readback_unverified",
+            "owner_order_collection_incomplete"
+          ]
+        }
+      ],
+      "currentVersion": 1,
+      "consumedEventMeaning": "Combined source interpretation only; no event executed or fill observed."
+    },
+    "bravos:post:487910:event:1|bravos:post:487910:event:1|open": {
+      "cycleKey": "bravos:post:487910:event:1",
+      "eventKey": "bravos:post:487910:event:1",
+      "operation": "open",
+      "status": "blocked",
+      "planningScope": "conditional_preparation_only",
+      "accountSnapshotId": "0e20b29e-e78c-4bd0-b971-92bdd31e15da:account:1",
+      "consumedEventKeys": [
+        "bravos:post:487910:event:1",
+        "bravos:post:488320:event:1"
+      ],
+      "policyVersion": "2026-09-19.3",
+      "versions": [
+        {
+          "version": 1,
+          "observedAtUtc": "2026-09-19T08:51:57.843743+00:00",
+          "evaluationId": "0e20b29e-e78c-4bd0-b971-92bdd31e15da:evaluation:BRK.B",
+          "conditionalOwnerAmountUsd": 368.8,
+          "units": null,
+          "agentOrderAmount": null,
+          "stopLossRate": 480.0,
+          "ceilingExact": "516.630",
+          "blockers": [
+            "initial_allocation_not_activated",
+            "market_closed_and_no_fresh_executable_quote",
+            "account_specific_unleveraged_eligibility_unverified",
+            "actual_copied_size_costs_minimums_unverified",
+            "ceiling_enforcing_order_method_unverified",
+            "copied_stop_propagation_and_readback_unverified",
+            "owner_order_collection_incomplete"
+          ]
+        }
+      ],
+      "currentVersion": 1,
+      "consumedEventMeaning": "Combined source interpretation only; no event executed or fill observed."
+    },
+    "bravos:post:487920:event:1|bravos:post:487920:event:1|open": {
+      "cycleKey": "bravos:post:487920:event:1",
+      "eventKey": "bravos:post:487920:event:1",
+      "operation": "open",
+      "status": "blocked",
+      "planningScope": "conditional_preparation_only",
+      "accountSnapshotId": "0e20b29e-e78c-4bd0-b971-92bdd31e15da:account:1",
+      "consumedEventKeys": [
+        "bravos:post:487920:event:1"
+      ],
+      "policyVersion": "2026-09-19.3",
+      "versions": [
+        {
+          "version": 1,
+          "observedAtUtc": "2026-09-19T08:51:57.843743+00:00",
+          "evaluationId": "0e20b29e-e78c-4bd0-b971-92bdd31e15da:evaluation:ARGT",
+          "conditionalOwnerAmountUsd": 230.5,
+          "units": null,
+          "agentOrderAmount": null,
+          "stopLossRate": 89.0,
+          "ceilingExact": "98.3688",
+          "blockers": [
+            "initial_allocation_not_activated",
+            "market_closed_and_no_fresh_executable_quote",
+            "account_specific_unleveraged_eligibility_unverified",
+            "actual_copied_size_costs_minimums_unverified",
+            "ceiling_enforcing_order_method_unverified",
+            "copied_stop_propagation_and_readback_unverified",
+            "owner_order_collection_incomplete"
+          ]
+        }
+      ],
+      "currentVersion": 1,
+      "consumedEventMeaning": "Combined source interpretation only; no event executed or fill observed."
+    },
+    "bravos:post:488325:event:1|bravos:post:488325:event:1|open": {
+      "cycleKey": "bravos:post:488325:event:1",
+      "eventKey": "bravos:post:488325:event:1",
+      "operation": "open",
+      "status": "blocked",
+      "planningScope": "conditional_preparation_only",
+      "accountSnapshotId": "0e20b29e-e78c-4bd0-b971-92bdd31e15da:account:1",
+      "consumedEventKeys": [
+        "bravos:post:488325:event:1"
+      ],
+      "policyVersion": "2026-09-19.3",
+      "versions": [
+        {
+          "version": 1,
+          "observedAtUtc": "2026-09-19T08:51:57.843743+00:00",
+          "evaluationId": "0e20b29e-e78c-4bd0-b971-92bdd31e15da:evaluation:EOG",
+          "conditionalOwnerAmountUsd": 230.5,
+          "units": null,
+          "agentOrderAmount": null,
+          "stopLossRate": 138.0,
+          "ceilingExact": "153.1734",
+          "blockers": [
+            "initial_allocation_not_activated",
+            "market_closed_and_no_fresh_executable_quote",
+            "account_specific_unleveraged_eligibility_unverified",
+            "actual_copied_size_costs_minimums_unverified",
+            "ceiling_enforcing_order_method_unverified",
+            "copied_stop_propagation_and_readback_unverified",
+            "owner_order_collection_incomplete"
+          ]
+        }
+      ],
+      "currentVersion": 1,
+      "consumedEventMeaning": "Combined source interpretation only; no event executed or fill observed."
+    }
+  },
+  "accountSnapshots": [
+    {
+      "id": "0e20b29e-e78c-4bd0-b971-92bdd31e15da:account:1",
+      "observedAtUtc": "2026-09-19T08:36:19.0507626Z",
+      "portfolioAlias": "bravos-owner-mirror",
+      "netContributedUsd": 4610.0,
+      "availableCashUsd": 4610.0,
+      "estimatedRealEquityUsd": 4610.0,
+      "equityBasis": "Available owner mirror cash with zero open positions; pending commitments require complete order reconciliation before execution.",
+      "positions": [],
+      "orderCounts": {
+        "ordersForOpen": 0,
+        "ordersForClose": 0,
+        "ordersForCloseMultiple": null,
+        "delayedOrderForOpen": 0,
+        "delayedOrderForClose": 0,
+        "entryOrders": 0,
+        "exitOrders": 0
+      },
+      "orderCompleteness": "incomplete: ordersForCloseMultiple not returned",
+      "internalAgentCreditUsd": 10000,
+      "internalAgentPositionCount": 0,
+      "agentOrderCountsObservedZero": true,
+      "fundingDelta": null,
+      "fundingDeltaNote": "First committed ledger snapshot; no inferred new signal or adjustment."
+    }
+  ],
+  "runs": [
+    {
+      "id": "0e20b29e-e78c-4bd0-b971-92bdd31e15da",
+      "startedAtUtc": "2026-09-19T08:35:16.597248+00:00",
+      "baseGeneration": 0,
+      "status": "preparation_complete",
+      "endedAtUtc": "2026-09-19T08:51:57.843743+00:00",
+      "procedureVersion": 4,
+      "localDate": "2026-09-19",
+      "localTimezone": "Europe/Luxembourg",
+      "discoveryStatus": "current_holdings_reconstructed",
+      "reconciliationStatus": "funding_and_positions_verified_orders_partial",
+      "evaluationStatus": "15_assessed_4_conditional_candidates_all_execution_blocked",
+      "reportPath": "BRAVOS-PREPARATION-2026-09-19.md",
+      "runReportPath": "state/bravos/runs/0e20b29e-e78c-4bd0-b971-92bdd31e15da.md",
+      "tradesSubmitted": 0,
+      "activationCreated": false
+    }
+  ],
+  "userActions": [],
+  "generation": 1,
+  "runId": "0e20b29e-e78c-4bd0-b971-92bdd31e15da",
+  "committedAtUtc": "2026-09-19T08:54:26.247025+00:00",
+  "policyVersion": "2026-09-19.3"
+}
