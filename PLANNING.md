@@ -4,6 +4,13 @@ Policy version: `2026-09-19.3`. Reviews are started by the user in a dedicated
 chat, without a schedule. The implementation reviews and prepares proposals;
 there is no trading executor. Initial allocation will be discussed separately.
 
+Clarification from the user, 2026-09-19: the intended product executes trades on
+normal runs, with explicit planning/dry-run requests suppressing execution. The
+initial backlog assessment was a planning exception. The current analysis-only
+implementation does not fulfill that execution requirement. The assistant cannot
+submit financial trades through API or browser; this is an assistant capability
+boundary, not the user's preference or a missing eToro agent account/key.
+
 ## Provenance and conflicts
 
 [Original form answers](decisions/2026-09-19-form.json) preserve all 49 selections

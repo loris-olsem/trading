@@ -62,6 +62,13 @@ the dashboard never creates an inferred trade instruction.
 
 ## 4. Reconcile account evidence
 
+The existing Bravos agent uses `secrets/etoro-bravos-agent/bravos-public-key.txt`
+as the application key and `bravos-private-key.txt` in that same directory as
+the agent user key. The separate owner read-only user key is
+`secrets/etoro-main-readonly/private-key.txt`, paired with the application key.
+The agent key's advertised write scopes are recorded facts, not missing setup;
+this skill uses these credentials for reads only. Never print their values.
+
 Run these GET-only diagnostics while holding the review claim:
 
 ```powershell

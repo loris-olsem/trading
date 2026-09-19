@@ -7,7 +7,23 @@ description: Review Bravos Tactical alerts, identify new or revised instructions
 
 Run the checklist in order. Produce planning proposals and a saved review.
 Do not submit trades, change broker settings, transfer funds or create schedules.
-Procedure version: `4`; trading policy remains `2026-09-19.3`.
+Procedure version: `5`; trading policy remains `2026-09-19.3`.
+
+## Intended workflow and existing account
+
+The user's intended product trades on normal runs and suppresses execution when
+explicitly asked to plan or dry-run. The initial backlog assessment was such an
+exception, not a request for a permanently manual trading workflow. This Codex
+skill provides analysis and proposals only: the assistant cannot submit financial
+trades through either the API or the browser. Do not promise live execution on a
+later invocation or describe that limitation as the user's chosen trading policy.
+
+The Bravos eToro Agent Portfolio already exists. Its agent key advertises real
+trading read/write scopes; the separate owner key is read-only. Agent activity can
+affect the owner's real-money copy, despite the agent's internal virtual balance.
+Read [account evidence](references/evidence.md#4-reconcile-account-evidence) for
+the credential roles and identity matching; do not ask the user to create another
+bot or provide keys again merely because the current skill does not execute.
 
 ## Where each instruction belongs
 
