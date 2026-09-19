@@ -4,6 +4,7 @@
 !/state/bravos/
 /state/bravos/*
 !/state/bravos/ledger.json
+!/state/bravos/runtime-ledger.json
 !/state/bravos/history/
 !/state/bravos/runs/
 /state/bravos/history/*

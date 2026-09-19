@@ -1,0 +1,20 @@
+{
+  "policyVersion": "2026-09-19.4",
+  "decisions": [
+    {
+      "topic": "alert-interpretation",
+      "answer": "Deterministic parser; hold ambiguous alerts (Recommended)",
+      "effect": "Use supported deterministic patterns; hold unfamiliar or ambiguous instructions."
+    },
+    {
+      "topic": "superseded-unexecuted-add",
+      "answer": "Expire an unexecuted add after a later reduction (Recommended)",
+      "effect": "For held cycles expire missed additions preceding a later reduction; trim actual units proportionally. Never-entered cycles retain latest weight and original opening ceiling."
+    },
+    {
+      "topic": "terminal-partial-entry-fill",
+      "answer": "Keep the partial fill; report the shortfall (Recommended)",
+      "effect": "Keep filled units with exact Bravos protection and report unfilled dollars. Consume the event; do not top up without a new Bravos addition."
+    }
+  ]
+}

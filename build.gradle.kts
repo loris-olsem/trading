@@ -2,6 +2,7 @@ plugins {
     application
     jacoco
     id("info.solidsoft.pitest") version "1.19.0"
+    id("com.diffplug.spotless") version "8.10.2"
 }
 
 group = "com.loris"
@@ -9,6 +10,7 @@ version = "1.0.0"
 repositories { mavenCentral() }
 java { toolchain { languageVersion = JavaLanguageVersion.of(25) } }
 application { mainClass = "com.loris.bravos.app.Main" }
+spotless { java { googleJavaFormat("1.36.1") } }
 
 dependencies {
     implementation("com.fasterxml.jackson.core:jackson-databind:2.22.2")
@@ -43,7 +45,7 @@ tasks.check { dependsOn(tasks.jacocoTestCoverageVerification) }
 pitest {
     pitestVersion = "1.30.0"
     junit5PluginVersion = "1.2.3"
-    targetClasses = setOf("com.loris.bravos.domain.*", "com.loris.bravos.source.AlertParser", "com.loris.bravos.state.*", "com.loris.bravos.broker.Executor")
+    targetClasses = setOf("com.loris.bravos.domain.*", "com.loris.bravos.source.AlertParser", "com.loris.bravos.state.*", "com.loris.bravos.app.Workflow", "com.loris.bravos.broker.Executor", "com.loris.bravos.broker.EtoroClient", "com.loris.bravos.broker.OrderPayloads")
     targetTests = setOf("com.loris.bravos.*")
     threads = 4
     outputFormats = setOf("HTML", "XML")

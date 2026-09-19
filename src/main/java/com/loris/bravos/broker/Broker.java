@@ -7,9 +7,24 @@ import java.io.IOException;
 import java.util.List;
 
 public interface Broker {
-    default void prepare(com.loris.bravos.state.TradingState.Attempt attempt) throws java.io.IOException {}
-    record Receipt(Long orderId) {}
-    record Observation(Status status,String reason,List<Long> positionIds) {}
-    Receipt submit(Intent intent,String reference) throws IOException;
-    Observation observe(Attempt attempt) throws IOException;
+  default void prepare(com.loris.bravos.state.TradingState.Attempt attempt)
+      throws java.io.IOException {}
+
+  record Receipt(Long orderId) {}
+
+  record Observation(
+      Status status,
+      String reason,
+      List<Long> positionIds,
+      java.math.BigDecimal agentFilled,
+      java.math.BigDecimal ownerFilled,
+      java.math.BigDecimal ownerShortfall) {
+    public Observation(Status status, String reason, List<Long> positionIds) {
+      this(status, reason, positionIds, null, null, null);
+    }
+  }
+
+  Receipt submit(Intent intent, String reference) throws IOException;
+
+  Observation observe(Attempt attempt) throws IOException;
 }

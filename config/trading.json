@@ -1,5 +1,7 @@
 {
   "copySizingEvidence": "",
   "copyStopsEvidence": "",
+  "copyPriceCeilingEvidence": "",
+  "copySizingModel": "UNVERIFIED",
   "assets": {}
 }
