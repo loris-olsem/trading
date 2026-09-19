@@ -1,0 +1,29 @@
+{
+  "receivedOn": "2026-09-19",
+  "provenance": "Explicit user replies to three clarification questions after the form submission",
+  "answers": [
+    {
+      "resolves": [
+        "A01",
+        "A02",
+        "D08"
+      ],
+      "question": "Opening price tolerance",
+      "answer": "Allow up to 2% above Bravos’s entry"
+    },
+    {
+      "resolves": [
+        "A05"
+      ],
+      "question": "Missed opening followed by addition",
+      "answer": "Keep the original opening’s ceiling"
+    },
+    {
+      "resolves": [
+        "D11"
+      ],
+      "question": "Manual intervention handling",
+      "answer": "i do not manually change things, the only thing i might do is early exits, nothing else and i will also do them through you / this agent so my action can be recorded"
+    }
+  ]
+}

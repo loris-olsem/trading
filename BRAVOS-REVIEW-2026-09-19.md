@@ -1,5 +1,20 @@
 # Bravos catch-up review — 19 September 2026
 
+## Policy correction — 19 September 2026
+
+The observations below are the original closed-market snapshot, using the old
+zero-tolerance comparison. Current policy is `2026-09-19.3` in `PLANNING.md`:
+opening ceiling is original entry plus 2%, missed openings remain watchlisted
+while Bravos holds, and catch-up uses the current source weight. These choices
+do not refresh the old quotes or establish an initial baseline.
+
+Published stop prices must be mirrored, including subsequent updates. The old
+wording below about non-mechanical/reassessment levels describes the absence of
+implemented broker changes at that time, not permission to omit stops. No
+broker stop propagation has yet been demonstrated with an open copied position.
+
+## Original observation
+
 Planning snapshot only. No orders, permanent skips, or processed-alert decisions
 were created. Scope: Tactical opening alerts from **21 August through 19 September
 2026**, inclusive (30 calendar dates including today, Europe/Luxembourg).

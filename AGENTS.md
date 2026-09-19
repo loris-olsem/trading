@@ -5,8 +5,10 @@
 - Read `PLANNING.md` and `README.md` before extending this project. Distinguish
   agreed rules, proposals, and unverified observations.
 - Never print, copy into prompts, commit, or log the contents of `secrets/`.
-  Read keys locally and send them only to the intended official eToro API host.
-- Keep private account snapshots in the ignored `state/` directory.
+  Read eToro keys locally and send them only to the official eToro API host.
+  Bravos credentials may be used only for the intended Bravos login.
+- Keep private account snapshots ignored under `state/`. Only minimal Bravos
+  ledgers, their history and run reports are allowlisted for local Git.
 - Internal agent balances are not the owner's real-money allocation. Preserve
   that distinction in calculations and reporting.
 - Use supported, documented read APIs for diagnostics. A successful GET does

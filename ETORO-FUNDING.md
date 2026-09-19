@@ -6,7 +6,11 @@ Investigated 2026-09-19. Research and GET requests only; no funding or trades.
 
 The public API exposes the required fields on the owner's copy relationship
 (called a mirror). This route was live-verified with the user's new main-account
-read-only key on 2026-09-19: **$500 net contributions and $500 available cash**.
+read-only key on 2026-09-19: initially $500 net contributions and available cash.
+The 07:57 UTC refresh shows **$4,610 net contributions and $4,610 available cash**,
+with no open positions: $500 initial investment + $4,110 deposits, no withdrawals.
+Agent internal capital remains $10,000. This verifies updated allocation but not
+copy scaling or top-up behavior when positions exist.
 
 1. With an owner token, GET `/api/v1/agent-portfolios`. Match Bravos using its
    `agentPortfolioGcid` against the identity already verified by the agent's
@@ -104,7 +108,9 @@ there is no scheduler, funding-change detector or trading implementation.
 ## Funding changes and sizing
 
 A funding delta updates the recorded budget only. It must not generate orders,
-resize holdings or revive skipped opening alerts. For example, an initial $500
+resize holdings or supply a new entry signal. Above-ceiling missed openings now
+remain on a watchlist under `PLANNING.md`; ordinary later review may find one
+eligible while Bravos holds, independently of funding. For example, an initial $500
 plus a later $200 allocation produces $700 net contributions; it does not imply
 $700 available cash if positions or orders already use some of that capital.
 

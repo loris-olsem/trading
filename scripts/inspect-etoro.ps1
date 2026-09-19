@@ -8,6 +8,7 @@ to be the owner's real-money investment in an Agent Portfolio.
 param([ValidateRange(0, 1000000000)][decimal]$ReportedAllocationUsd = 500)
 
 $ErrorActionPreference = 'Stop'
+. (Join-Path $PSScriptRoot 'etoro-diagnostic-common.ps1')
 $projectRoot = Split-Path -Parent $PSScriptRoot
 $keyDirectory = Join-Path $projectRoot 'secrets/etoro-bravos-agent'
 $publicKey = [IO.File]::ReadAllText((Join-Path $keyDirectory 'bravos-public-key.txt')).Trim()
@@ -25,10 +26,11 @@ function Read-EtoroEndpoint {
             -TimeoutSec 30 -MaximumRedirection 0 -SkipHttpErrorCheck
     } catch {
         # Exception text and raw responses could contain sensitive request data.
-        return @{ path = $Path; requestId = $requestId; status = $null; error = 'Transport failure; no response logged.' }
+        return @{ path = $Path; requestId = $requestId; status = $null; errorCode = 'TRANSPORT_ERROR'; error = 'Transport failure; no response logged.' }
     }
     $result = [ordered]@{ path = $Path; requestId = $requestId; status = [int]$response.StatusCode }
     try { $body = $response.Content | ConvertFrom-Json -AsHashtable } catch {
+        $result.errorCode = 'INVALID_JSON'
         $result.error = 'Non-JSON response; body withheld.'
         return $result
     }
@@ -49,19 +51,23 @@ function Read-EtoroEndpoint {
         '/trading/info/real/pnl' {
             $portfolio = $body.clientPortfolio
             if ($null -eq $portfolio) {
+                $result.errorCode = 'MISSING_CLIENT_PORTFOLIO'
                 $result.error = 'Expected clientPortfolio missing; no balance inferred.'
                 $result.responseFieldNames = @($body.Keys)
                 break
             }
             $result.portfolio = @{
                 credit = $portfolio.credit
-                positionCount = @($portfolio.positions | Where-Object { $null -ne $_ }).Count
-                pendingOpenCount = @($portfolio.ordersForOpen | Where-Object { $null -ne $_ }).Count
-                pendingCloseCount = @($portfolio.orders | Where-Object { $null -ne $_ }).Count
-                mirrorCount = @($portfolio.mirrors | Where-Object { $null -ne $_ }).Count
+                positionCount = Get-EtoroCollectionCount $portfolio 'positions'
+                pendingOpenCount = Get-EtoroCollectionCount $portfolio 'ordersForOpen'
+                pendingCloseCount = Get-EtoroCollectionCount $portfolio 'ordersForClose'
+                pendingMultipleCloseCount = Get-EtoroCollectionCount $portfolio 'ordersForCloseMultiple'
+                generalPendingOrderCount = Get-EtoroCollectionCount $portfolio 'orders'
+                mirrorCount = Get-EtoroCollectionCount $portfolio 'mirrors'
                 positions = @($portfolio.positions | ForEach-Object {
                     @{ positionId = $_.positionID; instrumentId = $_.instrumentID; amount = $_.amount;
-                       isBuy = $_.isBuy; leverage = $_.leverage; mirrorId = $_.mirrorID }
+                       units = $_.units; stopLossRate = $_.stopLossRate; isNoStopLoss = $_.isNoStopLoss;
+                       isTslEnabled = $_.isTslEnabled; isBuy = $_.isBuy; leverage = $_.leverage; mirrorId = $_.mirrorID }
                 })
                 mirrors = @($portfolio.mirrors | ForEach-Object {
                     @{ mirrorId = $_.mirrorID; availableAmount = $_.availableAmount;

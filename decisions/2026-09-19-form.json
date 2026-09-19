@@ -1,0 +1,351 @@
+{
+  "form": "bravos-audit-decisions-v1",
+  "receivedOn": "2026-09-19",
+  "provenance": "User-submitted in-chat decision form; exact selected recommendation/custom text. Selections are not automatically accepted policy; see PLANNING.md for conflict resolution and engineering ownership.",
+  "selectedDecisions": [
+    {
+      "id": "C01",
+      "section": "Rules & scope",
+      "title": "Initial versus routine scan",
+      "choice": "recommendation",
+      "decision": "Keep 30 calendar days only for the one-time initial catch-up. Routine runs resume from the last completed discovery checkpoint and cover the entire missed interval."
+    },
+    {
+      "id": "C02",
+      "section": "Rules & scope",
+      "title": "Published stop losses",
+      "choice": "recommendation",
+      "decision": "Mirror Bravos's latest published stop-loss price and explicit changes for each position. Include it in entry proposals and verify the actual copied position's setting. Do not mark an accepted update as applied until broker read-back confirms it."
+    },
+    {
+      "id": "A01",
+      "section": "Rules & scope",
+      "title": "Entry ceiling for future alerts",
+      "choice": "recommendation",
+      "decision": "Explicitly apply the no-chasing rule to future opening alerts as well: compare the actual buy ask with that opening alert's published entry. A price above the ceiling fails the entry check; do not add an unapproved tolerance."
+    },
+    {
+      "id": "A02",
+      "section": "Rules & scope",
+      "title": "Is an above-entry skip permanent?",
+      "choice": "custom",
+      "decision": "actually we can be more clever here, maybe in the future the price comes down to the entry price of bravos, and if bravos has not exited yet, we can enter. during assessment we should never enter a position that is defavorable compared to what bravos enter. we need some interval that is fine like a couple precent, since the stock might have moved slighltly upwards when we read it compared to when bravos published"
+    },
+    {
+      "id": "A03",
+      "section": "Rules & scope",
+      "title": "Tactical versus Quant",
+      "choice": "custom",
+      "decision": "sounds ok, but i do not know what quant even is."
+    },
+    {
+      "id": "A04",
+      "section": "Rules & scope",
+      "title": "What to do with take-profit levels",
+      "choice": "recommendation",
+      "decision": "Follow explicit Bravos take-profit execution instructions, including quantities and later changes. Record every published target. When a target has no stated exit quantity, follow Bravos's explicit reduction alerts rather than inventing a sale percentage."
+    },
+    {
+      "id": "A05",
+      "section": "Rules & scope",
+      "title": "An addition alert when we hold nothing",
+      "choice": "custom",
+      "decision": "i am not sure what the question here is"
+    },
+    {
+      "id": "A06",
+      "section": "Rules & scope",
+      "title": "Re-entry after a stop executes",
+      "choice": "recommendation",
+      "decision": "After a verified stop exit, close our position cycle and do not reopen from its old opening or a later addition to that old cycle. Require a new explicit Bravos opening; ambiguous re-entry language goes to review."
+    },
+    {
+      "id": "A07",
+      "section": "Rules & scope",
+      "title": "Missing or incompatible stop",
+      "choice": "recommendation",
+      "decision": "Do not propose an unprotected new entry. If the published stop is missing, ambiguous or broker-incompatible, block that entry and report the exact issue. For an existing holding, preserve its current protection while the discrepancy is resolved; never silently clear it."
+    },
+    {
+      "id": "A08",
+      "section": "Rules & scope",
+      "title": "Substituting instruments",
+      "choice": "custom",
+      "decision": "i should follow as best we can bravos, if they open things that we cannot do on etoro then so be it."
+    },
+    {
+      "id": "A09",
+      "section": "Rules & scope",
+      "title": "What belongs in Git",
+      "choice": "recommendation",
+      "decision": "Version a minimal alert/decision ledger and run reports in this local Git repo. Keep secrets and raw account responses ignored; exclude unnecessary personal identifiers. Keep it local until you explicitly request a remote or backup destination."
+    },
+    {
+      "id": "D01",
+      "section": "Sizing & orders",
+      "title": "Basis for percentage weights",
+      "choice": "recommendation",
+      "decision": "Size each new opening from the current real equity of this Bravos allocation at evaluation time, using its Bravos weight. Cap spending by available cash after pending commitments and costs. Funding changes alone never resize existing positions."
+    },
+    {
+      "id": "D02",
+      "section": "Sizing & orders",
+      "title": "How to apply reductions",
+      "choice": "recommendation",
+      "decision": "Apply the proportional reduction to our linked units: a Bravos change from 5 to 4 sells 20% of those units. A full close closes all linked remaining units. Do not rebalance to a current-equity target."
+    },
+    {
+      "id": "D03",
+      "section": "Sizing & orders",
+      "title": "How to apply additions",
+      "choice": "recommendation",
+      "decision": "For an existing linked holding, add the increase in Bravos weight times current real Bravos equity. Use the addition alert's published price as that addition's ceiling. Apply the entry evaluation and expiry rules to that event; never resize the old units merely to restore a target weight."
+    },
+    {
+      "id": "D04",
+      "section": "Sizing & orders",
+      "title": "Initial catch-up after weight changes",
+      "choice": "recommendation",
+      "decision": "For initial catch-up, use the latest still-open Bravos weight, the original opening price ceiling and the latest published stop. Do not replay historical buys, additions and trims. Thus CF would use 4%, subject to all other checks."
+    },
+    {
+      "id": "D05",
+      "section": "Sizing & orders",
+      "title": "Multiple take-profit targets",
+      "choice": "recommendation",
+      "decision": "Use Bravos's stated quantities at each target when provided. Do not assume equal thirds. If only prices are given, retain all targets and wait for explicit profit-taking/reduction instructions; research their published allocation convention first."
+    },
+    {
+      "id": "D06",
+      "section": "Sizing & orders",
+      "title": "Entry already at or beyond the stop",
+      "choice": "recommendation",
+      "decision": "For a long opening, reject a catch-up entry at or below its latest published stop. Do not move the stop to make the trade fit. Require a fresh Bravos setup or an explicit clarification before reconsidering that cycle."
+    },
+    {
+      "id": "D07",
+      "section": "Sizing & orders",
+      "title": "Order type and entry-price enforcement",
+      "choice": "recommendation",
+      "decision": "Require a broker-supported entry method that demonstrably enforces the chosen price ceiling. If eToro Agent Portfolios cannot provide that guarantee, report the incompatibility; do not silently use a market or market-if-touched order as an equivalent. Later execution must reconcile partial fills and cancel any remaining entry quantity at expiry."
+    },
+    {
+      "id": "D08",
+      "section": "Sizing & orders",
+      "title": "Run times, quote age and expiry",
+      "choice": "recommendation",
+      "decision": "Propose two runs at 10:00 and 15:30 America/New_York on US trading days, with timezone conversion handling daylight saving. Evaluate entries only while their exchange is open, using asks no older than 60 seconds. Routine entry/add intents expire at the close of their first evaluated trading session; catch-up uses its separately chosen activation session. Do not schedule anything yet."
+    },
+    {
+      "id": "D09",
+      "section": "Sizing & orders",
+      "title": "Insufficient cash and minimum orders",
+      "choice": "recommendation",
+      "decision": "Use source publication order for new entries/additions, with a stable ID tie-break for equal dates. Keep the specified size: never round up or redistribute skipped weights. If cash or minimums prevent that size, skip that event and report why. Reconcile exit proceeds before treating them as available."
+    },
+    {
+      "id": "D10",
+      "section": "Sizing & orders",
+      "title": "Leverage, shorts and CFDs",
+      "choice": "custom",
+      "decision": "i am scared of leverage, never leverage. i do not care what we trade, trade everything we can/are allowed to on etoro"
+    },
+    {
+      "id": "D11",
+      "section": "Sizing & orders",
+      "title": "Your manual interventions",
+      "choice": "custom",
+      "decision": "i do not understand the decision to make here"
+    },
+    {
+      "id": "D12",
+      "section": "Sizing & orders",
+      "title": "Initial activation and baseline",
+      "choice": "custom",
+      "decision": "we will tackle that in chat once i know you understand what you are doing"
+    },
+    {
+      "id": "V01",
+      "section": "Checks still needed",
+      "title": "Agent-to-real sizing after top-ups",
+      "choice": "custom",
+      "decision": "no clue what your are talking about"
+    },
+    {
+      "id": "V02",
+      "section": "Checks still needed",
+      "title": "Cash-only top-ups with holdings",
+      "choice": "custom",
+      "decision": "no clue what you are talking about"
+    },
+    {
+      "id": "V03",
+      "section": "Checks still needed",
+      "title": "Stop propagation to the real copy",
+      "choice": "custom",
+      "decision": "no clue what you are talking about"
+    },
+    {
+      "id": "V04",
+      "section": "Checks still needed",
+      "title": "Separate portfolio copy stop",
+      "choice": "custom",
+      "decision": "what do you want from me"
+    },
+    {
+      "id": "V05",
+      "section": "Checks still needed",
+      "title": "Account-specific security eligibility",
+      "choice": "custom",
+      "decision": "why are you asking me this"
+    },
+    {
+      "id": "V06",
+      "section": "Checks still needed",
+      "title": "Minimums, costs and partial closes",
+      "choice": "custom",
+      "decision": "?"
+    },
+    {
+      "id": "V07",
+      "section": "Checks still needed",
+      "title": "Reliable unattended Bravos access",
+      "choice": "custom",
+      "decision": "initiall i will not do with autoamted schedule but i will use dedicated chat wher i kick it off. so that i can supervise. i will put the credentials on disk so that it can login. see secrets/bravos"
+    },
+    {
+      "id": "V08",
+      "section": "Checks still needed",
+      "title": "Operational recovery tests",
+      "choice": "custom",
+      "decision": "what do you want from me?"
+    },
+    {
+      "id": "F01",
+      "section": "Implementation fixes",
+      "title": "Incorrect pending-close count",
+      "choice": "custom",
+      "decision": "what do you want from me?"
+    },
+    {
+      "id": "F02",
+      "section": "Implementation fixes",
+      "title": "Order IDs and execution history",
+      "choice": "custom",
+      "decision": "what do you want from me?"
+    },
+    {
+      "id": "F03",
+      "section": "Implementation fixes",
+      "title": "Compare agent and actual copy",
+      "choice": "custom",
+      "decision": "what do you want from me?"
+    },
+    {
+      "id": "F04",
+      "section": "Implementation fixes",
+      "title": "Useful diagnostic errors",
+      "choice": "recommendation",
+      "decision": "Return sanitized stage names and stable error codes for identity, missing fields, mirror mismatch, permissions, transport and parsing failures. Keep secret headers and raw sensitive responses out of errors."
+    },
+    {
+      "id": "F05",
+      "section": "Implementation fixes",
+      "title": "Validate the new stop fields",
+      "choice": "custom",
+      "decision": "what do you want from me?"
+    },
+    {
+      "id": "F06",
+      "section": "Implementation fixes",
+      "title": "Contradictory stop wording in reports",
+      "choice": "recommendation",
+      "decision": "Add a dated correction to the historical report and align current instructions with the accepted stop policy. Preserve the historical quote snapshot and identify the policy version used at the time."
+    },
+    {
+      "id": "F07",
+      "section": "Implementation fixes",
+      "title": "Enforce state integrity",
+      "choice": "recommendation",
+      "decision": "Keep strategy logic in precise English, but use small deterministic helpers for exclusive locking, schema/ID validation, hashing and atomic ledger commits. Test them with local fixtures. Do not build a trading executor as part of this item."
+    },
+    {
+      "id": "F08",
+      "section": "Implementation fixes",
+      "title": "Priority of operations",
+      "choice": "recommendation",
+      "decision": "After reconciliation, handle full exits and reductions first, then stop discrepancies/updates for remaining positions, then additions and new openings. Respect source chronology within a cycle. Record linked actions as one plan so a stop change is not lost inside a trim."
+    },
+    {
+      "id": "F09",
+      "section": "Implementation fixes",
+      "title": "Backdated articles and discovery limits",
+      "choice": "recommendation",
+      "decision": "Keep incremental discovery plus dashboard reconciliation. On a mismatch, expand the targeted history until explained and block only affected proposals. Record the coverage boundary honestly; do not claim full historical detection without a publisher change feed or full archive inventory."
+    },
+    {
+      "id": "F10",
+      "section": "Implementation fixes",
+      "title": "Git commit identity",
+      "choice": "custom",
+      "decision": "set the git to use \"Loris Olsem\" as name, and \"loris.olsem@gmail.com\" for email"
+    },
+    {
+      "id": "E01",
+      "section": "Routine & storage defaults",
+      "title": "Overlap at the last scan boundary",
+      "choice": "custom",
+      "decision": "what do you want from me?"
+    },
+    {
+      "id": "E02",
+      "section": "Routine & storage defaults",
+      "title": "Weekly review of old resolved articles",
+      "choice": "recommendation",
+      "decision": "Keep a once-per-week revision check of known resolved alert URLs, distinct from discovering new alerts. Record it as source maintenance; do not revive old trades. If it becomes costly, revise the cadence explicitly rather than silently dropping coverage."
+    },
+    {
+      "id": "E03",
+      "section": "Routine & storage defaults",
+      "title": "Reread active and unresolved articles",
+      "choice": "recommendation",
+      "decision": "Keep this check each run while those cycles are active or unresolved. Read article revisions for changed stops or instructions; deduplicate unchanged content and exclude subscriber comments."
+    },
+    {
+      "id": "E04",
+      "section": "Routine & storage defaults",
+      "title": "Archive changes while scanning",
+      "choice": "recommendation",
+      "decision": "Recheck the first page after traversal. If IDs changed, merge and repeat once. If it changes again, save partial evidence and report incomplete discovery without advancing the checkpoint. Do not loop indefinitely."
+    },
+    {
+      "id": "E05",
+      "section": "Routine & storage defaults",
+      "title": "JSON ledger and history",
+      "choice": "recommendation",
+      "decision": "Keep a schema-versioned JSON ledger as authoritative memory and Markdown run reports for reading. Retain immutable prior ledger versions and record which rules produced each decision. Apply the Git/privacy choice separately; a local Git repo is not an off-device backup."
+    },
+    {
+      "id": "E06",
+      "section": "Routine & storage defaults",
+      "title": "Content fingerprints",
+      "choice": "recommendation",
+      "decision": "Keep both: normalize only whitespace/line endings, exclude page chrome and comments, hash the Bravos-authored body, and compare material trade facts. Preserve revisions; never turn an edited article into a second opening solely because its hash changed."
+    },
+    {
+      "id": "E07",
+      "section": "Routine & storage defaults",
+      "title": "Locking and interrupted-run recovery",
+      "choice": "recommendation",
+      "decision": "Keep one writer at a time, validate and atomically replace the ledger, and preserve the prior version. Recover a stale claim only after establishing its owner stopped. Check the committed generation and broker state before retrying any uncertain work."
+    },
+    {
+      "id": "M01",
+      "section": "Current mode",
+      "title": "Planning now; execution separate",
+      "choice": "custom",
+      "decision": "prompt echo bullshit, this is not about what we are trying to build"
+    }
+  ],
+  "undecidedIds": []
+}

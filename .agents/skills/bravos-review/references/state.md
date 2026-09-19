@@ -1,4 +1,4 @@
-# State contract — version 1
+# State contract — version 2
 
 Use this contract when `$bravos-review` reads or writes memory. All paths below
 are relative to the project root. Keep credentials out of every record.
@@ -10,11 +10,40 @@ are relative to the project root. Keep credentials out of every record.
 - `state/bravos/runs/<runId>.md`: readable report, including incomplete attempts.
 - `state/bravos/run.lock`: exclusive claim identifying the writing run.
 
-These files are ignored by Git because they contain account/strategy state.
-Local history protects against an interrupted edit, not disk loss; arrange a
-private backup before relying on this for long-running operation. Never rebuild
-lost permanent decisions by guessing from the latest dashboard or holdings.
-No ledger is created merely by installing this skill.
+The minimal ledger, history JSON and run Markdown are allowlisted for local Git.
+Claims, drafts, `.mutex` and private broker snapshots remain ignored. Exclude
+owner identity and broad account dumps from tracked evidence. Use local aliases
+for broker IDs with an ignored private mapping, reconciled before use. Local
+Git is not an off-device backup. Installation creates no ledger or baseline.
+
+## Deterministic helper
+
+Requires Python 3.11+ standard library. From the project root, use a fresh run
+UUID and the supervising task's identity; keep the same UUID for that run:
+
+```text
+python scripts/bravos_state.py begin --run-id <uuid> --owner <task> --policy 2026-09-19.3
+python scripts/bravos_state.py validate state/bravos/draft-<uuid>.json
+python scripts/bravos_state.py commit --run-id <uuid> --candidate state/bravos/draft-<uuid>.json
+python scripts/bravos_state.py release --run-id <uuid>
+```
+
+`begin` claims exclusively and writes an ignored draft, not a published ledger.
+Edit the draft and set the new run's outcome before commit. `commit` sets the UTC
+timestamp, validates structure/history, checks the base hash, preserves the prior
+generation, atomically replaces the ledger and reads it back. Release after clean
+commit/abort. A failed commit leaves the claim for inspection. The supervising
+task owns the persistent claim; the short-lived CLI process does not.
+
+`python scripts/bravos_state.py hash <authored-body-file>` normalizes whitespace
+and hashes UTF-8 text. The caller must exclude page chrome/comments first.
+
+Never auto-steal a claim. Confirm its task stopped, inspect the committed run ID,
+then release that exact claim. An already committed run needs no second commit;
+regenerate a missing report instead. Preserve a malformed interrupted claim as
+ignored recovery evidence before manual repair. Age alone is not stopped-task
+evidence. The stable `.mutex` file must never be unlinked: its OS lock serializes
+short operations, including accidental reuse of a run UUID, and releases on exit.
 
 ## Ledger contents
 
@@ -23,19 +52,29 @@ values are JSON null, never an invented zero, empty success or timestamp.
 
 | Member | Required contents |
 | --- | --- |
-| `schemaVersion` | Integer 1; reject unsupported versions rather than auto-migrating |
+| `schemaVersion` | Integer 2; reject unsupported versions; no live v1 ledger existed at this change |
 | `generation` | Integer incremented once per committed run |
 | `runId`, `committedAtUtc` | Identity/time of the writing run |
 | `mode` | `planning` |
 | `activationAtUtc` | null until separately established initial catch-up/activation |
 | `policyVersion` | Version/hash of the actual decision rules used; do not silently relabel old evaluations |
-| `discovery` | `lastCompleteDiscoveryAtUtc`, `lastHistoricalRevisionAuditAtUtc`, and latest attempt's floor, visited URLs, boundary evidence, status and errors |
+| `discovery` | `lastCompleteDiscoveryAtUtc`, `lastHistoricalRevisionAuditAtUtc`, and `attempt` with floor, visited URLs, boundary evidence, status and errors |
 | `articles` | Map from stable article key to canonical URL, aliases, post ID, first/last seen UTC, publication value/precision, strategy and immutable revisions |
+| `events` | Map from stable event key to `articleKey`, current `revisionId`, `kind` and instruction facts; old facts remain in revisions |
 | `cycles` | Map from opening event key to exact asset, source event links, latest source weight/status, latest published stop price/currency and its source revision, and verified actual position links |
 | `evaluations` | Append-only records of conclusions, evidence references and reasons |
 | `proposals` | Map from stable intent key to proposal history and current planning/reconciliation status |
 | `accountSnapshots` | Timestamped Bravos-only funding, cash, actual positions including stop price/enabled/trailing status and order completeness; no unrelated owner holdings |
 | `runs` | Run IDs, start/end UTC, base generation, independent discovery/reconciliation/evaluation statuses and report path |
+| `userActions` | Append-only user early-exit requests and later outcome records with `id`, `cycleKey`, requested operation/quantity, status and prior-action link |
+
+Every record in `evaluations`, `accountSnapshots`, `runs` and `userActions` has
+a unique string `id`. Each revision has `revisionId` unique within its article
+and a lowercase 64-character `bodySha256`. A cycle's `eventKeys` includes its
+opening event. A proposal has `cycleKey`, `eventKey`, `operation`, `status` and
+optional `consumedEventKeys` for combined events. `accountSnapshotId`, where
+present, references an existing snapshot. Validation checks these relationships,
+not the financial truth of extracted facts or broker execution.
 
 Do not call one Boolean `processed` the state of an alert. Seeing, understanding,
 deciding, proposing and observing a fill are separate facts.
@@ -61,10 +100,12 @@ explicitly references the same instruction is an alias, not a new opening.
 An evaluation has an ID, run ID, article/event/revision/cycle references,
 policy version, source status, quote status, price result, sizing result,
 readiness result, reason, and relevant account snapshot ID. Keep superseded
-evaluations; identify the replacement explicitly. Never infer a permanent skip
-from a planning evaluation such as `would_skip_above_entry`.
+evaluations; identify replacements explicitly. `watching_price` remains eligible
+while Bravos holds. Our confirmed stop/full early exit is terminal for that cycle.
+A session's expired attempt is not an expired opening. Do not import the old
+indicative `would_skip_above_entry` as a permanent rejection under current policy.
 
-A proposal intent key is `cycleKey + eventKey + operation`, with operations such
+A proposal intent key is `cycleKey|eventKey|operation`, with operations such
 as `open`, `add`, `reduce`, `close`, `set_stop`, or `review_reference`. New quotes, reruns,
 policy revisions and added cash do not make a new intent. Revised proposals are
 versions of that intent; completed/partially completed intents cannot be reissued
@@ -106,9 +147,11 @@ Otherwise preserve partial files as diagnostic evidence and re-read the sources;
 do not pretend partial staging committed. Reconcile current broker state before
 retrying any proposal that could have been executed outside this skill.
 
-Diagnostic scripts currently overwrite their own snapshot files. Copy their
-returned Bravos projection and timestamp into this run's staged account snapshot
-while holding the claim. Those standalone files never replace ledger history.
+Diagnostic scripts overwrite their ignored snapshot files. Copy only a minimal
+Bravos projection and timestamp into the staged snapshot while holding the claim,
+omitting owner identity and using private mappings for broker IDs. Standalone
+diagnostics never replace ledger history. State tests do not establish end-to-end
+source discovery, trade interpretation or recovery of actual broker execution.
 
 ## Worked checks for reviewing this procedure
 
@@ -127,6 +170,9 @@ These are paper scenarios, not executed broker tests:
 | Page 2 fails after page 1 was read | Preserve partial observations; do not advance complete-discovery time |
 | Quote says realtime but exchange is closed | Waiting quote; no permanent entry decision |
 | User adds $200 | Record funding delta; no trade proposal from funding alone |
+| Missed opening drops within entry +2% while Bravos holds | Reassess the same intent with current source weight/stop and broker checks |
+| Bravos adds before we entered | Keep original opening +2% ceiling, not the addition price |
+| User requests early exit | Record request; only broker evidence establishes completion |
 | Bravos reduces CF and raises its stop in the same article | Record both instructions; compare actual stop with the new published price |
 | New position proposal has no verified published stop | Block stop readiness; never invent or omit a protective setting silently |
 | Broker stop differs from the latest Bravos stop | Maintain a stop-update proposal; require broker read-back before recording it as applied |

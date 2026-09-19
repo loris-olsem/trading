@@ -3,9 +3,13 @@
 Current stage: **planning and read-only testing**. There is no trading executor,
 scheduled job, or automated Bravos scraper in this project.
 
+Latest owner snapshot (2026-09-19 07:57 UTC): **$4,610 allocated, all available
+cash, zero positions**. The $500 results below are historical observations.
+
 Latest planning snapshot: [30-day Bravos review, 19 September 2026](BRAVOS-REVIEW-2026-09-19.md).
-Three candidates pass the price filter on last available quotes; markets were
-closed. No orders or permanent alert decisions were made.
+That report uses old closed-market quotes and the former zero-tolerance rule.
+Current policy allows opening entry +2% and watches missed openings while Bravos
+holds. No orders or initial baseline were created.
 
 ## Repeatable review procedure
 
@@ -19,9 +23,11 @@ revisions, proposals, reconciliation and interrupted-run recovery.
 Routine discovery resumes from the last completed scan; the 30-day window is
 only for initial catch-up. This is a draft procedure with a revision-audit policy, not a
 scheduled program. Installing it does not create a baseline, initialize a live
-portfolio, or run the review. Initial catch-up and remaining financial policy
-choices stay separate. A Markdown procedure guides tool use; it does not provide
-the enforcement or exactly-once execution guarantees of tested software.
+portfolio, or run the review. Initial catch-up stays separate. Accepted policy
+and answer provenance are in [PLANNING.md](PLANNING.md). The user launches reviews
+in a dedicated chat. Tested helpers enforce local state mechanics; neither the
+Markdown nor those tests prove exactly-once broker execution. See
+[ENGINEERING.md](ENGINEERING.md) for repeatable checks and remaining work.
 
 ## eToro connection diagnostic
 
@@ -43,7 +49,8 @@ Only these fixed GET requests are made, with redirects disabled:
 - `/api/v1/trading/info/real/pnl`: that account's balances and current activity.
 
 The projected report is printed and written to `state/etoro-readonly.json`.
-Both `secrets/` and `state/` are excluded by `.gitignore`. The report contains
+Secrets and private diagnostics under `state/` are ignored; minimal Bravos
+ledgers/history/reports alone are allowlisted for local Git. The report contains
 private account identifiers but no key values, request headers, or raw responses.
 It is a point-in-time diagnostic, not a transaction ledger. HTTP errors remain
 visible in each check; a completed script is not proof every check succeeded.

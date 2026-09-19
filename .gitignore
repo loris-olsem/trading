@@ -1,6 +1,15 @@
 # Local credentials and private account snapshots must not be committed.
 /secrets/
-/state/
+/state/*
+!/state/bravos/
+/state/bravos/*
+!/state/bravos/ledger.json
+!/state/bravos/history/
+!/state/bravos/runs/
+/state/bravos/history/*
+!/state/bravos/history/*.json
+/state/bravos/runs/*
+!/state/bravos/runs/*.md
 .env
 .env.*
 !.env.example
