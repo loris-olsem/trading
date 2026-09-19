@@ -1,0 +1,7 @@
+# Local credentials and private account snapshots must not be committed.
+/secrets/
+/state/
+.env
+.env.*
+!.env.example
+__pycache__/
