@@ -26,7 +26,7 @@ public final class Policy {
     }
     private Decision buy(Cycle c, Alert e, Action action, BigDecimal weight, BigDecimal ceiling,
                          Instrument i, Quote q, Account a, Instant now, BigDecimal reserved) {
-        if(i==null || !i.eligible() || !i.unleveraged() || !"USD".equals(i.currency()) || !Set.of("real","cfd").contains(i.settlementType())) return Decision.of(Outcome.BLOCKED,"INSTRUMENT_UNVERIFIED");
+        if(i==null || !c.symbol.equals(i.symbol()) || !i.eligible() || !i.unleveraged() || !"USD".equals(i.currency()) || !Set.of("real","cfd").contains(i.settlementType())) return Decision.of(Outcome.BLOCKED,"INSTRUMENT_UNVERIFIED");
         if(q==null || !q.exchangeOpen() || !"USD".equals(q.currency()) || q.timestamp().isAfter(now) || Duration.between(q.timestamp(),now).compareTo(Duration.ofSeconds(60))>0) return Decision.of(Outcome.WAIT_QUOTE,"QUOTE_NOT_EXECUTABLE");
         if(c.stop==null || c.stop.signum()<=0 || q.ask().compareTo(c.stop)<=0 || c.stop.compareTo(ceiling)>=0) return Decision.of(Outcome.BLOCKED,"INVALID_OR_CROSSED_STOP");
         BigDecimal limit=ceiling.setScale(i.priceScale(),RoundingMode.DOWN);
@@ -36,7 +36,8 @@ public final class Policy {
         BigDecimal owner=weight.multiply(a.ownerEquity()).divide(HUNDRED).setScale(2,RoundingMode.DOWN);
         BigDecimal agent=owner.multiply(a.agentEquity()).divide(a.ownerEquity(),2,RoundingMode.DOWN);
         if(agent.compareTo(i.minimumAgentAmount())<0 || agent.signum()<=0) return Decision.of(Outcome.BLOCKED,"BELOW_MINIMUM");
-        if(owner.add(i.estimatedOwnerCost()).add(reserved).compareTo(a.ownerCash())>0 || agent.compareTo(a.agentCash())>0) return Decision.of(Outcome.BLOCKED,"INSUFFICIENT_CASH");
+        BigDecimal agentCosts=i.estimatedOwnerCost().multiply(a.agentEquity()).divide(a.ownerEquity(),2,RoundingMode.UP);
+        if(owner.add(i.estimatedOwnerCost()).add(reserved).compareTo(a.ownerCash())>0 || agent.add(agentCosts).compareTo(a.agentCash())>0) return Decision.of(Outcome.BLOCKED,"INSUFFICIENT_CASH");
         return new Decision(Outcome.READY,"POLICY_PASSED",List.of(new Intent(c.key+"|"+e.key()+"|"+action,c.key,e.key(),action,i.id(),null,owner,agent,null,limit,c.stop,i.settlementType())));
     }
     public List<Intent> reduction(Cycle c, Alert event, List<Position> positions, int unitScale) {
@@ -58,6 +59,6 @@ public final class Policy {
         if(c.stop==null || c.stop.signum()<=0 || c.blocker!=null) return List.of();
         return positions.stream().filter(p->c.positionIds.contains(p.id()))
                 .filter(p->!p.stopEnabled() || p.trailing() || p.stop()==null || p.stop().compareTo(c.stop)!=0)
-                .map(p->new Intent(c.key+"|stop:"+c.stop.toPlainString()+"|"+p.id(),c.key,c.events.getLast().key(),Action.STOP,p.instrumentId(),p.id(),null,null,null,null,c.stop,null)).toList();
+                .map(p->new Intent(c.key+"|"+c.events.getLast().key()+"|stop:"+c.stop.toPlainString()+"|"+p.id(),c.key,c.events.getLast().key(),Action.STOP,p.instrumentId(),p.id(),null,null,null,null,c.stop,null)).toList();
     }
 }

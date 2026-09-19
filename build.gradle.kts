@@ -44,6 +44,7 @@ pitest {
     pitestVersion = "1.30.0"
     junit5PluginVersion = "1.2.3"
     targetClasses = setOf("com.loris.bravos.domain.*", "com.loris.bravos.source.AlertParser", "com.loris.bravos.state.*", "com.loris.bravos.broker.Executor")
+    targetTests = setOf("com.loris.bravos.*")
     threads = 4
     outputFormats = setOf("HTML", "XML")
     timestampedReports = false
@@ -51,3 +52,9 @@ pitest {
     failWhenNoMutations = true
 }
 dependencyLocking { lockAllConfigurations() }
+
+tasks.register<JavaExec>("capture") {
+    classpath = sourceSets.main.get().runtimeClasspath
+    mainClass = "com.loris.bravos.app.Capture"
+    if (project.hasProperty("since")) args(project.property("since").toString())
+}

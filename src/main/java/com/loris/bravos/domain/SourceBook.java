@@ -34,7 +34,7 @@ public final class SourceBook {
             }
             if(current.isEmpty()) { blockers.add("ORPHAN_UPDATE:"+a.key()); continue; }
             Cycle c=current.get();
-            if(a.date().isBefore(c.openedOn)) { c.blocker="BROKEN_CHRONOLOGY"; continue; }
+            if(a.date().isBefore(c.events.getLast().date())) { c.blocker="BROKEN_CHRONOLOGY"; blockers.add("BACKDATED_UPDATE:"+a.key()); continue; }
             if(a.before()!=null && a.before().compareTo(c.weight)!=0) c.blocker="WEIGHT_CHAIN_MISMATCH";
             c.events.add(a);
             if(a.after()!=null) c.weight=a.after();
