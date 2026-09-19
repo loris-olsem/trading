@@ -1,6 +1,6 @@
 # State contract — version 2
 
-Use this contract when `$bravos-review` reads or writes memory. All paths below
+Use this contract when `$bravos-trading` reads or writes memory. All paths below
 are relative to the project root. Keep credentials out of every record.
 
 ## Files and ownership

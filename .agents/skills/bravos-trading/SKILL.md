@@ -1,9 +1,9 @@
 ---
-name: bravos-review
+name: bravos-trading
 description: Review Bravos Tactical alerts, identify new or revised instructions, reconcile eToro holdings and funding, and maintain the project's planning ledger. Use for a user-launched review or dry run; excludes trade execution and the separate initial catch-up allocation.
 ---
 
-# Bravos review
+# Bravos trading
 
 Run the checklist in order. Produce planning proposals and a saved review.
 Do not submit trades, change broker settings, transfer funds or create schedules.

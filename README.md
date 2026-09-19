@@ -13,15 +13,15 @@ holds. No orders or initial baseline were created.
 
 ## Repeatable review procedure
 
-The repo-local [`bravos-review` skill](.agents/skills/bravos-review/SKILL.md)
-defines the fixed English workflow. Invoke `$bravos-review` for a planning review,
+The repo-local [`bravos-trading` skill](.agents/skills/bravos-trading/SKILL.md)
+defines the fixed English workflow. Invoke `$bravos-trading` for a planning review,
 or ask Codex to read that file directly if it has not appeared in the skill picker.
 The entrypoint is a short ordered checklist. Trading decisions are isolated in
-[decision tables](.agents/skills/bravos-review/references/decisions.md); source
+[decision tables](.agents/skills/bravos-trading/references/decisions.md); source
 discovery and broker reconciliation are in
-[evidence collection](.agents/skills/bravos-review/references/evidence.md).
+[evidence collection](.agents/skills/bravos-trading/references/evidence.md).
 It uses a structured ledger under `state/bravos/`; the
-[state contract](.agents/skills/bravos-review/references/state.md) defines IDs,
+[state contract](.agents/skills/bravos-trading/references/state.md) defines IDs,
 revisions, proposals, reconciliation and interrupted-run recovery.
 
 Routine discovery resumes from the last completed scan; the 30-day window is
