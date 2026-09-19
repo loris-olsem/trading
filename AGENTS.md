@@ -1,7 +1,9 @@
 # Project working rules
 
-- Current phase: planning and read-only testing. Do not submit trades, create or
-  fund portfolios, move money, change stops, or configure a live trading schedule.
+- The Java program is owner-operated: normal `run` trades, `plan` does not.
+  Agent development and diagnostics remain read-only externally. Do not invoke
+  the live trading command, fund portfolios, move money, change stops or install
+  a live schedule. Test execution using fixtures and temporary state only.
 - Read `PLANNING.md` and `README.md` before extending this project. Distinguish
   agreed rules, proposals, and unverified observations.
 - Never print, copy into prompts, commit, or log the contents of `secrets/`.
@@ -13,3 +15,9 @@
   that distinction in calculations and reporting.
 - Use supported, documented read APIs for diagnostics. A successful GET does
   not authorize subsequent writes.
+- Use the project vfox Java/Gradle pins and `scripts/build.ps1`. Run appropriate
+  tests, coverage and PIT for financial behavior changes; do not lower gates.
+- Current docs are indexed by README. Archived skills/Python drafts are historical,
+  not active instructions. Keep policy provenance and broker uncertainty explicit.
+- Do not populate broker capability evidence or instrument profiles with guesses.
+  Test success is not evidence of a live copy guarantee.

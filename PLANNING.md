@@ -1,15 +1,12 @@
 # Bravos helper specification
 
-Policy version: `2026-09-19.3`. Reviews are started by the user in a dedicated
-chat, without a schedule. The implementation reviews and prepares proposals;
-there is no trading executor. Initial allocation will be discussed separately.
-
-Clarification from the user, 2026-09-19: the intended product executes trades on
-normal runs, with explicit planning/dry-run requests suppressing execution. The
-initial backlog assessment was a planning exception. The current analysis-only
-implementation does not fulfill that execution requirement. The assistant cannot
-submit financial trades through API or browser; this is an assistant capability
-boundary, not the user's preference or a missing eToro agent account/key.
+Policy version: `2026-09-19.4`. The user chose an owner-operated Java/Gradle
+program to replace the Markdown skill. Normal `run` executes eligible trades;
+`plan` and `initialize` never submit orders. No schedule or initial enrollment
+has been created. The [operations guide](docs/operations.md) describes invocation;
+the [broker contract](docs/broker-contract.md) records unresolved capabilities
+that currently block purchases. Development uses read-only external checks and
+isolated execution fixtures, not financial actions by the assistant.
 
 ## Provenance and conflicts
 
@@ -24,6 +21,14 @@ Follow-up answers on 2026-09-19:
 - Missing holding followed by an addition: **Keep the original opening's ceiling**.
 - Early exits: the user expects no other manual changes; early exits will be
   requested through this helper so the action is recorded.
+- Standalone implementation: deterministic parsing; unfamiliar or ambiguous
+  alerts are held for review.
+- Missed add followed by a reduction on a held cycle: expire the unexecuted
+  addition and apply the reduction proportionally to actual linked units.
+  Never-entered cycles still use the latest weight and original +2% ceiling.
+- Terminal partial entry/add fill: keep protected units and report the unfilled
+  amount. No automatic top-up; only a later new Bravos addition can add exposure.
+  See [program follow-ups](decisions/2026-09-19-program-followups.json).
 
 ## Strategy and instruments
 
@@ -48,8 +53,9 @@ which specifies a 3x daily Nasdaq-100 objective.
 
 ## Discovery and entry eligibility
 
-- Initial catch-up considers 30 calendar days, once. Its date and baseline are
-  deferred by D12. Do not initialize from the old research snapshot.
+- Initial catch-up defaults to 30 calendar days, once. The owner can choose an
+  explicit enrollment floor with `initialize --since`. The broader historical
+  preparation did not enroll openings or create a baseline.
 - Routine discovery covers the entire gap since the last complete scan, without
   a 30-day cap. Reread the checkpoint date where publication times are date-only;
   deduplicate by article identity.
@@ -122,19 +128,20 @@ which specifies a 3x daily Nasdaq-100 objective.
 
 ## Invocation and timing
 
-- Start supervised reviews in a dedicated chat (V07), without automation.
+- The standalone program supersedes V07's chat invocation. The owner launches
+  commands; no schedule is installed.
   Bravos login credentials are in ignored `secrets/bravos/username.txt` and
   `password.txt`; use only for the intended Bravos login when needed. Do not
   print, log or commit them. A failed login is failed discovery, not no alerts.
 - D08's accepted suggested times are 10:00 and 15:30 America/New_York on US
   trading days, with daylight-saving-aware conversion. These are suggested
-  times, not a schedule or a restriction on manually invoking the skill.
+  times, not a schedule or a restriction on manually invoking the program.
 - Evaluate entry/add prices while the relevant exchange is open, with asks no
   older than 60 seconds. Closed markets/stale quotes mean waiting data.
 - An individual unfilled order attempt expires at session close and requires
   reconciliation before retry. The opening opportunity remains on its watchlist.
-  Addition events retain D08's first-evaluated-session expiry. No orders are
-  created by the current procedure.
+  Addition events retain D08's first-evaluated-session expiry. `run` can submit
+  eligible orders; `plan` cannot.
 - Reopen active/unresolved articles each run. After seven calendar days, check
   other known resolved URLs on the next user invocation; no background job.
 - Recheck the archive first page after traversal; merge/retry once on change.
@@ -149,9 +156,10 @@ which specifies a 3x daily Nasdaq-100 objective.
   unnecessary owner identity from tracked evidence; use local aliases for links.
 - Hash normalized Bravos-authored bodies and compare material facts; exclude
   chrome/comments, retain revisions, never infer a new opening from a hash change.
-- Keep the workflow in Markdown; deterministic helpers handle exclusive claims,
-  structural validation, hashing and atomic commits. These do not prove broker
-  execution or interpretation of Bravos instructions.
+- Java implements the workflow; standard Markdown documents its rules and
+  operations. Exclusive locks, structural validation and atomic generations
+  protect the private journal. Minimal projections are reviewable in Git.
+  Local persistence does not prove broker execution; reconciliation does.
 - Repository-local author: Loris Olsem <loris.olsem@gmail.com>. Keep old authors,
   global settings and remote configuration unchanged.
 
@@ -174,7 +182,7 @@ which specifies a 3x daily Nasdaq-100 objective.
 | D11 | Early exits requested through helper, recorded and reconciled; no automatic undo |
 | D12 | Initial allocation/baseline explicitly deferred |
 | V01–V06, V08 | Confusion, not endorsement; engineer-owned verification work |
-| V07 | User-launched supervised chat; disk credentials for Bravos login |
+| V07 | Superseded by owner-operated program; disk credentials for Bravos login |
 | F01–F03, F05 | Confusion, not endorsement; fix defects and track verification as engineering |
 | F04, F06–F09 | Accepted errors, historical correction, helpers, ordering and bounded coverage |
 | F10 | Explicit repository-local author identity applied |

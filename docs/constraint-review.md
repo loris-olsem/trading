@@ -1,0 +1,77 @@
+# Constraint review — 19 September 2026
+
+This reviews the implemented program against policy `2026-09-19.4`. Original
+answers and their dispositions are preserved in [PLANNING.md](../PLANNING.md).
+Passing local tests establishes program behavior against fixtures, not eToro's
+live copying guarantees. No trades or funding actions were used as tests.
+
+## Trading and source requirements
+
+| Requirement | Implementation and evidence | Remaining limit |
+| --- | --- | --- |
+| Tactical website, no email dependency | `BravosSource`, deterministic `AlertParser`; authenticated read-only capture/replay of 143 articles, current 15 holdings matched | Changed layouts/wording stop discovery |
+| Initial 30 days separate from research | `Main`, `Workflow.initialBook`; explicit enrollment floor, no trading during initialize; CLI integration tests | Owner has not initialized; historical reports are not activation |
+| Routine full gap, deduplication, revisions | Checkpoint-day overlap, post IDs, authored-body hashes, source revisions, active rereads and seven-day audit; source/domain tests | No claim to discover every unseen backdated article |
+| Partial scans cannot advance coverage | `acceptScan`, first-page recheck/retry, dashboard match; persisted failure tests | Source errors conservatively block the run's new actions |
+| Opening watchlist and +2% | `Policy.opening`; executable ask, floored ceiling, terminal/source-open state tests | Owner copied fill cap unverified; purchases gated |
+| Never-entered add keeps original ceiling | Opening uses reconstructed current weight exactly once; absorbed event keys tested | No historical adds replayed as separate purchases |
+| Held additions use delta and their own price | `Policy.addition`, first-evaluated-session expiry, source ordering tests | New York date is the supported session model; non-US sessions need explicit support |
+| Missed add followed by reduction expires | `Workflow.hasLaterReduction`; planning/live tests | Accepted follow-up recorded; no automatic buying of removed exposure |
+| Real equity versus internal capital | `EtoroClient.account`, `Policy.buy`; $4,610 vs $10,000 read-only evidence; PnL/cash fixtures | Realized-equity conversion model for Agent Portfolios still needs proof |
+| Funding only creates cash | No funding-triggered action; repeated run and unit-drift tests | Broker-side cash-only behavior is attributed help-bot guidance, untested with holdings |
+| Cash, minimums, fees, rounding | Decimal policy; no upsizing/redistribution; fresh eligibility/cost preflight; boundary tests | Exact asset precision/settlement profiles remain unconfigured |
+| Proportional trims, full closes | Actual linked units, rounded-down partials, all-unit full closes; two-lot interrupted reduction test | Unknown close response requires evidence-backed recovery |
+| Exact published stops | Parser preserves standalone/bundled changes; exact fixed-stop payload and agent/owner read-back; tests reject trailing/disabled/wrong stops | Actual copy propagation unverified; capability gate remains blank |
+| No entry without usable stop | Missing/ambiguous/crossed stop blocks; no invented or widened price | Existing protection is not cleared to resolve a conflict |
+| Targets and explicit quantities | Targets retained; no invented fractions; explicit actual reductions supported | Conditional target quantities are held as unsupported, not executed yet |
+| Entry method enforces price ceiling | Agent `limitIOC` payload and agent/copied fill checks tested | Copied price detection is not prevention; support must establish binding cap |
+| Final partial fill kept, shortfall reported | Filled internal/owner amounts persisted; event consumed; restart test proves no top-up; later add still possible | Ongoing partial/copy/stop uncertainty blocks until reconciled |
+| No old-cycle re-entry after stop/full early exit | Durable terminal cycle and event participation; workflow tests | Unexplained changes held, never silently restored |
+| Early exits through program | Durable fraction request, duplicate pending request rejection, next-run processing; CLI/workflow tests | Source failures also block unsubmitted early exits |
+| Never leverage or substitute | X1 and long/settlement eligibility, exact asset ID/symbol, required issuer evidence | Current long USD unit-based adapter; unsupported semantics held |
+| Reconcile → reduce → protect → expose | Workflow ordering, global publication-order exposure sort; multi-event tests | No routine schedule installed |
+| Fresh executable quotes | Exchange/tradability/realtime, ≤60-second ask, future/stale rejection; pre-submit reread | No promise that broker fill equals the observed quote |
+
+## Engineering and operations
+
+| Requirement | Evidence |
+| --- | --- |
+| Java/Gradle through vfox | Java 25.0.4.1+1-tem and Gradle 9.7.1 project pins; wrapper, locked dependencies and reproducible build script |
+| Plan before implementation, staged commits | `docs/IMPLEMENTATION-PLAN.md` committed before implementation; Git history records subsequent stages |
+| Normal run trades, explicit plan does not | CLI integration with injected mock source/broker verifies modes; real credentials never used by tests |
+| Durable state and no duplicate submission | OS lock, forced atomic generations, immutable history, saved UUID before write; unknown-response/restart tests |
+| Safe partial reduction restart | Original per-lot batch persisted; test interrupts after one lot and proves no second trim of it |
+| Credential and owner separation | Secrets ignored; fixed host transport, no redirects for broker, bounded HTTP body, read-only owner scopes; sanitized errors and fixture tests |
+| Minimal Git evidence | Source/cycle/action projections omit broker IDs/references; immutability/redaction tests; private journal remains ignored |
+| Skills retired and docs indexed | No repo-local active skill; archived ordinary Markdown/Python preserved; README links current architecture/rules/operations/contracts |
+| No hidden automation or activation | No schedule installed, no enrollment baseline created, historical planning ledger unchanged |
+
+## Verification results and interpretation
+
+JUnit, JaCoCo, formatting, PIT and distribution packaging run through
+`scripts/build.ps1`. The latest recorded totals are in [ENGINEERING.md](../ENGINEERING.md).
+Tests cover execution only against mocks. The local PowerShell diagnostic fixtures
+also pass without network calls. Secret-value scans exclude the existing author
+email/contact identity and check actual passwords/API keys without printing them.
+
+PIT is intentionally scoped to financial interpretation, orchestration, execution
+and persistence. Surviving mutants include redundant downstream guards, monetary
+tolerance boundaries, reporting differences and disk-force/lock-release calls
+whose crash durability cannot be established by an in-process unit test. They
+are not all claimed equivalent. Review exposed and corrected missing tests for
+conflicting source facts, numeric cosmetic revisions, global event order, copied
+lot identity, non-atomic account snapshots, partial-fill persistence and two-lot
+recovery. No broad mutation exclusions were added to conceal these gaps.
+
+## Readiness decision
+
+**Application built; live enablement incomplete.** Blank capability evidence and
+asset profiles deliberately prevent new purchases. Resolve the
+[broker contract](broker-contract.md) before enabling them. If copied fills cannot
+inherit a hard price cap, this eToro copy route does not meet the agreed rule;
+the user must choose a different execution route or explicitly change that rule.
+Do not treat a configuration string or a passing fixture as broker proof.
+
+Corporate actions need reference-basis reconciliation; no automatic split adjuster
+exists. ETHA's announced October reverse split is documented in the broker contract.
+Unknown close outcomes and material source corrections require maintenance recovery.

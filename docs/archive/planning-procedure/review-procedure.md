@@ -1,9 +1,9 @@
----
-name: bravos-trading
-description: Review Bravos Tactical alerts, identify new or revised instructions, reconcile eToro holdings and funding, and maintain the project's planning ledger. Use for a user-launched review or dry run; excludes trade execution and the separate initial catch-up allocation.
----
+# Archived planning procedure
 
-# Bravos trading
+Historical text retained for provenance, retired on 19 September 2026. This is
+not an active skill or current operating instruction. The Java program and
+[current documentation](../../../README.md) supersede it. Relative links below
+describe the old layout and may require reference to the repository root.
 
 Run the checklist in order. Produce planning proposals and a saved review.
 Do not submit trades, change broker settings, transfer funds or create schedules.

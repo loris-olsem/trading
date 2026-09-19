@@ -1,132 +1,58 @@
-# Bravos trading-helper investigation
+# Bravos trading program
 
-Current stage: **planning and read-only testing**. There is no trading executor,
-scheduled job, or automated Bravos scraper in this project.
+An owner-operated Java application that follows Bravos **Tactical** alerts on its
+website and places eligible orders through the existing eToro Bravos Agent
+Portfolio. It parses supported alerts deterministically, keeps a durable journal,
+reconciles the agent with the owner's real allocation, and applies the agreed
+price, sizing and stop rules. Gmail and an AI assistant are not runtime dependencies.
 
-Latest owner snapshot (2026-09-19 08:36 UTC): **$4,610 allocated, all available
-cash, zero positions**. The $500 results below are historical observations.
+**Readiness:** implemented and tested with isolated fixtures and read-only service
+checks. No trades, initial enrollment or schedule have been created. Purchases
+remain blocked by unverified copy capabilities and empty asset profiles in
+[`config/trading.json`](config/trading.json). In particular, an agent limit order
+does not yet establish a hard ceiling on the owner's copied fill. See the
+[broker contract](docs/broker-contract.md).
 
-Latest planning snapshot: [expanded missed-trade preparation, 19 September 2026](BRAVOS-PREPARATION-2026-09-19.md).
-The user authorized a broader preparatory scan, extending to May 8 to reconstruct
-all 15 current Tactical holdings. Four conditional candidates pass the +2% price
-comparison using Friday quotes; none is execution-ready. Source facts and planning
-results are saved in ledger generation 1. No orders, initial enrollment or routine
-discovery baseline were created. The earlier [30-day report](BRAVOS-REVIEW-2026-09-19.md)
-is historical and used the former zero-tolerance rule.
+## Start here
 
-## Repeatable review procedure
+| Document | Purpose |
+| --- | --- |
+| [Operations](docs/operations.md) | Install, configure, plan, initialize, run and recover |
+| [Trading rules](docs/trading-rules.md) | Effective decisions in a compact table |
+| [Architecture](docs/architecture.md) | Discovery, policy, execution and state ownership |
+| [Broker contract](docs/broker-contract.md) | API boundaries and outstanding verification |
+| [Constraint review](docs/constraint-review.md) | Requirements mapped to code and tests |
+| [Engineering](ENGINEERING.md) | Build, coverage, PIT and repeatable checks |
+| [Policy provenance](PLANNING.md) | Detailed agreements and original decision records |
+| [Agent instructions](AGENTS.md) | Rules for repository maintenance |
 
-The repo-local [`bravos-trading` skill](.agents/skills/bravos-trading/SKILL.md)
-defines the fixed English workflow. Invoke `$bravos-trading` for a planning review,
-or ask Codex to read that file directly if it has not appeared in the skill picker.
-The entrypoint is a short ordered checklist. Trading decisions are isolated in
-[decision tables](.agents/skills/bravos-trading/references/decisions.md); source
-discovery and broker reconciliation are in
-[evidence collection](.agents/skills/bravos-trading/references/evidence.md).
-It uses a structured ledger under `state/bravos/`; the
-[state contract](.agents/skills/bravos-trading/references/state.md) defines IDs,
-revisions, proposals, reconciliation and interrupted-run recovery.
-
-Routine discovery resumes from the last completed scan; the 30-day window is
-only for initial catch-up. This is a draft procedure with a revision-audit policy, not a
-scheduled program. Installing it does not create a baseline, initialize a live
-portfolio, or run the review. Initial catch-up stays separate. Accepted policy
-and answer provenance are in [PLANNING.md](PLANNING.md). The user launches reviews
-in a dedicated chat. Tested helpers enforce local state mechanics; neither the
-Markdown nor those tests prove exactly-once broker execution. See
-[ENGINEERING.md](ENGINEERING.md) for repeatable checks and remaining work.
-
-## eToro connection diagnostic
-
-Requires PowerShell 7+ and outbound HTTPS access to `public-api.etoro.com`.
-From this directory, run:
+After installing the pinned tools through vfox, from the repository root:
 
 ```powershell
-.\scripts\inspect-etoro.ps1
+.\scripts\build.ps1 check pitest installDist
+.\scripts\trading.ps1 help
+.\scripts\trading.ps1 plan
 ```
 
-The script reads the two existing files under `secrets/etoro-bravos-agent/`:
-`bravos-public-key.txt` supplies `x-api-key`, and `bravos-private-key.txt` supplies
-`x-user-key`. Do not paste their values into documentation, chat, or logs.
+`plan` reads current data and saves evidence without submitting orders.
+`initialize` establishes the one-time enrollment window without trading.
+The owner's `run` command submits eligible trades; it is not proposal-only.
+Read the operations guide before invoking it. No schedule is installed.
 
-Only these fixed GET requests are made, with redirects disabled:
+## Layout and historical evidence
 
-- `/api/v1/me`: authenticated account identity and token scopes.
-- `/api/v1/agent-portfolios`: portfolios belonging to the authenticated account.
-- `/api/v1/trading/info/real/pnl`: that account's balances and current activity.
+- `src/main/java`, `src/test/java`: current application and isolated tests.
+- `config/`: non-secret settings; `.vfox.toml` and wrapper pin toolchains.
+- `secrets/`: ignored credentials, restricted to their intended service.
+- `state/runtime/`: ignored authoritative journal, history and kill switch.
+- `state/bravos/`: minimal Git-reviewable source and decision projections.
+  The old `ledger.json` is historical planning evidence, not runtime state.
+- `docs/archive/`: retired Markdown skill, Python planning tools and preserved
+  alternative Python draft. These are not active entrypoints.
 
-The projected report is printed and written to `state/etoro-readonly.json`.
-Secrets and private diagnostics under `state/` are ignored; minimal Bravos
-ledgers/history/reports alone are allowlisted for local Git. The report contains
-private account identifiers but no key values, request headers, or raw responses.
-It is a point-in-time diagnostic, not a transaction ledger. HTTP errors remain
-visible in each check; a completed script is not proof every check succeeded.
-
-The user-reported allocation defaults to $500 and is explicitly marked
-**unverified**. If the reported allocation changes, run with
-`-ReportedAllocationUsd <amount>`. This parameter cannot fund or change anything.
-
-## First verified result — 2026-09-19
-
-- Identity and portfolio requests returned HTTP 200.
-- The authenticated username begins with `Bravos-`; the full identity and IDs
-  are in the ignored local report.
-- The account reported internal credit of $10,000, no open positions, no pending
-  orders, and no mirrors.
-- Listing Agent Portfolios returned HTTP 403 / `Forbidden`. This is consistent
-  with an agent-specific token; it does not indicate the agent is missing.
-- The provided token advertises real trading read and write permissions. The
-  diagnostic uses read operations only.
-- These agent credentials do not expose the owner's real allocation. It was
-  subsequently verified with the separate owner diagnostic described below.
-
-eToro's creation documentation explains that real money is allocated to copy
-an internal virtual portfolio. At an initial $500 / $10,000 ratio, a $300
-internal position would represent approximately $15 of the owner's allocation,
-subject to actual copying rules, eligibility, costs, and minimums. The internal
-$10,000 is not additional user money and this is not a paper-trading account.
-
-The documented UI entry point is **Agent Portfolios (Beta)** in the desktop
-platform's side menu. The exact parent-side display still needs inspection in a
-signed-in eToro session; opening `/portfolio` currently redirects to login.
-The user declined a main-account browser sign-in for this investigation and
-subsequently supplied a main-account read-only API key instead.
-The user subsequently located the Bravos agent account in their own eToro UI.
-Future funding must stay available for new investments without resizing existing
-holdings. The user supplied an eToro help-bot response stating this is the default
-for Agent Portfolios and reporting $500 net funding. Treat this as attributed
-guidance, not an independently observed top-up test (see `PLANNING.md`).
-
-Validation completed: three live GET checks, PowerShell syntax validation, and a
-local scan confirming no credential values appear in generated project files.
-
-## Owner funding diagnostic — verified 2026-09-19
-
-Run `./scripts/inspect-etoro-funding.ps1` to refresh the actual Bravos allocation.
-It uses the existing public application key together with
-`secrets/etoro-main-readonly/private-key.txt` for owner reads. It also uses the
-agent key for an identity check. Four GET requests verify both identities, list
-the owner's agents and read the owner's portfolio/PnL. No write requests exist.
-
-The script matches by GCID and mirror ID, cross-checks the copied customer ID,
-and saves only the Bravos projection to ignored `state/etoro-owner-funding.json`.
-It rejects an owner token that advertises anything other than read scopes.
-Missing required funding fields fail verification; missing optional order lists
-are reported as null, not zero. Failures write an unverified report and exit 1.
-
-Live result: **$500 net contributions, $500 available mirror cash, zero open
-positions, active and unpaused**. All four GETs returned HTTP 200. Top-up
-behavior with existing holdings and subsequent trade scaling remain untested.
-This is a point-in-time snapshot, not an automatic funding monitor or a ledger.
-
-## Sources and next work
-
-- [eToro authentication](https://api-portal.etoro.com/core/getting-started/authentication)
-- [Agent Portfolio setup and menu location](https://www.etoro.com/news-and-analysis/etoro-updates/agent-portfolios-let-your-ai-agent-trade-for-you/)
-- [Proportional copying and creation schema](https://api-portal.etoro.com/api-reference/agent-portfolios/create-agent-portfolio-v2)
-- [Account identity](https://api-portal.etoro.com/api-reference/identity/get-authenticated-user-profile)
-- [List Agent Portfolios](https://api-portal.etoro.com/api-reference/agent-portfolios/get-agent-portfolios)
-
-See [PLANNING.md](PLANNING.md) for agreed entry rules and unresolved decisions.
-See [ETORO-FUNDING.md](ETORO-FUNDING.md) for the documented owner read-only API
-route, exact funding fields, alternatives, and additional agent-key checks.
+Read-only checks on 19 September 2026 found **$4,610 real owner equity**, all cash,
+and **$10,000 internal agent equity**, zero positions. Every run refreshes these.
+Historical research: [expanded backlog](BRAVOS-PREPARATION-2026-09-19.md),
+[Monday report](MONDAY-TRADE-PLAN-2026-09-21.md),
+[earlier 30-day report](BRAVOS-REVIEW-2026-09-19.md),
+[funding investigation](ETORO-FUNDING.md). Historical quotes are not executable prices.
