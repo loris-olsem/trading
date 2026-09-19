@@ -37,12 +37,23 @@ agreed initial catch-up must later establish activation and opening-cycle links.
 Load unresolved work as well as newly discovered work. A previously seen alert
 may still be waiting for readable content, a quote, sizing or reconciliation.
 
-## 2. Discover alerts with overlap
+## 2. Discover alerts since the last completed scan
 
 Start at `https://bravosresearch.com/category/portfolio-update/`.
-The normal scan floor is the start of the Luxembourg date 29 days before today.
-If the last complete discovery is older, extend the floor to the start of its
-Luxembourg date minus two days. This catches outages longer than 30 days.
+The 30-calendar-day window belongs ONLY to the separately requested initial
+catch-up. Never use it as the routine scan window.
+
+For a routine run, resume from `lastCompleteDiscoveryAtUtc`. Set the scan floor
+to the start of that checkpoint's Luxembourg calendar date because Bravos may
+provide dates without precise publication times. Re-reading that boundary date
+is discovery overlap, not permission to reconsider completed decisions.
+Deduplicate by article identity. After downtime, cover the entire interval since
+the checkpoint; do not truncate it to an arbitrary lookback window.
+
+If there is no complete-discovery checkpoint, routine discovery is uninitialized.
+Report that the separate initial scan/baseline must establish it. Do not silently
+launch a 30-day catch-up or choose today as the baseline. Independent account
+checks and review of already supplied articles may still proceed.
 
 Follow archive pagination from newest to oldest through one entire page whose
 dated entries are all older than the floor. Inspect all entries on visited
@@ -60,7 +71,7 @@ cycle or unresolved proposal, even when older than the scan floor. Once per
 seven Luxembourg calendar days, reopen all other stored alert URLs to detect
 edits to previously resolved alerts; record completion only if that audit finishes.
 
-This overlap is a proposed discovery policy, not a claim of complete historical
+This checkpoint overlap is a discovery policy, not a claim of complete historical
 change detection. A never-seen post backdated beyond the scanned pages can be
 missed. Dashboard reconciliation below may reveal a gap; only a complete archive
 inventory or a publisher change feed could remove that particular blind spot.

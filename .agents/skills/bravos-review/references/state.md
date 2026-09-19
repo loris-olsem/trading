@@ -121,7 +121,9 @@ These are paper scenarios, not executed broker tests:
 | Known post corrects its opening price | New revision; old price/evaluation retained; review, not a new opening |
 | Same ticker opens after an earlier closed cycle | Distinct cycle if the source proves a distinct opening |
 | Opening and full close arrive during downtime | Reconstruct closed cycle; no catch-up opening proposal |
-| Last successful run was 45 days ago | Extend scan beyond the normal 30-day overlap |
+| Last successful scan was this morning | Resume from that checkpoint's calendar date; deduplicate previously seen IDs |
+| Last successful run was 45 days ago | Cover the full interval since that checkpoint; no 30-day cap |
+| No complete-discovery checkpoint exists | Report initialization needed; never default to a routine 30-day scan |
 | Page 2 fails after page 1 was read | Preserve partial observations; do not advance complete-discovery time |
 | Quote says realtime but exchange is closed | Waiting quote; no permanent entry decision |
 | User adds $200 | Record funding delta; no trade proposal from funding alone |

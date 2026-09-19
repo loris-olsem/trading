@@ -17,7 +17,9 @@ stage. The current work is planning and read-only testing.
 - Added capital must not revive previously skipped opening alerts. How to size
   a later explicit Bravos addition remains a separate decision.
 - At startup, consider opening alerts from the preceding **30 calendar days**.
-  After the catch-up, consider new alerts going forward.
+  This window applies only to the initial catch-up. Routine discovery resumes
+  from the last completed scan, with its boundary date reread and deduplicated
+  by article identity. After downtime, cover the full gap without a 30-day cap.
 - A candidate must remain open according to subsequent Bravos updates.
 - Enter only when the executable buy quote is at or below Bravos's original
   published entry price, comparing the same instrument and currency.

@@ -16,7 +16,8 @@ It uses a structured ledger under `state/bravos/`; the
 [state contract](.agents/skills/bravos-review/references/state.md) defines IDs,
 revisions, proposals, reconciliation and interrupted-run recovery.
 
-This is a draft procedure with a proposed overlap/revision-audit policy, not a
+Routine discovery resumes from the last completed scan; the 30-day window is
+only for initial catch-up. This is a draft procedure with a revision-audit policy, not a
 scheduled program. Installing it does not create a baseline, initialize a live
 portfolio, or run the review. Initial catch-up and remaining financial policy
 choices stay separate. A Markdown procedure guides tool use; it does not provide
