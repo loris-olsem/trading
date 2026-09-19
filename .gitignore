@@ -14,4 +14,7 @@
 .env.*
 !.env.example
 __pycache__/
+/.gradle/
+/build/
+/config/local.json
 .vfox/
