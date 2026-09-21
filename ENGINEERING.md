@@ -39,6 +39,13 @@ Verified 19 September 2026 on the final Java sources:
 
 ## Read-only evidence
 
+The [21 September rehearsal](docs/REHEARSAL-2026-09-21.md) found and corrected the
+live `value` versus documented `amount` cost-component mismatch and extended the
+deterministic parser for explicit older prose forms. The updated suite passes
+**89 tests**, **90.70% instruction / 78.09% branch coverage**, and PIT **724/824
+killed (87.86%; displayed 88%)**, with 84 survivors and 16 uncovered mutants.
+The 19 September totals above are retained as historical evidence.
+
 The private capture from 19 September contains 143 Tactical articles starting in
 May. All parsed and reconstructed the 15 current dashboard holdings and weights.
 This is one observed corpus; unfamiliar wording is held. Full member content

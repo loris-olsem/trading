@@ -15,6 +15,9 @@ does not yet establish a hard ceiling on the owner's copied fill. See the
 
 ## Start here
 
+Latest validation: [Monday rehearsal, 21 September](docs/REHEARSAL-2026-09-21.md),
+including live read-only account/eligibility checks and defects found and fixed.
+
 | Document | Purpose |
 | --- | --- |
 | [Operations](docs/operations.md) | Install, configure, plan, initialize, run and recover |

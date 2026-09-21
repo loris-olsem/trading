@@ -35,6 +35,12 @@ rates, market-search, eligibility and costs endpoints. Eligibility/cost POSTs
 calculate read-only information and never submit orders. Development used the
 official OpenAPI version 1.379.0 captured on 19 September 2026.
 
+The 21 September read-only rehearsal observed cost components using `value`,
+while that schema calls the field `amount`. The adapter accepts either numeric
+field and rejects conflicting dual values or missing values. This discrepancy
+was tested using the observed response shape; see the
+[rehearsal report](REHEARSAL-2026-09-21.md).
+
 Execution routes are restricted to agent credentials:
 
 - `POST /api/v2/trading/execution/orders`: `limitIOC`, leverage 1, exact fixed stop.
