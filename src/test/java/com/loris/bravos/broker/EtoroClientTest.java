@@ -33,6 +33,7 @@ class EtoroClientTest {
     a.instrumentId = 1890;
     a.brokerSymbol = "CF";
     a.unleveragedEvidence = "test issuer";
+    a.priceScale = 2;
     a.unitScale = 4;
     c.assets.put("CF", a);
     return c;

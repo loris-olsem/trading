@@ -162,10 +162,25 @@ class MainTest {
     a.instrumentId = 1890;
     a.brokerSymbol = "CF";
     a.unleveragedEvidence = "issuer";
+    a.priceScale = 2;
+    a.unitScale = 6;
     configuration.assets.put("CF", a);
     Path config = root.resolve("test-config.json");
     Json.MAPPER.writeValue(config.toFile(), configuration);
     assertEquals(1890, Configuration.load(config).assets.get("CF").instrumentId);
+    for (String field : List.of("priceScale", "unitScale")) {
+      var incomplete = Json.MAPPER.valueToTree(configuration);
+      ((com.fasterxml.jackson.databind.node.ObjectNode) incomplete.path("assets").path("CF"))
+          .remove(field);
+      Json.MAPPER.writeValue(config.toFile(), incomplete);
+      assertEquals(
+          "INVALID_ASSET_CONFIGURATION",
+          assertThrows(IOException.class, () -> Configuration.load(config), field).getMessage());
+      ((com.fasterxml.jackson.databind.node.ObjectNode) incomplete.path("assets").path("CF"))
+          .putNull(field);
+      Json.MAPPER.writeValue(config.toFile(), incomplete);
+      assertThrows(IOException.class, () -> Configuration.load(config), field + " null");
+    }
     a.priceScale = -1;
     assertThrows(IOException.class, configuration::validate);
     a.priceScale = 2;

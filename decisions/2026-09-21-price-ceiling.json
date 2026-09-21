@@ -1,0 +1,6 @@
+{
+  "topic": "owner-copy-entry-price-ceiling",
+  "answer": "strict maxium",
+  "context": "User was asked whether a $102 maximum after a $100 Bravos opening must apply to the final real purchase, or whether execution could exceed it after checking the price.",
+  "effect": "Retain the enforced price ceiling on the owner's actual copied fill. A fresh quote check and an agent-only limit do not authorize copy-side overpayment. Purchases remain blocked until the owner-side guarantee is established."
+}

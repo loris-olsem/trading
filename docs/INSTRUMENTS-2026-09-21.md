@@ -51,9 +51,10 @@ symbol responses fail rather than presenting missing instruments as absent.
 The captured OpenAPI schema exposes currency and price precision in
 `InstrumentMetadataSlim`, nested under watchlist enrichment. The symbol metadata
 and eligibility responses used above do not expose supported fractional-unit
-precision. Defaults of two price decimals and six unit decimals in the existing
-configuration class are not evidence of broker support. Do not populate complete
-execution profiles by copying those defaults.
+precision. The former defaults of two price decimals and six unit decimals were
+not evidence of broker support. Configuration now requires both values explicitly;
+omitting either rejects the profile. Do not populate execution profiles by copying
+unverified values.
 
 The [broker contract](broker-contract.md) separately tracks owner-copy price,
 sizing and stop propagation. Account eligibility does not settle those questions.

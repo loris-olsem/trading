@@ -32,6 +32,11 @@ Follow-up answers on 2026-09-19:
 
 ## Strategy and instruments
 
+On 21 September the owner reaffirmed a **strict maximum on the final real
+purchase price**, rejecting permission for the copied fill to exceed it after
+the quote check. This preserves D07 and the existing +2% opening rule; it does
+not add another tolerance. See the [exact follow-up](decisions/2026-09-21-price-ceiling.json).
+
 - Follow Bravos Tactical alerts on its website; Gmail is not required. A03 gave
   qualified assent to Tactical, while asking what Quant is. Quant is a separate
   signal/allocation system; its previously read guide included QQQ/TQQQ mixes.

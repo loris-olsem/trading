@@ -1,5 +1,6 @@
 package com.loris.bravos.app;
 
+import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.loris.bravos.util.Json;
 import java.io.IOException;
 import java.nio.file.*;
@@ -18,12 +19,16 @@ public final class Configuration {
     public String brokerSymbol;
     public String settlementType = "real";
     public String unleveragedEvidence;
-    public int priceScale = 2;
-    public int unitScale = 6;
+    public int priceScale = -1;
+    public int unitScale = -1;
   }
 
   public static Configuration load(Path file) throws IOException {
-    Configuration c = Json.MAPPER.readValue(file.toFile(), Configuration.class);
+    Configuration c =
+        Json.MAPPER
+            .readerFor(Configuration.class)
+            .with(DeserializationFeature.FAIL_ON_NULL_FOR_PRIMITIVES)
+            .readValue(file.toFile());
     c.validate();
     return c;
   }

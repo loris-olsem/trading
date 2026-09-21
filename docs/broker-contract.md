@@ -64,6 +64,8 @@ per-order approval flow.
    that the owner's copy inherits the same cap. Post-fill `openRate` checks detect
    overpayment but cannot prevent it. Establish a binding guarantee before setting
    `copyPriceCeilingEvidence`.
+   The owner explicitly reaffirmed this strict maximum on 21 September; quote-only
+   checking with possible copy-side overpayment was not accepted.
 2. **Copy sizing:** verify the realized-equity ratio above for Agent Portfolio new
    orders with existing PnL and later deposits. Only then select
    `REALIZED_EQUITY_RATIO` and set `copySizingEvidence`.

@@ -43,6 +43,13 @@ Verified after instrument discovery and independent owner eligibility on
   Gradle commands are in the [instrument investigation](docs/INSTRUMENTS-2026-09-21.md).
   These checks did not establish copy-side execution guarantees or enable trading.
 
+Subsequent precision validation removes guessed price/unit scale defaults and
+rejects omitted or null precision fields. All 142 tests and packaging pass;
+coverage is 9,764/10,780 instructions (90.58%) and 1,298/1,638 branches (79.24%).
+PIT passed again at 800/902 kills before the final null-deserialization check;
+that final change is in configuration loading, outside the unchanged PIT target
+set, and was verified by the full test suite. No gates were lowered.
+
 Verified after the recovery fixes on 21 September 2026:
 
 - **114 JUnit tests passed**, including 25 additional regression cases.
