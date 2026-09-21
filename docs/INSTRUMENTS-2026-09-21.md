@@ -3,7 +3,7 @@
 Read-only checks used the existing agent and owner tokens with the official
 eToro API. No orders or account changes were made. The private response is at
 `state/capture/instruments.json`; it is not committed. These observations are
-identity and eligibility evidence, not approved execution profiles.
+identity and eligibility evidence. The sourced execution profiles below use it.
 
 | Bravos symbol | eToro symbol / ID | API display name | Opening allowed on both accounts | Non-potential long X1 settlement |
 | --- | --- | --- | --- | --- |
@@ -46,15 +46,51 @@ only. Its separate private output is `state/capture/instrument-search.json`.
 Neither mode edits configuration or authorizes orders. Incomplete paginated
 symbol responses fail rather than presenting missing instruments as absent.
 
-## Remaining profile evidence
+## Execution profiles
+
+Configured: CF, BRK.B, EOG, ARGT and SMH, with the IDs and settlement types in
+the table. The three ordinary US common stocks have no embedded multiplier:
+[CF issuer](https://ir.cfindustries.com/Investors/company-profile/default.aspx),
+[Berkshire SEC cover](https://www.sec.gov/Archives/edgar/data/1067983/000119312526083899/R1.htm),
+[EOG SEC filing](https://www.sec.gov/Archives/edgar/data/821189/000082118926000149/eog-20260630.htm).
+[ARGT](https://www.globalxetfs.com/funds/argt) and
+[SMH](https://www.vaneck.com/us/en/investments/semiconductor-etf-smh/) have ordinary
+index-tracking objectives, not leveraged multiples. These profiles refer to their
+US-listed, dollar-quoted instruments; exact eToro identity and both accounts'
+long X1 eligibility are rechecked before entry. An X1 CFD is still a CFD and can
+have financing costs; the live owner-side costs calculation remains mandatory.
+
+Price calculations round down to cents (`priceScale: 2`). Cent-aligned limits
+fit both the $0.01 and $0.005 US equity tick increments described in the
+[SEC rule](https://www.sec.gov/files/rules/final/2024/34-101070.pdf).
+Fractional partial-sale calculations round down to five decimals (`unitScale: 5`),
+grounded in eToro's published fractional-share support up to five decimals
+([eToro registration statement](https://investors.etoro.com/static-files/f7f8a7db-abc1-4f30-8250-dcca695b57fa)).
+The Public API accepts positive numeric units and does not publish a per-asset
+decimal maximum. Five is a conservative calculation granularity, not a claim of
+fresh asset-specific precision metadata or a CFD execution guarantee. Full exits
+use all actual units returned by the broker, without this rounding. Exact Bravos
+stop rates are never rounded or altered to fit a profile.
+
+For limits, the API also rejects prices more than 10% from market. The program
+uses the lower of the strategy ceiling and fresh ask × 1.09, rounded down, then
+rechecks the 10% bound immediately before submission. This only tightens the
+maximum; a rejected or completely unfilled opening remains eligible for a later
+fresh assessment. A partial fill is retained without an automatic top-up.
+
+IBIT and ETHA are currently unavailable for opening on these accounts. They are
+not configured; ETHA also has the corporate-action boundary in the broker guide.
+MAGS remains unidentified. None receives a substitute. These exclusions do not
+block the five configured instruments.
+
+## Metadata limitations
 
 The captured OpenAPI schema exposes currency and price precision in
 `InstrumentMetadataSlim`, nested under watchlist enrichment. The symbol metadata
 and eligibility responses used above do not expose supported fractional-unit
-precision. The former defaults of two price decimals and six unit decimals were
-not evidence of broker support. Configuration now requires both values explicitly;
-omitting either rejects the profile. Do not populate execution profiles by copying
-unverified values.
+precision. The former implicit defaults were not broker evidence. Configuration
+requires explicit calculation precision; the sourced choices above replace those
+defaults. Omitting either rejects the profile.
 
 The [broker contract](broker-contract.md) separately tracks owner-copy price,
 sizing and stop propagation. Account eligibility does not settle those questions.

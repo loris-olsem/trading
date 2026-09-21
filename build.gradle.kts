@@ -128,6 +128,15 @@ tasks.register<JavaExec>("watchlistMetadata") {
     args("--watchlists")
 }
 
+tasks.register<JavaExec>("instrumentPreflight") {
+    group = "bravos"
+    description = "Read-only configured-instrument, quote and cost diagnostics; no source crawl or orders."
+    classpath = sourceSets.main.get().runtimeClasspath
+    mainClass = "com.loris.bravos.app.InstrumentAudit"
+    workingDir = projectDir
+    args("--preflight")
+}
+
 tasks.register<JavaExec>("instrumentAudit") {
     group = "bravos"
     description = "Read-only instrument eligibility (-Psymbols=CF,EOG) or identity search (-Pquery=name)."

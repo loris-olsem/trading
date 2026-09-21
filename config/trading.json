@@ -1,8 +1,49 @@
 {
-  "copySizingEvidence": "",
-  "copyStopsEvidence": "",
+  "copySizingEvidence": "docs/broker-contract.md#operating-model: official Agent Portfolio proportional copying plus the CopyTrader realized-equity rule; agent-specific application is an inference, checked against every copied fill.",
+  "copyStopsEvidence": "docs/broker-contract.md#operating-model: documented copying of stop-loss changes plus fixed-stop order API and live eligibility; actual protection requires agent and owner position read-back.",
   "copyPriceCeilingEvidence": "",
   "copyPricePolicy": "AGENT_LIMIT_WITH_COPY_CHECK",
-  "copySizingModel": "UNVERIFIED",
-  "assets": {}
+  "copySizingModel": "REALIZED_EQUITY_RATIO",
+  "assets": {
+    "CF": {
+      "instrumentId": 1890,
+      "brokerSymbol": "CF",
+      "settlementType": "real",
+      "unleveragedEvidence": "docs/INSTRUMENTS-2026-09-21.md#execution-profiles: CF Industries NYSE common stock; official issuer and live exact-ID long X1 eligibility.",
+      "priceScale": 2,
+      "unitScale": 5
+    },
+    "BRK.B": {
+      "instrumentId": 1118,
+      "brokerSymbol": "BRK.B",
+      "settlementType": "real",
+      "unleveragedEvidence": "docs/INSTRUMENTS-2026-09-21.md#execution-profiles: Berkshire Hathaway NYSE Class B common stock; SEC filing and live exact-ID long X1 eligibility.",
+      "priceScale": 2,
+      "unitScale": 5
+    },
+    "EOG": {
+      "instrumentId": 1581,
+      "brokerSymbol": "EOG",
+      "settlementType": "real",
+      "unleveragedEvidence": "docs/INSTRUMENTS-2026-09-21.md#execution-profiles: EOG Resources NYSE common stock; SEC filing and live exact-ID long X1 eligibility.",
+      "priceScale": 2,
+      "unitScale": 5
+    },
+    "ARGT": {
+      "instrumentId": 3421,
+      "brokerSymbol": "ARGT",
+      "settlementType": "cfd",
+      "unleveragedEvidence": "https://www.globalxetfs.com/funds/argt: ordinary MSCI All Argentina 25/50 index objective, not a leveraged multiple; live exact-ID long X1 CFD eligibility. See docs/INSTRUMENTS-2026-09-21.md#execution-profiles.",
+      "priceScale": 2,
+      "unitScale": 5
+    },
+    "SMH": {
+      "instrumentId": 6357,
+      "brokerSymbol": "SMH",
+      "settlementType": "cfd",
+      "unleveragedEvidence": "https://www.vaneck.com/us/en/investments/semiconductor-etf-smh/: ordinary MVIS US Listed Semiconductor 25 index objective, not a leveraged multiple; live exact-ID long X1 CFD eligibility. See docs/INSTRUMENTS-2026-09-21.md#execution-profiles.",
+      "priceScale": 2,
+      "unitScale": 5
+    }
+  }
 }

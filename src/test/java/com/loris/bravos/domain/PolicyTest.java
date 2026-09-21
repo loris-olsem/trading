@@ -78,6 +78,33 @@ class PolicyTest {
   }
 
   @Test
+  void fallenPricesUseAnExecutableLimitWithoutRaisingTheStrategyMaximum() {
+    var c = cycle();
+    c.stop = d("50");
+    assertEquals(d("87.20"), opening(c, quote("80"), account()).intents().getFirst().ceiling());
+    assertEquals(d("87.22"), opening(c, quote("80.019"), account()).intents().getFirst().ceiling());
+    assertEquals(d("102.00"), opening(c, quote("100"), account()).intents().getFirst().ceiling());
+    assertEquals(Outcome.WATCH_PRICE, opening(c, quote("102.01"), account()).outcome());
+    c.entered = true;
+    c.positionIds.add(10L);
+    var add = alert("add", Action.ADD, "90", "5", "8", null);
+    assertEquals(
+        d("87.20"),
+        policy
+            .addition(c, add, instrument(), quote("80"), account(), NOW, d("0"))
+            .intents()
+            .getFirst()
+            .ceiling());
+    assertEquals(
+        d("90.00"),
+        policy
+            .addition(c, add, instrument(), quote("89"), account(), NOW, d("0"))
+            .intents()
+            .getFirst()
+            .ceiling());
+  }
+
+  @Test
   void ceilingNeverRoundsUp() {
     Cycle c = cycle();
     c.entry = d("100.009");

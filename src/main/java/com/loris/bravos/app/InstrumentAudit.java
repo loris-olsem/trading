@@ -21,24 +21,34 @@ public final class InstrumentAudit {
       var secrets = Secrets.load(root);
       var transport = new HttpTransport(URI.create("https://public-api.etoro.com"), false);
       var report =
-          args.length == 1 && args[0].equals("--watchlists")
-              ? watchlists(transport, secrets)
-              : args.length == 2 && args[0].equals("--query")
-                  ? search(transport, secrets, args[1])
-                  : discover(
-                      transport,
-                      secrets,
-                      args.length == 0 ? "CF,BRK.B,ARGT,MAGS,IBIT,EOG,ETHA.US,SMH" : args[0]);
+          args.length == 1 && args[0].equals("--preflight")
+              ? preflight(
+                  transport,
+                  secrets,
+                  Configuration.load(root.resolve("config/trading.json")),
+                  java.time.Clock.systemUTC())
+              : args.length == 1 && args[0].equals("--watchlists")
+                  ? watchlists(transport, secrets)
+                  : args.length == 2 && args[0].equals("--query")
+                      ? search(transport, secrets, args[1])
+                      : discover(
+                          transport,
+                          secrets,
+                          args.length == 0 ? "CF,BRK.B,ARGT,MAGS,IBIT,EOG,ETHA.US,SMH" : args[0]);
       Path output =
           root.resolve(
-              report.has("ownerWatchlists")
-                  ? "state/capture/watchlist-metadata.json"
-                  : report.has("query")
-                      ? "state/capture/instrument-search.json"
-                      : "state/capture/instruments.json");
+              report.has("preflight")
+                  ? "state/capture/instrument-preflight.json"
+                  : report.has("ownerWatchlists")
+                      ? "state/capture/watchlist-metadata.json"
+                      : report.has("query")
+                          ? "state/capture/instrument-search.json"
+                          : "state/capture/instruments.json");
       Files.createDirectories(output.getParent());
       Json.MAPPER.writeValue(output.toFile(), report);
       System.out.println("Read-only instrument evidence saved to " + root.relativize(output));
+      for (var item : report.path("preflight"))
+        System.out.println(item.path("symbol").asText() + ": " + item.path("result").asText());
       for (var item : report.path("metadata").path("results"))
         System.out.println(
             item.path("symbol").asText()
@@ -50,6 +60,71 @@ public final class InstrumentAudit {
       System.err.println("INSTRUMENT_AUDIT_FAILED; credentials and response bodies withheld");
       System.exit(1);
     }
+  }
+
+  /** Exercise configured read-only preflight without source crawling or execution. */
+  public static JsonNode preflight(
+      Transport transport, Secrets secrets, Configuration config, java.time.Clock clock)
+      throws IOException {
+    var report = Json.MAPPER.createObjectNode().put("observedAt", clock.instant().toString());
+    var reads = report.putArray("costResponses");
+    var marketReads = report.putArray("marketResponses");
+    Transport capture =
+        (method, path, headers, body) -> {
+          var response = transport.request(method, path, headers, body);
+          if (method.equals("GET")
+              && path.startsWith("/api/v")
+              && path.contains("/market-data/")
+              && response.status() == 200)
+            marketReads
+                .addObject()
+                .put("path", path)
+                .set("response", Json.MAPPER.readTree(response.body()));
+          if (path.equals("/api/v2/trading/info/costs")) {
+            var entry =
+                reads
+                    .addObject()
+                    .put("receivedAt", clock.instant().toString())
+                    .put("status", response.status());
+            if (response.status() == 200)
+              entry.set("response", Json.MAPPER.readTree(response.body()));
+          }
+          return response;
+        };
+    var broker = new EtoroClient(capture, secrets, config, clock, false);
+    var account = broker.account();
+    report.put("ownerEquity", account.ownerEquity()).put("ownerCash", account.ownerCash());
+    var results = report.putArray("preflight");
+    for (String symbol : config.assets.keySet()) {
+      var item = results.addObject().put("symbol", symbol);
+      try {
+        long id = config.assets.get(symbol).instrumentId;
+        read(capture, secrets, false, "GET", "/api/v2/market-data/rates?instrumentIds=" + id, null);
+        read(
+            capture,
+            secrets,
+            false,
+            "GET",
+            "/api/v1/market-data/search?instrumentId="
+                + id
+                + "&fields=isOpen,isExchangeOpen,isCurrentlyTradable",
+            null);
+        var instrument = broker.instrument(symbol, new java.math.BigDecimal("100"));
+        if (instrument == null) item.put("result", "INELIGIBLE");
+        else {
+          item.set("instrument", Json.MAPPER.valueToTree(instrument));
+          item.set("quote", Json.MAPPER.valueToTree(broker.quote(instrument)));
+          item.put("result", "READ_PREFLIGHT_PASSED");
+        }
+      } catch (IOException e) {
+        item.put(
+            "result",
+            e.getMessage() != null && e.getMessage().matches("[A-Z][A-Z0-9_]{2,100}")
+                ? e.getMessage()
+                : "PREFLIGHT_READ_FAILED");
+      }
+    }
+    return report;
   }
 
   /** Read existing lists only; never create built-in lists or add any instruments. */

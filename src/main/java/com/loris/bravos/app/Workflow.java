@@ -285,10 +285,23 @@ public final class Workflow {
       Alert e = exposure.event();
       Account fresh = market.account();
       BigDecimal weight = c.entered ? e.after().subtract(e.before()) : c.weight;
-      Instrument instrument =
-          market.instrument(
-              c.symbol, weight.multiply(fresh.ownerEquity()).divide(new BigDecimal("100")));
-      Quote quote = instrument == null ? null : market.quote(instrument);
+      Instrument instrument;
+      Quote quote;
+      try {
+        instrument =
+            market.instrument(
+                c.symbol, weight.multiply(fresh.ownerEquity()).divide(new BigDecimal("100")));
+        quote = instrument == null ? null : market.quote(instrument);
+      } catch (IOException unavailable) {
+        String reason = unavailable.getMessage();
+        state.report.add(
+            c.symbol
+                + ": BLOCKED "
+                + (reason != null && reason.matches("[A-Z][A-Z0-9_]{2,100}")
+                    ? reason
+                    : "INSTRUMENT_DATA_UNAVAILABLE"));
+        continue;
+      }
       if (live && c.entered && quote != null && quote.exchangeOpen())
         c.additionSessions.putIfAbsent(
             e.key(), clock.instant().atZone(ZoneId.of("America/New_York")).toLocalDate());

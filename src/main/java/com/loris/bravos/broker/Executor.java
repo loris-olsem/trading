@@ -11,11 +11,22 @@ public final class Executor {
   private final StateStore store;
   private final Broker broker;
   private final Clock clock;
+  private final Sleeper sleeper;
+
+  @FunctionalInterface
+  interface Sleeper {
+    void sleep(long millis) throws InterruptedException;
+  }
 
   public Executor(StateStore store, Broker broker, Clock clock) {
+    this(store, broker, clock, Thread::sleep);
+  }
+
+  Executor(StateStore store, Broker broker, Clock clock, Sleeper sleeper) {
     this.store = store;
     this.broker = broker;
     this.clock = clock;
+    this.sleeper = sleeper;
   }
 
   public Attempt execute(Intent intent) throws IOException {
@@ -75,7 +86,26 @@ public final class Executor {
     attempt.status = Status.SUBMITTED;
     store.save();
     reconcile(attempt);
+    // Only read again; never repeat a submission. Portfolio/PnL caches can lag
+    // the order receipt. Limit waiting to three intervals (90 seconds on eToro).
+    for (int poll = 0; poll < 3 && awaitingReadback(attempt); poll++) {
+      long delay = broker.readbackInterval().toMillis();
+      if (delay <= 0 || store.killed()) break;
+      try {
+        sleeper.sleep(delay);
+      } catch (InterruptedException interrupted) {
+        Thread.currentThread().interrupt();
+        throw new IOException("READBACK_INTERRUPTED_STATE_PRESERVED", interrupted);
+      }
+      reconcile(attempt);
+    }
     return attempt;
+  }
+
+  private static boolean awaitingReadback(Attempt attempt) {
+    return "RECONCILIATION_UNAVAILABLE".equals(attempt.result)
+        || attempt.status == Status.SUBMITTED
+        || attempt.status == Status.PARTIAL;
   }
 
   public void reconcile(Attempt attempt) throws IOException {

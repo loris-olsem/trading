@@ -62,6 +62,137 @@ class ExecutorTest {
   }
 
   @Test
+  void delayedCopyConfirmationWaitsWithoutResubmission() throws Exception {
+    var broker =
+        new Fake() {
+          public Duration readbackInterval() {
+            return Duration.ofSeconds(30);
+          }
+        };
+    broker.readFailure = true;
+    var sleeps = new ArrayList<Long>();
+    try (var store = store()) {
+      var executor =
+          new Executor(
+              store,
+              broker,
+              clock,
+              millis -> {
+                sleeps.add(millis);
+                broker.readFailure = false;
+                broker.observation =
+                    sleeps.size() < 3
+                        ? new Broker.Observation(
+                            Status.PARTIAL, "COPY_OR_STOP_NOT_CONFIRMED", List.of(10L))
+                        : new Broker.Observation(Status.CONFIRMED, "PROVED", List.of(10L));
+              });
+      assertEquals(Status.CONFIRMED, executor.execute(intent()).status);
+      assertEquals(List.of(30000L, 30000L, 30000L), sleeps);
+      assertEquals(1, broker.submits);
+      assertEquals(4, broker.observes);
+      executor.execute(intent());
+      assertEquals(1, broker.submits);
+    }
+  }
+
+  @Test
+  void pendingReadbackStopsAtBoundAndRemainsDurable() throws Exception {
+    var broker =
+        new Fake() {
+          public Duration readbackInterval() {
+            return Duration.ofSeconds(30);
+          }
+        };
+    broker.observation = new Broker.Observation(Status.SUBMITTED, "AWAITING_FILL", List.of());
+    try (var store = store()) {
+      assertEquals(
+          Status.SUBMITTED, new Executor(store, broker, clock, ms -> {}).execute(intent()).status);
+      assertEquals(4, broker.observes);
+    }
+    try (var store = new StateStore(temp)) {
+      assertEquals(Status.SUBMITTED, store.state().attempts.get(intent().key()).status);
+      new Executor(
+              store, broker, clock, ms -> fail("No new submission or wait for an existing attempt"))
+          .execute(intent());
+      assertEquals(1, broker.submits);
+    }
+  }
+
+  @Test
+  void adverseEvidenceStopsPollingImmediately() throws Exception {
+    var broker =
+        new Fake() {
+          public Duration readbackInterval() {
+            return Duration.ofSeconds(30);
+          }
+        };
+    broker.observation =
+        new Broker.Observation(Status.UNKNOWN, "COPIED_PRICE_CEILING_BREACHED", List.of());
+    try (var store = store()) {
+      assertEquals(
+          Status.UNKNOWN,
+          new Executor(store, broker, clock, ms -> fail("Must report breach immediately"))
+              .execute(intent())
+              .status);
+      assertEquals(1, broker.observes);
+    }
+  }
+
+  @Test
+  void interruptionPreservesSubmittedAttemptAndInterruptFlag() throws Exception {
+    var broker =
+        new Fake() {
+          public Duration readbackInterval() {
+            return Duration.ofSeconds(30);
+          }
+        };
+    broker.observation = new Broker.Observation(Status.SUBMITTED, "AWAITING_FILL", List.of());
+    try (var store = store()) {
+      var executor =
+          new Executor(
+              store,
+              broker,
+              clock,
+              ms -> {
+                throw new InterruptedException();
+              });
+      assertThrows(IOException.class, () -> executor.execute(intent()));
+      assertTrue(Thread.interrupted());
+      assertEquals(Status.SUBMITTED, store.state().attempts.get(intent().key()).status);
+    } finally {
+      Thread.interrupted();
+    }
+  }
+
+  @Test
+  void killDuringReadbackPreventsFurtherWaiting() throws Exception {
+    var broker =
+        new Fake() {
+          public Duration readbackInterval() {
+            return Duration.ofSeconds(30);
+          }
+        };
+    broker.observation = new Broker.Observation(Status.SUBMITTED, "AWAITING_FILL", List.of());
+    try (var store = store()) {
+      var executor =
+          new Executor(
+              store,
+              broker,
+              clock,
+              ms -> {
+                try {
+                  Files.createFile(temp.resolve("KILL"));
+                } catch (IOException e) {
+                  throw new AssertionError(e);
+                }
+              });
+      assertEquals(Status.SUBMITTED, executor.execute(intent()).status);
+      assertEquals(2, broker.observes);
+      assertEquals(1, broker.submits);
+    }
+  }
+
+  @Test
   void writeAheadConfirmationAndRerunNeverDuplicate() throws Exception {
     var broker = new Fake();
     try (var store = store()) {
@@ -110,6 +241,7 @@ class ExecutorTest {
       var executor = new Executor(store, broker, clock);
       var a = executor.execute(intent());
       assertEquals(Status.PARTIAL, a.status);
+      assertEquals(1, broker.observes);
       assertFalse(store.state().book.cycles.get("opening").completed.contains("opening"));
       broker.readFailure = true;
       executor.reconcile(a);

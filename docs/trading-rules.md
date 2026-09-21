@@ -16,7 +16,7 @@ Policy `2026-09-21.1`. Detailed agreements and original answers:
 | Held addition | Add weight increase × current owner equity; ceiling is addition price, no 2% tolerance |
 | Missed add then reduction | Expire unexecuted add; trim actual held units proportionally |
 | Opening size | Latest source weight × real total equity of owner's Bravos allocation |
-| Agent conversion | Separate verified copy-capital conversion; internal capital is not owner money |
+| Agent conversion | Sourced realized-copy-capital model; verify actual copied amount after every fill; internal capital is not owner money |
 | Funding | No rebalance or order; cash available for future qualifying actions |
 | Cash/minimum/cost failure | Report/skip; do not inflate size or redistribute skipped weights |
 | Final partial fill | Keep protected units, report shortfall, consume event; no automatic top-up |
@@ -29,6 +29,7 @@ Policy `2026-09-21.1`. Detailed agreements and original answers:
 | Full early/stop exit | End participation; no old-cycle re-entry |
 | Instrument | Exact supported exposure, no leverage including embedded; no substitute ticker |
 | Quote | Exchange open; USD ask ≤60 seconds old, not future-dated |
+| Broker limit range | Tighten order limit to at most fresh ask × 1.09, never above the strategy ceiling; recheck broker's 10% deviation bound before submission |
 | Order | Reconcile, exits/reductions, stops, then openings/adds by source publication order |
 | Uncertain submission | Reconcile original attempt; no blind retry |
 | Addition expiry | First evaluated open New York trading-date session; outstanding attempts still reconciled |

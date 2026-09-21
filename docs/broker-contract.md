@@ -54,11 +54,36 @@ Execution routes are restricted to agent credentials:
 - `POST /api/v1/trading/execution/market-close-orders/positions/{id}`: full/partial close.
 - `GET /api/v1/trading/info/real/close-orders/{id}`: close execution proof.
 
-## Unverified capabilities
+## Operating model
 
-`config/trading.json` has blank evidence and no asset profiles. Do not bypass
-these gaps with placeholder strings. They are contract verification, not a
-per-order approval flow.
+The owner asked to proceed using the best available information after support
+could not establish private Agent Portfolio contracts. The configured model uses
+the official [Agent Portfolio description](https://raw.githubusercontent.com/etoro-builders/etoro-agent-skills/main/skills/etoro-agent-portfolios/SKILL.md)
+of proportional copy trading and the more specific
+[CopyTrader rules](https://www.etoro.com/copytrader/how-it-works/) for new-order
+realized-equity sizing and copying stop changes. Applying those CopyTrader details
+to this agent is an **inference**, not an observed Agent Portfolio guarantee.
+The model is now configured rather than requiring support to certify it before
+the first order. `copySizingEvidence` and `copyStopsEvidence` identify that source
+and its limits; they do not assert successful live testing.
+
+Execution must still request the exact fixed stop with the opening order, check
+both accounts' eligibility, and verify each copied amount, instrument, entry price
+and exact stop. It submits one order at a time. No next purchase proceeds while
+an outcome is unresolved or a copied amount/price/protection check fails. A fill
+is not confirmed merely because an API accepted its order. The program waits up
+to three 30-second intervals for cached portfolio reads after an order receipt;
+timeout preserves the attempt for reconciliation rather than resubmitting it.
+
+This detects a broker discrepancy after execution; it cannot guarantee the broker
+never creates a differently sized or temporarily unprotected copy. Stop discrepancies
+are reported with the affected owner position, and the existing narrow agent-stop
+repair path remains. There is no automatic corrective sale or owner-account write.
+
+## Remaining broker uncertainty
+
+`config/trading.json` contains sourced operating-model references and five exact
+asset profiles. No live execution evidence or copy-side price guarantee is claimed.
 
 1. **Owner price cap:** agent `limitIOC` caps the agent fill. We have not established
    that the owner's copy inherits the same cap. The owner subsequently accepted
@@ -67,12 +92,12 @@ per-order approval flow.
    `openRate` checks detect overpayment and block further purchases; they cannot
    prevent or undo it. No automatic corrective sale is authorized. The default
    `REQUIRE_COPY_GUARANTEE` mode remains available and requires actual evidence.
-2. **Copy sizing:** verify the realized-equity ratio above for Agent Portfolio new
-   orders with existing PnL and later deposits. Only then select
-   `REALIZED_EQUITY_RATIO` and set `copySizingEvidence`.
-3. **Stop propagation:** establish exact fixed stops on initial copied positions
-   and later edits. Read-back exists, but empty accounts cannot prove propagation.
-   Record verified evidence in `copyStopsEvidence`.
+2. **Copy sizing:** `REALIZED_EQUITY_RATIO` uses the sourced model above. Verify
+   actual copied dollars for every order, including after deposits and with PnL;
+   a discrepancy blocks subsequent purchases rather than adjusting exposure.
+3. **Stop propagation:** exact fixed stops are requested on entries and edits.
+   Empty accounts cannot prove propagation. Only actual position read-back
+   establishes whether the requested protection has been applied.
 4. **Cash-only funding:** the owner supplied an eToro help-bot answer saying agent
    top-ups stay cash without rebalancing. This is attributed guidance, not an
    observed test with holdings. The program never rebalances from funding and

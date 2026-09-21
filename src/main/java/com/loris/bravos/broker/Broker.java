@@ -7,6 +7,11 @@ import java.io.IOException;
 import java.util.List;
 
 public interface Broker {
+  /** Zero for immediate fixtures; production polling accommodates cached portfolio reads. */
+  default java.time.Duration readbackInterval() {
+    return java.time.Duration.ZERO;
+  }
+
   default void prepare(com.loris.bravos.state.TradingState.Attempt attempt)
       throws java.io.IOException {}
 

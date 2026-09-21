@@ -6,7 +6,7 @@ import java.io.IOException;
 import java.nio.file.*;
 import java.util.*;
 
-/** Non-secret instrument identities and evidence-backed broker capabilities. */
+/** Non-secret identities and sources for the operating model; not proof of a broker fill. */
 public final class Configuration {
   public String copySizingEvidence = "";
   public String copyStopsEvidence = "";
@@ -20,6 +20,7 @@ public final class Configuration {
     public String brokerSymbol;
     public String settlementType = "real";
     public String unleveragedEvidence;
+    // Deliberate downward calculation granularity, not a claim of maximum API precision.
     public int priceScale = -1;
     public int unitScale = -1;
   }

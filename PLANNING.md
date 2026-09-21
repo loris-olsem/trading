@@ -4,8 +4,8 @@ Policy version: `2026-09-21.1`. The user chose an owner-operated Java/Gradle
 program to replace the Markdown skill. Normal `run` executes eligible trades;
 `plan` and `initialize` never submit orders. No schedule or initial enrollment
 has been created. The [operations guide](docs/operations.md) describes invocation;
-the [broker contract](docs/broker-contract.md) records unresolved capabilities
-that currently block purchases. Development uses read-only external checks and
+the [broker contract](docs/broker-contract.md) records the sourced operating model
+and unresolved broker guarantees. Development uses read-only external checks and
 isolated execution fixtures, not financial actions by the assistant.
 
 ## Provenance and conflicts
@@ -128,6 +128,8 @@ which specifies a 3x daily Nasdaq-100 objective.
   owner accepts unverified copy-side price protection; verify copied fills and
   hold further purchases after an over-limit fill. Reconcile partial fills and
   outstanding orders before retry; do not retry an uncertain fill.
+  The execution limit may be tightened below the strategy ceiling to fit eToro's
+  maximum market-price deviation; this never permits a more expensive purchase.
 - Record user-requested early exits against the position cycle, separately from
   Bravos instructions. A request is pending until broker evidence confirms it.
   A confirmed full early exit ends our participation in that opening; never

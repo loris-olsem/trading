@@ -46,6 +46,7 @@ class EtoroClientTest {
     boolean wrongOwnerScopes;
     int activityDrift;
     String submittedBody;
+    Set<String> freshReads = new HashSet<>();
 
     Api() throws IOException {
       agent =
@@ -91,6 +92,7 @@ class EtoroClientTest {
       assertEquals("app-test", headers.get("x-api-key"));
       UUID.fromString(headers.get("x-request-id"));
       boolean ownerRead = headers.get("x-user-key").equals("owner-test");
+      if ("no-cache".equals(headers.get("Cache-Control"))) freshReads.add(path);
       if (status != 200) return new Response(status, "sensitive body must not leak", Map.of());
       ObjectNode response;
       if (path.equals("/api/v1/me"))
@@ -159,6 +161,43 @@ class EtoroClientTest {
         .opening(cycle(), instrument(), quote("100"), account(), NOW, d("0"))
         .intents()
         .getFirst();
+  }
+
+  @Test
+  void preflightDiagnosticCapturesCostTimestampsWithoutCredentialsOrWrites() throws Exception {
+    var api = new Api();
+    var report = InstrumentAudit.preflight(api, secrets, config(), clock);
+    assertEquals("READ_PREFLIGHT_PASSED", report.path("preflight").get(0).path("result").asText());
+    assertEquals(1, report.path("costResponses").size());
+    assertEquals(
+        "2026-09-21T14:00:00Z", report.path("costResponses").get(0).path("receivedAt").asText());
+    assertFalse(report.toString().contains("owner-test"));
+    assertFalse(report.toString().contains("agent-test"));
+    api.costs.put("lastUpdated", NOW.minusSeconds(70).toString());
+    report = InstrumentAudit.preflight(api, secrets, config(), clock);
+    assertEquals("COST_ESTIMATE_STALE", report.path("preflight").get(0).path("result").asText());
+    assertEquals(0, api.writes);
+  }
+
+  @Test
+  void deployedConfigurationCanPrepareAnEligibleOrderUsingOnlySyntheticAccounts() throws Exception {
+    var api = new Api();
+    var deployed = Configuration.load(java.nio.file.Path.of("config/trading.json"));
+    var broker = new EtoroClient(api, secrets, deployed, clock, false);
+    var account = broker.account();
+    var instrument = broker.instrument("CF", d("230.50"));
+    var decision =
+        new Policy().opening(cycle(), instrument, broker.quote(instrument), account, NOW, d("0"));
+    assertEquals(Outcome.READY, decision.outcome());
+    var intent = decision.intents().getFirst();
+    assertEquals(d("230.50"), intent.ownerAmount());
+    assertEquals(d("500.00"), intent.agentAmount());
+    assertEquals(d("90"), intent.stop());
+    broker.prepare(new Attempt(intent, NOW));
+    assertEquals(0, api.writes);
+    assertTrue(api.freshReads.contains("/api/v1/me"));
+    assertTrue(api.freshReads.contains("/api/v2/trading/info/eligibility"));
+    assertTrue(api.freshReads.contains("/api/v2/trading/info/costs"));
   }
 
   @Test
@@ -461,6 +500,37 @@ class EtoroClientTest {
     assertEquals(Status.CONFIRMED, client.observe(a).status());
     ((ObjectNode) api.mirror.get("positions").get(0)).put("isTslEnabled", true);
     assertEquals(Status.SUBMITTED, client.observe(a).status());
+  }
+
+  @Test
+  void limitDeviationIsRecheckedAtSubmissionBoundary() throws Exception {
+    var api = new Api();
+    var c = client(api, false);
+    assertEquals(Duration.ofSeconds(30), c.readbackInterval());
+    var original = opening();
+    var boundary = d("100.12345678").multiply(d("1.10"));
+    for (var limit : List.of(boundary, boundary.add(d("0.00000001")))) {
+      var i =
+          new Intent(
+              original.key(),
+              original.cycleKey(),
+              original.eventKey(),
+              Action.OPEN,
+              original.instrumentId(),
+              null,
+              original.ownerAmount(),
+              original.agentAmount(),
+              null,
+              limit,
+              original.stop(),
+              original.settlementType());
+      if (limit.compareTo(boundary) == 0) c.prepare(new Attempt(i, NOW));
+      else
+        assertEquals(
+            "QUOTE_CHANGED_BEFORE_SUBMISSION",
+            assertThrows(IOException.class, () -> c.prepare(new Attempt(i, NOW))).getMessage());
+    }
+    assertEquals(0, api.writes);
   }
 
   @Test

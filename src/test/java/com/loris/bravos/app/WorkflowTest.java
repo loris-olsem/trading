@@ -55,7 +55,7 @@ class WorkflowTest {
               .toList());
     }
 
-    public Instrument instrument(String s, BigDecimal amount) {
+    public Instrument instrument(String s, BigDecimal amount) throws IOException {
       var i = com.loris.bravos.Fixtures.instrument();
       return unavailable
           ? null
@@ -72,7 +72,7 @@ class WorkflowTest {
               i.estimatedOwnerCost());
     }
 
-    public Quote quote(Instrument i) {
+    public Quote quote(Instrument i) throws IOException {
       return com.loris.bravos.Fixtures.quote("100");
     }
 
@@ -268,6 +268,55 @@ class WorkflowTest {
         if (report.get(j).startsWith("CF: ADD ")) addIndex = j;
       }
       assertTrue(openIndex >= 0 && addIndex > openIndex, report.toString());
+    }
+  }
+
+  @Test
+  void unavailableInstrumentDataDoesNotAbortOtherEligibleInstruments() throws Exception {
+    for (int variant = 0; variant < 3; variant++) {
+      final int failure = variant;
+      var market =
+          new Market() {
+            public Instrument instrument(String symbol, BigDecimal amount) throws IOException {
+              if (symbol.equals("CF") && failure == 0) throw new IOException("COST_ESTIMATE_STALE");
+              return super.instrument(symbol, amount);
+            }
+
+            public Quote quote(Instrument instrument) throws IOException {
+              if (instrument.symbol().equals("CF"))
+                throw new IOException(failure == 1 ? "sensitive response must not leak" : null);
+              return super.quote(instrument);
+            }
+          };
+      try (var store = new StateStore(temp.resolve("case-" + variant))) {
+        var w = new Workflow(store, market, market, clock);
+        w.acceptScan(
+            scan(List.of(cycle().events.getFirst()), true, d("5")), LocalDate.of(2026, 9, 1), true);
+        var second =
+            new Alert(
+                "second",
+                "source",
+                LocalDate.of(2026, 9, 21),
+                "hash",
+                "XLF",
+                Action.OPEN,
+                d("100"),
+                null,
+                d("3"),
+                d("90"),
+                List.of());
+        store.state().book.cycles.put(second.key(), new Cycle(second, true));
+        var report = w.evaluate(false);
+        assertTrue(
+            report.contains(
+                "CF: BLOCKED "
+                    + (failure == 0 ? "COST_ESTIMATE_STALE" : "INSTRUMENT_DATA_UNAVAILABLE")));
+        assertTrue(report.contains("XLF: READY POLICY_PASSED"));
+        assertTrue(market.submitted.isEmpty());
+        w.evaluate(true);
+        assertEquals(List.of("second"), market.submitted.stream().map(Intent::cycleKey).toList());
+        assertFalse(store.state().book.cycles.get("opening").entered);
+      }
     }
   }
 

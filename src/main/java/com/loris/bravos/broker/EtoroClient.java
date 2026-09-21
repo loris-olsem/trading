@@ -33,7 +33,12 @@ public final class EtoroClient implements Broker, Workflow.Market {
 
   private JsonNode call(boolean owner, String method, String path, String body, String reference)
       throws IOException {
-    var response = transport.request(method, path, secrets.headers(owner, reference), body);
+    var headers = new HashMap<>(secrets.headers(owner, reference));
+    if (method.equals("GET")
+        || path.equals("/api/v2/trading/info/costs")
+        || path.equals("/api/v2/trading/info/eligibility"))
+      headers.put("Cache-Control", "no-cache");
+    var response = transport.request(method, path, headers, body);
     if (response.status() < 200 || response.status() > 299)
       throw new IOException("ETORO_HTTP_" + response.status());
     try {
@@ -353,6 +358,11 @@ public final class EtoroClient implements Broker, Workflow.Market {
   }
 
   @Override
+  public Duration readbackInterval() {
+    return Duration.ofSeconds(30);
+  }
+
+  @Override
   public void prepare(Attempt attempt) throws IOException {
     Account a = account();
     if (!a.active()
@@ -362,7 +372,7 @@ public final class EtoroClient implements Broker, Workflow.Market {
       throw new IOException("ACCOUNT_CHANGED_BEFORE_SUBMISSION");
     Intent i = attempt.intent;
     if (i.positionId() == null) {
-      if (!a.copyEntryPermitted() || !a.copyStopsVerified())
+      if (!a.copyEntryPermitted() || !a.copyStopModelConfigured())
         throw new IOException("COPY_CAPABILITIES_UNVERIFIED");
       String symbol =
           config.assets.entrySet().stream()
@@ -378,6 +388,7 @@ public final class EtoroClient implements Broker, Workflow.Market {
           || q.timestamp().isAfter(clock.instant())
           || Duration.between(q.timestamp(), clock.instant()).getSeconds() > 60
           || q.ask().compareTo(i.ceiling()) > 0
+          || i.ceiling().compareTo(q.ask().multiply(new BigDecimal("1.10"))) > 0
           || q.ask().compareTo(i.stop()) <= 0)
         throw new IOException("QUOTE_CHANGED_BEFORE_SUBMISSION");
       BigDecimal ownerCapital =

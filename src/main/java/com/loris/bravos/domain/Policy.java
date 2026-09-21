@@ -83,14 +83,19 @@ public final class Policy {
         || q.ask().compareTo(c.stop) <= 0
         || c.stop.compareTo(ceiling) >= 0)
       return Decision.of(Outcome.BLOCKED, "INVALID_OR_CROSSED_STOP");
-    BigDecimal limit = ceiling.setScale(i.priceScale(), RoundingMode.DOWN);
+    // eToro rejects a limit over 10% away from its current price. Keep a 1%
+    // margin for quote movement without ever increasing the strategy maximum.
+    BigDecimal limit =
+        ceiling
+            .min(q.ask().multiply(new BigDecimal("1.09")))
+            .setScale(i.priceScale(), RoundingMode.DOWN);
     if (q.ask().compareTo(limit) > 0)
       return Decision.of(Outcome.WATCH_PRICE, "ABOVE_ORIGINAL_CEILING");
     if (!a.ordersComplete()
         || a.pending()
         || !a.active()
         || !a.copyEntryPermitted()
-        || !a.copyStopsVerified()
+        || !a.copyStopModelConfigured()
         || a.observedAt().isAfter(now)
         || Duration.between(a.observedAt(), now).getSeconds() > 60)
       return Decision.of(Outcome.BLOCKED, "ACCOUNT_OR_COPY_UNVERIFIED");

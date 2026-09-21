@@ -101,7 +101,7 @@ public final class Model {
       boolean pending,
       boolean active,
       boolean copyEntryPermitted,
-      boolean copyStopsVerified,
+      boolean copyStopModelConfigured,
       List<Position> agentPositions,
       List<Position> ownerPositions) {}
 
