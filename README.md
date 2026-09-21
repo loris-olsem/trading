@@ -9,8 +9,9 @@ price, sizing and stop rules. Gmail and an AI assistant are not runtime dependen
 **Readiness:** implemented and tested with isolated fixtures and read-only service
 checks. No trades, initial enrollment or schedule have been created. Purchases
 remain blocked by unverified copy capabilities and empty asset profiles in
-[`config/trading.json`](config/trading.json). In particular, an agent limit order
-does not yet establish a hard ceiling on the owner's copied fill. See the
+[`config/trading.json`](config/trading.json). The owner has accepted a strict
+agent limit plus checking the real copied price afterward, without claiming a
+copy-side guarantee. Sizing, stop and asset-profile checks remain. See the
 [broker contract](docs/broker-contract.md).
 The four defects from the [independent review](docs/REVIEW-2026-09-21.md) have
 regression-tested fixes. External broker capability questions remain unresolved.

@@ -1,0 +1,8 @@
+{
+  "topic": "accept-copy-price-risk-with-agent-limit",
+  "question": "You told me: Don't pay more than $102. We can tell the bot that. But eToro then copies its purchase into your account, and we don't know whether your price could be higher—say $102.10. Are you okay with that possibility, or should the app refuse to buy until we know it cannot happen?",
+  "answer": "yes",
+  "context": "The owner asked to proceed with the best available information without a support answer, then accepted the explained possibility of real-copy overpayment.",
+  "effect": "Use a fresh quote check and a strict limitIOC price on the agent order. Permit this price policy without claiming a copy-side guarantee. Check copied fills afterward; any price above the intended ceiling remains unresolved and blocks further purchases. Do not automatically sell to undo the fill. This changes only the copied-price guarantee requirement, not sizing, stops, leverage, identity or the original opening/addition ceilings.",
+  "supersedes": "decisions/2026-09-21-price-ceiling.json"
+}

@@ -125,7 +125,7 @@ public final class EtoroClient implements Broker, Workflow.Market {
             && integer(mirror, "mirrorStatusID") == 0,
         config.copySizingModel.equals("REALIZED_EQUITY_RATIO")
             && !config.copySizingEvidence.isBlank()
-            && !config.copyPriceCeilingEvidence.isBlank(),
+            && config.copyPricePermitted(),
         !config.copyStopsEvidence.isBlank(),
         ap,
         op);
@@ -298,12 +298,10 @@ public final class EtoroClient implements Broker, Workflow.Market {
             || copies.isEmpty()
             || copies.stream().anyMatch(c -> !protectedAt(c, i.stop())))
           return observation(Status.PARTIAL, "COPY_OR_STOP_NOT_CONFIRMED", ids);
-        if (copies.stream()
-            .anyMatch(
-                c ->
-                    c.instrumentId() != i.instrumentId()
-                        || c.openRate().compareTo(i.ceiling()) > 0))
-          return observation(Status.UNKNOWN, "COPIED_PRICE_OR_ASSET_MISMATCH", ids);
+        if (copies.stream().anyMatch(c -> c.instrumentId() != i.instrumentId()))
+          return observation(Status.UNKNOWN, "COPIED_ASSET_MISMATCH", ids);
+        if (copies.stream().anyMatch(c -> c.openRate().compareTo(i.ceiling()) > 0))
+          return observation(Status.UNKNOWN, "COPIED_PRICE_CEILING_BREACHED", ids);
         BigDecimal copied =
             copies.stream().map(Position::amount).reduce(BigDecimal.ZERO, BigDecimal::add);
         BigDecimal expected =
@@ -364,7 +362,7 @@ public final class EtoroClient implements Broker, Workflow.Market {
       throw new IOException("ACCOUNT_CHANGED_BEFORE_SUBMISSION");
     Intent i = attempt.intent;
     if (i.positionId() == null) {
-      if (!a.copySizingVerified() || !a.copyStopsVerified())
+      if (!a.copyEntryPermitted() || !a.copyStopsVerified())
         throw new IOException("COPY_CAPABILITIES_UNVERIFIED");
       String symbol =
           config.assets.entrySet().stream()

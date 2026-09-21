@@ -136,6 +136,36 @@ class WorkflowTest {
   }
 
   @Test
+  void copiedPriceBreachStopsPurchasesAcrossRestartWithoutCorrectiveSale() throws Exception {
+    var market =
+        new Market() {
+          @Override
+          public Observation observe(Attempt attempt) {
+            return new Observation(Status.UNKNOWN, "COPIED_PRICE_CEILING_BREACHED", List.of(11L));
+          }
+        };
+    try (var store = new StateStore(temp)) {
+      var workflow = new Workflow(store, market, market, clock);
+      workflow.acceptScan(
+          scan(List.of(cycle().events.getFirst()), true, d("5")), LocalDate.of(2026, 9, 1), true);
+      workflow.evaluate(true);
+      assertEquals(1, market.submitted.size());
+      assertEquals(Action.OPEN, market.submitted.getFirst().action());
+      assertTrue(
+          store.state().attempts.values().stream()
+              .anyMatch(
+                  a ->
+                      a.status == Status.UNKNOWN
+                          && a.result.equals("COPIED_PRICE_CEILING_BREACHED")));
+    }
+    try (var store = new StateStore(temp)) {
+      var workflow = new Workflow(store, market, market, clock);
+      assertTrue(workflow.evaluate(true).contains("UNRESOLVED_ORDER_BLOCKS_NEW_SUBMISSIONS"));
+      assertEquals(1, market.submitted.size());
+    }
+  }
+
+  @Test
   void multiLotTrimResumesOriginalBatchWithoutTrimmingFirstLotTwice() throws Exception {
     var market = new Market();
     try (var store = new StateStore(temp)) {

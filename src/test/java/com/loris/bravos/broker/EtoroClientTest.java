@@ -511,8 +511,11 @@ class EtoroClientTest {
     var a = new Attempt(opening(), NOW);
     ObjectNode copy = (ObjectNode) api.mirror.get("positions").get(0);
     copy.put("openRate", 103);
-    assertEquals("COPIED_PRICE_OR_ASSET_MISMATCH", c.observe(a).reason());
+    assertEquals("COPIED_PRICE_CEILING_BREACHED", c.observe(a).reason());
     copy.put("openRate", 100);
+    copy.put("instrumentID", 9999);
+    assertEquals("COPIED_ASSET_MISMATCH", c.observe(a).reason());
+    copy.put("instrumentID", 1890);
     copy.put("amount", 50);
     assertEquals("COPIED_AMOUNT_MISMATCH", c.observe(a).reason());
     copy.put("amount", d("46.10"));
@@ -521,6 +524,32 @@ class EtoroClientTest {
     assertEquals("PRICE_CEILING_BREACHED", c.observe(a).reason());
     ((ObjectNode) api.order.get("asset")).put("leverage", 2);
     assertThrows(IOException.class, () -> c.observe(a));
+  }
+
+  @Test
+  void acceptedCopyPriceRiskDoesNotBypassOtherChecksOrHideOverpayment() throws Exception {
+    var api = new Api();
+    var config = config();
+    config.copyPriceCeilingEvidence = "";
+    var broker = new EtoroClient(api, secrets, config, clock, false);
+    assertFalse(broker.account().copyEntryPermitted());
+    config.copyPricePolicy = "AGENT_LIMIT_WITH_COPY_CHECK";
+    assertTrue(broker.account().copyEntryPermitted());
+    broker.prepare(new Attempt(opening(), NOW));
+    config.copySizingEvidence = "";
+    assertFalse(broker.account().copyEntryPermitted());
+    config.copySizingEvidence = "fixture verified ratio";
+    config.copyStopsEvidence = "";
+    assertThrows(IOException.class, () -> broker.prepare(new Attempt(opening(), NOW)));
+    config.copyStopsEvidence = "fixture stop contract";
+    api.position(false, "1", "90");
+    api.position(true, "0.461", "90");
+    ((ObjectNode) api.mirror.path("positions").get(0)).put("openRate", 103);
+    var result = broker.observe(new Attempt(opening(), NOW));
+    assertEquals(Status.UNKNOWN, result.status());
+    assertEquals("COPIED_PRICE_CEILING_BREACHED", result.reason());
+    assertEquals(0, api.writes);
+    assertEquals("", config.copyPriceCeilingEvidence);
   }
 
   @Test

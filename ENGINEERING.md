@@ -79,6 +79,15 @@ Verified 19 September 2026 on the final Java sources:
 
 ## Read-only evidence
 
+Price-risk policy update, 21 September 2026: **147 tests pass**. Coverage is
+**90.54% instructions** (9,873/10,904) and **79.37% branches** (1,316/1,658).
+PIT is **835/937 killed (89.11%)**, with 87 survivors and 15 uncovered; no timeout
+or error counted as a kill. `Configuration` is now a mutation target, and all
+32 of its mutations are killed. Regression tests verify that accepted copy-price
+risk does not bypass sizing or stops, that copied overpayment remains unresolved,
+and that restarting cannot submit more purchases or a corrective sale. Formatting,
+coverage gates and distribution packaging passed; no broker orders were submitted.
+
 The [21 September independent review](docs/REVIEW-2026-09-21.md) identified four
 recovery/reporting defects: source-state poisoning, protection blocked
 by an unresolved fill, a silently held conflicting close, and a kill-cancelled

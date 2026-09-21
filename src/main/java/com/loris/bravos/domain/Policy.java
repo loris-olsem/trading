@@ -89,7 +89,7 @@ public final class Policy {
     if (!a.ordersComplete()
         || a.pending()
         || !a.active()
-        || !a.copySizingVerified()
+        || !a.copyEntryPermitted()
         || !a.copyStopsVerified()
         || a.observedAt().isAfter(now)
         || Duration.between(a.observedAt(), now).getSeconds() > 60)

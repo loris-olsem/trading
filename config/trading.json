@@ -2,6 +2,7 @@
   "copySizingEvidence": "",
   "copyStopsEvidence": "",
   "copyPriceCeilingEvidence": "",
+  "copyPricePolicy": "AGENT_LIMIT_WITH_COPY_CHECK",
   "copySizingModel": "UNVERIFIED",
   "assets": {}
 }

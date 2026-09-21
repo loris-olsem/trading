@@ -100,7 +100,7 @@ public final class Model {
       boolean ordersComplete,
       boolean pending,
       boolean active,
-      boolean copySizingVerified,
+      boolean copyEntryPermitted,
       boolean copyStopsVerified,
       List<Position> agentPositions,
       List<Position> ownerPositions) {}

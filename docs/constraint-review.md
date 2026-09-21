@@ -13,7 +13,7 @@ live copying guarantees. No trades or funding actions were used as tests.
 | Initial 30 days separate from research | `Main`, `Workflow.initialBook`; explicit enrollment floor, no trading during initialize; CLI integration tests | Owner has not initialized; historical reports are not activation |
 | Routine full gap, deduplication, revisions | Checkpoint-day overlap, post IDs, authored-body hashes, source revisions, active rereads and seven-day audit; source/domain tests | No claim to discover every unseen backdated article |
 | Partial scans cannot advance coverage | `acceptScan`, first-page recheck/retry, dashboard match; persisted failure tests | Source errors conservatively block the run's new actions |
-| Opening watchlist and +2% | `Policy.opening`; executable ask, floored ceiling, terminal/source-open state tests | Owner copied fill cap unverified; purchases gated |
+| Opening watchlist and +2% | `Policy.opening`; executable ask, floored ceiling, terminal/source-open state tests | Agent cap enforced; owner accepted unverified copied-price protection with read-back |
 | Never-entered add keeps original ceiling | Opening uses reconstructed current weight exactly once; absorbed event keys tested | No historical adds replayed as separate purchases |
 | Held additions use delta and their own price | `Policy.addition`, first-evaluated-session expiry, source ordering tests | New York date is the supported session model; non-US sessions need explicit support |
 | Missed add followed by reduction expires | `Workflow.hasLaterReduction`; planning/live tests | Accepted follow-up recorded; no automatic buying of removed exposure |
@@ -24,7 +24,7 @@ live copying guarantees. No trades or funding actions were used as tests.
 | Exact published stops | Parser preserves standalone/bundled changes; exact fixed-stop payload and agent/owner read-back; tests reject trailing/disabled/wrong stops | Actual copy propagation unverified; capability gate remains blank |
 | No entry without usable stop | Missing/ambiguous/crossed stop blocks; no invented or widened price | Existing protection is not cleared to resolve a conflict |
 | Targets and explicit quantities | Targets retained; no invented fractions; explicit actual reductions supported | Conditional target quantities are held as unsupported, not executed yet |
-| Entry method enforces price ceiling | Agent `limitIOC` payload and agent/copied fill checks tested | Copied price detection is not prevention; support must establish binding cap |
+| Entry price handling | Agent `limitIOC` payload and agent/copied fill checks tested | Latest owner decision permits agent limit plus copied-price checking. Detected overpayment blocks further purchases; it cannot be prevented by read-back |
 | Final partial fill kept, shortfall reported | Filled internal/owner amounts persisted; event consumed; restart test proves no top-up; later add still possible | Ongoing partial/copy/stop uncertainty blocks until reconciled |
 | No old-cycle re-entry after stop/full early exit | Durable terminal cycle and event participation; workflow tests | Unexplained changes held, never silently restored |
 | Early exits through program | Durable fraction request, duplicate pending request rejection, next-run processing; CLI/workflow tests | Source failures also block unsubmitted early exits |
@@ -67,9 +67,10 @@ recovery. No broad mutation exclusions were added to conceal these gaps.
 
 **Application built; live enablement incomplete.** Blank capability evidence and
 asset profiles deliberately prevent new purchases. Resolve the
-[broker contract](broker-contract.md) before enabling them. If copied fills cannot
-inherit a hard price cap, this eToro copy route does not meet the agreed rule;
-the user must choose a different execution route or explicitly change that rule.
+[broker contract](broker-contract.md) before enabling them. The owner has now
+accepted an agent limit plus checking the copied fill afterward, removing the
+requirement to establish a hard copied-price guarantee before entry. Sizing,
+stop and asset-profile requirements remain independent of that decision.
 Do not treat a configuration string or a passing fixture as broker proof.
 
 Corporate actions need reference-basis reconciliation; no automatic split adjuster

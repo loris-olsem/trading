@@ -61,11 +61,12 @@ these gaps with placeholder strings. They are contract verification, not a
 per-order approval flow.
 
 1. **Owner price cap:** agent `limitIOC` caps the agent fill. We have not established
-   that the owner's copy inherits the same cap. Post-fill `openRate` checks detect
-   overpayment but cannot prevent it. Establish a binding guarantee before setting
-   `copyPriceCeilingEvidence`.
-   The owner explicitly reaffirmed this strict maximum on 21 September; quote-only
-   checking with possible copy-side overpayment was not accepted.
+   that the owner's copy inherits the same cap. The owner subsequently accepted
+   that risk, choosing `copyPricePolicy: AGENT_LIMIT_WITH_COPY_CHECK`. Keep
+   `copyPriceCeilingEvidence` empty: consent is not broker evidence. Post-fill
+   `openRate` checks detect overpayment and block further purchases; they cannot
+   prevent or undo it. No automatic corrective sale is authorized. The default
+   `REQUIRE_COPY_GUARANTEE` mode remains available and requires actual evidence.
 2. **Copy sizing:** verify the realized-equity ratio above for Agent Portfolio new
    orders with existing PnL and later deposits. Only then select
    `REALIZED_EQUITY_RATIO` and set `copySizingEvidence`.
@@ -80,9 +81,9 @@ per-order approval flow.
    leverage, settlement and supported precision. Eligibility, costs and quotes
    are refreshed before attempts. MAGS was not found; no substitute is configured.
 
-Those points can be asked directly of eToro support, specifically for **Agent
-Portfolios**. If no hard owner price cap exists, this copy route cannot satisfy
-the current strategy unchanged. That needs a user decision, not a silent relaxation.
+Those points remain distinct from the owner's accepted price risk. The latest
+[price decision](../decisions/2026-09-21-copy-price-risk.json) changes only the
+copy-price gate, not sizing, stop protection, identity or leverage requirements.
 The [prepared support questions](ETORO-SUPPORT-QUESTIONS.md) describe the exact
 missing contract. They have not been sent.
 

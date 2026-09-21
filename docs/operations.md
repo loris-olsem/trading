@@ -44,6 +44,15 @@ and `unitScale`. Do not guess or substitute products. Evidence strings record
 externally established facts; their presence alone proves nothing. Committed
 configuration remains unverified and blocks purchases.
 
+The configured `copyPricePolicy` is `AGENT_LIMIT_WITH_COPY_CHECK`, following the
+owner's latest decision. It still submits capped agent orders and checks the real
+copied purchase afterward. `COPIED_PRICE_CEILING_BREACHED` means a copied fill was
+above the intended maximum: the attempt stays unresolved and further purchases
+stop. Existing protection is preserved; no automatic corrective sale occurs.
+This mode accepts a price risk, not a verified broker guarantee, and does not
+bypass sizing, stop or instrument checks. The default `REQUIRE_COPY_GUARANTEE`
+requires documented `copyPriceCeilingEvidence` instead.
+
 ## Commands
 
 ```powershell

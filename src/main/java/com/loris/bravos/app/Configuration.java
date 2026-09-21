@@ -11,6 +11,7 @@ public final class Configuration {
   public String copySizingEvidence = "";
   public String copyStopsEvidence = "";
   public String copyPriceCeilingEvidence = "";
+  public String copyPricePolicy = "REQUIRE_COPY_GUARANTEE";
   public String copySizingModel = "UNVERIFIED";
   public Map<String, Asset> assets = new LinkedHashMap<>();
 
@@ -37,6 +38,9 @@ public final class Configuration {
     if (copySizingEvidence == null
         || copyStopsEvidence == null
         || copyPriceCeilingEvidence == null
+        || copyPricePolicy == null
+        || !Set.of("REQUIRE_COPY_GUARANTEE", "AGENT_LIMIT_WITH_COPY_CHECK")
+            .contains(copyPricePolicy)
         || !Set.of("UNVERIFIED", "REALIZED_EQUITY_RATIO").contains(copySizingModel)
         || assets == null) throw new IOException("INVALID_CONFIGURATION");
     Set<Long> ids = new HashSet<>();
@@ -56,5 +60,12 @@ public final class Configuration {
           || a.unitScale < 0
           || a.unitScale > 12) throw new IOException("INVALID_ASSET_CONFIGURATION");
     }
+  }
+
+  public boolean copyPricePermitted() {
+    return "AGENT_LIMIT_WITH_COPY_CHECK".equals(copyPricePolicy)
+        || ("REQUIRE_COPY_GUARANTEE".equals(copyPricePolicy)
+            && copyPriceCeilingEvidence != null
+            && !copyPriceCeilingEvidence.isBlank());
   }
 }

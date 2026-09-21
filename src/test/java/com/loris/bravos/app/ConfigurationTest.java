@@ -1,0 +1,54 @@
+package com.loris.bravos.app;
+
+import static org.junit.jupiter.api.Assertions.*;
+
+import java.io.IOException;
+import org.junit.jupiter.api.Test;
+
+class ConfigurationTest {
+  @Test
+  void explicitPrecisionSupportsWholeUnitsAndRejectsOutsideDocumentedConfigRange()
+      throws Exception {
+    var config = new Configuration();
+    var asset = new Configuration.Asset();
+    asset.instrumentId = 1;
+    asset.brokerSymbol = "CF";
+    asset.unleveragedEvidence = "fixture issuer";
+    config.assets.put("CF", asset);
+    assertThrows(IOException.class, config::validate);
+    asset.priceScale = 0;
+    asset.unitScale = 0;
+    config.validate();
+    asset.priceScale = 8;
+    asset.unitScale = 12;
+    config.validate();
+    asset.priceScale = 9;
+    assertThrows(IOException.class, config::validate);
+    asset.priceScale = 8;
+    asset.unitScale = 13;
+    assertThrows(IOException.class, config::validate);
+    asset.unitScale = 12;
+    asset.instrumentId = 0;
+    assertThrows(IOException.class, config::validate);
+  }
+
+  @Test
+  void copiedPriceModeDistinguishesConsentFromBrokerEvidence() throws Exception {
+    var config = new Configuration();
+    assertFalse(config.copyPricePermitted());
+    config.copyPriceCeilingEvidence = " ";
+    assertFalse(config.copyPricePermitted());
+    config.copyPriceCeilingEvidence = "verified fixture contract";
+    assertTrue(config.copyPricePermitted());
+    config.copyPriceCeilingEvidence = "";
+    config.copyPricePolicy = "AGENT_LIMIT_WITH_COPY_CHECK";
+    config.validate();
+    assertTrue(config.copyPricePermitted());
+    config.copyPricePolicy = "typo";
+    assertThrows(IOException.class, config::validate);
+    assertFalse(config.copyPricePermitted());
+    config.copyPricePolicy = null;
+    assertThrows(IOException.class, config::validate);
+    assertFalse(config.copyPricePermitted());
+  }
+}

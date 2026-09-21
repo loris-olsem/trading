@@ -1,6 +1,6 @@
 # Bravos helper specification
 
-Policy version: `2026-09-19.4`. The user chose an owner-operated Java/Gradle
+Policy version: `2026-09-21.1`. The user chose an owner-operated Java/Gradle
 program to replace the Markdown skill. Normal `run` executes eligible trades;
 `plan` and `initialize` never submit orders. No schedule or initial enrollment
 has been created. The [operations guide](docs/operations.md) describes invocation;
@@ -32,10 +32,13 @@ Follow-up answers on 2026-09-19:
 
 ## Strategy and instruments
 
-On 21 September the owner reaffirmed a **strict maximum on the final real
-purchase price**, rejecting permission for the copied fill to exceed it after
-the quote check. This preserves D07 and the existing +2% opening rule; it does
-not add another tolerance. See the [exact follow-up](decisions/2026-09-21-price-ceiling.json).
+On 21 September the owner first reaffirmed a strict copied-fill maximum, then
+accepted the possibility of copy-side overpayment after a plain-language
+explanation. The latest rule is a strict agent limit with copied-fill read-back.
+An over-limit copied fill blocks further purchases; there is no automatic sale
+to undo it. The original +2% opening and addition-price ceilings stay unchanged.
+See the [latest answer](decisions/2026-09-21-copy-price-risk.json), which supersedes
+the [earlier strict-copy answer](decisions/2026-09-21-price-ceiling.json).
 
 - Follow Bravos Tactical alerts on its website; Gmail is not required. A03 gave
   qualified assent to Tactical, while asking what Quant is. Quant is a separate
@@ -121,8 +124,10 @@ which specifies a 3x daily Nasdaq-100 objective.
   absent quantities, follow explicit reductions/profit-taking, not invented thirds.
 - Reconcile first; prioritize exits/reductions, stop updates on remaining holdings,
   then additions/openings. Preserve chronology and link bundled instructions.
-- Require a verified broker entry method that enforces the ceiling. A quote
-  check alone does not. Reconcile partial fills and outstanding orders before retry.
+- Require a fresh quote check and an agent limitIOC order at the ceiling. The
+  owner accepts unverified copy-side price protection; verify copied fills and
+  hold further purchases after an over-limit fill. Reconcile partial fills and
+  outstanding orders before retry; do not retry an uncertain fill.
 - Record user-requested early exits against the position cycle, separately from
   Bravos instructions. A request is pending until broker evidence confirms it.
   A confirmed full early exit ends our participation in that opening; never
@@ -181,7 +186,7 @@ which specifies a 3x daily Nasdaq-100 objective.
 | A08, D10 | Supported Bravos exposure, never leverage, no unrelated substitute |
 | A09, E05 | Accepted minimal versioned ledger/history/reports; private snapshots ignored |
 | D01–D04 | Accepted equity basis, proportional trims, explicit additions/current catch-up weight |
-| D06, D07 | Accepted crossed-stop rejection and enforceable ceiling |
+| D06, D07 | Crossed-stop rejection; latest follow-up accepts agent limit plus copied-fill check |
 | D08 | Timing/quote age accepted; opening lifetime superseded; no schedule |
 | D09 | Accepted publication ordering and cash/minimum handling |
 | D11 | Early exits requested through helper, recorded and reconciled; no automatic undo |

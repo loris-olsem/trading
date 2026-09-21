@@ -1,6 +1,6 @@
 # Effective trading rules
 
-Policy `2026-09-19.4`. Detailed agreements and original answers:
+Policy `2026-09-21.1`. Detailed agreements and original answers:
 [PLANNING.md](../PLANNING.md), [decision records](../decisions/).
 
 | Situation | Required behavior |
@@ -11,6 +11,7 @@ Policy `2026-09-19.4`. Detailed agreements and original answers:
 | Routine scan | Entire gap from last complete checkpoint; deduplicate and audit revisions |
 | Never-entered open cycle | Watch while Bravos holds it |
 | Opening price | Original opening × 1.02, rounded down to precision; compare executable ask |
+| Copied purchase price | Strict agent limit, then verify real copied fill; owner accepts possible copy-side overpayment. Over-limit copies block further purchases; no automatic sale to undo them |
 | Later add before our opening | Keep original ceiling; enter latest total weight once |
 | Held addition | Add weight increase × current owner equity; ceiling is addition price, no 2% tolerance |
 | Missed add then reduction | Expire unexecuted add; trim actual held units proportionally |
