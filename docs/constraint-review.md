@@ -43,7 +43,7 @@ live copying guarantees. No trades or funding actions were used as tests.
 | Durable state and no duplicate submission | OS lock, forced atomic generations, immutable history, saved UUID before write; unknown-response/restart tests |
 | Safe partial reduction restart | Original per-lot batch persisted; test interrupts after one lot and proves no second trim of it |
 | Credential and owner separation | Secrets ignored; fixed host transport, no redirects for broker, bounded HTTP body, read-only owner scopes; sanitized errors and fixture tests |
-| Minimal Git evidence | Source/cycle/action projections omit broker IDs/references; immutability/redaction tests; private journal remains ignored |
+| Git evidence and recovery | Minimal projections omit broker IDs/references; owner-requested authoritative ledger/history preserve those links in local Git. Credentials/raw captures remain ignored; checkpoint tests cover restoration and unrelated staged work |
 | Skills retired and docs indexed | No repo-local active skill; archived ordinary Markdown/Python preserved; README links current architecture/rules/operations/contracts |
 | No hidden automation or activation | No schedule installed or enrollment performed by development; latest owner journal is initialized |
 

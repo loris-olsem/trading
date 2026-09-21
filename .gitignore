@@ -1,6 +1,12 @@
 # Local credentials and private account snapshots must not be committed.
 /secrets/
 /state/*
+!/state/runtime/
+/state/runtime/*
+!/state/runtime/ledger.json
+!/state/runtime/history/
+/state/runtime/history/*
+!/state/runtime/history/[0-9]*.json
 !/state/bravos/
 /state/bravos/*
 !/state/bravos/ledger.json

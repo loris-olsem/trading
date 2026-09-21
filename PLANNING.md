@@ -173,6 +173,11 @@ which specifies a 3x daily Nasdaq-100 objective.
 - Version minimal JSON ledgers, immutable prior generations and Markdown reports
   in local Git. Ignore credentials and raw/private broker diagnostics. Omit
   unnecessary owner identity from tracked evidence; use local aliases for links.
+- On 21 September the owner requested committing recovery state too. Version
+  the authoritative runtime ledger and numeric generation history locally,
+  preserving broker order/position links needed for recovery. Gradle checkpoints
+  after plan/run/initialize/early-exit, including failure, under the app lock.
+  No automatic push; raw captures, credentials and transient files stay ignored.
 - Hash normalized Bravos-authored bodies and compare material facts; exclude
   chrome/comments, retain revisions, never infer a new opening from a hash change.
 - Java implements the workflow; standard Markdown documents its rules and

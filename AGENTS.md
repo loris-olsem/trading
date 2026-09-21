@@ -9,8 +9,11 @@
 - Never print, copy into prompts, commit, or log the contents of `secrets/`.
   Read eToro keys locally and send them only to the official eToro API host.
   Bravos credentials may be used only for the intended Bravos login.
-- Keep private account snapshots ignored under `state/`. Only minimal Bravos
-  ledgers, their history and run reports are allowlisted for local Git.
+- Keep credentials and raw account/API captures ignored. The owner requested
+  recovery state in local Git: allowlist `state/runtime/ledger.json` and numeric
+  `state/runtime/history/*.json`, in addition to minimal Bravos projections.
+  Use `gr checkpointState` under the application lock; never push automatically.
+  Lock files, staged writes, KILL and rejected-source captures remain ignored.
 - Internal agent balances are not the owner's real-money allocation. Preserve
   that distinction in calculations and reporting.
 - Use supported, documented read APIs for diagnostics. A successful GET does

@@ -56,6 +56,11 @@ Plans and runs explain each analysed instrument in its own paragraph, including
 the proposed action or reason for waiting. Confirmed holdings are not bought
 again by tomorrow's plan; see [planning after execution](docs/operations.md#planning-after-execution).
 `gr initialize` establishes the one-time enrollment window without trading.
+State-changing Gradle operations automatically commit the authoritative ledger
+and numeric history to local Git, including after failed runs. `gr checkpointState`
+does this explicitly. Git must be installed and the repository author configured.
+Nothing is pushed; a separate backup or private remote is
+still needed for disk loss. See [state checkpoints and recovery](docs/operations.md#automatic-local-state-checkpoints).
 The owner's `gr run` command submits eligible trades; it is not proposal-only.
 Read the operations guide before invoking it. No schedule is installed.
 
@@ -69,7 +74,9 @@ sources automatically; a separately built launcher is no longer required.
 - `src/main/java`, `src/test/java`: current application and isolated tests.
 - `config/`: non-secret settings; `.vfox.toml` and wrapper pin toolchains.
 - `secrets/`: ignored credentials, restricted to their intended service.
-- `state/runtime/`: ignored authoritative journal, history and kill switch.
+- `state/runtime/ledger.json` and numeric `history/*.json`: authoritative recovery
+  state, automatically committed locally after state-changing Gradle operations.
+  Lock files, staged writes, rejected-source captures and the kill switch stay ignored.
 - `state/bravos/`: minimal Git-reviewable source and decision projections.
   The old `ledger.json` is historical planning evidence, not runtime state.
 - `docs/archive/`: retired Markdown skill, Python planning tools and preserved

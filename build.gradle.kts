@@ -119,6 +119,17 @@ tasks.register("resume") {
 }
 defaultTasks("help")
 
+val checkpointState = tasks.register<JavaExec>("checkpointState") {
+    group = "bravos"
+    description = "Commit authoritative state and numeric history locally under the app lock; never push or trade."
+    classpath = sourceSets.main.get().runtimeClasspath
+    mainClass = "com.loris.bravos.app.StateCheckpoint"
+    workingDir = projectDir
+}
+for (operation in listOf("plan", "run", "initialize", "earlyExit")) {
+    tasks.named(operation) { finalizedBy(checkpointState) }
+}
+
 tasks.register<JavaExec>("watchlistMetadata") {
     group = "bravos"
     description = "Read existing owner watchlists for broker currency/precision metadata; no list changes."

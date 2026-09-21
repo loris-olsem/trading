@@ -7,7 +7,18 @@ The [implementation plan](docs/IMPLEMENTATION-PLAN.md) was committed before code
 
 ## Checks
 
-Latest paragraph-report verification, 21 September: **187 tests pass**, **90.89%
+Latest local state-checkpoint verification, 21 September: **189 tests pass**,
+**90.74% instruction coverage** (11,183/12,324), **80.31% branch coverage**
+(1,497/1,864), and **895/993 PIT mutations killed (90.13%)**. Formatting, coverage
+gates and packaging pass, with no timeout/error counted as a kill. The Git adapter
+is tested in isolated temporary repositories: full ledger/history restoration
+including an unresolved order reference, preserving unrelated staged work,
+no-op repeat checkpoints, credential/transient-file exclusion, lock conflicts,
+corrupt state and Git failure without journal replacement. The adapter has
+JUnit/JaCoCo coverage; the existing financial/persistence PIT scope is unchanged.
+`gr plan --dry-run` confirms the Gradle finalizer without contacting services.
+
+Earlier paragraph-report verification, 21 September: **187 tests pass**, **90.89%
 instruction coverage** (10,890/11,982), **80.51% branch coverage** (1,475/1,832),
 and **895/993 PIT mutations killed (90.13%)**. There are 84 survivors and 14
 uncovered mutations; no timeout/error counted as a kill. Formatting, coverage

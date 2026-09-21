@@ -194,5 +194,38 @@ checks rather than blindly executing a saved plan. Do not initialize again.
 Authority: `state/runtime/ledger.json`, history and kill switch. Minimal exports:
 `state/bravos/runtime-ledger.json`, `history/runtime-*.json`, `runs/runtime-*.md`.
 Raw captures and account diagnostics stay ignored. Successful commands export;
-after failure, inspect local `status` and the private journal. The program does
-not run Git commits; review and commit only minimal allowlisted projections.
+after failure, inspect local `status` and the private journal.
+
+### Automatic local state checkpoints
+
+The owner requested versioning the authoritative state. Gradle now finalizes
+`plan`, `run`, `initialize` and `earlyExit` with `checkpointState`, on both success
+and failure. The task acquires the application lock and commits only
+`state/runtime/ledger.json` and existing numeric `state/runtime/history/*.json`.
+The complete journal retains broker IDs and order references needed for recovery.
+Credentials, raw API/page captures, rejected-source evidence, process locks,
+incomplete staged writes and `KILL` remain ignored. Unrelated staged files are
+left staged and excluded from the checkpoint commit. No changes means no commit.
+
+To checkpoint explicitly, use `gr checkpointState`. No network or broker calls
+are made and nothing is pushed. The task requires this project's Git repository
+and a working Git author identity. A lock conflict, corrupt ledger or Git failure
+fails the task without changing the trading journal. Fix the cause and retry the
+checkpoint; do not repeat a trading run just to fix a Git error. Failed Git work
+may leave the intended state files staged. A failed finalizer does not undo trades.
+
+This is **local version history**, not an independent backup: this repository
+currently has no remote. Keep any future remote private because the recovery
+journal contains financial records. A disk loss still needs a private remote or
+backup of the repository to a separate device/location. A hard crash before the
+finalizer can leave uncommitted state; the journal's atomic saves remain primary.
+
+For recovery, stop all runs first and retain any surviving newer files. Restore
+the ledger and its history from the same known checkpoint into a recovery copy,
+then set the local kill switch with `gr kill` before operating on it. `gr plan`
+can reconcile read-only while killed. Compare broker history as well as current
+positions against the restored attempt records: an old checkpoint might predate
+an opening and its later closure, which an empty current portfolio cannot reveal.
+Do not initialize, resume or submit orders until that gap is resolved. There is
+no automatic rollback command, and Git restore alone does not prove trading state
+is current. Never merge conflicting trading journals as ordinary code changes.

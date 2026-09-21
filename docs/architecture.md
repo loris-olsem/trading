@@ -34,6 +34,12 @@ unchanged holdings after a complete evaluation.
    submitted; order execution and both account read-backs establish confirmation.
 8. `AuditExport` writes minimal projections for Git; private runtime state remains
    authoritative.
+9. Gradle finalizes state-changing operations with `StateCheckpoint`, which acquires
+   the same application lock, validates the current ledger and commits only that
+   ledger and existing numeric generation history. This is local recovery history,
+   not a broker transaction or an automatic push. Git failure leaves the journal
+   untouched and fails the finalizer; a crash before the finalizer can still leave
+   newer on-disk state than the latest Git commit.
 
 | Component | Owns |
 | --- | --- |
