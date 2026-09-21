@@ -54,6 +54,8 @@ gr plan -Psince=2026-08-21
 gr initialize -Psince=2026-08-21
 gr earlyExit -Pcycle=bravos:post:12345 -Pfraction=0.25
 gr brokerDiagnostics
+gr instrumentAudit -Psymbols=CF,EOG
+gr instrumentAudit '-Pquery=iShares Ethereum'
 gr capture -Psince=2026-08-21
 gr replayCapture
 ```
@@ -63,6 +65,10 @@ uses the last 30 calendar days by default; a research backfill does not expand
 enrollment. Once initialized, the persisted floor/checkpoint controls processing;
 `-Psince` does not reset it. `brokerDiagnostics` reads both accounts;
 `capture` acquires Bravos pages; `replayCapture` reads only the saved private capture.
+`instrumentAudit` reads symbol metadata and both accounts' opening eligibility;
+`-Pquery` instead searches names and symbols for identity review. Its private
+output does not configure or approve instruments. See the
+[instrument investigation](INSTRUMENTS-2026-09-21.md) for the ETHA symbol collision.
 
 The owner chooses `gr initialize` (same optional `-Psince` syntax) to establish the
 one-time baseline without orders. The owner's subsequent `gr run` executes eligible

@@ -118,3 +118,14 @@ tasks.register("resume") {
     doLast { Files.deleteIfExists(layout.projectDirectory.file("state/runtime/KILL").asFile.toPath()) }
 }
 defaultTasks("help")
+
+tasks.register<JavaExec>("instrumentAudit") {
+    group = "bravos"
+    description = "Read-only instrument eligibility (-Psymbols=CF,EOG) or identity search (-Pquery=name)."
+    classpath = sourceSets.main.get().runtimeClasspath
+    mainClass = "com.loris.bravos.app.InstrumentAudit"
+    workingDir = projectDir
+    val query = providers.gradleProperty("query").orNull
+    if (query != null) args("--query", query)
+    else providers.gradleProperty("symbols").orNull?.let { args(it) }
+}

@@ -27,6 +27,7 @@ regressions, coverage and mutation results. Read-only service evidence:
 | [Trading rules](docs/trading-rules.md) | Effective decisions in a compact table |
 | [Architecture](docs/architecture.md) | Discovery, policy, execution and state ownership |
 | [Broker contract](docs/broker-contract.md) | API boundaries and outstanding verification |
+| [Instrument investigation](docs/INSTRUMENTS-2026-09-21.md) | Verified IDs, account restrictions and the ETHA symbol collision |
 | [Constraint review](docs/constraint-review.md) | Requirements mapped to code and tests |
 | [Independent review](docs/REVIEW-2026-09-21.md) | Original findings and the implemented recovery fixes |
 | [Engineering](ENGINEERING.md) | Build, coverage, PIT and repeatable checks |
