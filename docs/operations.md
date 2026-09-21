@@ -106,9 +106,14 @@ maintenance changes, tested before execution. A conflicting close is reported as
 BLOCKED with its before/after source weights and retained agent units; it cannot
 silently become “nothing to do.”
 
-Application exit code 2 means blocked or unresolved work is reported (including
-protection incidents); code 1 means an operation failed. Gradle reports either as
-a failed task; inspect the application output and `gr status`. A protection repair
+Completed plans exit successfully, including when every candidate is blocked:
+the printed report and summary distinguish readiness from successful evaluation.
+`INSTRUMENT_UNVERIFIED` requires a verified asset profile and broker eligibility;
+an empty `assets` map blocks every symbol and does not prove broker unavailability.
+Live execution retains exit code 2 for blocked or unresolved work (including
+protection incidents); code 1 means an operation failed, including a failed plan
+scan or API call. Gradle reports nonzero codes as a failed task; inspect the
+application output and `gr status`. A protection repair
 ends that invocation without new purchases; review read-back before the next run.
 
 Authority: `state/runtime/ledger.json`, history and kill switch. Minimal exports:

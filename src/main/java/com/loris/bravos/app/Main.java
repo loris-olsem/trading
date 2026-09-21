@@ -177,15 +177,26 @@ public final class Main {
         }
         workflow.evaluate(command.equals("run")).forEach(out::println);
         AuditExport.write(root, store.state());
-        return store.state().report.stream()
+        boolean blocked =
+            store.state().report.stream()
                 .anyMatch(
                     line ->
                         line.contains(": BLOCKED ")
                             || line.startsWith("UNPROTECTED_")
                             || line.startsWith("UNRESOLVED_ORDER_")
-                            || line.startsWith("ORDER_PENDING_OR_REJECTED"))
-            ? 2
-            : 0;
+                            || line.startsWith("ORDER_PENDING_OR_REJECTED"));
+        if (command.equals("plan")) {
+          out.println(
+              blocked
+                  ? "Plan completed with blocked or unresolved items; no orders submitted."
+                  : "Plan completed; no orders submitted.");
+          if (store.state().report.stream()
+              .anyMatch(line -> line.contains("INSTRUMENT_UNVERIFIED")))
+            out.println(
+                "Instrument checks require verified asset profiles in config/trading.json and broker eligibility. See docs/broker-contract.md; do not fill missing evidence with guesses.");
+          return 0;
+        }
+        return blocked ? 2 : 0;
       }
     } catch (Exception e) {
       // Never print HTTP/library exception bodies or credential-bearing causes.

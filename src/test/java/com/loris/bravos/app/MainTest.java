@@ -108,8 +108,16 @@ class MainTest {
           alert("later-add", com.loris.bravos.domain.Model.Action.ADD, "100", "5", "6", null));
       store.save();
     }
-    assertEquals(2, run("plan"), output.toString());
+    assertEquals(0, run("plan"), output.toString());
     assertTrue(output.toString().contains(": BLOCKED "));
+    assertTrue(
+        output
+            .toString()
+            .contains("Plan completed with blocked or unresolved items; no orders submitted."));
+    assertTrue(output.toString().contains("config/trading.json"));
+    assertEquals(1, market.submitted.size());
+    assertEquals(2, run("run"), output.toString());
+    assertEquals(1, market.submitted.size());
   }
 
   @Test
