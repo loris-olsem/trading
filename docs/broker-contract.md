@@ -34,6 +34,11 @@ unverified. Sources: [CopyTrader](https://www.etoro.com/copytrader/how-it-works/
 rates, market-search, eligibility and costs endpoints. Eligibility/cost POSTs
 calculate read-only information and never submit orders. Development used the
 official OpenAPI version 1.379.0 captured on 19 September 2026.
+Opening preflight checks eligibility independently for agent and owner, including
+the exact settlement type, non-potential X1 long configuration and stop support.
+An agent permission does not establish that the owner can receive the trade.
+See the [instrument investigation](INSTRUMENTS-2026-09-21.md) for observed IDs
+and account restrictions.
 
 The 21 September read-only rehearsal observed cost components using `value`,
 while that schema calls the field `amount`. The adapter accepts either numeric
@@ -76,6 +81,8 @@ per-order approval flow.
 Those points can be asked directly of eToro support, specifically for **Agent
 Portfolios**. If no hard owner price cap exists, this copy route cannot satisfy
 the current strategy unchanged. That needs a user decision, not a silent relaxation.
+The [prepared support questions](ETORO-SUPPORT-QUESTIONS.md) describe the exact
+missing contract. They have not been sent.
 
 ## Corporate actions and unsupported instructions
 

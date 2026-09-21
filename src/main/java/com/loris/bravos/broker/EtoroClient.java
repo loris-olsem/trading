@@ -150,21 +150,15 @@ public final class EtoroClient implements Broker, Workflow.Market {
             array(query(false, "/api/v2/trading/info/eligibility", request), "eligibilities"),
             "instrumentId",
             asset.instrumentId);
-    if (!bool(eligibility, "allowOpenPosition")
-        || !Set.of("all", "amountOnly").contains(text(eligibility, "allowedOrderQuantityType"))
-        || !text(eligibility, "tradeUnitType").equals("units")) return null;
-    JsonNode leverage = null;
-    for (JsonNode candidate : array(eligibility, "leverageConfigs")) {
-      if (text(candidate, "settlementType").equals(asset.settlementType)
-          && text(candidate, "direction").equals("long")
-          && !bool(candidate, "isPotential")) {
-        for (var value : array(candidate, "leverageValues"))
-          if (value.decimalValue().compareTo(BigDecimal.ONE) == 0) leverage = candidate;
-      }
-    }
-    if (leverage == null
-        || !bool(leverage, "allowStopLossTakeProfit")
-        || !bool(leverage, "allowEditStopLoss")) return null;
+    JsonNode leverage = openingConfiguration(eligibility, asset.settlementType);
+    if (leverage == null) return null;
+    JsonNode ownerEligibility =
+        unique(
+            array(query(true, "/api/v2/trading/info/eligibility", request), "eligibilities"),
+            "instrumentId",
+            asset.instrumentId);
+    if (openingConfiguration(ownerEligibility, asset.settlementType) == null)
+      throw new IOException("OWNER_INSTRUMENT_INELIGIBLE");
     // Query owner-side costs for the actual copied amount, not internal agent dollars.
     var costRequest =
         Json.MAPPER
@@ -201,6 +195,25 @@ public final class EtoroClient implements Broker, Workflow.Market {
         text(eligibility, "unitsQuantityType").equals("whole") ? 0 : asset.unitScale,
         decimal(leverage, "minPositionAmount"),
         total);
+  }
+
+  private static JsonNode openingConfiguration(JsonNode eligibility, String settlement)
+      throws IOException {
+    if (!bool(eligibility, "allowOpenPosition")
+        || !Set.of("all", "amountOnly").contains(text(eligibility, "allowedOrderQuantityType"))
+        || !text(eligibility, "tradeUnitType").equals("units")) return null;
+    for (JsonNode candidate : array(eligibility, "leverageConfigs")) {
+      if (text(candidate, "settlementType").equals(settlement)
+          && text(candidate, "direction").equals("long")
+          && !bool(candidate, "isPotential")
+          && bool(candidate, "allowStopLossTakeProfit")
+          && bool(candidate, "allowEditStopLoss")) {
+        for (var value : array(candidate, "leverageValues"))
+          if (value.isNumber() && value.decimalValue().compareTo(BigDecimal.ONE) == 0)
+            return candidate;
+      }
+    }
+    return null;
   }
 
   public Quote quote(Instrument i) throws IOException {

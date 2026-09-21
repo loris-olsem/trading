@@ -26,6 +26,23 @@ JUnit uses synthetic fixtures, temporary state and loopback HTTP. It never loads
 project credentials or submits real/demo orders. See the
 [constraint review](docs/constraint-review.md) for coverage and limitations.
 
+Verified after instrument discovery and independent owner eligibility on
+21 September 2026:
+
+- **142 JUnit tests passed**. Discovery tests use synthetic responses and reject
+  malformed/incomplete metadata without requesting trading endpoints.
+- JaCoCo: **90.57% instructions** (9,761/10,777), **79.18% branches** (1,297/1,638).
+- PIT: **800/902 killed (88.69%)**, 87 survived, 15 uncovered; no timeout/error
+  counted as a kill. All mutations of the extracted opening-configuration check
+  were killed. The pre-existing exact-60-second cost-age boundary survivor remains.
+- Formatting, coverage gates and `installDist` passed. The diagnostic CLI is
+  covered by unit tests for its discovery/search behavior, but is not a PIT target;
+  the financial broker adapter remains a mutation target. Gates are unchanged.
+- Live read-only name search resolved the ETHA ticker collision to ETHA.US.
+  Both accounts disallowed opening that fund and IBIT. Details and reproducible
+  Gradle commands are in the [instrument investigation](docs/INSTRUMENTS-2026-09-21.md).
+  These checks did not establish copy-side execution guarantees or enable trading.
+
 Verified after the recovery fixes on 21 September 2026:
 
 - **114 JUnit tests passed**, including 25 additional regression cases.

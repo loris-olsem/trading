@@ -40,6 +40,7 @@ class EtoroClientTest {
 
   class Api implements Transport {
     ObjectNode agent, owner, mirror, order, eligibility, costs, close;
+    ObjectNode ownerEligibility;
     int status = 200, writes;
     boolean wrongOwnerScopes;
     int activityDrift;
@@ -117,7 +118,9 @@ class EtoroClientTest {
       else if (path.endsWith("/eligibility")) {
         assertEquals("POST", method);
         response = Json.MAPPER.createObjectNode();
-        response.putArray("eligibilities").add(eligibility);
+        response
+            .putArray("eligibilities")
+            .add(ownerRead && ownerEligibility != null ? ownerEligibility : eligibility);
       } else if (path.endsWith("/costs")) {
         assertTrue(ownerRead);
         response = costs;
@@ -269,6 +272,44 @@ class EtoroClientTest {
     assertEquals(0, client.instrument("CF", d("1")).unitScale());
     api.costs.put("lastUpdated", "2020-01-01T00:00:00Z");
     assertThrows(IOException.class, () -> client.instrument("CF", d("1")));
+  }
+
+  @Test
+  void ownerEligibilityMustIndependentlyAllowTheExactProtectedUnleveragedTrade() throws Exception {
+    for (String restriction :
+        List.of(
+            "opening",
+            "settlement",
+            "leverage",
+            "stop",
+            "edit",
+            "potential",
+            "direction",
+            "quantity",
+            "units")) {
+      var api = new Api();
+      api.ownerEligibility = api.eligibility.deepCopy();
+      var leverage = (ObjectNode) api.ownerEligibility.path("leverageConfigs").get(0);
+      switch (restriction) {
+        case "opening" -> api.ownerEligibility.put("allowOpenPosition", false);
+        case "settlement" -> leverage.put("settlementType", "cfd");
+        case "leverage" -> leverage.putArray("leverageValues").add(2);
+        case "stop" -> leverage.put("allowStopLossTakeProfit", false);
+        case "edit" -> leverage.put("allowEditStopLoss", false);
+        case "potential" -> leverage.put("isPotential", true);
+        case "direction" -> leverage.put("direction", "short");
+        case "quantity" -> api.ownerEligibility.put("allowedOrderQuantityType", "unitsOnly");
+        case "units" -> api.ownerEligibility.put("tradeUnitType", "contracts");
+      }
+      assertEquals(
+          "OWNER_INSTRUMENT_INELIGIBLE",
+          assertThrows(
+                  IOException.class,
+                  () -> client(api, false).instrument("CF", d("184.40")),
+                  restriction)
+              .getMessage());
+      assertEquals(0, api.writes);
+    }
   }
 
   @Test
