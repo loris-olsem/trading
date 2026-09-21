@@ -6,26 +6,27 @@ Portfolio. It parses supported alerts deterministically, keeps a durable journal
 reconciles the agent with the owner's real allocation, and applies the agreed
 price, sizing and stop rules. Gmail and an AI assistant are not runtime dependencies.
 
-**Readiness:** implemented and tested with isolated fixtures and read-only service
-checks. No trades, initial enrollment or schedule have been created. Purchases
-remain blocked by unverified copy capabilities and empty asset profiles in
-[`config/trading.json`](config/trading.json). The owner has accepted a strict
-agent limit plus checking the real copied price afterward, without claiming a
-copy-side guarantee. Sizing, stop and asset-profile checks remain. See the
-[broker contract](docs/broker-contract.md).
+**Readiness:** configured for owner execution. The full live dry run found eligible
+BRK.B and ARGT entries after the accepted market-calendar change. CF/EOG/SMH
+remain held for old broker cost timestamps; MAGS/IBIT/ETHA remain unavailable or
+unconfigured. No trades, initial enrollment or schedule have been created. See the
+[latest readiness check](docs/READINESS-2026-09-21.md) and
+[broker operating model](docs/broker-contract.md#operating-model).
 The four defects from the [independent review](docs/REVIEW-2026-09-21.md) have
 regression-tested fixes. External broker capability questions remain unresolved.
 
 ## Start here
 
 Latest code verification: [Engineering](ENGINEERING.md), including the recovery
-regressions, coverage and mutation results. Read-only service evidence:
-[Monday rehearsal, 21 September](docs/REHEARSAL-2026-09-21.md).
+regressions, coverage and mutation results. Current read-only service evidence:
+[readiness check, 21 September](docs/READINESS-2026-09-21.md).
 
 | Document | Purpose |
 | --- | --- |
 | [Operations](docs/operations.md) | Install, configure, plan, initialize, run and recover |
+| [Latest readiness check](docs/READINESS-2026-09-21.md) | Configured instruments, current broker-data holds and remaining verification |
 | [Trading rules](docs/trading-rules.md) | Effective decisions in a compact table |
+| [Market hours](docs/market-hours.md) | Accepted US calendar, holidays, early closes and update deadline |
 | [Architecture](docs/architecture.md) | Discovery, policy, execution and state ownership |
 | [Broker contract](docs/broker-contract.md) | API boundaries and outstanding verification |
 | [Instrument investigation](docs/INSTRUMENTS-2026-09-21.md) | Verified IDs, account restrictions and the ETHA symbol collision |
@@ -43,6 +44,12 @@ gr check pitest
 gr appHelp
 gr plan
 ```
+
+To start trading with the agreed initial 30-day window, run `gr initialize` once,
+then `gr run`. The last command submits real orders and rechecks current conditions;
+it does not blindly execute a saved plan. Later use `gr plan` for a dry run or
+`gr run` for execution. The [operations guide](docs/operations.md) covers holds
+and recovery. The configured US calendar requires updating before 2027 entries.
 
 `gr plan` reads current data and saves evidence without submitting orders.
 `gr initialize` establishes the one-time enrollment window without trading.

@@ -3,6 +3,7 @@ package com.loris.bravos.broker;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.loris.bravos.app.*;
 import com.loris.bravos.domain.Model.*;
+import com.loris.bravos.domain.UsEquityCalendar;
 import com.loris.bravos.state.TradingState.*;
 import com.loris.bravos.util.Json;
 import java.io.IOException;
@@ -222,6 +223,12 @@ public final class EtoroClient implements Broker, Workflow.Market {
   }
 
   public Quote quote(Instrument i) throws IOException {
+    var profile = config.assets.get(i.symbol());
+    if (profile == null || profile.instrumentId != i.id())
+      throw new IOException("INSTRUMENT_UNVERIFIED");
+    boolean calendar = "US_EQUITIES_2026".equals(profile.marketHours);
+    if (calendar && !UsEquityCalendar.covers(clock.instant()))
+      throw new IOException("MARKET_CALENDAR_EXPIRED");
     JsonNode rate =
         unique(
             array(get(false, "/api/v2/market-data/rates?instrumentIds=" + i.id()), "results"),
@@ -242,7 +249,9 @@ public final class EtoroClient implements Broker, Workflow.Market {
         decimal(rate, "ask"),
         instant(text(rate, "date")),
         text(rate, "quoteType").equals("realtime")
-            && bool(market, "isExchangeOpen")
+            && (calendar
+                ? UsEquityCalendar.isOpen(clock.instant())
+                : bool(market, "isExchangeOpen"))
             && bool(market, "isCurrentlyTradable"),
         "USD");
   }

@@ -7,6 +7,30 @@ The [implementation plan](docs/IMPLEMENTATION-PLAN.md) was committed before code
 
 ## Checks
 
+Latest verification, 21 September (configured owner-run path): **180 tests pass**,
+**90.68% instruction coverage** (10,450/11,524), **79.90% branch coverage**
+(1,403/1,756), and **879/978 PIT mutations killed (89.88%)**. There are 85
+survivors and 14 uncovered mutations; the final run has no timeout or run error
+counted as a kill. An earlier run had one child-process error and was superseded
+by this clean run. Gates are unchanged. Formatting and `installDist` pass.
+
+New regression coverage checks capped limits at depressed prices, the exact 10%
+pre-submit boundary, bounded read-back polling, interruption/kill persistence,
+no resubmission while waiting, per-instrument data failures, credential-free
+read diagnostics and the deployed configuration's ability to prepare a synthetic
+eligible order. The default no-wait polling boundary survivor was caught and
+killed with an additional observation-count assertion.
+
+Calendar regression tests cover holidays, early closes, daylight saving changes,
+session boundaries and refusal outside the published year. All 11 calendar and
+34 configuration mutations are killed. CLI regressions also verify held-copy and
+unexplained-account outcomes return exit code 2, and confirmed partial fills report
+the actual amount.
+
+The full live dry run found eligible BRK.B and ARGT entries; other candidates
+remain held for stale costs or unavailable instruments. See
+[current readiness](docs/READINESS-2026-09-21.md). These results do not prove a live fill.
+
 ```powershell
 . ./env.ps1
 gr spotlessApply check pitest installDist

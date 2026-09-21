@@ -1,0 +1,6 @@
+{
+  "date": "2026-09-21",
+  "question": "eToro’s API says “exchange closed” even while it returns fresh prices during normal US trading hours. I recommend checking the official US trading calendar, a fresh price and eToro’s separate “trading allowed” flag instead. Your maximum purchase price and exact Bravos stop would still apply. Should the app use that approach?",
+  "answer": "Use official market hours and fresh prices (Recommended)",
+  "effect": "Configured US equity instruments use published core-session hours, holidays and early closes plus a fresh realtime quote and eToro isCurrentlyTradable. The contradictory isExchangeOpen flag is not a veto in that explicit mode. Price, sizing, stop and cost checks remain."
+}

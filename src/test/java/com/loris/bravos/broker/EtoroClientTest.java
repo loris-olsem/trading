@@ -44,6 +44,7 @@ class EtoroClientTest {
     ObjectNode ownerEligibility;
     int status = 200, writes;
     boolean wrongOwnerScopes;
+    boolean exchangeOpen = true, tradable = true;
     int activityDrift;
     String submittedBody;
     Set<String> freshReads = new HashSet<>();
@@ -134,7 +135,11 @@ class EtoroClientTest {
       else if (path.contains("/search?"))
         response =
             node(
-                "{\"items\":[{\"instrumentId\":1890,\"isExchangeOpen\":true,\"isCurrentlyTradable\":true}]}");
+                "{\"items\":[{\"instrumentId\":1890,\"isExchangeOpen\":"
+                    + exchangeOpen
+                    + ",\"isCurrentlyTradable\":"
+                    + tradable
+                    + "}]}");
       else if (path.contains("orders:lookup?")) response = order;
       else if (path.contains("/real/close-orders/")) response = close;
       else {
@@ -161,6 +166,47 @@ class EtoroClientTest {
         .opening(cycle(), instrument(), quote("100"), account(), NOW, d("0"))
         .intents()
         .getFirst();
+  }
+
+  @Test
+  void acceptedCalendarModeUsesFreshQuoteAndTradabilityWithoutClosedExchangeFlag()
+      throws Exception {
+    var api = new Api();
+    api.exchangeOpen = false;
+    var config = config();
+    var broker = new EtoroClient(api, secrets, config, clock, false);
+    var instrument = broker.instrument("CF", d("230.50"));
+    assertFalse(broker.quote(instrument).exchangeOpen());
+    config.assets.get("CF").marketHours = "US_EQUITIES_2026";
+    var quote = broker.quote(instrument);
+    assertTrue(quote.exchangeOpen());
+    assertEquals(
+        Outcome.READY,
+        new Policy().opening(cycle(), instrument, quote, broker.account(), NOW, d("0")).outcome());
+    broker.prepare(new Attempt(opening(), NOW));
+    api.tradable = false;
+    assertFalse(broker.quote(instrument).exchangeOpen());
+    assertThrows(IOException.class, () -> broker.prepare(new Attempt(opening(), NOW)));
+    api.tradable = true;
+    for (String instant : List.of("2026-09-21T20:00:00Z", "2026-12-25T15:00:00Z")) {
+      var closed =
+          new EtoroClient(
+              api, secrets, config, Clock.fixed(Instant.parse(instant), ZoneOffset.UTC), false);
+      assertFalse(closed.quote(instrument).exchangeOpen());
+    }
+    var expired =
+        new EtoroClient(
+            api,
+            secrets,
+            config,
+            Clock.fixed(Instant.parse("2027-01-04T15:00:00Z"), ZoneOffset.UTC),
+            false);
+    assertEquals(
+        "MARKET_CALENDAR_EXPIRED",
+        assertThrows(IOException.class, () -> expired.quote(instrument)).getMessage());
+    config.assets.clear();
+    assertThrows(IOException.class, () -> broker.quote(instrument));
+    assertEquals(0, api.writes);
   }
 
   @Test

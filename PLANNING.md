@@ -1,6 +1,6 @@
 # Bravos helper specification
 
-Policy version: `2026-09-21.1`. The user chose an owner-operated Java/Gradle
+Policy version: `2026-09-21.2`. The user chose an owner-operated Java/Gradle
 program to replace the Markdown skill. Normal `run` executes eligible trades;
 `plan` and `initialize` never submit orders. No schedule or initial enrollment
 has been created. The [operations guide](docs/operations.md) describes invocation;
@@ -150,6 +150,10 @@ which specifies a 3x daily Nasdaq-100 objective.
   times, not a schedule or a restriction on manually invoking the program.
 - Evaluate entry/add prices while the relevant exchange is open, with asks no
   older than 60 seconds. Closed markets/stale quotes mean waiting data.
+  On 21 September the owner accepted published US market hours plus fresh prices
+  and eToro's separate tradability flag, replacing the inconsistent API
+  exchange-open flag for the five configured US instruments. See
+  [market hours](docs/market-hours.md) and the [answer](decisions/2026-09-21-market-hours.json).
 - An individual unfilled order attempt expires at session close and requires
   reconciliation before retry. The opening opportunity remains on its watchlist.
   Addition events retain D08's first-evaluated-session expiry. `run` can submit

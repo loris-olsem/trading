@@ -23,7 +23,7 @@ class WorkflowTest {
   class Market implements Workflow.Market, Broker {
     List<Position> lots = new ArrayList<>();
     List<Intent> submitted = new ArrayList<>();
-    boolean pending, copyPending, unavailable, reject, finalPartial;
+    boolean pending, copyPending, unavailable, reject, finalPartial, copyStopMismatch;
 
     public Account account() {
       return new Account(
@@ -48,7 +48,7 @@ class WorkflowTest {
                           p.units(),
                           p.amount(),
                           p.pnl(),
-                          p.stop(),
+                          copyStopMismatch ? d("89") : p.stop(),
                           p.stopEnabled(),
                           p.trailing(),
                           p.longOnly()))
@@ -206,7 +206,9 @@ class WorkflowTest {
       var w = new Workflow(store, market, market, clock);
       w.acceptScan(
           scan(List.of(cycle().events.getFirst()), true, d("5")), LocalDate.of(2026, 9, 1), true);
-      assertTrue(w.evaluate(true).stream().anyMatch(s -> s.contains("shortfall USD 184.40")));
+      var report = w.evaluate(true);
+      assertTrue(report.stream().anyMatch(s -> s.contains("shortfall USD 184.40")));
+      assertTrue(report.contains("CF: CONFIRMED OPEN owner USD 46.10"));
       var a = store.state().attempts.values().iterator().next();
       assertEquals(d("46.10"), a.ownerFilled);
       assertEquals(d("100"), a.agentFilled);

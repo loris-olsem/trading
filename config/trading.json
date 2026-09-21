@@ -10,6 +10,7 @@
       "brokerSymbol": "CF",
       "settlementType": "real",
       "unleveragedEvidence": "docs/INSTRUMENTS-2026-09-21.md#execution-profiles: CF Industries NYSE common stock; official issuer and live exact-ID long X1 eligibility.",
+      "marketHours": "US_EQUITIES_2026",
       "priceScale": 2,
       "unitScale": 5
     },
@@ -18,6 +19,7 @@
       "brokerSymbol": "BRK.B",
       "settlementType": "real",
       "unleveragedEvidence": "docs/INSTRUMENTS-2026-09-21.md#execution-profiles: Berkshire Hathaway NYSE Class B common stock; SEC filing and live exact-ID long X1 eligibility.",
+      "marketHours": "US_EQUITIES_2026",
       "priceScale": 2,
       "unitScale": 5
     },
@@ -26,6 +28,7 @@
       "brokerSymbol": "EOG",
       "settlementType": "real",
       "unleveragedEvidence": "docs/INSTRUMENTS-2026-09-21.md#execution-profiles: EOG Resources NYSE common stock; SEC filing and live exact-ID long X1 eligibility.",
+      "marketHours": "US_EQUITIES_2026",
       "priceScale": 2,
       "unitScale": 5
     },
@@ -34,6 +37,7 @@
       "brokerSymbol": "ARGT",
       "settlementType": "cfd",
       "unleveragedEvidence": "https://www.globalxetfs.com/funds/argt: ordinary MSCI All Argentina 25/50 index objective, not a leveraged multiple; live exact-ID long X1 CFD eligibility. See docs/INSTRUMENTS-2026-09-21.md#execution-profiles.",
+      "marketHours": "US_EQUITIES_2026",
       "priceScale": 2,
       "unitScale": 5
     },
@@ -42,6 +46,7 @@
       "brokerSymbol": "SMH",
       "settlementType": "cfd",
       "unleveragedEvidence": "https://www.vaneck.com/us/en/investments/semiconductor-etf-smh/: ordinary MVIS US Listed Semiconductor 25 index objective, not a leveraged multiple; live exact-ID long X1 CFD eligibility. See docs/INSTRUMENTS-2026-09-21.md#execution-profiles.",
+      "marketHours": "US_EQUITIES_2026",
       "priceScale": 2,
       "unitScale": 5
     }

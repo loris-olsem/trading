@@ -1,6 +1,6 @@
 # Effective trading rules
 
-Policy `2026-09-21.1`. Detailed agreements and original answers:
+Policy `2026-09-21.2`. Detailed agreements and original answers:
 [PLANNING.md](../PLANNING.md), [decision records](../decisions/).
 
 | Situation | Required behavior |
@@ -28,7 +28,7 @@ Policy `2026-09-21.1`. Detailed agreements and original answers:
 | Early exit | Record cycle/fraction; next owner `run` processes and verifies it; never restore sold units |
 | Full early/stop exit | End participation; no old-cycle re-entry |
 | Instrument | Exact supported exposure, no leverage including embedded; no substitute ticker |
-| Quote | Exchange open; USD ask ≤60 seconds old, not future-dated |
+| Quote | Published US core session for the configured US profiles, eToro tradability, realtime USD ask ≤60 seconds old, not future-dated; other profiles retain broker exchange flag |
 | Broker limit range | Tighten order limit to at most fresh ask × 1.09, never above the strategy ceiling; recheck broker's 10% deviation bound before submission |
 | Order | Reconcile, exits/reductions, stops, then openings/adds by source publication order |
 | Uncertain submission | Reconcile original attempt; no blind retry |

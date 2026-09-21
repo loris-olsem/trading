@@ -36,13 +36,18 @@ Never paste values into commands, reports or commits. The program reads them
 locally and uses stable error codes instead of HTTP bodies. It logs in afresh
 each invocation; no browser session is needed.
 
-Resolve the [broker contract](broker-contract.md) before enabling purchases.
+Read the [broker operating model and its limits](broker-contract.md#operating-model).
 `config/trading.json` stores non-secret capability evidence and `assets`, keyed by
 Bravos ticker. Each asset requires exact `instrumentId`, `brokerSymbol`,
 `settlementType` (`real` or unleveraged `cfd`), `unleveragedEvidence`, `priceScale`
 and `unitScale`. Do not guess or substitute products. Evidence strings record
-externally established facts; their presence alone proves nothing. Committed
-configuration remains unverified and blocks purchases.
+sources and any inference; their presence alone proves no execution guarantee.
+Five instruments are configured. Actual quotes, eligibility, amounts and stops
+are checked at runtime. MAGS, IBIT and ETHA remain excluded for the reasons in
+the instrument investigation.
+The five profiles use the explicitly accepted [US market calendar](market-hours.md)
+plus fresh prices and broker tradability. Calendar coverage currently ends on
+31 December 2026; a future calendar update is required before 2027 entries.
 
 The configured `copyPricePolicy` is `AGENT_LIMIT_WITH_COPY_CHECK`, following the
 owner's latest decision. It still submits capped agent orders and checks the real
@@ -63,6 +68,7 @@ gr plan -Psince=2026-08-21
 gr initialize -Psince=2026-08-21
 gr earlyExit -Pcycle=bravos:post:12345 -Pfraction=0.25
 gr brokerDiagnostics
+gr instrumentPreflight
 gr instrumentAudit -Psymbols=CF,EOG
 gr instrumentAudit '-Pquery=iShares Ethereum'
 gr watchlistMetadata
@@ -79,6 +85,9 @@ enrollment. Once initialized, the persisted floor/checkpoint controls processing
 `-Pquery` instead searches names and symbols for identity review. Its private
 output does not configure or approve instruments. See the
 [instrument investigation](INSTRUMENTS-2026-09-21.md) for the ETHA symbol collision.
+`instrumentPreflight` reads the five configured instruments, hypothetical $100
+owner-side cost estimates and current quotes. It never creates an order and saves
+private timestamp evidence for diagnosing stale cost/quote responses.
 `watchlistMetadata` reads existing owner lists without creating lists or adding
 assets. It saves an ignored private response for investigating available currency
 and precision fields; it does not supply missing fields or change execution profiles.
@@ -86,6 +95,26 @@ and precision fields; it does not supply missing fields or change execution prof
 The owner chooses `gr initialize` (same optional `-Psince` syntax) to establish the
 one-time baseline without orders. The owner's subsequent `gr run` executes eligible
 actions. There is no per-trade confirmation and no installed schedule.
+
+For the first use with the agreed 30-calendar-day window:
+
+```powershell
+. ./env.ps1
+gr plan
+gr initialize
+gr run
+```
+
+The last command trades. Run `initialize` only once; later invocations use `gr plan`
+for a dry run or `gr run` to trade. A `WATCH_PRICE` result means the price is too
+high; `WAIT_QUOTE` means the market/quote is not executable yet. Neither spends
+money. The program checks prices again during `run`, so a plan is not a promise
+that a later order will qualify.
+
+After submission, execution can wait up to 90 seconds (plus API request time)
+for cached account data to catch up. It never resubmits during that wait. A
+confirmed completely unfilled opening can be reconsidered on a later run;
+partially filled openings are not topped up. Keep unresolved journal entries.
 
 `gr earlyExit -Pcycle=CYCLE -Pfraction=FRACTION` records a durable request for the next owner `gr run`.
 CYCLE is the opening event key, FRACTION is `(0,1]`: `0.25` means a quarter and
@@ -134,6 +163,11 @@ protection incidents); code 1 means an operation failed, including a failed plan
 scan or API call. Gradle reports nonzero codes as a failed task; inspect the
 application output and `gr status`. A protection repair
 ends that invocation without new purchases; review read-back before the next run.
+`CONFIRMED` lines identify broker-confirmed orders. A run can complete some trades
+and still return code 2 because other instruments remain held; the final summary
+states this explicitly. Do not interpret Gradle's failure heading as proof that
+no trade occurred. Repeated runs reconcile durable attempts before considering
+new actions.
 
 Authority: `state/runtime/ledger.json`, history and kill switch. Minimal exports:
 `state/bravos/runtime-ledger.json`, `history/runtime-*.json`, `runs/runtime-*.md`.

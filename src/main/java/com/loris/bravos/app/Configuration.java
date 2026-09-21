@@ -20,6 +20,7 @@ public final class Configuration {
     public String brokerSymbol;
     public String settlementType = "real";
     public String unleveragedEvidence;
+    public String marketHours = "BROKER_FLAG";
     // Deliberate downward calculation granularity, not a claim of maximum API precision.
     public int priceScale = -1;
     public int unitScale = -1;
@@ -55,6 +56,8 @@ public final class Configuration {
           || !a.brokerSymbol.matches("[A-Z][A-Z0-9.]{0,20}")
           || a.unleveragedEvidence == null
           || a.unleveragedEvidence.isBlank()
+          || a.marketHours == null
+          || !Set.of("BROKER_FLAG", "US_EQUITIES_2026").contains(a.marketHours)
           || !Set.of("real", "cfd").contains(a.settlementType)
           || a.priceScale < 0
           || a.priceScale > 8

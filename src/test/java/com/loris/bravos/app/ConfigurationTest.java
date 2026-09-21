@@ -28,6 +28,13 @@ class ConfigurationTest {
     asset.unitScale = 13;
     assertThrows(IOException.class, config::validate);
     asset.unitScale = 12;
+    asset.marketHours = "US_EQUITIES_2026";
+    config.validate();
+    asset.marketHours = "unknown";
+    assertThrows(IOException.class, config::validate);
+    asset.marketHours = null;
+    assertThrows(IOException.class, config::validate);
+    asset.marketHours = "BROKER_FLAG";
     asset.instrumentId = 0;
     assertThrows(IOException.class, config::validate);
   }

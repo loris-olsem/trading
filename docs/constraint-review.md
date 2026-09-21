@@ -1,6 +1,6 @@
-# Constraint review — 19 September 2026
+# Constraint review — 21 September 2026
 
-This reviews the implemented program against policy `2026-09-19.4`. Original
+This reviews the implemented program against policy `2026-09-21.2`. Original
 answers and their dispositions are preserved in [PLANNING.md](../PLANNING.md).
 Passing local tests establishes program behavior against fixtures, not eToro's
 live copying guarantees. No trades or funding actions were used as tests.
@@ -17,11 +17,11 @@ live copying guarantees. No trades or funding actions were used as tests.
 | Never-entered add keeps original ceiling | Opening uses reconstructed current weight exactly once; absorbed event keys tested | No historical adds replayed as separate purchases |
 | Held additions use delta and their own price | `Policy.addition`, first-evaluated-session expiry, source ordering tests | New York date is the supported session model; non-US sessions need explicit support |
 | Missed add followed by reduction expires | `Workflow.hasLaterReduction`; planning/live tests | Accepted follow-up recorded; no automatic buying of removed exposure |
-| Real equity versus internal capital | `EtoroClient.account`, `Policy.buy`; $4,610 vs $10,000 read-only evidence; PnL/cash fixtures | Realized-equity conversion model for Agent Portfolios still needs proof |
+| Real equity versus internal capital | `EtoroClient.account`, `Policy.buy`; $4,610 vs $10,000 read-only evidence; PnL/cash fixtures | Sourced realized-equity inference; verify every copied amount rather than claim an advance guarantee |
 | Funding only creates cash | No funding-triggered action; repeated run and unit-drift tests | Broker-side cash-only behavior is attributed help-bot guidance, untested with holdings |
-| Cash, minimums, fees, rounding | Decimal policy; no upsizing/redistribution; fresh eligibility/cost preflight; boundary tests | Exact asset precision/settlement profiles remain unconfigured |
+| Cash, minimums, fees, rounding | Decimal policy; no upsizing/redistribution; fresh eligibility/cost preflight; boundary tests | Five sourced profiles configured; broker restrictions and unsupported instruments remain held |
 | Proportional trims, full closes | Actual linked units, rounded-down partials, all-unit full closes; two-lot interrupted reduction test | Unknown close response requires evidence-backed recovery |
-| Exact published stops | Parser preserves standalone/bundled changes; exact fixed-stop payload and agent/owner read-back; tests reject trailing/disabled/wrong stops | Actual copy propagation unverified; capability gate remains blank |
+| Exact published stops | Parser preserves standalone/bundled changes; exact fixed-stop payload and agent/owner read-back; tests reject trailing/disabled/wrong stops | Sourced copy-stop model configured; actual protection requires position read-back |
 | No entry without usable stop | Missing/ambiguous/crossed stop blocks; no invented or widened price | Existing protection is not cleared to resolve a conflict |
 | Targets and explicit quantities | Targets retained; no invented fractions; explicit actual reductions supported | Conditional target quantities are held as unsupported, not executed yet |
 | Entry price handling | Agent `limitIOC` payload and agent/copied fill checks tested | Latest owner decision permits agent limit plus copied-price checking. Detected overpayment blocks further purchases; it cannot be prevented by read-back |
@@ -30,7 +30,7 @@ live copying guarantees. No trades or funding actions were used as tests.
 | Early exits through program | Durable fraction request, duplicate pending request rejection, next-run processing; CLI/workflow tests | Source failures also block unsubmitted early exits |
 | Never leverage or substitute | X1 and long/settlement eligibility, exact asset ID/symbol, required issuer evidence | Current long USD unit-based adapter; unsupported semantics held |
 | Reconcile → reduce → protect → expose | Workflow ordering, global publication-order exposure sort; multi-event tests | No routine schedule installed |
-| Fresh executable quotes | Exchange/tradability/realtime, ≤60-second ask, future/stale rejection; pre-submit reread | No promise that broker fill equals the observed quote |
+| Fresh executable quotes | Accepted official US 2026 calendar, broker tradability, realtime ≤60-second ask, future/stale rejection; pre-submit reread | Calendar requires updating before 2027; no promise that broker fill equals the observed quote |
 
 ## Engineering and operations
 
@@ -65,13 +65,14 @@ recovery. No broad mutation exclusions were added to conceal these gaps.
 
 ## Readiness decision
 
-**Application built; live enablement incomplete.** Blank capability evidence and
-asset profiles deliberately prevent new purchases. Resolve the
-[broker contract](broker-contract.md) before enabling them. The owner has now
-accepted an agent limit plus checking the copied fill afterward, removing the
-requirement to establish a hard copied-price guarantee before entry. Sizing,
-stop and asset-profile requirements remain independent of that decision.
-Do not treat a configuration string or a passing fixture as broker proof.
+**Ready for the owner's first execution.**
+Five asset profiles and the sourced operating model replace the empty gates.
+The full live dry run, using the explicitly accepted market-calendar rule, found
+eligible BRK.B and ARGT orders. Other instruments remain held for stale costs or
+unavailable exposure. See the [readiness check](READINESS-2026-09-21.md). Exact stop and amount
+read-back remain mandatory, and no fixture or configuration string proves broker
+behavior. The owner accepted possible copied-price slippage; detected overpayment
+blocks further purchases without an automatic corrective sale.
 
 Corporate actions need reference-basis reconciliation; no automatic split adjuster
 exists. ETHA's announced October reverse split is documented in the broker contract.

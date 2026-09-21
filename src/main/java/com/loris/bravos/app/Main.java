@@ -184,6 +184,10 @@ public final class Main {
                         line.contains(": BLOCKED ")
                             || line.startsWith("UNPROTECTED_")
                             || line.startsWith("UNRESOLVED_ORDER_")
+                            || line.startsWith("UNEXPLAINED_")
+                            || line.equals("ACCOUNT_ACTIVITY_UNVERIFIED")
+                            || line.endsWith(": COPY_EXIT_PENDING")
+                            || line.endsWith(": COPY_PROTECTION_UNVERIFIED")
                             || line.startsWith("ORDER_PENDING_OR_REJECTED"));
         if (command.equals("plan")) {
           out.println(
@@ -196,6 +200,10 @@ public final class Main {
                 "Instrument checks require verified asset profiles in config/trading.json and broker eligibility. See docs/broker-contract.md; do not fill missing evidence with guesses.");
           return 0;
         }
+        out.println(
+            blocked
+                ? "Run finished with held or unresolved items. CONFIRMED lines identify completed orders; exit code 2 reports the remaining holds."
+                : "Run completed. CONFIRMED lines identify completed orders.");
         return blocked ? 2 : 0;
       }
     } catch (Exception e) {

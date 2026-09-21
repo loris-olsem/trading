@@ -99,8 +99,24 @@ class MainTest {
     assertTrue(market.submitted.isEmpty());
     assertEquals(1, run("initialize"));
     assertEquals(0, run("run"), output.toString());
+    assertTrue(output.toString().contains("CF: CONFIRMED OPEN"));
+    assertTrue(output.toString().contains("Run completed."));
+    assertFalse(output.toString().contains("owner USD null"));
     assertEquals(1, market.submitted.size());
     assertEquals(List.of(false, false, true), modes);
+    market.pending = true;
+    assertEquals(2, run("run"));
+    assertTrue(output.toString().contains("ACCOUNT_ACTIVITY_UNVERIFIED"));
+    market.pending = false;
+    market.copyStopMismatch = true;
+    assertEquals(2, run("run"));
+    assertTrue(output.toString().contains("COPY_PROTECTION_UNVERIFIED"));
+    market.copyStopMismatch = false;
+    market.lots.add(position(9999, "1", "90", true, false));
+    assertEquals(2, run("run"));
+    assertTrue(output.toString().contains("UNEXPLAINED_AGENT_POSITION"));
+    market.lots.removeLast();
+    assertEquals(1, market.submitted.size());
     market.unavailable = true;
     try (var store = new StateStore(root.resolve("state/runtime"))) {
       var cycle = store.state().book.cycles.values().iterator().next();
@@ -117,6 +133,8 @@ class MainTest {
     assertTrue(output.toString().contains("config/trading.json"));
     assertEquals(1, market.submitted.size());
     assertEquals(2, run("run"), output.toString());
+    assertTrue(output.toString().contains("Run finished with held or unresolved items."));
+    assertFalse(output.toString().contains("CF: CONFIRMED"));
     assertEquals(1, market.submitted.size());
   }
 

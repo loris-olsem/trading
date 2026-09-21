@@ -506,6 +506,14 @@ public final class Workflow {
         return false;
       }
       refreshHolding(attempt);
+      store
+          .state()
+          .report
+          .add(
+              c.symbol
+                  + ": CONFIRMED "
+                  + i.action()
+                  + (attempt.ownerFilled == null ? "" : " owner USD " + attempt.ownerFilled));
       if (attempt.ownerShortfall != null && attempt.ownerShortfall.signum() > 0)
         store
             .state()
