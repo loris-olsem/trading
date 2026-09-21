@@ -39,6 +39,7 @@ live copying guarantees. No trades or funding actions were used as tests.
 | Java/Gradle through vfox | Java 25.0.4.1+1-tem and Gradle 9.7.1 project pins; wrapper, locked dependencies and reproducible build script |
 | Plan before implementation, staged commits | `docs/IMPLEMENTATION-PLAN.md` committed before implementation; Git history records subsequent stages |
 | Normal run trades, explicit plan does not | CLI integration with injected mock source/broker verifies modes; real credentials never used by tests |
+| Explain each analysed position | Console paragraphs group proposed actions, confirmed outcomes and holds by instrument; quote holds report observed reasons. Next-day and mixed-holding tests prove unchanged holdings are not presented as new openings |
 | Durable state and no duplicate submission | OS lock, forced atomic generations, immutable history, saved UUID before write; unknown-response/restart tests |
 | Safe partial reduction restart | Original per-lot batch persisted; test interrupts after one lot and proves no second trim of it |
 | Credential and owner separation | Secrets ignored; fixed host transport, no redirects for broker, bounded HTTP body, read-only owner scopes; sanitized errors and fixture tests |

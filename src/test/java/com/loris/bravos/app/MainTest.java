@@ -94,24 +94,38 @@ class MainTest {
           return new Main.Connections(market, market, source);
         };
     assertEquals(0, run("plan", "--since", "2026-08-21"), output.toString());
-    assertTrue(output.toString().contains("Entry decisions: 1 ready, 0 waiting, 0 blocked."));
+    assertTrue(output.toString().contains("CF: Ready for an entry"));
+    assertTrue(output.toString().contains("A live run would attempt to open $"));
     assertTrue(market.submitted.isEmpty());
     assertEquals(0, run("initialize", "--since", "2026-08-21"), output.toString());
     assertTrue(market.submitted.isEmpty());
     assertEquals(1, run("initialize"));
     assertEquals(0, run("run"), output.toString());
-    assertTrue(output.toString().contains("CF: CONFIRMED OPEN"));
+    assertTrue(output.toString().contains("Confirmed by broker read-back: OPEN"));
     assertTrue(output.toString().contains("Run completed."));
     assertFalse(output.toString().contains("owner USD null"));
     assertEquals(1, market.submitted.size());
     assertEquals(List.of(false, false, true), modes);
+    output.reset();
+    assertEquals(
+        0,
+        Main.run(
+            new String[] {"plan"},
+            root,
+            Clock.offset(clock, java.time.Duration.ofDays(1)),
+            new PrintStream(output),
+            offline));
+    assertTrue(output.toString().contains("existing holding has no new action to take"));
+    assertFalse(output.toString().contains("would attempt to open"));
+    assertEquals(1, market.submitted.size());
     market.pending = true;
     assertEquals(2, run("run"));
-    assertTrue(output.toString().contains("ACCOUNT_ACTIVITY_UNVERIFIED"));
+    assertTrue(
+        output.toString().contains("New actions are held until the account can be reconciled"));
     market.pending = false;
     market.copyStopMismatch = true;
     assertEquals(2, run("run"));
-    assertTrue(output.toString().contains("COPY_PROTECTION_UNVERIFIED"));
+    assertTrue(output.toString().contains("does not yet have verified protection"));
     market.copyStopMismatch = false;
     market.lots.add(position(9999, "1", "90", true, false));
     assertEquals(2, run("run"));
@@ -126,17 +140,17 @@ class MainTest {
       store.save();
     }
     assertEquals(0, run("plan"), output.toString());
-    assertTrue(output.toString().contains(": BLOCKED "));
-    assertTrue(output.toString().contains("Entry decisions: 0 ready, 0 waiting, 1 blocked."));
+    assertTrue(output.toString().contains("No purchase is proposed"));
     assertTrue(
         output
             .toString()
             .contains("Plan completed with blocked or unresolved items; no orders submitted."));
-    assertTrue(output.toString().contains("config/trading.json"));
+    assertTrue(output.toString().contains("no substitute will be bought"));
+    assertFalse(output.toString().contains("existing holding has no new action to take"));
     assertEquals(1, market.submitted.size());
     assertEquals(2, run("run"), output.toString());
     assertTrue(output.toString().contains("Run finished with held or unresolved items."));
-    assertFalse(output.toString().contains("CF: CONFIRMED"));
+    assertFalse(output.toString().contains("Confirmed by broker read-back:"));
     assertEquals(1, market.submitted.size());
   }
 

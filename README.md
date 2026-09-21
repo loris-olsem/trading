@@ -52,6 +52,9 @@ it does not blindly execute a saved plan. Later use `gr plan` for a dry run or
 and recovery. The configured US calendar requires updating before 2027 entries.
 
 `gr plan` reads current data and saves evidence without submitting orders.
+Plans and runs explain each analysed instrument in its own paragraph, including
+the proposed action or reason for waiting. Confirmed holdings are not bought
+again by tomorrow's plan; see [planning after execution](docs/operations.md#planning-after-execution).
 `gr initialize` establishes the one-time enrollment window without trading.
 The owner's `gr run` command submits eligible trades; it is not proposal-only.
 Read the operations guide before invoking it. No schedule is installed.

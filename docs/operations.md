@@ -156,9 +156,12 @@ silently become “nothing to do.”
 
 Completed plans exit successfully, including when every candidate is blocked:
 the printed report and summary distinguish readiness from successful evaluation.
-The entry summary counts READY, price/quote waiting, and BLOCKED decisions.
-These counts describe evaluated entries, not fills. Quote waiting can change
-between runs; the executable ask still must be realtime and at most 60 seconds old.
+`plan` and `run` print one paragraph per analysed instrument, explaining the
+proposed action or hold and what happens next. Quote holds include the observed
+age or other failed checks. Existing holdings with no new action are reported
+as unchanged. The private journal and `status` retain diagnostic codes for recovery.
+Quote waiting can change between runs; the executable ask must still be realtime
+and at most 60 seconds old.
 `INSTRUMENT_UNVERIFIED` requires a verified asset profile and broker eligibility;
 an empty `assets` map blocks every symbol and does not prove broker unavailability.
 Live execution retains exit code 2 for blocked or unresolved work (including
@@ -166,11 +169,27 @@ protection incidents); code 1 means an operation failed, including a failed plan
 scan or API call. Gradle reports nonzero codes as a failed task; inspect the
 application output and `gr status`. A protection repair
 ends that invocation without new purchases; review read-back before the next run.
-`CONFIRMED` lines identify broker-confirmed orders. A run can complete some trades
+`Confirmed by broker read-back` identifies broker-confirmed orders. A run can complete some trades
 and still return code 2 because other instruments remain held; the final summary
 states this explicitly. Do not interpret Gradle's failure heading as proof that
 no trade occurred. Repeated runs reconcile durable attempts before considering
 new actions.
+
+### Planning after execution
+
+After an owner `run`, tomorrow's `plan` reconciles actual orders and positions,
+then reads Bravos updates since the saved checkpoint. Confirmed openings are
+not repeated or topped up because equity or available cash changed. A protected
+terminal partial fill is kept without topping up its shortfall. Never-entered
+openings remain candidates while Bravos holds them and are checked against the
+same original-price ceiling, current weight and latest stop. New additions,
+reductions, exits and stop changes are assessed separately. A verified exit ends
+participation in that old cycle; it is not automatically reopened.
+
+`plan` can update local source and reconciliation records, but submits no orders
+and does not consume a merely proposed purchase as a fill. Uncertain earlier
+execution blocks new submissions until reconciled. The next owner `run` refreshes
+checks rather than blindly executing a saved plan. Do not initialize again.
 
 Authority: `state/runtime/ledger.json`, history and kill switch. Minimal exports:
 `state/bravos/runtime-ledger.json`, `history/runtime-*.json`, `runs/runtime-*.md`.

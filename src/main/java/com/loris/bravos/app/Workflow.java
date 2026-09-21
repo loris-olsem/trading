@@ -305,13 +305,43 @@ public final class Workflow {
       if (live && c.entered && quote != null && quote.exchangeOpen())
         c.additionSessions.putIfAbsent(
             e.key(), clock.instant().atZone(ZoneId.of("America/New_York")).toLocalDate());
+      Instant evaluatedAt = clock.instant();
       Decision decision =
           c.entered
-              ? policy.addition(c, e, instrument, quote, fresh, clock.instant(), BigDecimal.ZERO)
-              : policy.opening(c, instrument, quote, fresh, clock.instant(), BigDecimal.ZERO);
+              ? policy.addition(c, e, instrument, quote, fresh, evaluatedAt, BigDecimal.ZERO)
+              : policy.opening(c, instrument, quote, fresh, evaluatedAt, BigDecimal.ZERO);
       state.report.add(c.symbol + ": " + decision.outcome() + " " + decision.reason());
+      if (decision.outcome() == Outcome.WAIT_QUOTE) {
+        List<String> reasons = new ArrayList<>();
+        if (quote == null) reasons.add("no quote was returned");
+        else {
+          if (!quote.exchangeOpen())
+            reasons.add(
+                "the quote is not marked executable under the market-hours, realtime and broker-tradability checks");
+          if (!"USD".equals(quote.currency())) reasons.add("the quote currency is not USD");
+          if (quote.timestamp().isAfter(evaluatedAt))
+            reasons.add("the quote is dated in the future");
+          else if (Duration.between(quote.timestamp(), evaluatedAt)
+                  .compareTo(Duration.ofSeconds(60))
+              > 0)
+            reasons.add(
+                "the quote is "
+                    + Duration.between(quote.timestamp(), evaluatedAt).toMillis() / 1000.0
+                    + " seconds old; the maximum is 60 seconds");
+        }
+        state.report.add(
+            c.symbol
+                + ": DETAIL No purchase is proposed because "
+                + String.join("; ", reasons)
+                + ". A later run will reassess the opportunity under the same price and stop rules.");
+      }
       if (!batch(c, null, decision.intents(), live)) return finish();
     }
+    for (Cycle cycle : state.book.cycles.values())
+      if (cycle.entered
+          && !cycle.terminal
+          && state.report.stream().noneMatch(line -> line.startsWith(cycle.symbol + ": ")))
+        state.report.add(cycle.symbol + ": HOLD_UNCHANGED");
     return finish();
   }
 

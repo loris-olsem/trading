@@ -7,7 +7,21 @@ The [implementation plan](docs/IMPLEMENTATION-PLAN.md) was committed before code
 
 ## Checks
 
-Latest cost-response correction, 21 September: **181 tests pass**, **90.53%
+Latest paragraph-report verification, 21 September: **187 tests pass**, **90.89%
+instruction coverage** (10,890/11,982), **80.51% branch coverage** (1,475/1,832),
+and **895/993 PIT mutations killed (90.13%)**. There are 84 survivors and 14
+uncovered mutations; no timeout/error counted as a kill. Formatting, coverage
+gates and distribution packaging pass. Two full live dry runs displayed the
+paragraph output without submitting orders. CLI tests execute against a synthetic
+broker and plan the next day, proving no duplicate opening and an unchanged-holding
+paragraph. Mixed-holding tests prevent a held/new action from also being described
+as unchanged. Quote tests cover missing, stale, future, wrong-currency and
+non-executable quotes. The surviving diagnostic age-boundary mutation is guarded
+by the unchanged policy freshness test before that explanation is reached.
+`ReportFormatter` is presentation code covered by JUnit/JaCoCo; the existing
+financial PIT target scope and gates are unchanged.
+
+Earlier cost-response correction, 21 September: **181 tests pass**, **90.53%
 instruction coverage** (10,530/11,631), **79.72% branch coverage** (1,411/1,770),
 and **882/980 PIT mutations killed (90.00%)**. There are 84 survivors and 14
 uncovered mutations, with no timeout or error counted as a kill. Formatting,

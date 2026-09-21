@@ -136,6 +136,75 @@ class WorkflowTest {
   }
 
   @Test
+  void unchangedHoldingIsReportedAlongsideAnotherEntryWithoutCallingThatEntryUnchanged()
+      throws Exception {
+    var market = new Market();
+    try (var store = new StateStore(temp)) {
+      var workflow = new Workflow(store, market, market, clock);
+      workflow.acceptScan(
+          scan(List.of(cycle().events.getFirst()), true, d("5")), LocalDate.of(2026, 9, 1), true);
+      workflow.evaluate(true);
+      var original = cycle().events.getFirst();
+      var second =
+          new Alert(
+              "second",
+              original.url(),
+              original.date(),
+              original.hash(),
+              "ABC",
+              Action.OPEN,
+              original.price(),
+              original.before(),
+              original.after(),
+              original.stop(),
+              original.targets());
+      store.state().book.cycles.put("second", new Cycle(second, true));
+      var report = workflow.evaluate(false);
+      assertTrue(report.contains("CF: HOLD_UNCHANGED"));
+      assertTrue(report.contains("ABC: READY POLICY_PASSED"));
+      assertFalse(report.contains("ABC: HOLD_UNCHANGED"));
+      assertEquals(1, market.submitted.size());
+    }
+  }
+
+  @Test
+  void quoteWaitReportNamesTheObservedFailureAndDoesNotSubmit() throws Exception {
+    List<Quote> quotes =
+        Arrays.asList(
+            null,
+            new Quote(d("100"), NOW.minusSeconds(90), true, "USD"),
+            new Quote(d("100"), NOW.plusSeconds(1), true, "USD"),
+            new Quote(d("100"), NOW, false, "EUR"),
+            new Quote(d("100"), NOW.minusSeconds(60), true, "USD"));
+    List<String> expected =
+        List.of(
+            "no quote was returned",
+            "90.0 seconds old",
+            "dated in the future",
+            "currency is not USD",
+            "READY POLICY_PASSED");
+    for (int index = 0; index < quotes.size(); index++) {
+      Quote returned = quotes.get(index);
+      var market =
+          new Market() {
+            public Quote quote(Instrument instrument) {
+              return returned;
+            }
+          };
+      try (var store = new StateStore(temp.resolve("quote-" + index))) {
+        var workflow = new Workflow(store, market, market, clock);
+        workflow.acceptScan(
+            scan(List.of(cycle().events.getFirst()), true, d("5")), LocalDate.of(2026, 9, 1), true);
+        String report = String.join(" ", workflow.evaluate(false));
+        assertTrue(report.contains(expected.get(index)), report);
+        if (index == 3)
+          assertTrue(report.contains("market-hours, realtime and broker-tradability"));
+        assertTrue(market.submitted.isEmpty());
+      }
+    }
+  }
+
+  @Test
   void copiedPriceBreachStopsPurchasesAcrossRestartWithoutCorrectiveSale() throws Exception {
     var market =
         new Market() {
