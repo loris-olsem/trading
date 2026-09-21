@@ -70,7 +70,7 @@ class EtoroClientTest {
               "{\"instrumentId\":1890,\"allowOpenPosition\":true,\"allowedOrderQuantityType\":\"all\",\"tradeUnitType\":\"units\",\"unitsQuantityType\":\"fractional\",\"leverageConfigs\":[{\"settlementType\":\"real\",\"direction\":\"long\",\"leverageValues\":[1],\"isPotential\":false,\"minPositionAmount\":10,\"allowStopLossTakeProfit\":true,\"allowEditStopLoss\":true}]}");
       costs =
           node(
-              "{\"instrumentId\":1890,\"lastUpdated\":\"2026-09-21T14:00:00Z\",\"costs\":[{\"currency\":\"USD\",\"amount\":1}]}");
+              "{\"instrumentId\":1890,\"lastUpdated\":\"2026-09-21T14:00:00Z\",\"costs\":[{\"costType\":\"transactionFee\",\"currency\":\"USD\",\"value\":1}]}");
       close = node("{\"orderID\":123,\"positions\":[{\"positionID\":900,\"units\":1}]}");
     }
 
@@ -180,6 +180,34 @@ class EtoroClientTest {
         .put("avgPrice", 102);
     ((ObjectNode) api.mirror.get("positions").get(0)).put("openRate", 102);
     assertEquals(Status.CONFIRMED, c.observe(attempt).status());
+  }
+
+  @Test
+  void observedCostResponseUsesValueAndMissingValueCannotBecomeZero() throws Exception {
+    var api = new Api();
+    api.costs =
+        node(
+            "{\"instrumentId\":1890,\"symbol\":\"CF\",\"lastUpdated\":\"2026-09-21T14:00:00Z\",\"costs\":[{\"costType\":\"transactionFee\",\"currency\":\"USD\",\"value\":1.0},{\"costType\":\"marketSpread\",\"currency\":\"USD\",\"value\":1.17},{\"costType\":\"overnightFee\",\"currency\":\"USD\",\"value\":0.0}]}");
+    assertEquals(
+        0,
+        d("2.17").compareTo(client(api, false).instrument("CF", d("184.40")).estimatedOwnerCost()));
+    ((ObjectNode) api.costs.get("costs").get(0)).remove("value");
+    assertThrows(IOException.class, () -> client(api, false).instrument("CF", d("184.40")));
+    ObjectNode fee = (ObjectNode) api.costs.get("costs").get(0);
+    fee.put("amount", 1);
+    assertEquals(
+        0,
+        d("2.17").compareTo(client(api, false).instrument("CF", d("184.40")).estimatedOwnerCost()));
+    fee.put("value", 1);
+    assertEquals(
+        0,
+        d("2.17").compareTo(client(api, false).instrument("CF", d("184.40")).estimatedOwnerCost()));
+    fee.put("value", 2);
+    assertEquals(
+        "CONFLICTING_COST_VALUE",
+        assertThrows(IOException.class, () -> client(api, false).instrument("CF", d("184.40")))
+            .getMessage());
+    assertEquals(0, api.writes);
   }
 
   @Test

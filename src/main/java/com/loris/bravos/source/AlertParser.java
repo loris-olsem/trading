@@ -26,6 +26,7 @@ public final class AlertParser {
     if (lower.contains("initiating") || lower.contains("entering")) action = Action.OPEN;
     else if (lower.contains("increasing")) action = Action.ADD;
     else if (lower.contains("partial profits")
+        || lower.contains("booking profits")
         || lower.contains("reducing")
         || lower.contains("trimming")) action = Action.REDUCE;
     else if (lower.contains("closing") || lower.contains("exiting")) action = Action.CLOSE;
@@ -60,10 +61,13 @@ public final class AlertParser {
       if (price != null && labelled != null && price.compareTo(labelled) != 0)
         fail("CONFLICTING_ENTRY");
       if (labelled != null) price = labelled;
-      after = required("(?i)Weight Allocation\\s*:\\s*" + N, body);
-      stop = required("(?i)Suggested Stop Loss \\(SL\\)\\s*:\\s*\\$" + N, body);
+      after = optional("(?i)Weight Allocation\\s*:\\s*" + N, body);
+      stop = optional("(?i)Suggested Stop Loss \\(SL\\)\\s*:\\s*\\$" + N, body);
       BigDecimal inlineWeight = optional("(?i)\\bweight(?: allocation)? of\\s+" + N, first);
-      BigDecimal inlineStop = optional("(?i)\\bstop(?: loss)? at\\s*\\$" + N, first);
+      BigDecimal inlineStop = optional("(?i)\\bstop(?: loss)?(?: set)? at\\s*\\$" + N, first);
+      if (after == null) after = inlineWeight;
+      if (stop == null) stop = inlineStop;
+      if (after == null || stop == null) fail("MISSING_OPENING_WEIGHT_OR_STOP");
       if (inlineWeight != null && inlineWeight.compareTo(after) != 0) fail("CONFLICTING_WEIGHT");
       if (inlineStop != null && inlineStop.compareTo(stop) != 0) fail("CONFLICTING_STOP");
       Matcher target =
@@ -72,6 +76,13 @@ public final class AlertParser {
         Matcher values = Pattern.compile("\\$" + N).matcher(target.group(1));
         while (values.find()) targets.add(number(values.group(1)));
         if (target.find()) fail("DUPLICATE_TARGET_LABEL");
+      }
+      if (targets.isEmpty()) {
+        Matcher prose = Pattern.compile("(?i)price targets (?:of|at) (.+)$").matcher(first);
+        if (prose.find()) {
+          Matcher values = Pattern.compile("\\$" + N).matcher(prose.group(1));
+          while (values.find()) targets.add(number(values.group(1)));
+        }
       }
       if (targets.isEmpty()) {
         Matcher tp =
@@ -116,7 +127,7 @@ public final class AlertParser {
     if (action != Action.OPEN) {
       Matcher stops =
           Pattern.compile(
-                  "(?i)(?:raising|moving|adjusting|lowering) our stop(?: loss)?(?: from \\$[0-9.,]+)? to \\$"
+                  "(?i)(?:raising|moving|adjusting|lowering) our stop(?: loss)?(?: higher)?(?: from \\$[0-9.,]+)? to (?:near breakeven at )?\\$"
                       + N)
               .matcher(text);
       while (stops.find()) {
@@ -126,7 +137,9 @@ public final class AlertParser {
       }
       if (action == Action.STOP && stop == null) fail("MISSING_STOP_CHANGE");
     }
-    if (action != Action.STOP && action != Action.CLOSE && price == null) fail("MISSING_PRICE");
+    // A proportional reduction needs explicit before/after weights, not a price.
+    // Some published reduction instructions omit the currency marker.
+    if ((action == Action.OPEN || action == Action.ADD) && price == null) fail("MISSING_PRICE");
     if (price != null && price.signum() <= 0
         || stop != null && stop.signum() <= 0
         || after != null && after.compareTo(new BigDecimal("100")) > 0) fail("INVALID_TRADE_VALUE");
@@ -175,12 +188,6 @@ public final class AlertParser {
   private static BigDecimal number(String s) {
     return new BigDecimal(
         s.matches("[0-9]+(?:,[0-9]{3})+(?:\\.[0-9]+)?") ? s.replace(",", "") : s.replace(',', '.'));
-  }
-
-  private static BigDecimal required(String regex, String text) {
-    BigDecimal n = optional(regex, text);
-    if (n == null) fail("MISSING_LABEL");
-    return n;
   }
 
   private static BigDecimal optional(String regex, String text) {

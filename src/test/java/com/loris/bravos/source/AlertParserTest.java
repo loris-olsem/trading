@@ -50,6 +50,73 @@ class AlertParserTest {
   }
 
   @Test
+  void observedProseOpeningsRequireExplicitWeightAndStopAndRetainTargets() {
+    String prose =
+        "We are entering a trade in Example (CF) at $100 with a weight of 5, a stop at $90, and price targets of $110, $115, and $120.";
+    var a = parse("Initiating Long (CF)", prose);
+    assertEquals(d("100"), a.price());
+    assertEquals(d("5"), a.after());
+    assertEquals(d("90"), a.stop());
+    assertEquals(java.util.List.of(d("110"), d("115"), d("120")), a.targets());
+    assertEquals(
+        d("90"),
+        parse(
+                "Initiating Long (CF)",
+                prose
+                    .replace("stop at", "stop loss set at")
+                    .replace("price targets of", "upside price targets at"))
+            .stop());
+    assertThrows(
+        IllegalArgumentException.class,
+        () -> parse("Initiating (CF)", prose.replace("with a weight of 5,", "")));
+    assertThrows(
+        IllegalArgumentException.class,
+        () -> parse("Initiating (CF)", prose.replace("a stop at $90,", "")));
+    assertThrows(
+        IllegalArgumentException.class,
+        () -> parse("Initiating (CF)", prose + "\nWeight Allocation: 6"));
+    assertThrows(
+        IllegalArgumentException.class,
+        () -> parse("Initiating (CF)", prose + "\nSuggested Stop Loss (SL): $89"));
+  }
+
+  @Test
+  void olderReductionsAndExplicitStopPhrasesDoNotLoseProtection() {
+    var trim =
+        parse(
+            "Booking Profits (CF)",
+            "We are further trimming at $110, reducing the weight from 5 to 3.");
+    assertEquals(Action.REDUCE, trim.action());
+    assertEquals(d("5"), trim.before());
+    assertEquals(d("3"), trim.after());
+    var unpriced =
+        parse(
+            "Booking Partial Profits (CF)",
+            "We are booking partial profits at 110 and reducing our weight allocation from 4 to 3.");
+    assertNull(unpriced.price());
+    assertEquals(d("4"), unpriced.before());
+    assertEquals(d("3"), unpriced.after());
+    assertEquals(
+        d("95"),
+        parse(
+                "Increasing (CF)",
+                "We are adding at $100 from 5 to 7.\nWe are moving our stop higher from $90 to $95.")
+            .stop());
+    assertEquals(
+        d("95"),
+        parse(
+                "Reducing (CF)",
+                "We are reducing from 5 to 4 at $110.\nWe are raising our stop from $90 to near breakeven at $95.")
+            .stop());
+    assertThrows(
+        IllegalArgumentException.class,
+        () -> parse("Increasing (CF)", "We are adding at 100 from 5 to 7."));
+    assertThrows(
+        IllegalArgumentException.class,
+        () -> parse("Booking Profits (CF)", "We are closing the position at $110."));
+  }
+
+  @Test
   void openingReadsAllFields() {
     Alert a = parse("Initiating Long on CF (CF) - Breakout", opening);
     assertEquals(Action.OPEN, a.action());

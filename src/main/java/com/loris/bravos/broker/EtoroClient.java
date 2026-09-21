@@ -184,7 +184,11 @@ public final class EtoroClient implements Broker, Workflow.Market {
     BigDecimal total = BigDecimal.ZERO;
     for (JsonNode cost : array(costs, "costs")) {
       if (!text(cost, "currency").equals("USD")) throw new IOException("COST_CURRENCY_UNSUPPORTED");
-      total = total.add(decimal(cost, "amount").max(BigDecimal.ZERO));
+      // The published schema uses amount; the live v2 response uses value.
+      BigDecimal value = decimal(cost, cost.has("value") ? "value" : "amount");
+      if (cost.has("value") && cost.has("amount") && value.compareTo(decimal(cost, "amount")) != 0)
+        throw new IOException("CONFLICTING_COST_VALUE");
+      total = total.add(value.max(BigDecimal.ZERO));
     }
     return new Instrument(
         asset.instrumentId,
