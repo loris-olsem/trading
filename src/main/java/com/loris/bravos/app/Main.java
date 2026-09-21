@@ -190,6 +190,21 @@ public final class Main {
                             || line.endsWith(": COPY_PROTECTION_UNVERIFIED")
                             || line.startsWith("ORDER_PENDING_OR_REJECTED"));
         if (command.equals("plan")) {
+          var report = store.state().report;
+          long ready = report.stream().filter(line -> line.contains(": READY ")).count();
+          long waiting =
+              report.stream()
+                  .filter(line -> line.contains(": WAIT_QUOTE ") || line.contains(": WATCH_PRICE "))
+                  .count();
+          long held = report.stream().filter(line -> line.contains(": BLOCKED ")).count();
+          out.println(
+              "Entry decisions: "
+                  + ready
+                  + " ready, "
+                  + waiting
+                  + " waiting, "
+                  + held
+                  + " blocked.");
           out.println(
               blocked
                   ? "Plan completed with blocked or unresolved items; no orders submitted."
@@ -197,7 +212,15 @@ public final class Main {
           if (store.state().report.stream()
               .anyMatch(line -> line.contains("INSTRUMENT_UNVERIFIED")))
             out.println(
-                "Instrument checks require verified asset profiles in config/trading.json and broker eligibility. See docs/broker-contract.md; do not fill missing evidence with guesses.");
+                "Unverified instruments are skipped individually; eligible instruments can still proceed. See docs/INSTRUMENTS-2026-09-21.md for the IBIT/ETHA restrictions and missing MAGS listing. Profiles are in config/trading.json.");
+          if (report.stream().anyMatch(line -> line.contains("COST_REQUEST_STALE")))
+            out.println("Fee check: a new eToro estimate could not be obtained within 60 seconds.");
+          if (report.stream().anyMatch(line -> line.contains("QUOTE_NOT_EXECUTABLE")))
+            out.println(
+                "Waiting for a usable price: the market must be open and tradable, with a realtime USD ask no more than 60 seconds old.");
+          if (report.stream().anyMatch(line -> line.contains("ABOVE_ORIGINAL_CEILING")))
+            out.println(
+                "Above-ceiling entries stay on the watchlist; the app will not raise your maximum price.");
           return 0;
         }
         out.println(

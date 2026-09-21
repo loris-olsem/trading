@@ -1,0 +1,7 @@
+{
+  "date": "2026-09-21",
+  "question": "eToro is returning fee estimates calculated 1–2 hours ago. Our app currently rejects anything over 60 seconds old, which is a rule I added—not one you requested. I recommend using the fee estimate returned by a new eToro request, while still requiring a purchase price less than 60 seconds old and keeping your maximum price and Bravos stop. The fee estimate could differ from the final charge. Accept that approach?",
+  "answer": "make the app work you cunt",
+  "interpretation": "Proceed with the recommended freshly requested cost-estimate approach. This is contextual authorization, not an explicit selection of the suggested answer label.",
+  "effect": "Request owner-side costs anew for each assessed amount and again before submission. Accept older lastUpdated figures in a successful fresh response; reject future or invalid timestamps, wrong instruments, invalid currencies and failed or slow requests. Keep the independent 60-second executable-price rule, maximum entry price, cash checks and exact stops. No fee guarantee is implied."
+}

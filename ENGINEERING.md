@@ -7,7 +7,21 @@ The [implementation plan](docs/IMPLEMENTATION-PLAN.md) was committed before code
 
 ## Checks
 
-Latest verification, 21 September (configured owner-run path): **180 tests pass**,
+Latest cost-response correction, 21 September: **181 tests pass**, **90.53%
+instruction coverage** (10,530/11,631), **79.72% branch coverage** (1,411/1,770),
+and **882/980 PIT mutations killed (90.00%)**. There are 84 survivors and 14
+uncovered mutations, with no timeout or error counted as a kill. Formatting,
+coverage gates and distribution packaging pass; no gates changed. Regression
+tests cover new requests per amount, old generated figures, future timestamps,
+wrong instruments, backward clocks and the exact 60-second request boundary.
+An earlier PIT run was interrupted when the owner answered the cost-policy
+question; these results are from the completed replacement run.
+
+Two corrected full live dry runs completed without orders. The second had all
+five configured instruments READY; MAGS/IBIT/ETHA remain unavailable or unconfigured.
+See [the current result](docs/READINESS-2026-09-21.md#after-the-cost-correction).
+
+Earlier verification, 21 September (configured owner-run path): **180 tests pass**,
 **90.68% instruction coverage** (10,450/11,524), **79.90% branch coverage**
 (1,403/1,756), and **879/978 PIT mutations killed (89.88%)**. There are 85
 survivors and 14 uncovered mutations; the final run has no timeout or run error

@@ -177,10 +177,18 @@ public final class EtoroClient implements Broker, Workflow.Market {
             .put("leverage", 1)
             .put("amount", proposedOwnerAmount)
             .put("orderCurrency", "usd");
+    Instant costRequestedAt = clock.instant();
     JsonNode costs = query(true, "/api/v2/trading/info/costs", costRequest);
-    if (integer(costs, "instrumentId") != asset.instrumentId
-        || Duration.between(instant(text(costs, "lastUpdated")), clock.instant()).abs().getSeconds()
-            > 60) throw new IOException("COST_ESTIMATE_STALE");
+    if (integer(costs, "instrumentId") != asset.instrumentId)
+      throw new IOException("COST_INSTRUMENT_MISMATCH");
+    Instant costReceivedAt = clock.instant();
+    // A fresh what-if response can use older broker-generated cost figures.
+    // The owner accepted that estimate; lastUpdated is not a quote expiry.
+    if (instant(text(costs, "lastUpdated")).isAfter(costReceivedAt))
+      throw new IOException("COST_TIMESTAMP_FUTURE");
+    if (costReceivedAt.isBefore(costRequestedAt)
+        || Duration.between(costRequestedAt, costReceivedAt).compareTo(Duration.ofSeconds(60)) > 0)
+      throw new IOException("COST_REQUEST_STALE");
     BigDecimal total = BigDecimal.ZERO;
     for (JsonNode cost : array(costs, "costs")) {
       if (!text(cost, "currency").equals("USD")) throw new IOException("COST_CURRENCY_UNSUPPORTED");

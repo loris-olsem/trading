@@ -1,9 +1,9 @@
 # Bravos helper specification
 
-Policy version: `2026-09-21.2`. The user chose an owner-operated Java/Gradle
+Policy version: `2026-09-21.3`. The user chose an owner-operated Java/Gradle
 program to replace the Markdown skill. Normal `run` executes eligible trades;
-`plan` and `initialize` never submit orders. No schedule or initial enrollment
-has been created. The [operations guide](docs/operations.md) describes invocation;
+`plan` and `initialize` never submit orders. No schedule has been created;
+`gr status` reports the current enrollment state. The [operations guide](docs/operations.md) describes invocation;
 the [broker contract](docs/broker-contract.md) records the sourced operating model
 and unresolved broker guarantees. Development uses read-only external checks and
 isolated execution fixtures, not financial actions by the assistant.
@@ -95,6 +95,9 @@ which specifies a 3x daily Nasdaq-100 objective.
   or redistribute skipped weights. Process entry/add events by source publication
   order, then stable ID for equal dates. This tie-break cannot resolve ambiguous
   source chronology within one position cycle.
+- Cost estimates are requested anew for the owner amount, including immediately
+  before submission. Older figure-generation timestamps do not expire a fresh
+  response; final fees can differ. See the [follow-up](decisions/2026-09-21-cost-estimates.json).
 - A source reduction from weight 5 to 4 sells 20% of our linked units. A full
   close sells all linked remaining units. Do not rebalance to current equity.
 - An addition to an existing holding uses the increase in source weight × current

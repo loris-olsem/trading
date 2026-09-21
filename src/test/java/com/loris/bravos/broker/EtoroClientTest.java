@@ -221,7 +221,7 @@ class EtoroClientTest {
     assertFalse(report.toString().contains("agent-test"));
     api.costs.put("lastUpdated", NOW.minusSeconds(70).toString());
     report = InstrumentAudit.preflight(api, secrets, config(), clock);
-    assertEquals("COST_ESTIMATE_STALE", report.path("preflight").get(0).path("result").asText());
+    assertEquals("READ_PREFLIGHT_PASSED", report.path("preflight").get(0).path("result").asText());
     assertEquals(0, api.writes);
   }
 
@@ -357,7 +357,64 @@ class EtoroClientTest {
     api.eligibility.put("unitsQuantityType", "whole");
     assertEquals(0, client.instrument("CF", d("1")).unitScale());
     api.costs.put("lastUpdated", "2020-01-01T00:00:00Z");
-    assertThrows(IOException.class, () -> client.instrument("CF", d("1")));
+    assertEquals(d("1"), client.instrument("CF", d("1")).estimatedOwnerCost());
+    api.costs.put("lastUpdated", NOW.plusNanos(1).toString());
+    assertEquals(
+        "COST_TIMESTAMP_FUTURE",
+        assertThrows(IOException.class, () -> client.instrument("CF", d("1"))).getMessage());
+    api.costs.put("instrumentId", 1118);
+    assertEquals(
+        "COST_INSTRUMENT_MISMATCH",
+        assertThrows(IOException.class, () -> client.instrument("CF", d("1"))).getMessage());
+  }
+
+  @Test
+  void costsAreRequestedForEachAmountAndRequestFreshnessHasExactBoundaries() throws Exception {
+    for (Duration elapsed :
+        List.of(
+            Duration.ofNanos(-1),
+            Duration.ZERO,
+            Duration.ofSeconds(60),
+            Duration.ofSeconds(60).plusNanos(1))) {
+      var api = new Api();
+      api.costs.put("lastUpdated", NOW.minusSeconds(7200).toString());
+      var moment = new java.util.concurrent.atomic.AtomicReference<>(NOW);
+      Clock requestClock =
+          new Clock() {
+            public ZoneId getZone() {
+              return ZoneOffset.UTC;
+            }
+
+            public Clock withZone(ZoneId zone) {
+              return Clock.fixed(instant(), zone);
+            }
+
+            public Instant instant() {
+              return moment.get();
+            }
+          };
+      List<String> amounts = new ArrayList<>();
+      Transport transport =
+          (method, path, headers, body) -> {
+            if (path.endsWith("/costs")) {
+              amounts.add(Json.MAPPER.readTree(body).path("amount").asText());
+              moment.set(NOW.plus(elapsed));
+            }
+            return api.request(method, path, headers, body);
+          };
+      var broker = new EtoroClient(transport, secrets, config(), requestClock, false);
+      for (String amount : List.of("100", "200")) {
+        moment.set(NOW);
+        if (elapsed.isNegative() || elapsed.compareTo(Duration.ofSeconds(60)) > 0)
+          assertEquals(
+              "COST_REQUEST_STALE",
+              assertThrows(IOException.class, () -> broker.instrument("CF", d(amount)))
+                  .getMessage());
+        else assertEquals(d("1"), broker.instrument("CF", d(amount)).estimatedOwnerCost());
+      }
+      assertEquals(List.of("100", "200"), amounts);
+      assertEquals(0, api.writes);
+    }
   }
 
   @Test

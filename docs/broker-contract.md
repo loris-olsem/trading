@@ -46,6 +46,18 @@ field and rejects conflicting dual values or missing values. This discrepancy
 was tested using the observed response shape; see the
 [rehearsal report](REHEARSAL-2026-09-21.md).
 
+Cost freshness follows the [21 September owner follow-up](../decisions/2026-09-21-cost-estimates.json).
+The official [what-if cost endpoint](https://api-portal.etoro.com/api-reference/trading--real/get-what-if-trading-cost-breakdown)
+returns an estimate for execution now, while `lastUpdated` describes when its
+figures were generated. A new successful request for the proposed owner amount
+is required during evaluation and again before submission. It is not cached by
+the app. The response may contain older figures; these are accepted as the
+broker's current estimate, not a guaranteed fee. Reject a future/invalid timestamp,
+wrong instrument, invalid currency, failed request or request taking over 60 seconds.
+The separate executable quote must still be no more than 60 seconds old. The old
+60-second figure-generation cutoff was an implementation assumption, not an API
+requirement or the user's price-freshness rule.
+
 Execution routes are restricted to agent credentials:
 
 - `POST /api/v2/trading/execution/orders`: `limitIOC`, leverage 1, exact fixed stop.

@@ -1,6 +1,6 @@
 # Constraint review — 21 September 2026
 
-This reviews the implemented program against policy `2026-09-21.2`. Original
+This reviews the implemented program against policy `2026-09-21.3`. Original
 answers and their dispositions are preserved in [PLANNING.md](../PLANNING.md).
 Passing local tests establishes program behavior against fixtures, not eToro's
 live copying guarantees. No trades or funding actions were used as tests.
@@ -10,7 +10,7 @@ live copying guarantees. No trades or funding actions were used as tests.
 | Requirement | Implementation and evidence | Remaining limit |
 | --- | --- | --- |
 | Tactical website, no email dependency | `BravosSource`, deterministic `AlertParser`; authenticated read-only capture/replay of 143 articles, current 15 holdings matched | Changed layouts/wording stop discovery |
-| Initial 30 days separate from research | `Main`, `Workflow.initialBook`; explicit enrollment floor, no trading during initialize; CLI integration tests | Owner has not initialized; historical reports are not activation |
+| Initial 30 days separate from research | `Main`, `Workflow.initialBook`; explicit enrollment floor, no trading during initialize; CLI integration tests | Latest local status is initialized; historical reports alone are not activation |
 | Routine full gap, deduplication, revisions | Checkpoint-day overlap, post IDs, authored-body hashes, source revisions, active rereads and seven-day audit; source/domain tests | No claim to discover every unseen backdated article |
 | Partial scans cannot advance coverage | `acceptScan`, first-page recheck/retry, dashboard match; persisted failure tests | Source errors conservatively block the run's new actions |
 | Opening watchlist and +2% | `Policy.opening`; executable ask, floored ceiling, terminal/source-open state tests | Agent cap enforced; owner accepted unverified copied-price protection with read-back |
@@ -44,7 +44,7 @@ live copying guarantees. No trades or funding actions were used as tests.
 | Credential and owner separation | Secrets ignored; fixed host transport, no redirects for broker, bounded HTTP body, read-only owner scopes; sanitized errors and fixture tests |
 | Minimal Git evidence | Source/cycle/action projections omit broker IDs/references; immutability/redaction tests; private journal remains ignored |
 | Skills retired and docs indexed | No repo-local active skill; archived ordinary Markdown/Python preserved; README links current architecture/rules/operations/contracts |
-| No hidden automation or activation | No schedule installed, no enrollment baseline created, historical planning ledger unchanged |
+| No hidden automation or activation | No schedule installed or enrollment performed by development; latest owner journal is initialized |
 
 ## Verification results and interpretation
 
@@ -68,8 +68,11 @@ recovery. No broad mutation exclusions were added to conceal these gaps.
 **Ready for the owner's first execution.**
 Five asset profiles and the sourced operating model replace the empty gates.
 The full live dry run, using the explicitly accepted market-calendar rule, found
-eligible BRK.B and ARGT orders. Other instruments remain held for stale costs or
-unavailable exposure. See the [readiness check](READINESS-2026-09-21.md). Exact stop and amount
+eligible BRK.B and ARGT orders. The subsequent cost-response correction removes
+the implementation's 60-second fee-generation cutoff while retaining fresh
+requests and independently fresh prices. Its repeated live dry run found all five
+configured entries READY. Unavailable exposure remains held.
+See the [readiness check](READINESS-2026-09-21.md). Exact stop and amount
 read-back remain mandatory, and no fixture or configuration string proves broker
 behavior. The owner accepted possible copied-price slippage; detected overpayment
 blocks further purchases without an automatic corrective sale.

@@ -156,6 +156,9 @@ silently become “nothing to do.”
 
 Completed plans exit successfully, including when every candidate is blocked:
 the printed report and summary distinguish readiness from successful evaluation.
+The entry summary counts READY, price/quote waiting, and BLOCKED decisions.
+These counts describe evaluated entries, not fills. Quote waiting can change
+between runs; the executable ask still must be realtime and at most 60 seconds old.
 `INSTRUMENT_UNVERIFIED` requires a verified asset profile and broker eligibility;
 an empty `assets` map blocks every symbol and does not prove broker unavailability.
 Live execution retains exit code 2 for blocked or unresolved work (including

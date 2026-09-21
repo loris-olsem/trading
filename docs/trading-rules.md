@@ -1,6 +1,6 @@
 # Effective trading rules
 
-Policy `2026-09-21.2`. Detailed agreements and original answers:
+Policy `2026-09-21.3`. Detailed agreements and original answers:
 [PLANNING.md](../PLANNING.md), [decision records](../decisions/).
 
 | Situation | Required behavior |
@@ -19,6 +19,7 @@ Policy `2026-09-21.2`. Detailed agreements and original answers:
 | Agent conversion | Sourced realized-copy-capital model; verify actual copied amount after every fill; internal capital is not owner money |
 | Funding | No rebalance or order; cash available for future qualifying actions |
 | Cash/minimum/cost failure | Report/skip; do not inflate size or redistribute skipped weights |
+| Cost estimates | Fresh owner-side what-if request for each amount and before submission; older figure-generation dates accepted, not a final-fee guarantee. Prices retain their separate 60-second limit |
 | Final partial fill | Keep protected units, report shortfall, consume event; no automatic top-up |
 | Weight 5 → 4 | Sell 20% of linked units, rounded down to supported precision |
 | Full close | Close all remaining linked units, including dust |

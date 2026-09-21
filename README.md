@@ -6,10 +6,10 @@ Portfolio. It parses supported alerts deterministically, keeps a durable journal
 reconciles the agent with the owner's real allocation, and applies the agreed
 price, sizing and stop rules. Gmail and an AI assistant are not runtime dependencies.
 
-**Readiness:** configured for owner execution. The full live dry run found eligible
-BRK.B and ARGT entries after the accepted market-calendar change. CF/EOG/SMH
-remain held for old broker cost timestamps; MAGS/IBIT/ETHA remain unavailable or
-unconfigured. No trades, initial enrollment or schedule have been created. See the
+**Readiness:** configured for owner execution. After correcting the cost-response
+check, the repeated full live dry run found all five configured entries eligible:
+CF, BRK.B, ARGT, EOG and SMH. MAGS/IBIT/ETHA remain unavailable or unconfigured.
+Each run reassesses current conditions. No trades or schedule were created during development. See the
 [latest readiness check](docs/READINESS-2026-09-21.md) and
 [broker operating model](docs/broker-contract.md#operating-model).
 The four defects from the [independent review](docs/REVIEW-2026-09-21.md) have

@@ -14,6 +14,65 @@ establishes readiness for an owner-run first execution, not a claim of live fill
 
 ## Live read-only result
 
+### Reproduction after the owner's blocked plan
+
+A fresh `gr instrumentPreflight plan` at about 18:13–18:14 UTC reproduced
+CF/EOG/SMH cost-age holds. BRK.B remained READY; ARGT passed the separate
+preflight but its quote was too old during the full plan. A READY result is
+an observation for that run, not a promise for the next invocation.
+
+The 60-second **cost** age cutoff was an implementation choice; the user's
+60-second agreement concerns executable **prices**. eToro's
+[cost endpoint](https://api-portal.etoro.com/api-reference/trading--real/get-what-if-trading-cost-breakdown)
+describes a current hypothetical estimate and `lastUpdated` as the generation
+time of the cost figures. It does not specify a 60-second validity window.
+Live CF/EOG figures were about 71 minutes old, SMH about two hours old, despite
+fresh requests. In response to the proposed use of freshly requested estimates,
+the owner instructed us to proceed; the [answer and interpretation](../decisions/2026-09-21-cost-estimates.json)
+are preserved. The app now requires a new successful cost request for each amount,
+including pre-submission, without treating the figure-generation time as a
+60-second expiry. Future/invalid timestamps and stale requests still fail.
+The independent 60-second executable-price check is unchanged.
+
+Independent eligibility reads again returned `allowOpenPosition: false` for
+IBIT (1367) and ETHA.US (12152) on both accounts. The exact MAGS lookup returned
+no instrument; name search returned YMAG, which is not a substitute. These are
+broker restrictions or identity gaps, not cost-age failures.
+
+### After the cost correction
+
+The repeated full `gr plan status` at about **18:24 UTC** completed successfully:
+
+| Symbol | Owner amount | Maximum price | Exact Bravos stop |
+| --- | --- | --- | --- |
+| CF | $184.40 | $132.97 | $121.50 |
+| BRK.B | $368.80 | $516.63 | $480 |
+| ARGT | $230.50 | $98.36 | $89 |
+| EOG | $230.50 | $153.17 | $138 |
+| SMH | $230.50 | $598.36 | $535 |
+
+**5 ready, 0 waiting, 3 blocked.** The remaining three are the unavailable or
+unconfigured MAGS/IBIT/ETHA instruments. No orders were submitted. Local status
+showed `initialized=true`; enrollment had already been performed by the owner,
+so it must not be repeated. Live execution refreshes amounts, eligibility and prices.
+
+The first corrected run showed why quote waiting is transient:
+
+After the cost correction, the full plan completed around 18:21 UTC with:
+
+| Symbol | Result |
+| --- | --- |
+| BRK.B | READY: owner $368.80, maximum $516.63, stop $480 |
+| ARGT | READY: owner $230.50, maximum $98.36, stop $89 |
+| SMH | READY: owner $230.50, maximum $598.36, stop $535 |
+| CF, EOG | Waiting for executable quotes; no cost-age block |
+| MAGS, IBIT, ETHA | Unverified profiles; current broker findings described above |
+
+All five configured instruments passed the separate read-only cost preflight.
+This run submitted no orders. The earlier two-entry result below is historical.
+
+### Earlier successful candidates
+
 `gr instrumentPreflight` queried the configured profiles, costs and quotes.
 `gr plan` completed source discovery and evaluated all eight enrolled-window
 candidates without submitting orders:
@@ -40,8 +99,9 @@ around 17:55 UTC, produced the two READY entries above. Amounts and prices will
 be reassessed by the owner's run; this plan does not reserve orders or prices.
 
 Adding `Cache-Control: no-cache` to account, cost and eligibility reads did not
-resolve the observed cost-age failures. The program still rejects stale costs
-and quotes outside the accepted session. These are external data observations, not evidence
+resolve the observed cost-age failures. This describes the earlier implementation,
+superseded by the cost-response rule above. Prices outside the accepted session
+remain unusable. These are external data observations, not evidence
 that the exchange was actually closed or that a real order would be rejected.
 
 Private raw evidence remains ignored in `state/capture/instrument-preflight.json`.
@@ -70,7 +130,7 @@ to enroll the agreed initial 30-day window, then `gr run` to execute qualifying
 actions. Later `gr plan` remains the dry run and `gr run` remains the live command.
 No new credentials, browser login or schedule are required.
 
-Cost-age holds and unavailable instruments remain skipped; their weights are not
+Failed cost requests and unavailable instruments remain skipped; their weights are not
 redistributed. Actual copy propagation can only be checked after the owner's
 execution; the program checks each fill before allowing another purchase.
 Calendar coverage currently ends in 2026 and must be updated from published data

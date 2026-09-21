@@ -94,6 +94,7 @@ class MainTest {
           return new Main.Connections(market, market, source);
         };
     assertEquals(0, run("plan", "--since", "2026-08-21"), output.toString());
+    assertTrue(output.toString().contains("Entry decisions: 1 ready, 0 waiting, 0 blocked."));
     assertTrue(market.submitted.isEmpty());
     assertEquals(0, run("initialize", "--since", "2026-08-21"), output.toString());
     assertTrue(market.submitted.isEmpty());
@@ -126,6 +127,7 @@ class MainTest {
     }
     assertEquals(0, run("plan"), output.toString());
     assertTrue(output.toString().contains(": BLOCKED "));
+    assertTrue(output.toString().contains("Entry decisions: 0 ready, 0 waiting, 1 blocked."));
     assertTrue(
         output
             .toString()
