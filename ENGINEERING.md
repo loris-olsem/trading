@@ -39,6 +39,14 @@ Verified 19 September 2026 on the final Java sources:
 
 ## Read-only evidence
 
+The [21 September independent review](docs/REVIEW-2026-09-21.md) identified four
+unresolved recovery/reporting defects: source-state poisoning, protection blocked
+by an unresolved fill, a silently held conflicting close, and a kill-cancelled
+close that cannot resume. Four isolated characterization probes reproduce them.
+These are additional readiness blockers; passing the existing coverage/PIT gates
+does not resolve them. The review records accepted recommendations and preserves
+Fable's original opinion. Production code remains unchanged pending remediation.
+
 The [21 September rehearsal](docs/REHEARSAL-2026-09-21.md) found and corrected the
 live `value` versus documented `amount` cost-component mismatch and extended the
 deterministic parser for explicit older prose forms. The updated suite passes

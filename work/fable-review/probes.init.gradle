@@ -1,0 +1,12 @@
+// Isolated review task: no production changes or external services.
+allprojects {
+    afterEvaluate {
+        sourceSets.test.java.srcDir(file('work/fable-review/probes'))
+        tasks.register('reviewProbe', Test) {
+            testClassesDirs = sourceSets.test.output.classesDirs
+            classpath = sourceSets.test.runtimeClasspath
+            useJUnitPlatform()
+            filter { includeTestsMatching('com.loris.bravos.app.ReviewProbeTest') }
+        }
+    }
+}

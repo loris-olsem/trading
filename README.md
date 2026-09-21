@@ -12,6 +12,8 @@ remain blocked by unverified copy capabilities and empty asset profiles in
 [`config/trading.json`](config/trading.json). In particular, an agent limit order
 does not yet establish a hard ceiling on the owner's copied fill. See the
 [broker contract](docs/broker-contract.md).
+The [independent review](docs/REVIEW-2026-09-21.md) also identified four unresolved
+recovery/reporting defects that must be addressed before live use.
 
 ## Start here
 
@@ -25,6 +27,7 @@ including live read-only account/eligibility checks and defects found and fixed.
 | [Architecture](docs/architecture.md) | Discovery, policy, execution and state ownership |
 | [Broker contract](docs/broker-contract.md) | API boundaries and outstanding verification |
 | [Constraint review](docs/constraint-review.md) | Requirements mapped to code and tests |
+| [Independent review](docs/REVIEW-2026-09-21.md) | Major findings, reproduction probes and unresolved fixes |
 | [Engineering](ENGINEERING.md) | Build, coverage, PIT and repeatable checks |
 | [Policy provenance](PLANNING.md) | Detailed agreements and original decision records |
 | [Agent instructions](AGENTS.md) | Rules for repository maintenance |
