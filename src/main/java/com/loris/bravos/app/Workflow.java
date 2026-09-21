@@ -68,15 +68,27 @@ public final class Workflow {
     TradingState state = store.state();
     state.report.clear();
     state.report.addAll(scan.errors());
-    if (state.checkpoint == null) state.book = initialBook(scan.alerts(), enrollmentFloor);
-    else state.book.apply(scan.alerts(), state.enrollmentFloor);
-    boolean matches = dashboardMatches(state.book, scan.dashboard());
-    if (!matches) state.report.add("SOURCE_DASHBOARD_MISMATCH");
-    state.report.addAll(state.book.blockers);
-    if (!scan.complete() || !matches || !state.book.blockers.isEmpty()) {
+    if (!scan.complete()) {
+      state.report.add("SOURCE_SCAN_INCOMPLETE");
+      store.recordRejectedSource(scan.alerts(), state.report);
       store.save();
       throw new IOException("SOURCE_DISCOVERY_INCOMPLETE_SEE_STATUS");
     }
+    SourceBook candidate =
+        state.checkpoint == null
+            ? initialBook(scan.alerts(), enrollmentFloor)
+            : com.loris.bravos.util.Json.MAPPER.readValue(
+                com.loris.bravos.util.Json.MAPPER.writeValueAsBytes(state.book), SourceBook.class);
+    if (state.checkpoint != null) candidate.apply(scan.alerts(), state.enrollmentFloor);
+    boolean matches = dashboardMatches(candidate, scan.dashboard());
+    if (!matches) state.report.add("SOURCE_DASHBOARD_MISMATCH");
+    state.report.addAll(candidate.blockers);
+    if (!matches || !candidate.blockers.isEmpty()) {
+      store.recordRejectedSource(scan.alerts(), state.report);
+      store.save();
+      throw new IOException("SOURCE_DISCOVERY_INCOMPLETE_SEE_STATUS");
+    }
+    state.book = candidate;
     if (initialize) {
       if (state.enrollmentFloor != null) throw new IOException("ALREADY_INITIALIZED");
       state.enrollmentFloor = enrollmentFloor;
@@ -96,7 +108,12 @@ public final class Workflow {
     reconcileOnly();
     if (state.attempts.values().stream()
         .anyMatch(a -> !Set.of(Status.CONFIRMED, Status.REJECTED).contains(a.status))) {
-      state.report.add("UNRESOLVED_ORDER_BLOCKS_NEW_SUBMISSIONS");
+      recoverProtection(live);
+      state.report.add(
+          state.attempts.values().stream()
+                  .anyMatch(a -> !Set.of(Status.CONFIRMED, Status.REJECTED).contains(a.status))
+              ? "UNRESOLVED_ORDER_BLOCKS_NEW_SUBMISSIONS"
+              : "PROTECTION_RECOVERED_REVIEW_BEFORE_NEXT_RUN");
       store.save();
       return List.copyOf(state.report);
     }
@@ -153,8 +170,33 @@ public final class Workflow {
       }
     List<Cycle> cycles =
         state.book.cycles.values().stream()
-            .sorted(Comparator.comparing((Cycle c) -> c.openedOn).thenComparing(c -> c.key))
+            .sorted(
+                Comparator.comparing((Cycle c) -> c.openedOn)
+                    .thenComparing(c -> c.key, SourceBook::compareKeys))
             .toList();
+    for (Cycle c : cycles)
+      if (c.blocker != null) {
+        for (Alert e : c.events)
+          if (!c.completed.contains(e.key()))
+            state.report.add(
+                c.symbol
+                    + ": BLOCKED "
+                    + c.blocker
+                    + " event="
+                    + e.key()
+                    + " action="
+                    + e.action()
+                    + " before="
+                    + e.before()
+                    + " after="
+                    + e.after()
+                    + " retainedAgentUnits="
+                    + account.agentPositions().stream()
+                        .filter(p -> c.positionIds.contains(p.id()))
+                        .map(Position::units)
+                        .reduce(BigDecimal.ZERO, BigDecimal::add)
+                    + "; resolve source facts before execution");
+      }
     for (Cycle c : cycles)
       if (c.entered) {
         for (int index = 0; index < c.events.size(); index++) {
@@ -236,7 +278,8 @@ public final class Workflow {
         for (Alert e : actions) exposures.add(new Exposure(c, e));
       }
     exposures.sort(
-        Comparator.comparing((Exposure x) -> x.event().date()).thenComparing(x -> x.event().key()));
+        Comparator.comparing((Exposure x) -> x.event().date())
+            .thenComparing(x -> x.event().key(), SourceBook::compareKeys));
     for (Exposure exposure : exposures) {
       Cycle c = exposure.cycle();
       Alert e = exposure.event();
@@ -264,6 +307,90 @@ public final class Workflow {
       executor.reconcile(a);
       if (a.status == Status.CONFIRMED && !a.baselineSaved) refreshHolding(a);
     }
+  }
+
+  private void recoverProtection(boolean live) throws IOException {
+    Account account = market.account();
+    for (Attempt attempt : new ArrayList<>(store.state().attempts.values())) {
+      if (attempt.status == Status.CONFIRMED || attempt.status == Status.REJECTED) continue;
+      store.state().report.add("UNRESOLVED_ATTEMPT " + attempt.reference + " " + attempt.result);
+      Intent original = attempt.intent;
+      if (original.action() != Action.OPEN && original.action() != Action.ADD) continue;
+      Cycle cycle = store.state().book.cycles.get(original.cycleKey());
+      for (long id : attempt.positionIds) {
+        Position position =
+            account.agentPositions().stream().filter(p -> p.id() == id).findFirst().orElse(null);
+        List<Position> copies =
+            account.ownerPositions().stream().filter(p -> p.parentId() == id).toList();
+        if (position == null || copies.isEmpty())
+          store.state().report.add("UNPROTECTED_POSITION_LINK_UNVERIFIED agent=" + id);
+        for (Position copy : copies)
+          if (!protectedAt(copy, original.stop()))
+            store
+                .state()
+                .report
+                .add(
+                    "UNPROTECTED_OWNER_POSITION "
+                        + copy.id()
+                        + " expectedStop="
+                        + original.stop()
+                        + "; owner intervention required if propagation fails");
+        if (position == null || protectedAt(position, original.stop())) continue;
+        store
+            .state()
+            .report
+            .add("UNPROTECTED_AGENT_POSITION " + id + " expectedStop=" + original.stop());
+        // Repair only identified fills, never unknown executions or unrelated lots.
+        if (!live
+            || attempt.status != Status.PARTIAL
+            || !"COPY_OR_STOP_NOT_CONFIRMED".equals(attempt.result)
+            || cycle.blocker != null
+            || cycle.stop == null
+            || original.stop() == null
+            || original.stop().signum() <= 0
+            || cycle.stop.compareTo(original.stop()) != 0
+            || !account.active()
+            || !account.ordersComplete()
+            || account.pending()
+            || account.observedAt().isAfter(clock.instant())
+            || Duration.between(account.observedAt(), clock.instant())
+                    .compareTo(Duration.ofSeconds(60))
+                > 0
+            || !position.longOnly()
+            || position.instrumentId() != original.instrumentId()
+            || copies.isEmpty()
+            || copies.stream()
+                .anyMatch(p -> !p.longOnly() || p.instrumentId() != original.instrumentId()))
+          continue;
+        Intent repair =
+            new Intent(
+                "repair:" + attempt.reference + "|" + id,
+                cycle.key,
+                original.eventKey(),
+                Action.STOP,
+                original.instrumentId(),
+                id,
+                null,
+                null,
+                null,
+                null,
+                original.stop(),
+                null);
+        Attempt result = executor.execute(repair);
+        store.state().report.add("PROTECTION_REPAIR " + id + " " + result.status);
+      }
+    }
+    // Confirm the original fill only after both accounts prove its protection.
+    reconcileOnly();
+  }
+
+  private static boolean protectedAt(Position position, BigDecimal stop) {
+    return stop != null
+        && position.longOnly()
+        && position.stopEnabled()
+        && !position.trailing()
+        && position.stop() != null
+        && position.stop().compareTo(stop) == 0;
   }
 
   private static boolean sameAmounts(Map<Long, BigDecimal> left, Map<Long, BigDecimal> right) {
@@ -362,6 +489,7 @@ public final class Workflow {
       Attempt attempt = executor.execute(i);
       if (attempt.status != Status.CONFIRMED) {
         store.state().report.add("ORDER_PENDING_OR_REJECTED: " + attempt.result);
+        if (attempt.status != Status.REJECTED) recoverProtection(false);
         return false;
       }
       refreshHolding(attempt);

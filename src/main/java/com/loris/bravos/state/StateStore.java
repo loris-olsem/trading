@@ -60,6 +60,20 @@ public final class StateStore implements AutoCloseable {
     return Files.exists(directory.resolve("KILL"));
   }
 
+  /** Keep rejected observations as private evidence without accepting their instructions. */
+  public void recordRejectedSource(
+      java.util.List<com.loris.bravos.domain.Model.Alert> observations,
+      java.util.List<String> reasons)
+      throws IOException {
+    Path evidence = directory.resolve("source-review");
+    Files.createDirectories(evidence);
+    Files.write(
+        evidence.resolve(UUID.randomUUID() + ".json"),
+        Json.MAPPER.writeValueAsBytes(
+            java.util.Map.of("observations", observations, "reasons", reasons)),
+        StandardOpenOption.CREATE_NEW);
+  }
+
   public void save() throws IOException {
     validate(state);
     Path file = directory.resolve("ledger.json");

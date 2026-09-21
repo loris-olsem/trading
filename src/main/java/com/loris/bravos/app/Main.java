@@ -177,7 +177,15 @@ public final class Main {
         }
         workflow.evaluate(command.equals("run")).forEach(out::println);
         AuditExport.write(root, store.state());
-        return 0;
+        return store.state().report.stream()
+                .anyMatch(
+                    line ->
+                        line.contains(": BLOCKED ")
+                            || line.startsWith("UNPROTECTED_")
+                            || line.startsWith("UNRESOLVED_ORDER_")
+                            || line.startsWith("ORDER_PENDING_OR_REJECTED"))
+            ? 2
+            : 0;
       }
     } catch (Exception e) {
       // Never print HTTP/library exception bodies or credential-bearing causes.

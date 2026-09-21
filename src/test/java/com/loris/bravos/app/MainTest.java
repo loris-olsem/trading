@@ -101,6 +101,15 @@ class MainTest {
     assertEquals(0, run("run"), output.toString());
     assertEquals(1, market.submitted.size());
     assertEquals(List.of(false, false, true), modes);
+    market.unavailable = true;
+    try (var store = new StateStore(root.resolve("state/runtime"))) {
+      var cycle = store.state().book.cycles.values().iterator().next();
+      cycle.events.add(
+          alert("later-add", com.loris.bravos.domain.Model.Action.ADD, "100", "5", "6", null));
+      store.save();
+    }
+    assertEquals(2, run("plan"), output.toString());
+    assertTrue(output.toString().contains(": BLOCKED "));
   }
 
   @Test

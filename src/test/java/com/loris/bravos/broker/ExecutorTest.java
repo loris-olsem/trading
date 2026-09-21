@@ -159,4 +159,59 @@ class ExecutorTest {
       assertFalse(c.terminal);
     }
   }
+
+  @Test
+  void cancelledBeforeSubmitIsDurablyRejectedAndCanRetryOnlyOnce() throws Exception {
+    var broker = new Fake();
+    broker.killPrepare = true;
+    try (var store = store()) {
+      new Executor(store, broker, clock).execute(intent());
+    }
+    Files.delete(temp.resolve("KILL"));
+    broker.killPrepare = false;
+    try (var store = new StateStore(temp)) {
+      var cancelled = store.state().attempts.get(intent().key());
+      assertEquals(Status.REJECTED, cancelled.status);
+      assertEquals("KILL_BEFORE_SUBMISSION", cancelled.result);
+      var executor = new Executor(store, broker, clock);
+      var retried = executor.execute(intent());
+      assertNotEquals(cancelled.reference, retried.reference);
+      assertEquals(Status.CONFIRMED, retried.status);
+      executor.execute(intent());
+      assertEquals(1, broker.submits);
+    }
+  }
+
+  @Test
+  void lostResponseStatusIsSavedBeforeReturning() throws Exception {
+    var broker = new Fake();
+    broker.lost = true;
+    try (var store = store()) {
+      new Executor(store, broker, clock).execute(intent());
+    }
+    try (var store = new StateStore(temp)) {
+      assertEquals(Status.UNKNOWN, store.state().attempts.get(intent().key()).status);
+      assertEquals("SUBMISSION_OUTCOME_UNKNOWN", store.state().attempts.get(intent().key()).result);
+    }
+  }
+
+  @Test
+  void receiptIsSavedBeforeReadbackCanCrash() throws Exception {
+    var broker =
+        new Fake() {
+          @Override
+          public Observation observe(Attempt attempt) {
+            throw new IllegalStateException("synthetic process failure");
+          }
+        };
+    try (var store = store()) {
+      assertThrows(
+          IllegalStateException.class, () -> new Executor(store, broker, clock).execute(intent()));
+    }
+    try (var store = new StateStore(temp)) {
+      var saved = store.state().attempts.get(intent().key());
+      assertEquals(Status.SUBMITTED, saved.status);
+      assertEquals(123L, saved.orderId);
+    }
+  }
 }

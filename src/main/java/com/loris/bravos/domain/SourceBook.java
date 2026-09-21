@@ -11,9 +11,27 @@ public final class SourceBook {
   public List<String> blockers = new ArrayList<>();
 
   public void apply(Collection<Alert> observations, LocalDate enrollmentFloor) {
+    // Older versions saved orphan observations from incomplete scans. Replay only
+    // unattached orphans; never erase revisions of an accepted instruction.
+    List<Alert> pending = new ArrayList<>(observations);
+    for (String blocker : new ArrayList<>(blockers)) {
+      if (!blocker.startsWith("ORPHAN_UPDATE:")) continue;
+      String key = blocker.substring("ORPHAN_UPDATE:".length());
+      List<Alert> history = revisions.get(key);
+      boolean attached =
+          cycles.values().stream()
+              .anyMatch(c -> c.events.stream().anyMatch(e -> e.key().equals(key)));
+      if (history == null || attached) continue;
+      if (history.stream().anyMatch(a -> !sameFacts(history.getFirst(), a))) continue;
+      pending.addAll(history);
+      revisions.remove(key);
+      blockers.remove(blocker);
+    }
     List<Alert> sorted =
-        observations.stream()
-            .sorted(Comparator.comparing(Alert::date).thenComparing(Alert::key))
+        pending.stream()
+            .sorted(
+                Comparator.comparing(Alert::date)
+                    .thenComparing(Alert::key, SourceBook::compareKeys))
             .toList();
     for (Alert a : sorted) {
       List<Alert> old = revisions.get(a.key());
@@ -61,6 +79,14 @@ public final class SourceBook {
       if (a.stop() != null) c.stop = a.stop();
       if (a.action() == Action.CLOSE) c.sourceOpen = false;
     }
+  }
+
+  /** WordPress IDs are numbers, not lexicographic strings (999 precedes 1000). */
+  public static int compareKeys(String left, String right) {
+    if (left.matches("bravos:post:[0-9]+") && right.matches("bravos:post:[0-9]+"))
+      return new java.math.BigInteger(left.substring(12))
+          .compareTo(new java.math.BigInteger(right.substring(12)));
+    return left.compareTo(right);
   }
 
   private boolean sameFacts(Alert a, Alert b) {

@@ -141,7 +141,7 @@ class SourceBookTest {
     b.apply(List.of(alert("orphan", Action.ADD, "110", "5", "8", null)), floor);
     assertFalse(b.blockers.isEmpty());
     b.apply(List.of(cycle().events.getFirst()), floor);
-    b.apply(List.of(alert("wrong", Action.REDUCE, "100", "8", "3", null)), floor);
+    b.apply(List.of(alert("wrong", Action.REDUCE, "100", "7", "3", null)), floor);
     assertEquals("WEIGHT_CHAIN_MISMATCH", b.cycles.get("opening").blocker);
   }
 

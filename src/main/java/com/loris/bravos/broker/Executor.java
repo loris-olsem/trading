@@ -19,7 +19,29 @@ public final class Executor {
   }
 
   public Attempt execute(Intent intent) throws IOException {
+    String baseKey = intent.key();
+    int retry = 0;
     Attempt prior = store.state().attempts.get(intent.key());
+    while (prior != null
+        && prior.status == Status.REJECTED
+        && "KILL_BEFORE_SUBMISSION".equals(prior.result)) {
+      // This is affirmative proof that submit was never called, not a timeout.
+      intent =
+          new Intent(
+              baseKey + "|retry:" + ++retry,
+              intent.cycleKey(),
+              intent.eventKey(),
+              intent.action(),
+              intent.instrumentId(),
+              intent.positionId(),
+              intent.ownerAmount(),
+              intent.agentAmount(),
+              intent.units(),
+              intent.ceiling(),
+              intent.stop(),
+              intent.settlementType());
+      prior = store.state().attempts.get(intent.key());
+    }
     if (prior != null) {
       reconcile(prior);
       return prior;
