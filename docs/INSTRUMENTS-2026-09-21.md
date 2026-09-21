@@ -58,3 +58,9 @@ unverified values.
 
 The [broker contract](broker-contract.md) separately tracks owner-copy price,
 sizing and stop propagation. Account eligibility does not settle those questions.
+
+The documented read-only `POST /api/v2/watchlists` endpoint was also checked through
+`gr watchlistMetadata`, with both `ensureBuiltinWatchlists` and `addRelatedAssets`
+explicitly false. The returned `instrumentMetadataSlim` fields were null, so this
+did not establish price precision or quote currency. The response stays ignored
+at `state/capture/watchlist-metadata.json`. No watchlists or assets were created.

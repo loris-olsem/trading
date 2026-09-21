@@ -12,6 +12,33 @@ import org.junit.jupiter.params.provider.NullAndEmptySource;
 import org.junit.jupiter.params.provider.ValueSource;
 
 class InstrumentAuditTest {
+  @Test
+  void watchlistDiscoveryCannotCreateListsOrAddAssets() throws Exception {
+    var result =
+        InstrumentAudit.watchlists(
+            (method, path, headers, body) -> {
+              assertEquals("POST", method);
+              assertEquals("/api/v2/watchlists", path);
+              assertEquals("fixture-owner", headers.get("x-user-key"));
+              var request = Json.MAPPER.readTree(body);
+              assertEquals(1, request.path("version").asInt());
+              UUID.fromString(request.path("requestId").asText());
+              assertEquals(1, request.path("components").size());
+              var component = request.path("components").get(0);
+              assertEquals("userWatchlists", component.path("type").asText());
+              assertTrue(component.path("supportedVariations").isEmpty());
+              assertTrue(component.path("params").path("ensureBuiltinWatchlists").isBoolean());
+              assertTrue(component.path("params").path("addRelatedAssets").isBoolean());
+              assertEquals(
+                  false, component.path("params").path("ensureBuiltinWatchlists").booleanValue());
+              assertEquals(false, component.path("params").path("addRelatedAssets").booleanValue());
+              assertEquals(100, component.path("params").path("itemsPerPageForSingle").asInt());
+              return response(200, "{\"components\":[]}");
+            },
+            secrets);
+    assertTrue(result.path("ownerWatchlists").path("components").isEmpty());
+  }
+
   private final Secrets secrets =
       new Secrets(
           "fixture-app", "fixture-agent", "fixture-owner", "fixture-user", "fixture-password");

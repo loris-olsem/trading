@@ -119,6 +119,15 @@ tasks.register("resume") {
 }
 defaultTasks("help")
 
+tasks.register<JavaExec>("watchlistMetadata") {
+    group = "bravos"
+    description = "Read existing owner watchlists for broker currency/precision metadata; no list changes."
+    classpath = sourceSets.main.get().runtimeClasspath
+    mainClass = "com.loris.bravos.app.InstrumentAudit"
+    workingDir = projectDir
+    args("--watchlists")
+}
+
 tasks.register<JavaExec>("instrumentAudit") {
     group = "bravos"
     description = "Read-only instrument eligibility (-Psymbols=CF,EOG) or identity search (-Pquery=name)."

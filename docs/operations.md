@@ -56,6 +56,7 @@ gr earlyExit -Pcycle=bravos:post:12345 -Pfraction=0.25
 gr brokerDiagnostics
 gr instrumentAudit -Psymbols=CF,EOG
 gr instrumentAudit '-Pquery=iShares Ethereum'
+gr watchlistMetadata
 gr capture -Psince=2026-08-21
 gr replayCapture
 ```
@@ -69,6 +70,9 @@ enrollment. Once initialized, the persisted floor/checkpoint controls processing
 `-Pquery` instead searches names and symbols for identity review. Its private
 output does not configure or approve instruments. See the
 [instrument investigation](INSTRUMENTS-2026-09-21.md) for the ETHA symbol collision.
+`watchlistMetadata` reads existing owner lists without creating lists or adding
+assets. It saves an ignored private response for investigating available currency
+and precision fields; it does not supply missing fields or change execution profiles.
 
 The owner chooses `gr initialize` (same optional `-Psince` syntax) to establish the
 one-time baseline without orders. The owner's subsequent `gr run` executes eligible

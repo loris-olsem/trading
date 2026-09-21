@@ -21,17 +21,21 @@ public final class InstrumentAudit {
       var secrets = Secrets.load(root);
       var transport = new HttpTransport(URI.create("https://public-api.etoro.com"), false);
       var report =
-          args.length == 2 && args[0].equals("--query")
-              ? search(transport, secrets, args[1])
-              : discover(
-                  transport,
-                  secrets,
-                  args.length == 0 ? "CF,BRK.B,ARGT,MAGS,IBIT,EOG,ETHA.US,SMH" : args[0]);
+          args.length == 1 && args[0].equals("--watchlists")
+              ? watchlists(transport, secrets)
+              : args.length == 2 && args[0].equals("--query")
+                  ? search(transport, secrets, args[1])
+                  : discover(
+                      transport,
+                      secrets,
+                      args.length == 0 ? "CF,BRK.B,ARGT,MAGS,IBIT,EOG,ETHA.US,SMH" : args[0]);
       Path output =
           root.resolve(
-              report.has("query")
-                  ? "state/capture/instrument-search.json"
-                  : "state/capture/instruments.json");
+              report.has("ownerWatchlists")
+                  ? "state/capture/watchlist-metadata.json"
+                  : report.has("query")
+                      ? "state/capture/instrument-search.json"
+                      : "state/capture/instruments.json");
       Files.createDirectories(output.getParent());
       Json.MAPPER.writeValue(output.toFile(), report);
       System.out.println("Read-only instrument evidence saved to " + root.relativize(output));
@@ -46,6 +50,27 @@ public final class InstrumentAudit {
       System.err.println("INSTRUMENT_AUDIT_FAILED; credentials and response bodies withheld");
       System.exit(1);
     }
+  }
+
+  /** Read existing lists only; never create built-in lists or add any instruments. */
+  public static JsonNode watchlists(Transport transport, Secrets secrets) throws IOException {
+    var request =
+        Json.MAPPER
+            .createObjectNode()
+            .put("version", 1)
+            .put("requestId", UUID.randomUUID().toString());
+    var component = request.putArray("components").addObject().put("type", "userWatchlists");
+    component.putArray("supportedVariations");
+    component
+        .putObject("params")
+        .put("itemsPerPageForSingle", 100)
+        .put("ensureBuiltinWatchlists", false)
+        .put("addRelatedAssets", false);
+    var report = Json.MAPPER.createObjectNode().put("observedAt", Instant.now().toString());
+    report.set(
+        "ownerWatchlists",
+        read(transport, secrets, true, "POST", "/api/v2/watchlists", request.toString()));
+    return report;
   }
 
   public static JsonNode discover(Transport transport, Secrets secrets, String symbols)
