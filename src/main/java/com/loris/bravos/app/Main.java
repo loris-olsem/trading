@@ -62,7 +62,7 @@ public final class Main {
     try {
       if (args.length == 0 || args[0].equals("help")) {
         out.println(
-            "Bravos: plan [--since YYYY-MM-DD] | initialize [--since YYYY-MM-DD] | run | status | early-exit CYCLE FRACTION\nRun submits eligible trades. Plan and initialize never submit. Early-exit records a request for the next run.\nConfiguration: config/trading.json. State: state/runtime. Create state/runtime/KILL to stop submissions.");
+            "Bravos via Gradle (first dot-source: . ./env.ps1):\ngr plan [-Psince=YYYY-MM-DD] | gr initialize [-Psince=YYYY-MM-DD] | gr run | gr status\ngr earlyExit -Pcycle=ID -Pfraction=0.25 | gr brokerDiagnostics | gr capture [-Psince=YYYY-MM-DD] | gr replayCapture\ngr kill | gr resume\nRun submits eligible trades. Plan and initialize never submit. Early-exit records a request for the next run.\nConfiguration: config/trading.json. State: state/runtime. Kill stops further submissions; resume only removes the marker.");
         return 0;
       }
       String command = args[0];

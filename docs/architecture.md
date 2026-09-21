@@ -16,6 +16,9 @@ and broker components with injectable boundaries for offline tests.
 4. `AlertParser` extracts supported instructions. `SourceBook` retains revisions,
    identifies cycles by their opening, applies chronology and compares open weights
    with the Tactical dashboard. Material edits and broken chains block processing.
+   Incomplete scans never mutate accepted source state. Complete scans are staged
+   on a copy and checked before acceptance; rejected observations are saved under
+   private `source-review/` evidence. Existing trade participation stays intact.
 5. `Workflow` reconciles linked agent/copied holdings, then handles exits and
    reductions, exact stops, and finally openings/adds by publication date and ID.
 6. `Policy` calculates decimal intents. `EtoroClient.prepare` refreshes account,
@@ -54,18 +57,24 @@ shortfall, consumes the event and is never automatically topped up.
 
 Opening responses lost after submission are looked up by the saved UUID. Lost
 close responses remain unknown because a reliable reverse lookup has not been
-established. Pending/unknown attempts block new submissions. This is conservative
+established. Pending/unknown attempts block new exposure. Known PARTIAL fills can
+receive a narrowly verified agent-stop repair before normal processing; copy-only
+failures are explicitly reported for owner intervention. No owner writes are used.
+This is conservative
 recovery, not an exactly-once claim about eToro.
 
 Reduction batches preserve original quantities across restarts. Holding baselines
 detect unexplained unit changes. Funding creates no policy action. A full exit
 ends participation; a price improvement cannot reopen that cycle.
+An attempt cancelled by the local kill switch before submission can receive a new
+UUID without changing its durable batch. Confirmed batch members are reused, not
+resubmitted; unknown outcomes never qualify for this retry.
 
 ## Discovery versus enrollment
 
 Default initial enrollment: last 30 calendar days. Acquisition starts earlier and
 expands in bounded 90-day steps to reconstruct the dashboard. Research does not
-enroll older openings; an explicit `initialize --since` chooses another floor.
+enroll older openings; an explicit `gr initialize -Psince=YYYY-MM-DD` chooses another floor.
 Routine discovery starts at the last complete checkpoint date, including that
 whole day, without a 30-day cap. Incomplete scans do not advance it. Revision
 audits/dashboard checks cannot prove discovery of every unseen backdated article.

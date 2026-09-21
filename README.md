@@ -12,13 +12,14 @@ remain blocked by unverified copy capabilities and empty asset profiles in
 [`config/trading.json`](config/trading.json). In particular, an agent limit order
 does not yet establish a hard ceiling on the owner's copied fill. See the
 [broker contract](docs/broker-contract.md).
-The [independent review](docs/REVIEW-2026-09-21.md) also identified four unresolved
-recovery/reporting defects that must be addressed before live use.
+The four defects from the [independent review](docs/REVIEW-2026-09-21.md) have
+regression-tested fixes. External broker capability questions remain unresolved.
 
 ## Start here
 
-Latest validation: [Monday rehearsal, 21 September](docs/REHEARSAL-2026-09-21.md),
-including live read-only account/eligibility checks and defects found and fixed.
+Latest code verification: [Engineering](ENGINEERING.md), including the recovery
+regressions, coverage and mutation results. Read-only service evidence:
+[Monday rehearsal, 21 September](docs/REHEARSAL-2026-09-21.md).
 
 | Document | Purpose |
 | --- | --- |
@@ -27,7 +28,7 @@ including live read-only account/eligibility checks and defects found and fixed.
 | [Architecture](docs/architecture.md) | Discovery, policy, execution and state ownership |
 | [Broker contract](docs/broker-contract.md) | API boundaries and outstanding verification |
 | [Constraint review](docs/constraint-review.md) | Requirements mapped to code and tests |
-| [Independent review](docs/REVIEW-2026-09-21.md) | Major findings, reproduction probes and unresolved fixes |
+| [Independent review](docs/REVIEW-2026-09-21.md) | Original findings and the implemented recovery fixes |
 | [Engineering](ENGINEERING.md) | Build, coverage, PIT and repeatable checks |
 | [Policy provenance](PLANNING.md) | Detailed agreements and original decision records |
 | [Agent instructions](AGENTS.md) | Rules for repository maintenance |
@@ -35,15 +36,21 @@ including live read-only account/eligibility checks and defects found and fixed.
 After installing the pinned tools through vfox, from the repository root:
 
 ```powershell
-.\scripts\build.ps1 check pitest installDist
-.\scripts\trading.ps1 help
-.\scripts\trading.ps1 plan
+. ./env.ps1
+gr check pitest
+gr appHelp
+gr plan
 ```
 
-`plan` reads current data and saves evidence without submitting orders.
-`initialize` establishes the one-time enrollment window without trading.
-The owner's `run` command submits eligible trades; it is not proposal-only.
+`gr plan` reads current data and saves evidence without submitting orders.
+`gr initialize` establishes the one-time enrollment window without trading.
+The owner's `gr run` command submits eligible trades; it is not proposal-only.
 Read the operations guide before invoking it. No schedule is installed.
+
+Dot-source `env.ps1` once per PowerShell session. It activates vfox from
+`.vfox.toml` and defines the session-local `gr` alias; it contains no application
+operations. `gr tasks --group bravos` lists the operations. Gradle compiles current
+sources automatically; a separately built launcher is no longer required.
 
 ## Layout and historical evidence
 

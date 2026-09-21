@@ -49,9 +49,9 @@ live copying guarantees. No trades or funding actions were used as tests.
 ## Verification results and interpretation
 
 JUnit, JaCoCo, formatting, PIT and distribution packaging run through
-`scripts/build.ps1`. The latest recorded totals are in [ENGINEERING.md](../ENGINEERING.md).
-Tests cover execution only against mocks. The local PowerShell diagnostic fixtures
-also pass without network calls. Secret-value scans exclude the existing author
+`gr` after dot-sourcing `env.ps1`. The latest recorded totals are in [ENGINEERING.md](../ENGINEERING.md).
+Tests cover execution only against synthetic brokers and loopback HTTP. Java
+account validation replaces the retired PowerShell diagnostics. Secret-value scans exclude the existing author
 email/contact identity and check actual passwords/API keys without printing them.
 
 PIT is intentionally scoped to financial interpretation, orchestration, execution

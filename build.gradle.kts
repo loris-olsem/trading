@@ -1,3 +1,5 @@
+import java.nio.file.Files
+
 plugins {
     application
     jacoco
@@ -56,7 +58,63 @@ pitest {
 dependencyLocking { lockAllConfigurations() }
 
 tasks.register<JavaExec>("capture") {
+    group = "bravos"
+    description = "Capture Bravos pages read-only; optional -Psince=YYYY-MM-DD."
     classpath = sourceSets.main.get().runtimeClasspath
     mainClass = "com.loris.bravos.app.Capture"
     if (project.hasProperty("since")) args(project.property("since").toString())
 }
+
+// Operations always use the current compiled sources and the project working directory.
+fun registerOperation(name: String, command: String, help: String) = tasks.register<JavaExec>(name) {
+    group = "bravos"
+    description = help
+    classpath = sourceSets.main.get().runtimeClasspath
+    mainClass = application.mainClass
+    workingDir = projectDir
+    args(command)
+    if (command == "plan" || command == "initialize")
+        providers.gradleProperty("since").orNull?.let { args("--since", it) }
+    if (command == "early-exit") {
+        doFirst {
+            args(providers.gradleProperty("cycle").get(), providers.gradleProperty("fraction").get())
+        }
+    }
+}
+registerOperation("appHelp", "help", "Show application commands without connecting.")
+registerOperation("plan", "plan", "Read-only dry run; optional -Psince=YYYY-MM-DD.")
+registerOperation("initialize", "initialize", "Enroll once without trading; optional -Psince=YYYY-MM-DD.")
+registerOperation("status", "status", "Show the local journal and unresolved work.")
+registerOperation("earlyExit", "early-exit", "Record an exit: -Pcycle=ID -Pfraction=0.25; no immediate trade.")
+tasks.named<JavaExec>("run") {
+    group = "bravos"
+    description = "OWNER ONLY: submit eligible live trades and reconcile execution."
+    workingDir = projectDir
+    args("run")
+}
+for ((name, argument) in mapOf("brokerDiagnostics" to "--broker", "replayCapture" to "--replay")) {
+    tasks.register<JavaExec>(name) {
+        group = "bravos"
+        description = if (name == "brokerDiagnostics") "Read-only agent and owner account diagnostics."
+            else "Replay the private source capture offline."
+        classpath = sourceSets.main.get().runtimeClasspath
+        mainClass = "com.loris.bravos.app.Capture"
+        workingDir = projectDir
+        args(argument)
+    }
+}
+tasks.register("kill") {
+    group = "bravos"
+    description = "Set the local kill switch; does not close holdings or cancel orders."
+    doLast {
+        val marker = layout.projectDirectory.file("state/runtime/KILL").asFile.toPath()
+        Files.createDirectories(marker.parent)
+        Files.writeString(marker, "Owner requested stop\n")
+    }
+}
+tasks.register("resume") {
+    group = "bravos"
+    description = "Remove the local kill switch; does not invoke trading."
+    doLast { Files.deleteIfExists(layout.projectDirectory.file("state/runtime/KILL").asFile.toPath()) }
+}
+defaultTasks("help")

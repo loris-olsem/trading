@@ -15,7 +15,9 @@
   that distinction in calculations and reporting.
 - Use supported, documented read APIs for diagnostics. A successful GET does
   not authorize subsequent writes.
-- Use the project vfox Java/Gradle pins and `scripts/build.ps1`. Run appropriate
+- Dot-source `env.ps1` to select the project vfox pins and define `gr`.
+  All operations use Gradle tasks. Never invoke `gr run` during agent work.
+  Run appropriate
   tests, coverage and PIT for financial behavior changes; do not lower gates.
 - Current docs are indexed by README. Archived skills/Python drafts are historical,
   not active instructions. Keep policy provenance and broker uncertainty explicit.
