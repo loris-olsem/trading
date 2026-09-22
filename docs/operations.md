@@ -42,10 +42,13 @@ Bravos ticker. Each asset requires exact `instrumentId`, `brokerSymbol`,
 `settlementType` (`real` or unleveraged `cfd`), `unleveragedEvidence`, `priceScale`
 and `unitScale`. Do not guess or substitute products. Evidence strings record
 sources and any inference; their presence alone proves no execution guarantee.
-Five instruments are configured. Actual quotes, eligibility, amounts and stops
-are checked at runtime. MAGS, IBIT and ETHA remain excluded for the reasons in
-the instrument investigation.
-The five profiles use the explicitly accepted [US market calendar](market-hours.md)
+Six instruments are configured, including ADI mapped to ADI.US. Actual quotes,
+eligibility, amounts and stops are checked at runtime. IBIT and ETHA have
+lookup-only identities for fresh restriction checks, never order authorization.
+Unknown tickers such as MAGS are looked up under the exact ticker and `.US` alias;
+a candidate still requires an established execution profile. See the
+[availability correction](INSTRUMENTS-2026-09-22.md).
+The profiles use the explicitly accepted [US market calendar](market-hours.md)
 plus fresh prices and broker tradability. Calendar coverage currently ends on
 31 December 2026; a future calendar update is required before 2027 entries.
 
@@ -85,7 +88,7 @@ enrollment. Once initialized, the persisted floor/checkpoint controls processing
 `-Pquery` instead searches names and symbols for identity review. Its private
 output does not configure or approve instruments. See the
 [instrument investigation](INSTRUMENTS-2026-09-21.md) for the ETHA symbol collision.
-`instrumentPreflight` reads the five configured instruments, hypothetical $100
+`instrumentPreflight` reads the configured instruments, hypothetical $100
 owner-side cost estimates and current quotes. It never creates an order and saves
 private timestamp evidence for diagnosing stale cost/quote responses.
 `watchlistMetadata` reads existing owner lists without creating lists or adding
@@ -162,8 +165,10 @@ age or other failed checks. Existing holdings with no new action are reported
 as unchanged. The private journal and `status` retain diagnostic codes for recovery.
 Quote waiting can change between runs; the executable ask must still be realtime
 and at most 60 seconds old.
-`INSTRUMENT_UNVERIFIED` requires a verified asset profile and broker eligibility;
-an empty `assets` map blocks every symbol and does not prove broker unavailability.
+Availability messages distinguish an absent listing, an application setup gap,
+and a fresh eToro refusal on the agent, main account or both. Missing profiles
+do not prove broker unavailability, and a discovered ticker cannot authorize a
+purchase. `lookupOnlyAssets` is solely for reporting known identities' restrictions.
 Live execution retains exit code 2 for blocked or unresolved work (including
 protection incidents); code 1 means an operation failed, including a failed plan
 scan or API call. Gradle reports nonzero codes as a failed task; inspect the

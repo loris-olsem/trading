@@ -4,7 +4,20 @@
   "copyPriceCeilingEvidence": "",
   "copyPricePolicy": "AGENT_LIMIT_WITH_COPY_CHECK",
   "copySizingModel": "REALIZED_EQUITY_RATIO",
+  "lookupOnlyAssets": {
+    "IBIT": { "instrumentId": 1367, "brokerSymbol": "IBIT" },
+    "ETHA": { "instrumentId": 12152, "brokerSymbol": "ETHA.US" }
+  },
   "assets": {
+    "ADI": {
+      "instrumentId": 4264,
+      "brokerSymbol": "ADI.US",
+      "settlementType": "real",
+      "unleveragedEvidence": "https://www.sec.gov/Archives/edgar/data/6281/000000628126000052/adi-20260502.htm: Analog Devices Nasdaq common stock ADI; eToro ADI.US / 4264, both accounts allow real long X1 with stops on 2026-09-22. Calculation precision follows docs/INSTRUMENTS-2026-09-21.md#execution-profiles.",
+      "marketHours": "US_EQUITIES_2026",
+      "priceScale": 2,
+      "unitScale": 5
+    },
     "CF": {
       "instrumentId": 1890,
       "brokerSymbol": "CF",

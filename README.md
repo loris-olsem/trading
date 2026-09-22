@@ -6,9 +6,10 @@ Portfolio. It parses supported alerts deterministically, keeps a durable journal
 reconciles the agent with the owner's real allocation, and applies the agreed
 price, sizing and stop rules. Gmail and an AI assistant are not runtime dependencies.
 
-**Readiness:** configured for owner execution. After correcting the cost-response
-check, the repeated full live dry run found all five configured entries eligible:
-CF, BRK.B, ARGT, EOG and SMH. MAGS/IBIT/ETHA remain unavailable or unconfigured.
+**Readiness:** configured for owner execution. Execution profiles cover CF,
+BRK.B, ARGT, EOG, SMH and now ADI (eToro's ADI.US). The app checks IBIT/ETHA's
+account restrictions and searches for MAGS on every plan, reporting the actual
+availability reason. See the [22 September correction](docs/INSTRUMENTS-2026-09-22.md).
 Each run reassesses current conditions. No trades or schedule were created during development. See the
 [latest readiness check](docs/READINESS-2026-09-21.md) and
 [broker operating model](docs/broker-contract.md#operating-model).
@@ -30,6 +31,7 @@ regressions, coverage and mutation results. Current read-only service evidence:
 | [Architecture](docs/architecture.md) | Discovery, policy, execution and state ownership |
 | [Broker contract](docs/broker-contract.md) | API boundaries and outstanding verification |
 | [Instrument investigation](docs/INSTRUMENTS-2026-09-21.md) | Verified IDs, account restrictions and the ETHA symbol collision |
+| [Instrument availability correction](docs/INSTRUMENTS-2026-09-22.md) | ADI support, fresh broker restrictions and automatic listing diagnostics |
 | [Constraint review](docs/constraint-review.md) | Requirements mapped to code and tests |
 | [Independent review](docs/REVIEW-2026-09-21.md) | Original findings and the implemented recovery fixes |
 | [Engineering](ENGINEERING.md) | Build, coverage, PIT and repeatable checks |

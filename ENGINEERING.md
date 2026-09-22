@@ -7,6 +7,17 @@ The [implementation plan](docs/IMPLEMENTATION-PLAN.md) was committed before code
 
 ## Checks
 
+Latest instrument-availability verification, 22 September: **195 tests pass**,
+**90.95% instruction coverage** (11,461/12,601), **80.91% branch coverage**
+(1,551/1,917), and **921/1,018 PIT mutations killed (90.47%)**. There are 83
+survivors and 14 uncovered mutations, with no timeout or execution error counted
+as a kill. Formatting, coverage gates and distribution packaging pass unchanged.
+New fixtures cover both accounts' opening permissions, lookup-only identities
+never authorizing orders, changed identity, exact/US ticker candidates, incomplete
+lookups, documented no-match 404 versus service failure, configuration collisions,
+and ADI's deployed alias through quote and pre-submission rechecks. Two full live
+plans submitted no orders; see [availability evidence](docs/INSTRUMENTS-2026-09-22.md).
+
 Latest local state-checkpoint verification, 21 September: **189 tests pass**,
 **90.74% instruction coverage** (11,183/12,324), **80.31% branch coverage**
 (1,497/1,864), and **895/993 PIT mutations killed (90.13%)**. Formatting, coverage

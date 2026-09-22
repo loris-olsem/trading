@@ -7,6 +7,45 @@ import org.junit.jupiter.api.Test;
 
 class ConfigurationTest {
   @Test
+  void lookupIdentitiesCannotOverlapExecutionProfilesOrContainInvalidIds() throws Exception {
+    var c = new Configuration();
+    var id = new Configuration.Identity();
+    id.instrumentId = 1367;
+    id.brokerSymbol = "IBIT";
+    c.lookupOnlyAssets.put("IBIT", id);
+    c.validate();
+    for (String bad : new String[] {null, "", "A&bad=1"}) {
+      id.brokerSymbol = bad;
+      assertThrows(IOException.class, c::validate);
+    }
+    id.brokerSymbol = "IBIT";
+    id.instrumentId = 0;
+    assertThrows(IOException.class, c::validate);
+    id.instrumentId = -1;
+    assertThrows(IOException.class, c::validate);
+    id.instrumentId = 1367;
+    c.lookupOnlyAssets.put("OTHER", id);
+    assertThrows(IOException.class, c::validate);
+    c.lookupOnlyAssets.remove("OTHER");
+    c.lookupOnlyAssets.put("bad&", id);
+    assertThrows(IOException.class, c::validate);
+    c.lookupOnlyAssets.remove("bad&");
+    var asset = new Configuration.Asset();
+    asset.instrumentId = 42;
+    asset.brokerSymbol = "IBIT";
+    asset.unleveragedEvidence = "fixture";
+    asset.priceScale = 2;
+    asset.unitScale = 5;
+    c.assets.put("IBIT", asset);
+    assertThrows(IOException.class, c::validate);
+    c.assets.clear();
+    c.lookupOnlyAssets.put("IBIT", null);
+    assertThrows(IOException.class, c::validate);
+    c.lookupOnlyAssets = null;
+    assertThrows(IOException.class, c::validate);
+  }
+
+  @Test
   void explicitPrecisionSupportsWholeUnitsAndRejectsOutsideDocumentedConfigRange()
       throws Exception {
     var config = new Configuration();

@@ -14,6 +14,13 @@ public final class Configuration {
   public String copyPricePolicy = "REQUIRE_COPY_GUARANTEE";
   public String copySizingModel = "UNVERIFIED";
   public Map<String, Asset> assets = new LinkedHashMap<>();
+  // Known identities for availability checks only; these never authorize entry.
+  public Map<String, Identity> lookupOnlyAssets = new LinkedHashMap<>();
+
+  public static final class Identity {
+    public long instrumentId;
+    public String brokerSymbol;
+  }
 
   public static final class Asset {
     public long instrumentId;
@@ -44,7 +51,8 @@ public final class Configuration {
         || !Set.of("REQUIRE_COPY_GUARANTEE", "AGENT_LIMIT_WITH_COPY_CHECK")
             .contains(copyPricePolicy)
         || !Set.of("UNVERIFIED", "REALIZED_EQUITY_RATIO").contains(copySizingModel)
-        || assets == null) throw new IOException("INVALID_CONFIGURATION");
+        || assets == null
+        || lookupOnlyAssets == null) throw new IOException("INVALID_CONFIGURATION");
     Set<Long> ids = new HashSet<>();
     for (var e : assets.entrySet()) {
       Asset a = e.getValue();
@@ -63,6 +71,17 @@ public final class Configuration {
           || a.priceScale > 8
           || a.unitScale < 0
           || a.unitScale > 12) throw new IOException("INVALID_ASSET_CONFIGURATION");
+    }
+    for (var e : lookupOnlyAssets.entrySet()) {
+      Identity a = e.getValue();
+      if (!e.getKey().matches("[A-Z][A-Z0-9.]{0,12}")
+          || assets.containsKey(e.getKey())
+          || a == null
+          || a.instrumentId <= 0
+          || !ids.add(a.instrumentId)
+          || a.brokerSymbol == null
+          || !a.brokerSymbol.matches("[A-Z][A-Z0-9.]{0,20}"))
+        throw new IOException("INVALID_LOOKUP_CONFIGURATION");
     }
   }
 

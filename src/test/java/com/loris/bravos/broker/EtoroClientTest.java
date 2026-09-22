@@ -42,6 +42,7 @@ class EtoroClientTest {
   class Api implements Transport {
     ObjectNode agent, owner, mirror, order, eligibility, costs, close;
     ObjectNode ownerEligibility;
+    ObjectNode metadata;
     int status = 200, writes;
     boolean wrongOwnerScopes;
     boolean exchangeOpen = true, tradable = true;
@@ -118,7 +119,11 @@ class EtoroClientTest {
             ((ObjectNode) response.get("clientPortfolio").get("positions").get(0)).put("units", 99);
         }
       } else if (path.startsWith("/api/v2/market-data/instruments?"))
-        response = node("{\"results\":[{\"instrumentId\":1890,\"symbol\":\"CF\"}]}");
+        response =
+            metadata != null
+                ? metadata
+                : node(
+                    "{\"results\":[{\"instrumentId\":1890,\"symbol\":\"CF\"}],\"pagination\":{\"hasNext\":false}}");
       else if (path.endsWith("/eligibility")) {
         assertEquals("POST", method);
         response = Json.MAPPER.createObjectNode();
@@ -350,9 +355,13 @@ class EtoroClientTest {
     assertEquals(d("100.12345678"), q.ask());
     assertEquals(NOW, q.timestamp());
     assertTrue(q.exchangeOpen());
-    assertNull(client.instrument("UNKNOWN", d("1")));
+    assertEquals(
+        "INSTRUMENT_NOT_LISTED",
+        assertThrows(IOException.class, () -> client.instrument("UNKNOWN", d("1"))).getMessage());
     api.eligibility.put("allowOpenPosition", false);
-    assertNull(client.instrument("CF", d("1")));
+    assertEquals(
+        "BOTH_ACCOUNTS_OPENING_DISABLED",
+        assertThrows(IOException.class, () -> client.instrument("CF", d("1"))).getMessage());
     api.eligibility.put("allowOpenPosition", true);
     api.eligibility.put("unitsQuantityType", "whole");
     assertEquals(0, client.instrument("CF", d("1")).unitScale());
@@ -445,7 +454,7 @@ class EtoroClientTest {
         case "units" -> api.ownerEligibility.put("tradeUnitType", "contracts");
       }
       assertEquals(
-          "OWNER_INSTRUMENT_INELIGIBLE",
+          restriction.equals("opening") ? "OWNER_OPENING_DISABLED" : "OWNER_INSTRUMENT_INELIGIBLE",
           assertThrows(
                   IOException.class,
                   () -> client(api, false).instrument("CF", d("184.40")),
@@ -764,27 +773,161 @@ class EtoroClientTest {
   }
 
   @Test
+  void deployedAdiAliasSurvivesQuoteAndPreSubmissionRechecksWithoutTrading() throws Exception {
+    var api = new Api();
+    Transport transport =
+        (method, path, headers, body) -> {
+          if (path.startsWith("/api/v2/market-data/instruments?"))
+            assertEquals("/api/v2/market-data/instruments?symbols=ADI.US", path);
+          var response = api.request(method, path, headers, body);
+          return new Transport.Response(
+              response.status(),
+              response.body().replace("1890", "4264").replace("\"CF\"", "\"ADI.US\""),
+              response.headers());
+        };
+    var deployed = Configuration.load(java.nio.file.Path.of("config/trading.json"));
+    var broker = new EtoroClient(transport, secrets, deployed, clock, false);
+    var asset = broker.instrument("ADI", d("230.50"));
+    assertEquals(4264, asset.id());
+    assertEquals("ADI", asset.symbol());
+    assertEquals("real", asset.settlementType());
+    assertEquals(5, broker.unitScale("ADI"));
+    assertTrue(broker.quote(asset).exchangeOpen());
+    var intent =
+        new Intent(
+            "cycle",
+            "event",
+            "opening",
+            Action.OPEN,
+            4264,
+            null,
+            d("230.50"),
+            d("500"),
+            null,
+            d("102"),
+            d("90"),
+            "real");
+    broker.prepare(new Attempt(intent, NOW));
+    assertEquals(0, api.writes);
+  }
+
+  @Test
+  void lookupOnlyIdentityChecksBothAccountsButNeverAuthorizesAnEntry() throws Exception {
+    var api = new Api();
+    var config = config();
+    config.assets.clear();
+    var identity = new Configuration.Identity();
+    identity.instrumentId = 1890;
+    identity.brokerSymbol = "CF";
+    config.lookupOnlyAssets.put("SOURCE", identity);
+    var broker = new EtoroClient(api, secrets, config, clock, false);
+    api.ownerEligibility = api.eligibility.deepCopy();
+    for (boolean agent : List.of(false, true)) {
+      for (boolean owner : List.of(false, true)) {
+        api.eligibility.put("allowOpenPosition", agent);
+        api.ownerEligibility.put("allowOpenPosition", owner);
+        String expected =
+            !agent && !owner
+                ? "BOTH_ACCOUNTS_OPENING_DISABLED"
+                : !agent
+                    ? "AGENT_OPENING_DISABLED"
+                    : !owner ? "OWNER_OPENING_DISABLED" : "INSTRUMENT_PROFILE_REQUIRED";
+        assertEquals(
+            expected,
+            assertThrows(IOException.class, () -> broker.instrument("SOURCE", d("100")))
+                .getMessage());
+      }
+    }
+    api.metadata =
+        node(
+            "{\"results\":[{\"instrumentId\":1890,\"symbol\":\"WRONG\"}],\"pagination\":{\"hasNext\":false}}");
+    assertEquals(
+        "INSTRUMENT_IDENTITY_CHANGED",
+        assertThrows(IOException.class, () -> broker.instrument("SOURCE", d("100"))).getMessage());
+    ((ObjectNode) api.metadata.get("results").get(0)).put("instrumentId", 2000);
+    assertThrows(IOException.class, () -> broker.instrument("SOURCE", d("100")));
+    assertEquals(0, api.writes);
+  }
+
+  @Test
+  void unknownTickerDiscoveryNeverPromotesCandidatesAndRequiresCompleteResults() throws Exception {
+    var api = new Api();
+    var c = client(api, false);
+    for (String found : List.of("NEW", "NEW.US", "OTHER")) {
+      api.metadata =
+          node(
+              "{\"results\":[{\"instrumentId\":17,\"symbol\":\""
+                  + found
+                  + "\"}],\"pagination\":{\"hasNext\":false}}");
+      assertEquals(
+          found.equals("OTHER") ? "INSTRUMENT_NOT_LISTED" : "INSTRUMENT_PROFILE_REQUIRED",
+          assertThrows(IOException.class, () -> c.instrument("NEW", d("1"))).getMessage());
+    }
+    api.metadata.putArray("results");
+    assertEquals(
+        "INSTRUMENT_NOT_LISTED",
+        assertThrows(IOException.class, () -> c.instrument("NEW", d("1"))).getMessage());
+    ((ObjectNode) api.metadata.get("pagination")).put("hasNext", true);
+    assertEquals(
+        "INSTRUMENT_LOOKUP_INCOMPLETE",
+        assertThrows(IOException.class, () -> c.instrument("NEW", d("1"))).getMessage());
+    api.metadata.remove("pagination");
+    assertThrows(IOException.class, () -> c.instrument("NEW", d("1")));
+    assertEquals(
+        "INVALID_INSTRUMENT_SYMBOL",
+        assertThrows(IOException.class, () -> c.instrument("NEW&query=bad", d("1"))).getMessage());
+    assertEquals(0, api.writes);
+  }
+
+  @Test
+  void onlyUnconfiguredLookup404MeansNoListing() throws Exception {
+    var api = new Api();
+    var c = client(api, false);
+    api.status = 404;
+    assertEquals(
+        "INSTRUMENT_NOT_LISTED",
+        assertThrows(IOException.class, () -> c.instrument("MAGS", d("1"))).getMessage());
+    assertEquals(
+        "ETORO_HTTP_404",
+        assertThrows(IOException.class, () -> c.instrument("CF", d("1"))).getMessage());
+    var config = config();
+    var id = new Configuration.Identity();
+    id.instrumentId = 12152;
+    id.brokerSymbol = "ETHA.US";
+    config.lookupOnlyAssets.put("ETHA", id);
+    var known = new EtoroClient(api, secrets, config, clock, false);
+    assertEquals(
+        "ETORO_HTTP_404",
+        assertThrows(IOException.class, () -> known.instrument("ETHA", d("1"))).getMessage());
+    api.status = 500;
+    assertEquals(
+        "ETORO_HTTP_500",
+        assertThrows(IOException.class, () -> c.instrument("MAGS", d("1"))).getMessage());
+    assertEquals(0, api.writes);
+  }
+
+  @Test
   void unsupportedEligibilityAndCostCurrencyCannotBecomeAnOrder() throws Exception {
     var api = new Api();
     var c = client(api, false);
     ObjectNode leverage = (ObjectNode) api.eligibility.get("leverageConfigs").get(0);
     leverage.put("isPotential", true);
-    assertNull(c.instrument("CF", d("1")));
+    assertThrows(IOException.class, () -> c.instrument("CF", d("1")));
     leverage.put("isPotential", false);
     leverage.put("allowStopLossTakeProfit", false);
-    assertNull(c.instrument("CF", d("1")));
+    assertThrows(IOException.class, () -> c.instrument("CF", d("1")));
     leverage.put("allowStopLossTakeProfit", true);
     leverage.put("allowEditStopLoss", false);
-    assertNull(c.instrument("CF", d("1")));
+    assertThrows(IOException.class, () -> c.instrument("CF", d("1")));
     leverage.put("allowEditStopLoss", true);
     leverage.putArray("leverageValues").add(2);
-    assertNull(c.instrument("CF", d("1")));
+    assertThrows(IOException.class, () -> c.instrument("CF", d("1")));
     leverage.putArray("leverageValues").add(1);
     api.eligibility.put("allowedOrderQuantityType", "unitsOnly");
-    assertNull(c.instrument("CF", d("1")));
+    assertThrows(IOException.class, () -> c.instrument("CF", d("1")));
     api.eligibility.put("allowedOrderQuantityType", "all");
     api.eligibility.put("tradeUnitType", "contracts");
-    assertNull(c.instrument("CF", d("1")));
+    assertThrows(IOException.class, () -> c.instrument("CF", d("1")));
     api.eligibility.put("tradeUnitType", "units");
     ((ObjectNode) api.costs.get("costs").get(0)).put("currency", "EUR");
     assertThrows(IOException.class, () -> c.instrument("CF", d("1")));

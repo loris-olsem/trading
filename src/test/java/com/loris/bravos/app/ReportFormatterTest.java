@@ -8,6 +8,25 @@ import java.util.*;
 import org.junit.jupiter.api.Test;
 
 class ReportFormatterTest {
+  @Test
+  void availabilityReasonsDistinguishBrokerRefusalFromMissingSetup() {
+    var messages =
+        Map.of(
+            "BOTH_ACCOUNTS_OPENING_DISABLED", "both your agent and main accounts",
+            "AGENT_OPENING_DISABLED", "in the agent account",
+            "OWNER_OPENING_DISABLED", "in your main account",
+            "INSTRUMENT_NOT_LISTED", "no listing under the Bravos ticker",
+            "INSTRUMENT_PROFILE_REQUIRED", "application setup gap",
+            "INSTRUMENT_LOOKUP_INCOMPLETE", "incomplete instrument lookup",
+            "AGENT_INSTRUMENT_INELIGIBLE", "required unleveraged order and stop settings");
+    messages.forEach(
+        (code, phrase) ->
+            assertTrue(
+                ReportFormatter.paragraphs(state("CF: BLOCKED " + code), false)
+                    .getFirst()
+                    .contains(phrase)));
+  }
+
   TradingState state(String... lines) {
     var state = new TradingState();
     state.book.cycles.put("opening", cycle());

@@ -139,7 +139,10 @@ public final class EtoroClient implements Broker, Workflow.Market {
 
   public Instrument instrument(String symbol, BigDecimal proposedOwnerAmount) throws IOException {
     var asset = config.assets.get(symbol);
-    if (asset == null) return null;
+    if (asset == null) {
+      diagnoseUnconfigured(symbol);
+      throw new IOException("INSTRUMENT_PROFILE_REQUIRED");
+    }
     var identity =
         unique(
             array(
@@ -156,13 +159,14 @@ public final class EtoroClient implements Broker, Workflow.Market {
             array(query(false, "/api/v2/trading/info/eligibility", request), "eligibilities"),
             "instrumentId",
             asset.instrumentId);
-    JsonNode leverage = openingConfiguration(eligibility, asset.settlementType);
-    if (leverage == null) return null;
     JsonNode ownerEligibility =
         unique(
             array(query(true, "/api/v2/trading/info/eligibility", request), "eligibilities"),
             "instrumentId",
             asset.instrumentId);
+    requireOpeningAllowed(eligibility, ownerEligibility);
+    JsonNode leverage = openingConfiguration(eligibility, asset.settlementType);
+    if (leverage == null) throw new IOException("AGENT_INSTRUMENT_INELIGIBLE");
     if (openingConfiguration(ownerEligibility, asset.settlementType) == null)
       throw new IOException("OWNER_INSTRUMENT_INELIGIBLE");
     // Query owner-side costs for the actual copied amount, not internal agent dollars.
@@ -209,6 +213,57 @@ public final class EtoroClient implements Broker, Workflow.Market {
         text(eligibility, "unitsQuantityType").equals("whole") ? 0 : asset.unitScale,
         decimal(leverage, "minPositionAmount"),
         total);
+  }
+
+  private void diagnoseUnconfigured(String symbol) throws IOException {
+    if (!symbol.matches("[A-Z][A-Z0-9.]{0,12}")) throw new IOException("INVALID_INSTRUMENT_SYMBOL");
+    var known = config.lookupOnlyAssets.get(symbol);
+    String symbols = known == null ? symbol + "," + symbol + ".US" : known.brokerSymbol;
+    JsonNode response;
+    try {
+      response = get(false, "/api/v2/market-data/instruments?symbols=" + symbols);
+    } catch (IOException failure) {
+      // This endpoint documents 404 as no matching instrument, not a service failure.
+      if (known == null && "ETORO_HTTP_404".equals(failure.getMessage()))
+        throw new IOException("INSTRUMENT_NOT_LISTED");
+      throw failure;
+    }
+    if (bool(required(response, "pagination"), "hasNext"))
+      throw new IOException("INSTRUMENT_LOOKUP_INCOMPLETE");
+    var results = array(response, "results");
+    if (known == null) {
+      // Candidate discovery is diagnostic only. Never infer identity, leverage or
+      // currency from a similar ticker, and never turn a search hit into an order.
+      for (JsonNode candidate : results) {
+        String found = text(candidate, "symbol");
+        if (found.equals(symbol) || found.equals(symbol + ".US")) return;
+      }
+      throw new IOException("INSTRUMENT_NOT_LISTED");
+    }
+    JsonNode identity = unique(results, "instrumentId", known.instrumentId);
+    if (!text(identity, "symbol").equals(known.brokerSymbol))
+      throw new IOException("INSTRUMENT_IDENTITY_CHANGED");
+    var request = Json.MAPPER.createObjectNode().put("currency", "USD");
+    request.putArray("instrumentIds").add(known.instrumentId);
+    JsonNode agent =
+        unique(
+            array(query(false, "/api/v2/trading/info/eligibility", request), "eligibilities"),
+            "instrumentId",
+            known.instrumentId);
+    JsonNode owner =
+        unique(
+            array(query(true, "/api/v2/trading/info/eligibility", request), "eligibilities"),
+            "instrumentId",
+            known.instrumentId);
+    requireOpeningAllowed(agent, owner);
+  }
+
+  private static void requireOpeningAllowed(JsonNode agent, JsonNode owner) throws IOException {
+    boolean agentAllowed = bool(agent, "allowOpenPosition");
+    boolean ownerAllowed = bool(owner, "allowOpenPosition");
+    if (!agentAllowed && !ownerAllowed) throw new IOException("BOTH_ACCOUNTS_OPENING_DISABLED");
+    if (!agentAllowed) throw new IOException("AGENT_OPENING_DISABLED");
+    if (!ownerAllowed) throw new IOException("OWNER_OPENING_DISABLED");
   }
 
   private static JsonNode openingConfiguration(JsonNode eligibility, String settlement)

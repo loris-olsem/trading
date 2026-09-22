@@ -96,6 +96,20 @@ public final class ReportFormatter {
   private static String explain(String line) {
     String code = line.replaceFirst("^(BLOCKED|WAIT_QUOTE|WATCH_PRICE|TERMINAL|NO_POSITION) ", "");
     return switch (code) {
+      case "BOTH_ACCOUNTS_OPENING_DISABLED" ->
+          "No purchase is possible: eToro currently refuses new purchases of this investment on both your agent and main accounts. The app will check again on the next run; this is a broker restriction, not missing setup";
+      case "AGENT_OPENING_DISABLED" ->
+          "No purchase is possible: eToro currently refuses new purchases of this investment in the agent account. The app will check again on the next run";
+      case "OWNER_OPENING_DISABLED" ->
+          "No purchase is possible: eToro currently refuses new purchases of this investment in your main account. The app will check again on the next run";
+      case "INSTRUMENT_NOT_LISTED" ->
+          "No purchase is proposed: eToro returned no listing under the Bravos ticker or its US alias. The app will repeat the lookup next run. It will not buy a different fund as a substitute";
+      case "INSTRUMENT_PROFILE_REQUIRED" ->
+          "No purchase is proposed: eToro lists a candidate, but the app still needs its exact identity and unleveraged execution setup established. This is an application setup gap, not a broker refusal";
+      case "INSTRUMENT_LOOKUP_INCOMPLETE" ->
+          "No purchase is proposed because eToro returned an incomplete instrument lookup. The app will retry next run";
+      case "AGENT_INSTRUMENT_INELIGIBLE" ->
+          "No purchase is proposed because the agent account does not permit the required unleveraged order and stop settings for this investment";
       case "INSTRUMENT_UNVERIFIED" ->
           "No purchase is proposed because the app has not verified that this exact investment can be bought without leverage on your eToro accounts. It needs a verified instrument setup and broker permission; no substitute will be bought";
       case "QUOTE_NOT_EXECUTABLE" ->
