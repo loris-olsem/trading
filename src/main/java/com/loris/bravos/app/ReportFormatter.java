@@ -78,7 +78,24 @@ public final class ReportFormatter {
                             + " agent units and the corresponding copied exposure."));
               continue;
             }
-            if (line.startsWith("DETAIL ")) sentences.add(field("Reason", line.substring(7)));
+            if (line.startsWith("NOT_FILLED ")) {
+              sentences.add(
+                  field(
+                      "Result",
+                      "No shares bought. "
+                          + line.substring(11).replaceFirst("^CONFIRMED_NO_FILL ?", "")));
+              sentences.add(
+                  field(
+                      "Next step",
+                      "Other opportunities are checked in this run. A later run can retry after fresh checks; no automatic retry in this run."));
+            } else if (line.startsWith("ORDER_PENDING_OR_REJECTED ")) {
+              sentences.add(field("Result", "Not confirmed: " + line.substring(26)));
+              sentences.add(
+                  field(
+                      "Next step",
+                      "Further submissions are held. Keep the saved state; the next invocation reconciles unresolved orders first."));
+            } else if (line.startsWith("DETAIL "))
+              sentences.add(field("Reason", line.substring(7)));
             else if (line.startsWith("CONFIRMED "))
               sentences.add(
                   field(
@@ -110,6 +127,7 @@ public final class ReportFormatter {
   }
 
   private static String status(List<String> lines) {
+    if (lines.stream().anyMatch(l -> l.startsWith("NOT_FILLED "))) return "NOT FILLED";
     if (lines.stream().anyMatch(l -> l.startsWith("BLOCKED "))) return "BLOCKED";
     if (lines.stream().anyMatch(l -> l.startsWith("WAIT_QUOTE "))) return "WAITING FOR PRICE";
     if (lines.stream().anyMatch(l -> l.startsWith("WATCH_PRICE "))) return "WATCHING PRICE";
@@ -135,7 +153,7 @@ public final class ReportFormatter {
 
   /** Fixed-width ASCII output also stays readable when redirected to a file. */
   private static String field(String label, String value) {
-    String prefix = "  " + String.format(Locale.ROOT, "%-15s", label + ":");
+    String prefix = "  " + String.format(Locale.ROOT, "%-16s", label + ":");
     String continuation = " ".repeat(prefix.length());
     StringBuilder result = new StringBuilder(prefix);
     int column = prefix.length();

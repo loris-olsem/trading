@@ -531,7 +531,26 @@ public final class Workflow {
     for (Intent i : durable) {
       Attempt attempt = executor.execute(i);
       if (attempt.status != Status.CONFIRMED) {
-        store.state().report.add("ORDER_PENDING_OR_REJECTED: " + attempt.result);
+        boolean noFill =
+            buy
+                && attempt.status == Status.REJECTED
+                && attempt.positionIds.isEmpty()
+                && attempt.result != null
+                && (attempt.result.equals("CONFIRMED_NO_FILL")
+                    || attempt.result.startsWith("CONFIRMED_NO_FILL "));
+        store
+            .state()
+            .report
+            .add(
+                c.symbol
+                    + ": "
+                    + (noFill ? "NOT_FILLED " : "ORDER_PENDING_OR_REJECTED ")
+                    + attempt.result
+                    + "; order "
+                    + attempt.orderId);
+        // Affirmatively empty, terminal buy orders consume no exposure. Do not mark the
+        // event completed, retry it here, or stop independent opportunities behind it.
+        if (noFill) return true;
         if (attempt.status != Status.REJECTED) recoverProtection(false);
         return false;
       }

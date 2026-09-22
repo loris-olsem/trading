@@ -563,7 +563,7 @@ class WorkflowTest {
       w.acceptScan(
           scan(List.of(cycle().events.getFirst()), true, d("5")), LocalDate.of(2026, 9, 1), true);
       market.reject = true;
-      assertTrue(w.evaluate(true).stream().anyMatch(s -> s.contains("ORDER_PENDING_OR_REJECTED")));
+      assertTrue(w.evaluate(true).stream().anyMatch(s -> s.contains(": NOT_FILLED ")));
       assertEquals(1, market.submitted.size());
       market.reject = false;
       w.evaluate(true);
@@ -573,6 +573,43 @@ class WorkflowTest {
           2, store.state().attempts.values().stream().map(a -> a.reference).distinct().count());
       w.evaluate(true);
       assertEquals(2, market.submitted.size());
+    }
+  }
+
+  @Test
+  void provenEmptyBuyContinuesOtherCyclesButUncertainBuyStops() throws Exception {
+    for (Status status :
+        List.of(Status.REJECTED, Status.SUBMITTED, Status.UNKNOWN, Status.PARTIAL)) {
+      var market =
+          new Market() {
+            @Override
+            public Observation observe(Attempt a) {
+              return new Observation(
+                  status,
+                  status == Status.REJECTED
+                      ? "CONFIRMED_NO_FILL Rejected; broker code 1065: technical failure"
+                      : "AWAITING_FILL",
+                  List.of());
+            }
+          };
+      market.reject = true; // no fake positions; exercise journal and submission ordering
+      try (var store = new StateStore(temp.resolve(status.name()))) {
+        var workflow = new Workflow(store, market, market, clock);
+        workflow.acceptScan(
+            scan(List.of(cycle().events.getFirst()), true, d("5")), LocalDate.of(2026, 9, 1), true);
+        var second = cycle();
+        second.key = "second";
+        second.symbol = "ABC";
+        store.state().book.cycles.put(second.key, second);
+        var report = workflow.evaluate(true);
+        assertEquals(status == Status.REJECTED ? 2 : 1, market.submitted.size());
+        assertFalse(store.state().book.cycles.get("opening").entered);
+        assertTrue(store.state().book.cycles.get("opening").completed.isEmpty());
+        if (status == Status.REJECTED) {
+          assertTrue(report.stream().anyMatch(s -> s.startsWith("ABC: NOT_FILLED ")));
+          assertTrue(report.stream().anyMatch(s -> s.contains("broker code 1065")));
+        } else assertTrue(report.stream().anyMatch(s -> s.contains("ORDER_PENDING_OR_REJECTED")));
+      }
     }
   }
 

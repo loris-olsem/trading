@@ -59,6 +59,9 @@ Stale quotes trigger a brief live-stream refresh and a final REST retry within
 the same invocation; there is no need to rerun just to request that refresh.
 Plans and runs show each analysed instrument in a separate status block, with
 labelled amounts, price limit and stop, and explanations wrapped to 76 columns.
+Unfilled buys show the broker reason under `NOT FILLED`; confirmed zero-fill buys
+do not stop independent opportunities. `gr orderAudit` looks up saved orders
+read-only when investigating an execution result.
 Confirmed holdings are not bought
 again by tomorrow's plan; see [planning after execution](docs/operations.md#planning-after-execution).
 `gr initialize` establishes the one-time enrollment window without trading.

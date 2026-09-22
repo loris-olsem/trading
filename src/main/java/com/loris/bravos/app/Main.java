@@ -192,7 +192,8 @@ public final class Main {
                             || line.equals("ACCOUNT_ACTIVITY_UNVERIFIED")
                             || line.endsWith(": COPY_EXIT_PENDING")
                             || line.endsWith(": COPY_PROTECTION_UNVERIFIED")
-                            || line.startsWith("ORDER_PENDING_OR_REJECTED"));
+                            || line.contains("ORDER_PENDING_OR_REJECTED")
+                            || line.contains(": NOT_FILLED "));
         if (command.equals("plan")) {
           out.println(
               blocked

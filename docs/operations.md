@@ -134,6 +134,19 @@ it removes the marker without starting a trading run.
 `status` is local-only and shows reports and attempts, including partial-fill
 shortfalls. The private journal contains broker IDs and saved UUID references.
 
+`gr orderAudit` reads the broker's current status for journaled order IDs without
+submitting anything or changing the journal. It shows the broker's status, error
+code and explanation; raw responses stay in ignored `state/capture/` files.
+
+A terminal buy with confirmed zero fills is shown as **NOT FILLED**, with the
+broker explanation and order number in that instrument's block. The run continues
+to other opportunities, without retrying that buy in the same invocation. A later
+owner `gr run` can try it again after fresh checks. Unknown outcomes, unprotected
+partial fills and failed protection/exit operations still hold further submissions.
+Exit code 2 (Gradle's red `FAILED`) continues to flag incomplete work, including
+unfilled orders; it does not mean the journal failed to save or that no other
+order executed. Read each instrument's result.
+
 | Condition | Recovery |
 | --- | --- |
 | Unknown/unresolved order | Inspect saved reference/order and broker history. Opening lookup may resolve on the next invocation. Never delete an attempt to retry. |

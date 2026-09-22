@@ -5,6 +5,22 @@ only to `https://public-api.etoro.com`. Credentials never enter reports or error
 output. Agent activity affects **real owner money**, despite the internal virtual
 balance. No demo/live trades were made during development.
 
+## Observed order rejection, 22 September 2026
+
+A read-only lookup of the owner's BRK.B attempt returned terminal status
+`Rejected`, error code `1065`, and zero position executions. The broker described
+a connectivity or technical failure on an HBC-only path. It recorded the intended
+`limitIOC` request, internal amount 800 USD, limit 516.63 and fixed stop 480.
+This establishes the reported rejection, not its underlying infrastructure cause
+or that a subsequent attempt will succeed. Do not loosen the limit or stop as a
+workaround. `gr orderAudit` refreshes saved order results without submitting.
+
+Status name, error code and error message are provided by the documented
+[order lookup](https://api-portal.etoro.com/api-reference/trading--real/get-order-information-and-position-details).
+The app preserves those selected fields for terminal empty buys, bounds the
+message and strips terminal controls. Other opportunities can continue after a
+proven empty buy; unknown/partial outcomes still stop further submissions.
+
 ## Identity and sizing
 
 Match the owner mirror to the authenticated agent using the owner's agent listing,

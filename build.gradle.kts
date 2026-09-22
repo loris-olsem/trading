@@ -72,6 +72,14 @@ tasks.register<JavaExec>("quoteAudit") {
     mainClass = "com.loris.bravos.app.QuoteAudit"
 }
 
+tasks.register<JavaExec>("orderAudit") {
+    group = "bravos"
+    description = "Read-only lookup of journaled orders; no submissions or state changes."
+    classpath = sourceSets.main.get().runtimeClasspath
+    mainClass = "com.loris.bravos.app.OrderAudit"
+    workingDir = projectDir
+}
+
 // Operations always use the current compiled sources and the project working directory.
 fun registerOperation(name: String, command: String, help: String) = tasks.register<JavaExec>(name) {
     group = "bravos"

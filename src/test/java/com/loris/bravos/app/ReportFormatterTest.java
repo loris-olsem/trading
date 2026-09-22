@@ -9,6 +9,25 @@ import org.junit.jupiter.api.Test;
 
 class ReportFormatterTest {
   @Test
+  void unsuccessfulOrderReplacesReadyHeadingAndExplainsNextStepInSameBlock() {
+    var state =
+        state(
+            "CF: READY POLICY_PASSED",
+            "CF: OPEN owner USD 184.40, internal USD 400.00, ceiling 132.97, stop 121.5",
+            "CF: NOT_FILLED CONFIRMED_NO_FILL Rejected; broker code 1065: technical issue; order 123");
+    var blocks = ReportFormatter.blocks(state, true);
+    assertEquals(1, blocks.size());
+    String text = blocks.getFirst().replaceAll("\\s+", " ");
+    assertTrue(text.contains("CF [NOT FILLED]"));
+    assertFalse(text.contains("[READY]"));
+    assertTrue(text.contains("No shares bought. Rejected; broker code 1065"));
+    assertTrue(text.contains("order 123"));
+    assertTrue(text.contains("Other opportunities are checked"));
+    assertTrue(text.contains("Planned action: Open position"));
+    assertTrue(blocks.getFirst().lines().allMatch(l -> l.length() <= 76));
+  }
+
+  @Test
   void availabilityReasonsDistinguishBrokerRefusalFromMissingSetup() {
     var messages =
         Map.of(

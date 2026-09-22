@@ -546,6 +546,37 @@ class EtoroClientTest {
   }
 
   @Test
+  void emptyTerminalOrderPreservesSpecificBrokerReasonAndNeverHidesExecutions() throws Exception {
+    var api = new Api();
+    var client = client(api, false);
+    var attempt = new Attempt(opening(), NOW);
+    var status = (ObjectNode) api.order.get("status");
+    status.put("id", 4).put("errorCode", 1065).put("errorMessage", "Technical\nfailure\u001b");
+    assertNotEquals(Status.REJECTED, client.observe(attempt).status());
+    api.order.putArray("positionExecutions");
+    for (int id : List.of(4, 7, 8)) {
+      status.put("id", id);
+      var result = client.observe(attempt);
+      assertEquals(Status.REJECTED, result.status());
+      assertEquals(
+          "CONFIRMED_NO_FILL Status " + id + "; broker code 1065: Technical failure",
+          result.reason());
+      assertTrue(result.positionIds().isEmpty());
+    }
+    status.remove("errorMessage");
+    status.remove("errorCode");
+    assertEquals("Status 8; broker supplied no explanation", EtoroClient.orderFailure(api.order));
+    status.put("name", "Rejected");
+    assertEquals("Rejected; broker supplied no explanation", EtoroClient.orderFailure(api.order));
+    status.put("name", "Rejected\u001b");
+    assertEquals("Status 8; broker supplied no explanation", EtoroClient.orderFailure(api.order));
+    status.put("errorMessage", "x".repeat(501));
+    assertEquals("Status 8: " + "x".repeat(500), EtoroClient.orderFailure(api.order));
+    status.put("id", 1);
+    assertEquals(Status.SUBMITTED, client.observe(attempt).status());
+  }
+
+  @Test
   void terminalPartialFillKeepsProtectedUnitsAndReportsActualDollarShortfall() throws Exception {
     var api = new Api();
     var c = client(api, false);

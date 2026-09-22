@@ -423,7 +423,7 @@ public final class EtoroClient implements Broker, Workflow.Market {
         ids.add(integer(p, "positionId"));
       }
       if (ids.isEmpty() && Set.of(4, 7, 8).contains(status))
-        return observation(Status.REJECTED, "CONFIRMED_NO_FILL", ids);
+        return observation(Status.REJECTED, "CONFIRMED_NO_FILL " + orderFailure(order), ids);
       if (ids.isEmpty()) return observation(Status.SUBMITTED, "AWAITING_FILL", ids);
       BigDecimal agentFilled = BigDecimal.ZERO;
       BigDecimal ownerFilled = BigDecimal.ZERO;
@@ -488,6 +488,29 @@ public final class EtoroClient implements Broker, Workflow.Market {
         && copiedReductionConfirmed(attempt, copies))
       return observation(Status.CONFIRMED, "PARTIAL_CLOSE_CONFIRMED", List.of(p.id()));
     return observation(Status.PARTIAL, "COPY_CLOSE_PENDING", List.of(i.positionId()));
+  }
+
+  /** Only selected order-status fields, bounded and stripped of terminal control characters. */
+  public static String orderFailure(JsonNode order) {
+    JsonNode status = order.path("status");
+    String name = status.path("name").asText("");
+    String outcome =
+        name.matches("[A-Za-z ]{1,60}") ? name : "Status " + status.path("id").asText("unknown");
+    String code =
+        status.path("errorCode").isIntegralNumber()
+            ? "; broker code " + status.path("errorCode").asText()
+            : "";
+    String message =
+        status
+            .path("errorMessage")
+            .asText("")
+            .replaceAll("[\\p{Cntrl}\\p{Cf}]", " ")
+            .replaceAll("\\s+", " ")
+            .trim();
+    if (message.length() > 500) message = message.substring(0, 500);
+    return outcome
+        + code
+        + (message.isEmpty() ? "; broker supplied no explanation" : ": " + message);
   }
 
   @Override

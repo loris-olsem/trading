@@ -100,13 +100,18 @@ class MainTest {
     assertEquals(0, run("initialize", "--since", "2026-08-21"), output.toString());
     assertTrue(market.submitted.isEmpty());
     assertEquals(1, run("initialize"));
+    market.reject = true;
+    assertEquals(2, run("run"), output.toString());
+    assertTrue(output.toString().contains("[NOT FILLED]"));
+    assertFalse(output.toString().contains("[READY]"));
+    market.reject = false;
     assertEquals(0, run("run"), output.toString());
     assertTrue(
         output.toString().replaceAll("\\s+", " ").contains("Confirmed by broker read-back: OPEN"));
     assertTrue(output.toString().replaceAll("\\s+", " ").contains("Run completed."));
     assertFalse(output.toString().replaceAll("\\s+", " ").contains("owner USD null"));
-    assertEquals(1, market.submitted.size());
-    assertEquals(List.of(false, false, true), modes);
+    assertEquals(2, market.submitted.size());
+    assertEquals(List.of(false, false, true, true), modes);
     output.reset();
     assertEquals(
         0,
@@ -122,7 +127,7 @@ class MainTest {
             .replaceAll("\\s+", " ")
             .contains("existing holding has no new action to take"));
     assertFalse(output.toString().replaceAll("\\s+", " ").contains("would attempt to open"));
-    assertEquals(1, market.submitted.size());
+    assertEquals(2, market.submitted.size());
     market.pending = true;
     assertEquals(2, run("run"));
     assertTrue(
@@ -143,7 +148,7 @@ class MainTest {
     assertEquals(2, run("run"));
     assertTrue(output.toString().replaceAll("\\s+", " ").contains("UNEXPLAINED_AGENT_POSITION"));
     market.lots.removeLast();
-    assertEquals(1, market.submitted.size());
+    assertEquals(2, market.submitted.size());
     market.unavailable = true;
     try (var store = new StateStore(root.resolve("state/runtime"))) {
       var cycle = store.state().book.cycles.values().iterator().next();
@@ -163,7 +168,7 @@ class MainTest {
             .toString()
             .replaceAll("\\s+", " ")
             .contains("existing holding has no new action to take"));
-    assertEquals(1, market.submitted.size());
+    assertEquals(2, market.submitted.size());
     assertEquals(2, run("run"), output.toString());
     assertTrue(
         output
@@ -172,7 +177,7 @@ class MainTest {
             .contains("Run finished with held or unresolved items."));
     assertFalse(
         output.toString().replaceAll("\\s+", " ").contains("Confirmed by broker read-back:"));
-    assertEquals(1, market.submitted.size());
+    assertEquals(2, market.submitted.size());
   }
 
   @Test

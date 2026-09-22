@@ -7,6 +7,18 @@ The [implementation plan](docs/IMPLEMENTATION-PLAN.md) was committed before code
 
 ## Checks
 
+Order-result correction, 22 September: **208 tests pass**, instruction coverage
+**12,459/13,904 (89.61%)**, branch coverage **1,683/2,079 (80.95%)** and
+**982/1,088 PIT mutations killed (90.26%)**, with 90 survivors, 16 uncovered
+and no timeout/error kills. `gr spotlessApply check pitest installDist orderAudit`
+passed through the vfox environment. Fixtures verify terminal zero-fill buys
+continue to other cycles without consuming the opening; uncertain/partial results
+still halt; rejection details survive parsing; the CLI returns incomplete-work
+status with a NOT FILLED block; and later confirmed holdings are not bought twice.
+The read-only order audit confirmed eToro rejection 1065 with zero executions.
+No financial writes were made, and the broker-side technical failure is not
+claimed resolved. See [broker evidence](docs/broker-contract.md#observed-order-rejection-22-september-2026).
+
 Latest quote-refresh verification, 22 September: **205 tests pass**, **90.45%
 instruction coverage** (12,069/13,343), **81.20% branch coverage** (1,620/1,995),
 and **967/1,073 PIT mutations killed (90.12%)**. There are 90 survivors and 16
