@@ -192,6 +192,9 @@ public final class EtoroClient implements Broker, Workflow.Market {
     if (leverage == null) throw new IOException("AGENT_INSTRUMENT_INELIGIBLE");
     if (openingConfiguration(ownerEligibility, asset.settlementType) == null)
       throw new IOException("OWNER_INSTRUMENT_INELIGIBLE");
+    // Observed broker rejection 2039: IOC limits cannot execute CFD settlement.
+    if (!"real".equals(asset.settlementType))
+      throw new IOException("CAPPED_ORDER_REQUIRES_REAL_ASSET");
     // Query owner-side costs for the actual copied amount, not internal agent dollars.
     var costRequest =
         Json.MAPPER

@@ -21,6 +21,13 @@ The app preserves those selected fields for terminal empty buys, bounds the
 message and strips terminal controls. Other opportunities can continue after a
 proven empty buy; unknown/partial outcomes still stop further submissions.
 
+The owner's later v3 run also returned 1065 for BRK.B/EOG/ADI. ARGT returned
+2039: IOC orders require real settlement, whereas its profile is CFD. The app
+now rejects CFD openings/additions before submission at the broker preflight,
+policy and payload boundaries. SMH has the same known incompatibility. This is
+an order-type limitation, not absence of instrument eligibility. No market-order
+fallback or invented real-settlement profile is permitted.
+
 ## Identity and sizing
 
 Match the owner mirror to the authenticated agent using the owner's agent listing,

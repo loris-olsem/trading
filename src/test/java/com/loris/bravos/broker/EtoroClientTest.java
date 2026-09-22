@@ -202,6 +202,19 @@ class EtoroClientTest {
   }
 
   @Test
+  void eligibleCfdIsRejectedBeforeCostOrSubmission() throws Exception {
+    var api = new Api();
+    var config = config();
+    config.assets.get("CF").settlementType = "cfd";
+    ((ObjectNode) api.eligibility.path("leverageConfigs").get(0)).put("settlementType", "cfd");
+    var broker = offlineClient(api, secrets, config, clock, false);
+    assertEquals(
+        "CAPPED_ORDER_REQUIRES_REAL_ASSET",
+        assertThrows(IOException.class, () -> broker.instrument("CF", d("100"))).getMessage());
+    assertEquals(0, api.writes);
+  }
+
+  @Test
   void acceptedCalendarModeUsesFreshQuoteAndTradabilityWithoutClosedExchangeFlag()
       throws Exception {
     var api = new Api();

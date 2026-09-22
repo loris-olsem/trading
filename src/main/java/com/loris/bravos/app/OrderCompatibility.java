@@ -30,6 +30,13 @@ public final class OrderCompatibility {
       Files.createDirectories(target.getParent());
       Json.MAPPER.writeValue(target.toFile(), report);
       for (var item : report.path("cases")) {
+        if (item.has("skippedReason")) {
+          System.out.println(
+              item.path("instrumentId").asText()
+                  + " skipped: "
+                  + item.path("skippedReason").asText());
+          continue;
+        }
         System.out.println(
             item.path("instrumentId").asText()
                 + " "
@@ -52,6 +59,13 @@ public final class OrderCompatibility {
     var report = Json.MAPPER.createObjectNode().put("observedAt", Instant.now().toString());
     var cases = report.putArray("cases");
     for (var attempt : latest.values()) {
+      if (!"real".equals(attempt.intent.settlementType())) {
+        cases
+            .addObject()
+            .put("instrumentId", attempt.intent.instrumentId())
+            .put("skippedReason", "CAPPED_ORDER_REQUIRES_REAL_ASSET");
+        continue;
+      }
       for (boolean owner : List.of(false, true)) {
         for (String type : List.of("limitIOC", "mkt")) {
           var body = OrderPayloads.create(attempt.intent).body().deepCopy();

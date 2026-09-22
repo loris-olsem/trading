@@ -142,6 +142,19 @@ tasks.register("resume") {
 }
 defaultTasks("help")
 
+tasks.register<Exec>("fableReview") {
+    group = "verification"
+    description = "Explicitly requested read-only Fable consultation; -PreviewCheck checks CLI only."
+    workingDir = projectDir
+    executable = providers.gradleProperty("reviewPython").orElse("python").get()
+    val helper = file(System.getProperty("user.home") + "/.codex/skills/fable-review/scripts/review.py")
+    args(helper.absolutePath)
+    if (project.hasProperty("reviewCheck")) args("--check")
+    else args("--project", projectDir.absolutePath, "--request",
+        file("work/fable-review/execution-failure-request.md").absolutePath,
+        "--output-dir", file("work/fable-review/runs").absolutePath)
+}
+
 val checkpointState = tasks.register<JavaExec>("checkpointState") {
     group = "bravos"
     description = "Commit authoritative state and numeric history locally under the app lock; never push or trade."

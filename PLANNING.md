@@ -216,6 +216,13 @@ which specifies a 3x daily Nasdaq-100 objective.
 
 ## Evidence and remaining work
 
+On 22 September, after Fable suggested an explicitly reduced whole-share trial,
+the owner chose **"Keep the existing sizing; fix only the known defects"**.
+Do not treat the partial-fill rule as authorization to round intended entries
+down to whole shares. The known IOC/CFD incompatibility is blocked before
+submission; real-stock rejection 1065 remains unresolved. See
+[Fable review disposition](docs/FABLE-EXECUTION-REVIEW-2026-09-22.md).
+
 [ENGINEERING.md](ENGINEERING.md) tracks implementation duties and verification.
 Do not mark a check passed because it appeared in the questionnaire.
 

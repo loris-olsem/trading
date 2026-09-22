@@ -7,6 +7,18 @@ The [implementation plan](docs/IMPLEMENTATION-PLAN.md) was committed before code
 
 ## Checks
 
+Fable follow-through, 22 September: **215 tests pass**, instruction coverage
+12,640/14,214, branch coverage 1,705/2,108, and **987/1,092 PIT mutations killed
+(90.38%)**, with 89 survivors and 16 uncovered, no timeout/error kills. The vfox
+command `gr spotlessApply check pitest installDist instrumentPreflight` passed.
+The live read-only preflight now reports `CAPPED_ORDER_REQUIRES_REAL_ASSET` for
+ARGT and SMH; real-stock read preflights pass but do not prove execution.
+Fixtures cover the CFD rejection at preflight, policy and payload boundaries,
+its user explanation, and safe skipping in the read-only compatibility diagnostic.
+The [original Fable review and disposition](docs/FABLE-EXECUTION-REVIEW-2026-09-22.md)
+record the owner's rejection of a sizing experiment. No whole-share conversion,
+new broker capability claim, live trade or state reset was performed.
+
 V3 submission change, 22 September: **212 tests pass**, coverage gates pass
 (12,591/14,149 instructions; 1,696/2,097 branches), and **983/1,088 PIT mutations
 killed (90.35%)**, 89 survivors and 16 uncovered, with no timeout/error kills.

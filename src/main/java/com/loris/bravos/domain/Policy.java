@@ -72,6 +72,8 @@ public final class Policy {
         || !"USD".equals(i.currency())
         || !Set.of("real", "cfd").contains(i.settlementType()))
       return Decision.of(Outcome.BLOCKED, "INSTRUMENT_UNVERIFIED");
+    if (!"real".equals(i.settlementType()))
+      return Decision.of(Outcome.BLOCKED, "CAPPED_ORDER_REQUIRES_REAL_ASSET");
     if (q == null
         || !q.exchangeOpen()
         || !"USD".equals(q.currency())

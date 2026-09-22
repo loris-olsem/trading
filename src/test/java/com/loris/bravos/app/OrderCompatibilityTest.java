@@ -11,6 +11,40 @@ import org.junit.jupiter.api.Test;
 
 class OrderCompatibilityTest {
   @Test
+  void knownUnsupportedCfdDoesNotBreakOrSendWhatIfRequests() throws Exception {
+    var attempt =
+        new Attempt(
+            new com.loris.bravos.domain.Model.Intent(
+                "cfd",
+                "opening",
+                "opening",
+                com.loris.bravos.domain.Model.Action.OPEN,
+                3421,
+                null,
+                d("230.50"),
+                d("500"),
+                null,
+                d("98.36"),
+                d("89"),
+                "cfd"),
+            NOW);
+    Transport transport =
+        (method, path, headers, body) -> {
+          fail("Unsupported CFD must not reach the broker");
+          return null;
+        };
+    var report =
+        OrderCompatibility.inspect(
+            transport,
+            new Secrets("test-app", "test-agent", "test-owner", "test-user", "test-password"),
+            Map.of(3421L, attempt));
+    assertEquals(1, report.path("cases").size());
+    assertEquals(
+        "CAPPED_ORDER_REQUIRES_REAL_ASSET",
+        report.path("cases").get(0).path("skippedReason").asText());
+  }
+
+  @Test
   void comparesExactOrderAndMarketEstimateWithoutAnyExecutionEndpoint() throws Exception {
     var attempt =
         new Attempt(

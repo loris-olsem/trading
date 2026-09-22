@@ -182,6 +182,8 @@ public final class ReportFormatter {
   private static String explain(String line) {
     String code = line.replaceFirst("^(BLOCKED|WAIT_QUOTE|WATCH_PRICE|TERMINAL|NO_POSITION) ", "");
     return switch (code) {
+      case "CAPPED_ORDER_REQUIRES_REAL_ASSET" ->
+          "No order will be sent: this investment is configured as a CFD, and eToro rejects price-capped IOC orders for CFDs. Buying it with a market order would remove your maximum purchase price. It remains skipped under your current rules";
       case "QUOTE_REFRESH_EXHAUSTED" ->
           "No purchase is proposed: the app requested a quote, tried eToro's live price stream, then requested another quote. None provided a usable price within the freshness rule. Your entry ceiling and Bravos stop remain unchanged";
       case "QUOTE_REFRESH_TIMEOUT" ->

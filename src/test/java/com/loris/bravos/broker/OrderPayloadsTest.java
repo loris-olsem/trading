@@ -67,8 +67,12 @@ class OrderPayloadsTest {
       assertThrows(
           IllegalArgumentException.class,
           () -> OrderPayloads.create(position(Action.CLOSE, id, d("1"), null)));
-    var cfd = OrderPayloads.create(opening(d("50"), d("100"), d("90"), "cfd"));
-    assertEquals("cfd", cfd.body().get("settlementType").asText());
+    assertEquals(
+        "CAPPED_ORDER_REQUIRES_REAL_ASSET",
+        assertThrows(
+                IllegalArgumentException.class,
+                () -> OrderPayloads.create(opening(d("50"), d("100"), d("90"), "cfd")))
+            .getMessage());
     assertEquals("PATCH", OrderPayloads.create(position(Action.STOP, 1L, null, d("90"))).method());
   }
 }

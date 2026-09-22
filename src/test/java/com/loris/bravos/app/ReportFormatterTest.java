@@ -37,6 +37,7 @@ class ReportFormatterTest {
             "INSTRUMENT_NOT_LISTED", "no listing under the Bravos ticker",
             "INSTRUMENT_PROFILE_REQUIRED", "application setup gap",
             "INSTRUMENT_LOOKUP_INCOMPLETE", "incomplete instrument lookup",
+            "CAPPED_ORDER_REQUIRES_REAL_ASSET", "eToro rejects price-capped IOC orders for CFDs",
             "AGENT_INSTRUMENT_INELIGIBLE", "required unleveraged order and stop settings");
     messages.forEach(
         (code, phrase) ->

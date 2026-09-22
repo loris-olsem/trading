@@ -13,6 +13,26 @@ import org.junit.jupiter.params.provider.*;
 class PolicyTest {
   final Policy policy = new Policy();
 
+  @Test
+  void eligibleUnleveragedCfdStillCannotUsePriceCappedOrder() {
+    var i = instrument();
+    var cfd =
+        new Instrument(
+            i.id(),
+            i.symbol(),
+            i.currency(),
+            true,
+            true,
+            "cfd",
+            i.priceScale(),
+            i.unitScale(),
+            i.minimumAgentAmount(),
+            i.estimatedOwnerCost());
+    var result = policy.opening(cycle(), cfd, quote("100"), account(), NOW, d("0"));
+    assertEquals("CAPPED_ORDER_REQUIRES_REAL_ASSET", result.reason());
+    assertTrue(result.intents().isEmpty());
+  }
+
   Decision opening(Cycle c, Quote q, Account a) {
     return policy.opening(c, instrument(), q, a, NOW, d("0"));
   }

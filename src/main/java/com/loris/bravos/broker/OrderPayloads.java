@@ -21,6 +21,8 @@ public final class OrderPayloads {
         throw new IllegalArgumentException("INVALID_OPEN_INTENT");
       if (!"real".equals(i.settlementType()) && !"cfd".equals(i.settlementType()))
         throw new IllegalArgumentException("UNSUPPORTED_SETTLEMENT");
+      if (!"real".equals(i.settlementType()))
+        throw new IllegalArgumentException("CAPPED_ORDER_REQUIRES_REAL_ASSET");
       body.put("action", "open")
           .put("transaction", "buy")
           .put("instrumentId", i.instrumentId())

@@ -3,11 +3,17 @@
 Status: unresolved execution failure. No claim of a working live trading path.
 The development investigation made only read/what-if calls; no orders were submitted.
 
-Owner-authorized next attempt: the app now submits openings/additions through
-the documented v3 asynchronous endpoint, retaining the exact limitIOC payload.
-This is a controlled compatibility change, not evidence that error 1065 is fixed.
-`gr run` uses it automatically. The v2 lookup reconciles both old and new orders;
-HTTP 202 never marks an entry completed. There is no automatic endpoint fallback.
+The owner subsequently ran the v3 asynchronous submission path: BRK.B, EOG and
+ADI still returned 1065, and ARGT returned error 2039 stating that IOC requires
+real settlement rather than CFD. State generation 101 recorded these results.
+V3 did not resolve the failure. The shared v2 lookup still reconciles old and
+new orders; HTTP 202 never marks an entry completed. There is no automatic
+endpoint fallback.
+
+The [Fable consultation](FABLE-EXECUTION-REVIEW-2026-09-22.md) led to a concrete
+CFD compatibility fix. ARGT and SMH are now rejected by preflight/policy/payload
+before submission. The owner declined a whole-share experiment and retained
+existing sizing. The real-stock 1065 cause remains unknown.
 
 ## Verified evidence
 

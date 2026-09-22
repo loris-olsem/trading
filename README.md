@@ -6,9 +6,10 @@ Portfolio. It parses supported alerts deterministically, keeps a durable journal
 reconciles the agent with the owner's real allocation, and applies the agreed
 price, sizing and stop rules. Gmail and an AI assistant are not runtime dependencies.
 
-**Readiness:** opening/addition requests now use v3 asynchronous submission after repeated v2
-error 1065. The owner must verify the next live outcome; an execution fix is not
-yet proven. Price ceilings and stops are unchanged.
+**Readiness:** live execution remains unresolved. The owner's v3 run repeated
+error 1065 on real stocks; changing API version did not fix it. The confirmed
+CFD/IOC incompatibility is now blocked before submission for ARGT and SMH.
+Price ceilings, stops and amount sizing are unchanged.
 
 Execution profiles cover CF,
 BRK.B, ARGT, EOG, SMH and now ADI (eToro's ADI.US). The app checks IBIT/ETHA's
@@ -30,6 +31,7 @@ regressions, coverage and mutation results. Current read-only service evidence:
 | --- | --- |
 | [Operations](docs/operations.md) | Install, configure, plan, initialize, run and recover |
 | [Current execution failure](docs/ETORO-1065-INVESTIGATION.md) | Repeated 1065 rejections, compatibility checks and prepared support report |
+| [Fable execution review](docs/FABLE-EXECUTION-REVIEW-2026-09-22.md) | Independent review, CFD fix and owner decision to preserve sizing |
 | [Latest readiness check](docs/READINESS-2026-09-21.md) | Configured instruments, current broker-data holds and remaining verification |
 | [Trading rules](docs/trading-rules.md) | Effective decisions in a compact table |
 | [Market hours](docs/market-hours.md) | Accepted US calendar, holidays, early closes and update deadline |
