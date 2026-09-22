@@ -1,6 +1,6 @@
 {
   "schemaVersion" : 1,
-  "generation" : 101,
+  "generation" : 93,
   "enrollmentFloor" : "2026-08-23",
   "checkpoint" : "2026-09-22T19:16:11.406929500Z",
   "revisionAudit" : "2026-09-21T17:37:05.647907200Z",
@@ -3168,45 +3168,16 @@
         "settlementType" : "real"
       },
       "reference" : "23674c74-32b7-4e86-9b41-21bf18be269e",
-      "orderId" : 1591647469,
-      "status" : "REJECTED",
+      "orderId" : null,
+      "status" : "SUBMITTING",
       "createdAt" : "2026-09-22T19:16:39.301184400Z",
-      "result" : "CONFIRMED_NO_FILL Rejected; broker code 1065: OrderValidation - Order attempt has failed due to a connectivity or technical issue on an HBC only path. Order will be rejected back to the client",
+      "result" : null,
       "agentFilled" : null,
       "ownerFilled" : null,
       "ownerShortfall" : null,
       "baselineSaved" : false,
       "positionIds" : [ ],
       "absorbedEvents" : [ "bravos:post:488325" ],
-      "beforeAgentUnits" : null,
-      "beforeOwnerUnits" : { }
-    },
-    "bravos:post:488663|bravos:post:488663|OPEN|attempt:3" : {
-      "intent" : {
-        "key" : "bravos:post:488663|bravos:post:488663|OPEN|attempt:3",
-        "cycleKey" : "bravos:post:488663",
-        "eventKey" : "bravos:post:488663",
-        "action" : "OPEN",
-        "instrumentId" : 4264,
-        "positionId" : null,
-        "ownerAmount" : 230.50,
-        "agentAmount" : 500.00,
-        "units" : null,
-        "ceiling" : 390.02,
-        "stop" : 347.5,
-        "settlementType" : "real"
-      },
-      "reference" : "8bd70202-5d42-412c-b764-6d7501f20a69",
-      "orderId" : 1592630689,
-      "status" : "REJECTED",
-      "createdAt" : "2026-09-22T19:16:45.907978800Z",
-      "result" : "CONFIRMED_NO_FILL Rejected; broker code 1065: OrderValidation - Order attempt has failed due to a connectivity or technical issue on an HBC only path. Order will be rejected back to the client",
-      "agentFilled" : null,
-      "ownerFilled" : null,
-      "ownerShortfall" : null,
-      "baselineSaved" : false,
-      "positionIds" : [ ],
-      "absorbedEvents" : [ "bravos:post:488663" ],
       "beforeAgentUnits" : null,
       "beforeOwnerUnits" : { }
     }
@@ -3351,23 +3322,9 @@
       "ceiling" : 153.01,
       "stop" : 138,
       "settlementType" : "real"
-    } ],
-    "bravos:post:488663|bravos:post:488663|OPEN|attempt:3" : [ {
-      "key" : "bravos:post:488663|bravos:post:488663|OPEN|attempt:3",
-      "cycleKey" : "bravos:post:488663",
-      "eventKey" : "bravos:post:488663",
-      "action" : "OPEN",
-      "instrumentId" : 4264,
-      "positionId" : null,
-      "ownerAmount" : 230.50,
-      "agentAmount" : 500.00,
-      "units" : null,
-      "ceiling" : 390.02,
-      "stop" : 347.5,
-      "settlementType" : "real"
     } ]
   },
   "holdings" : { },
   "earlyExits" : [ ],
-  "report" : [ "BRK.B: READY POLICY_PASSED", "BRK.B: OPEN owner USD 368.80, internal USD 800.00, ceiling 516.63, stop 480", "BRK.B: NOT_FILLED CONFIRMED_NO_FILL Rejected; broker code 1065: OrderValidation - Order attempt has failed due to a connectivity or technical issue on an HBC only path. Order will be rejected back to the client; order 1591655498", "ARGT: READY POLICY_PASSED", "ARGT: OPEN owner USD 230.50, internal USD 500.00, ceiling 98.36, stop 89", "ARGT: NOT_FILLED CONFIRMED_NO_FILL Rejected; broker code 2039: Error creating limit (IOC) order - settlement type must be real (was CFD); order 1591647468", "MAGS: BLOCKED INSTRUMENT_NOT_LISTED", "IBIT: BLOCKED BOTH_ACCOUNTS_OPENING_DISABLED", "EOG: READY POLICY_PASSED", "EOG: OPEN owner USD 230.50, internal USD 500.00, ceiling 153.01, stop 138", "EOG: NOT_FILLED CONFIRMED_NO_FILL Rejected; broker code 1065: OrderValidation - Order attempt has failed due to a connectivity or technical issue on an HBC only path. Order will be rejected back to the client; order 1591647469", "ETHA: BLOCKED BOTH_ACCOUNTS_OPENING_DISABLED", "SMH: WATCH_PRICE ABOVE_ORIGINAL_CEILING", "ADI: READY POLICY_PASSED", "ADI: OPEN owner USD 230.50, internal USD 500.00, ceiling 390.02, stop 347.5", "ADI: NOT_FILLED CONFIRMED_NO_FILL Rejected; broker code 1065: OrderValidation - Order attempt has failed due to a connectivity or technical issue on an HBC only path. Order will be rejected back to the client; order 1592630689" ]
+  "report" : [ "BRK.B: READY POLICY_PASSED", "BRK.B: OPEN owner USD 368.80, internal USD 800.00, ceiling 516.63, stop 480", "BRK.B: NOT_FILLED CONFIRMED_NO_FILL Rejected; broker code 1065: OrderValidation - Order attempt has failed due to a connectivity or technical issue on an HBC only path. Order will be rejected back to the client; order 1591655498", "ARGT: READY POLICY_PASSED", "ARGT: OPEN owner USD 230.50, internal USD 500.00, ceiling 98.36, stop 89", "ARGT: NOT_FILLED CONFIRMED_NO_FILL Rejected; broker code 2039: Error creating limit (IOC) order - settlement type must be real (was CFD); order 1591647468", "MAGS: BLOCKED INSTRUMENT_NOT_LISTED", "IBIT: BLOCKED BOTH_ACCOUNTS_OPENING_DISABLED", "EOG: READY POLICY_PASSED", "EOG: OPEN owner USD 230.50, internal USD 500.00, ceiling 153.01, stop 138" ]
 }
