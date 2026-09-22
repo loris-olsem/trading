@@ -17,10 +17,26 @@ existing sizing. The real-stock 1065 cause remains unknown.
 
 ## Verified evidence
 
-Seven journaled buy attempts returned terminal Rejected, error 1065 and an empty
+Fresh `gr orderAudit` read-back after the v3 run confirmed ten journaled stock
+buy attempts returned terminal Rejected, error 1065 and an empty
 `positionExecutions` array. Three instruments were affected: BRK.B (1118), EOG
 (1581), ADI.US (4264). Both accounts are active, linked correctly, have available
 cash and complete empty pending-order collections. No position was opened.
+
+Comparison of all eleven saved orders (the ten stock attempts plus ARGT's 2039)
+against their journaled intents found matching instrument IDs, internal amounts,
+limit prices and stop prices. The broker recorded `limitIOC`, buy, leverage 1
+and fixed stops in every case. This rules out those fields being lost or changed
+between intent creation and broker parsing. It does not establish execution
+compatibility. BRK.B order 1591655498 was recorded as `byAmount`, real settlement,
+USD 800, limit 516.63 and stop 480; eToro itself calculated 1.548496 requested
+units. Fractional sizing as the cause remains a hypothesis, not a finding.
+
+The current documented request schema has no HBC routing selector and no
+documented 1065 remedy. Public documentation and the saved response do not expose
+the underlying failure that produced this message. No execution behavior was
+changed during this follow-up; repeating the same submission is not a verified
+fix.
 
 Fresh eligibility permits long real X1 orders, fractional quantities, sizing by
 amount, and fixed stops for all three instruments on the agent and owner accounts.
