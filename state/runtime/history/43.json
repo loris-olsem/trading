@@ -1,9 +1,9 @@
 {
   "schemaVersion" : 1,
-  "generation" : 49,
+  "generation" : 43,
   "enrollmentFloor" : "2026-08-23",
   "checkpoint" : "2026-09-22T17:48:35.530309600Z",
-  "revisionAudit" : "2026-09-21T17:37:05.647907200Z",
+  "revisionAudit" : "2026-09-22T17:48:35.530309600Z",
   "book" : {
     "cycles" : {
       "bravos:post:482091" : {
@@ -2890,54 +2890,9 @@
     },
     "blockers" : [ ]
   },
-  "attempts" : {
-    "bravos:post:487910|bravos:post:487910|OPEN|attempt:1" : {
-      "intent" : {
-        "key" : "bravos:post:487910|bravos:post:487910|OPEN|attempt:1",
-        "cycleKey" : "bravos:post:487910",
-        "eventKey" : "bravos:post:487910",
-        "action" : "OPEN",
-        "instrumentId" : 1118,
-        "positionId" : null,
-        "ownerAmount" : 368.80,
-        "agentAmount" : 800.00,
-        "units" : null,
-        "ceiling" : 516.63,
-        "stop" : 480,
-        "settlementType" : "real"
-      },
-      "reference" : "fb5d9cc6-1d85-49a9-93f8-b0b981d88393",
-      "orderId" : 1591647385,
-      "status" : "REJECTED",
-      "createdAt" : "2026-09-22T17:48:41.081135500Z",
-      "result" : "CONFIRMED_NO_FILL",
-      "agentFilled" : null,
-      "ownerFilled" : null,
-      "ownerShortfall" : null,
-      "baselineSaved" : false,
-      "positionIds" : [ ],
-      "absorbedEvents" : [ "bravos:post:487910", "bravos:post:488320" ],
-      "beforeAgentUnits" : null,
-      "beforeOwnerUnits" : { }
-    }
-  },
-  "batches" : {
-    "bravos:post:487910|bravos:post:487910|OPEN|attempt:1" : [ {
-      "key" : "bravos:post:487910|bravos:post:487910|OPEN|attempt:1",
-      "cycleKey" : "bravos:post:487910",
-      "eventKey" : "bravos:post:487910",
-      "action" : "OPEN",
-      "instrumentId" : 1118,
-      "positionId" : null,
-      "ownerAmount" : 368.80,
-      "agentAmount" : 800.00,
-      "units" : null,
-      "ceiling" : 516.63,
-      "stop" : 480,
-      "settlementType" : "real"
-    } ]
-  },
+  "attempts" : { },
+  "batches" : { },
   "holdings" : { },
   "earlyExits" : [ ],
-  "report" : [ "BRK.B: READY POLICY_PASSED", "BRK.B: OPEN owner USD 368.80, internal USD 800.00, ceiling 516.63, stop 480", "ORDER_PENDING_OR_REJECTED: CONFIRMED_NO_FILL" ]
+  "report" : [ ]
 }

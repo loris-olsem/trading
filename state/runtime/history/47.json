@@ -1,6 +1,6 @@
 {
   "schemaVersion" : 1,
-  "generation" : 49,
+  "generation" : 47,
   "enrollmentFloor" : "2026-08-23",
   "checkpoint" : "2026-09-22T17:48:35.530309600Z",
   "revisionAudit" : "2026-09-21T17:37:05.647907200Z",
@@ -2908,9 +2908,9 @@
       },
       "reference" : "fb5d9cc6-1d85-49a9-93f8-b0b981d88393",
       "orderId" : 1591647385,
-      "status" : "REJECTED",
+      "status" : "SUBMITTED",
       "createdAt" : "2026-09-22T17:48:41.081135500Z",
-      "result" : "CONFIRMED_NO_FILL",
+      "result" : "RECONCILIATION_UNAVAILABLE",
       "agentFilled" : null,
       "ownerFilled" : null,
       "ownerShortfall" : null,
@@ -2939,5 +2939,5 @@
   },
   "holdings" : { },
   "earlyExits" : [ ],
-  "report" : [ "BRK.B: READY POLICY_PASSED", "BRK.B: OPEN owner USD 368.80, internal USD 800.00, ceiling 516.63, stop 480", "ORDER_PENDING_OR_REJECTED: CONFIRMED_NO_FILL" ]
+  "report" : [ "BRK.B: READY POLICY_PASSED", "BRK.B: OPEN owner USD 368.80, internal USD 800.00, ceiling 516.63, stop 480" ]
 }
