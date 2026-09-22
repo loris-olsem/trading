@@ -1,8 +1,8 @@
 {
   "schemaVersion" : 1,
-  "generation" : 28,
+  "generation" : 26,
   "enrollmentFloor" : "2026-08-23",
-  "checkpoint" : "2026-09-22T15:46:32.347433100Z",
+  "checkpoint" : "2026-09-21T18:43:13.051482500Z",
   "revisionAudit" : "2026-09-21T17:37:05.647907200Z",
   "book" : {
     "cycles" : {
@@ -1423,9 +1423,9 @@
         "symbol" : "CF",
         "openedOn" : "2026-08-31",
         "entry" : 130.37,
-        "weight" : 0,
+        "weight" : 4,
         "stop" : 121.5,
-        "sourceOpen" : false,
+        "sourceOpen" : true,
         "enrolled" : true,
         "entered" : false,
         "terminal" : false,
@@ -1453,18 +1453,6 @@
           "before" : 5,
           "after" : 4,
           "stop" : 121.5,
-          "targets" : [ ]
-        }, {
-          "key" : "bravos:post:488658",
-          "url" : "https://bravosresearch.com/news-feed/closing-cf-industries-holdings-cf-breakdown/",
-          "date" : "2026-09-22",
-          "hash" : "533599efacb275d58b4842d7d7b7359d5050d0c68b712c93b65a8957289995bc",
-          "symbol" : "CF",
-          "action" : "CLOSE",
-          "price" : null,
-          "before" : null,
-          "after" : 0,
-          "stop" : null,
           "targets" : [ ]
         } ],
         "positionIds" : [ ],
@@ -1681,35 +1669,6 @@
           "after" : 5,
           "stop" : 535,
           "targets" : [ 670, 695, 730 ]
-        } ],
-        "positionIds" : [ ],
-        "completed" : [ ],
-        "additionSessions" : { }
-      },
-      "bravos:post:488663" : {
-        "key" : "bravos:post:488663",
-        "symbol" : "ADI",
-        "openedOn" : "2026-09-22",
-        "entry" : 382.38,
-        "weight" : 5,
-        "stop" : 347.5,
-        "sourceOpen" : true,
-        "enrolled" : true,
-        "entered" : false,
-        "terminal" : false,
-        "blocker" : null,
-        "events" : [ {
-          "key" : "bravos:post:488663",
-          "url" : "https://bravosresearch.com/news-feed/initiating-long-on-analog-devices-inc-adi-breakout/",
-          "date" : "2026-09-22",
-          "hash" : "68fdd8799dce9a37c665e2c8916abbe62fd6d6cb9e473b51e0b4ff1996dce60f",
-          "symbol" : "ADI",
-          "action" : "OPEN",
-          "price" : 382.38,
-          "before" : null,
-          "after" : 5,
-          "stop" : 347.5,
-          "targets" : [ 400, 430, 455 ]
         } ],
         "positionIds" : [ ],
         "completed" : [ ],
@@ -2860,32 +2819,6 @@
         "after" : 5,
         "stop" : 535,
         "targets" : [ 670, 695, 730 ]
-      } ],
-      "bravos:post:488658" : [ {
-        "key" : "bravos:post:488658",
-        "url" : "https://bravosresearch.com/news-feed/closing-cf-industries-holdings-cf-breakdown/",
-        "date" : "2026-09-22",
-        "hash" : "533599efacb275d58b4842d7d7b7359d5050d0c68b712c93b65a8957289995bc",
-        "symbol" : "CF",
-        "action" : "CLOSE",
-        "price" : null,
-        "before" : null,
-        "after" : 0,
-        "stop" : null,
-        "targets" : [ ]
-      } ],
-      "bravos:post:488663" : [ {
-        "key" : "bravos:post:488663",
-        "url" : "https://bravosresearch.com/news-feed/initiating-long-on-analog-devices-inc-adi-breakout/",
-        "date" : "2026-09-22",
-        "hash" : "68fdd8799dce9a37c665e2c8916abbe62fd6d6cb9e473b51e0b4ff1996dce60f",
-        "symbol" : "ADI",
-        "action" : "OPEN",
-        "price" : 382.38,
-        "before" : null,
-        "after" : 5,
-        "stop" : 347.5,
-        "targets" : [ 400, 430, 455 ]
       } ]
     },
     "blockers" : [ ]
@@ -2894,5 +2827,5 @@
   "batches" : { },
   "holdings" : { },
   "earlyExits" : [ ],
-  "report" : [ "BRK.B: READY POLICY_PASSED", "BRK.B: OPEN owner USD 368.80, internal USD 800.00, ceiling 516.63, stop 480", "ARGT: WAIT_QUOTE QUOTE_NOT_EXECUTABLE", "ARGT: DETAIL No purchase is proposed because the quote is 185.332 seconds old; the maximum is 60 seconds. A later run will reassess the opportunity under the same price and stop rules.", "MAGS: BLOCKED INSTRUMENT_UNVERIFIED", "IBIT: BLOCKED INSTRUMENT_UNVERIFIED", "EOG: WAIT_QUOTE QUOTE_NOT_EXECUTABLE", "EOG: DETAIL No purchase is proposed because the quote is 69.4 seconds old; the maximum is 60 seconds. A later run will reassess the opportunity under the same price and stop rules.", "ETHA: BLOCKED INSTRUMENT_UNVERIFIED", "SMH: WATCH_PRICE ABOVE_ORIGINAL_CEILING", "ADI: BLOCKED INSTRUMENT_UNVERIFIED" ]
+  "report" : [ "CF: READY POLICY_PASSED", "CF: OPEN owner USD 184.40, internal USD 400.00, ceiling 132.97, stop 121.5", "BRK.B: READY POLICY_PASSED", "BRK.B: OPEN owner USD 368.80, internal USD 800.00, ceiling 516.63, stop 480", "ARGT: READY POLICY_PASSED", "ARGT: OPEN owner USD 230.50, internal USD 500.00, ceiling 98.36, stop 89", "MAGS: BLOCKED INSTRUMENT_UNVERIFIED", "IBIT: BLOCKED INSTRUMENT_UNVERIFIED", "EOG: READY POLICY_PASSED", "EOG: OPEN owner USD 230.50, internal USD 500.00, ceiling 153.17, stop 138", "ETHA: BLOCKED INSTRUMENT_UNVERIFIED", "SMH: READY POLICY_PASSED", "SMH: OPEN owner USD 230.50, internal USD 500.00, ceiling 598.36, stop 535" ]
 }
