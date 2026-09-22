@@ -3,6 +3,12 @@
 Status: unresolved execution failure. No claim of a working live trading path.
 The development investigation made only read/what-if calls; no orders were submitted.
 
+Owner-authorized next attempt: the app now submits openings/additions through
+the documented v3 asynchronous endpoint, retaining the exact limitIOC payload.
+This is a controlled compatibility change, not evidence that error 1065 is fixed.
+`gr run` uses it automatically. The v2 lookup reconciles both old and new orders;
+HTTP 202 never marks an entry completed. There is no automatic endpoint fallback.
+
 ## Verified evidence
 
 Seven journaled buy attempts returned terminal Rejected, error 1065 and an empty

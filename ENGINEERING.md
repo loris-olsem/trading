@@ -7,6 +7,16 @@ The [implementation plan](docs/IMPLEMENTATION-PLAN.md) was committed before code
 
 ## Checks
 
+V3 submission change, 22 September: **212 tests pass**, coverage gates pass
+(12,591/14,149 instructions; 1,696/2,097 branches), and **983/1,088 PIT mutations
+killed (90.35%)**, 89 survivors and 16 uncovered, with no timeout/error kills.
+`gr spotlessApply check pitest installDist` passed using the vfox environment.
+New fixtures assert the v3 route, unchanged limit/stop/amount/settlement payload,
+HTTP 202 remaining pending, and reference lookup after a lost response with no
+endpoint fallback. Existing durable-executor tests cover restart/no resubmission.
+No live orders were submitted during development; resolving error 1065 still
+requires the result of the owner's next run.
+
 1065 compatibility investigation, 22 September: `gr orderAudit brokerDiagnostics
 instrumentAudit -Psymbols=BRK.B,EOG,ADI.US` refreshed seven rejected orders, empty
 accounts and instrument permissions. `gr orderCompatibility` made twelve

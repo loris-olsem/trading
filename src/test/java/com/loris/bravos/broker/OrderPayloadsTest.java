@@ -9,6 +9,23 @@ import java.util.*;
 import org.junit.jupiter.api.Test;
 
 class OrderPayloadsTest {
+  @Test
+  void v3OpeningRetainsAmountCeilingAndExactStop() {
+    var request = OrderPayloads.create(opening(d("800"), d("516.63"), d("480"), "real"));
+    assertEquals("/api/v3/trading/execution/orders", request.path());
+    assertEquals("POST", request.method());
+    var body = request.body();
+    assertEquals("limitIOC", body.path("orderType").asText());
+    assertEquals("real", body.path("settlementType").asText());
+    assertEquals(d("800"), body.path("amount").decimalValue());
+    assertEquals(d("516.63"), body.path("limitRate").decimalValue());
+    assertEquals(d("480"), body.path("stopLossRate").decimalValue());
+    assertEquals("fixed", body.path("stopLossType").asText());
+    assertEquals(1, body.path("leverage").asInt());
+    assertFalse(body.has("units"));
+    assertFalse(body.has("triggerRate"));
+  }
+
   Intent opening(BigDecimal amount, BigDecimal ceiling, BigDecimal stop, String settlement) {
     return new Intent(
         "i", "c", "e", Action.OPEN, 1, null, d("50"), amount, null, ceiling, stop, settlement);

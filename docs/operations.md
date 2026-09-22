@@ -144,6 +144,12 @@ and a market-order comparison. It only calls the read-only costs endpoint; it
 does not submit trades or change state. HTTP 200 is not proof the order can fill.
 See the [1065 investigation](ETORO-1065-INVESTIGATION.md).
 
+The current `gr run` submits new buys through v3 asynchronously. No reset or
+`initialize` is needed after this upgrade. Existing v2 attempts still reconcile
+through the same order lookup. A receipt/HTTP 202 is not a confirmed purchase,
+and the app never switches back to v2 or removes the price limit after failure.
+This owner-authorized compatibility attempt has not yet demonstrated a live fill.
+
 A terminal buy with confirmed zero fills is shown as **NOT FILLED**, with the
 broker explanation and order number in that instrument's block. The run continues
 to other opportunities, without retrying that buy in the same invocation. A later

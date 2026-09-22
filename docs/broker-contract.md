@@ -76,11 +76,19 @@ requirement or the user's price-freshness rule.
 
 Execution routes are restricted to agent credentials:
 
-- `POST /api/v2/trading/execution/orders`: `limitIOC`, leverage 1, exact fixed stop.
+- `POST /api/v3/trading/execution/orders`: asynchronous `limitIOC`, leverage 1,
+  explicit settlement type and exact fixed stop. HTTP 202 is acceptance only.
 - `GET /api/v2/trading/info/orders:lookup`: order ID or durable UUID reference.
 - `PATCH /api/v2/trading/positions/{id}`: exact fixed-stop update.
 - `POST /api/v1/trading/execution/market-close-orders/positions/{id}`: full/partial close.
 - `GET /api/v1/trading/info/real/close-orders/{id}`: close execution proof.
+
+The owner authorized trying v3 after repeated v2 error 1065. This changes only
+the opening/addition submission route. Amount sizing, ceiling, stop and shared
+v2 order lookup stay the same. No automatic v2, market-order or quantity fallback
+is used after failure. Existing journal references remain valid. The official
+v3 contract is also preserved in `state/etoro-openapi.json`, path
+`/api/v3/trading/execution/orders`. Successful live execution remains unverified.
 
 ## Operating model
 

@@ -6,7 +6,11 @@ Portfolio. It parses supported alerts deterministically, keeps a durable journal
 reconciles the agent with the owner's real allocation, and applies the agreed
 price, sizing and stop rules. Gmail and an AI assistant are not runtime dependencies.
 
-**Readiness:** configured for owner execution. Execution profiles cover CF,
+**Readiness:** opening/addition requests now use v3 asynchronous submission after repeated v2
+error 1065. The owner must verify the next live outcome; an execution fix is not
+yet proven. Price ceilings and stops are unchanged.
+
+Execution profiles cover CF,
 BRK.B, ARGT, EOG, SMH and now ADI (eToro's ADI.US). The app checks IBIT/ETHA's
 account restrictions and searches for MAGS on every plan, reporting the actual
 availability reason. See the [22 September correction](docs/INSTRUMENTS-2026-09-22.md).

@@ -183,7 +183,10 @@ class EtoroClientTest {
                     ? node("{\"orderForClose\":{\"orderID\":123}}")
                     : node("{\"orderId\":123}");
       }
-      return new Response(200, response.toString(), Map.of());
+      return new Response(
+          path.equals("/api/v3/trading/execution/orders") ? 202 : 200,
+          response.toString(),
+          Map.of());
     }
   }
 
@@ -523,6 +526,61 @@ class EtoroClientTest {
             null);
     assertEquals(123L, client.submit(close, UUID.randomUUID().toString()).orderId());
     assertEquals(3, api.writes);
+  }
+
+  @Test
+  void v3UsesDurableReferenceAnd202DoesNotMeanFilled() throws Exception {
+    var api = new Api();
+    var reference = UUID.randomUUID().toString();
+    var posts = new ArrayList<String>();
+    Transport transport =
+        (method, path, headers, body) -> {
+          if (path.contains("/execution/")) {
+            assertEquals("/api/v3/trading/execution/orders", path);
+            assertEquals("POST", method);
+            assertEquals(reference, headers.get("x-request-id"));
+            assertEquals("agent-test", headers.get("x-user-key"));
+            posts.add(path);
+          }
+          return api.request(method, path, headers, body);
+        };
+    var client = offlineClient(transport, secrets, config(), clock, true);
+    var receipt = client.submit(opening(), reference);
+    assertEquals(123L, receipt.orderId());
+    api.order.putArray("positionExecutions");
+    ((ObjectNode) api.order.get("status")).put("id", 1);
+    var attempt = new Attempt(opening(), NOW);
+    attempt.reference = reference;
+    attempt.orderId = receipt.orderId();
+    assertEquals(Status.SUBMITTED, client.observe(attempt).status());
+    assertEquals(List.of("/api/v3/trading/execution/orders"), posts);
+  }
+
+  @Test
+  void lostV3ResponseHasNoFallbackAndLooksUpOriginalReference() throws Exception {
+    var api = new Api();
+    var reference = UUID.randomUUID().toString();
+    var submissions = new ArrayList<String>();
+    var lookups = new ArrayList<String>();
+    Transport transport =
+        (method, path, headers, body) -> {
+          if (path.contains("/execution/")) {
+            submissions.add(path);
+            assertEquals(reference, headers.get("x-request-id"));
+            throw new IOException("response lost");
+          }
+          if (path.contains("orders:lookup")) lookups.add(path);
+          return api.request(method, path, headers, body);
+        };
+    var client = offlineClient(transport, secrets, config(), clock, true);
+    assertThrows(IOException.class, () -> client.submit(opening(), reference));
+    var attempt = new Attempt(opening(), NOW);
+    attempt.reference = reference;
+    api.order.putArray("positionExecutions");
+    ((ObjectNode) api.order.get("status")).put("id", 2);
+    assertEquals(Status.SUBMITTED, client.observe(attempt).status());
+    assertEquals(List.of("/api/v3/trading/execution/orders"), submissions);
+    assertEquals(List.of("/api/v2/trading/info/orders:lookup?referenceId=" + reference), lookups);
   }
 
   @Test

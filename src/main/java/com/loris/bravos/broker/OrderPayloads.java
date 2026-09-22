@@ -32,7 +32,9 @@ public final class OrderPayloads {
           .put("stopLossRate", i.stop())
           .put("stopLossType", "fixed")
           .put("settlementType", i.settlementType());
-      return new Request("POST", "/api/v2/trading/execution/orders", body);
+      // v3 queues asynchronously; acceptance is not a fill. Reconcile through
+      // the shared v2 lookup using the durable request reference/order ID.
+      return new Request("POST", "/api/v3/trading/execution/orders", body);
     }
     if (i.positionId() == null || i.positionId() <= 0)
       throw new IllegalArgumentException("MISSING_POSITION");
