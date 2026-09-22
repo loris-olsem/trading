@@ -80,6 +80,14 @@ tasks.register<JavaExec>("orderAudit") {
     workingDir = projectDir
 }
 
+tasks.register<JavaExec>("orderCompatibility") {
+    group = "bravos"
+    description = "Read-only what-if comparison of saved limit orders; never submits orders."
+    classpath = sourceSets.main.get().runtimeClasspath
+    mainClass = "com.loris.bravos.app.OrderCompatibility"
+    workingDir = projectDir
+}
+
 // Operations always use the current compiled sources and the project working directory.
 fun registerOperation(name: String, command: String, help: String) = tasks.register<JavaExec>(name) {
     group = "bravos"

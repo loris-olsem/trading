@@ -138,6 +138,12 @@ shortfalls. The private journal contains broker IDs and saved UUID references.
 submitting anything or changing the journal. It shows the broker's status, error
 code and explanation; raw responses stay in ignored `state/capture/` files.
 
+`gr orderCompatibility` compares hypothetical costs for the latest saved buy
+per instrument on agent and owner accounts, using the exact limit-order shape
+and a market-order comparison. It only calls the read-only costs endpoint; it
+does not submit trades or change state. HTTP 200 is not proof the order can fill.
+See the [1065 investigation](ETORO-1065-INVESTIGATION.md).
+
 A terminal buy with confirmed zero fills is shown as **NOT FILLED**, with the
 broker explanation and order number in that instrument's block. The run continues
 to other opportunities, without retrying that buy in the same invocation. A later

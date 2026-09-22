@@ -7,6 +7,16 @@ The [implementation plan](docs/IMPLEMENTATION-PLAN.md) was committed before code
 
 ## Checks
 
+1065 compatibility investigation, 22 September: `gr orderAudit brokerDiagnostics
+instrumentAudit -Psymbols=BRK.B,EOG,ADI.US` refreshed seven rejected orders, empty
+accounts and instrument permissions. `gr orderCompatibility` made twelve
+read-only what-if requests, all HTTP 200. `gr spotlessApply check installDist`
+passes with **209 tests** and unchanged coverage gates. The added diagnostic's
+test requires the costs endpoint exclusively and checks account sizing, limits
+and stops. Trading behavior is unchanged; PIT's prior financial-behavior result
+below remains the latest mutation run. The actual execution failure is unresolved;
+see [investigation and support packet](docs/ETORO-1065-INVESTIGATION.md).
+
 Order-result correction, 22 September: **208 tests pass**, instruction coverage
 **12,459/13,904 (89.61%)**, branch coverage **1,683/2,079 (80.95%)** and
 **982/1,088 PIT mutations killed (90.26%)**, with 90 survivors, 16 uncovered

@@ -25,6 +25,7 @@ regressions, coverage and mutation results. Current read-only service evidence:
 | Document | Purpose |
 | --- | --- |
 | [Operations](docs/operations.md) | Install, configure, plan, initialize, run and recover |
+| [Current execution failure](docs/ETORO-1065-INVESTIGATION.md) | Repeated 1065 rejections, compatibility checks and prepared support report |
 | [Latest readiness check](docs/READINESS-2026-09-21.md) | Configured instruments, current broker-data holds and remaining verification |
 | [Trading rules](docs/trading-rules.md) | Effective decisions in a compact table |
 | [Market hours](docs/market-hours.md) | Accepted US calendar, holidays, early closes and update deadline |
