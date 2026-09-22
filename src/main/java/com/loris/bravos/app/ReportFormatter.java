@@ -14,7 +14,7 @@ public final class ReportFormatter {
 
   private ReportFormatter() {}
 
-  public static List<String> paragraphs(TradingState state, boolean live) {
+  public static List<String> blocks(TradingState state, boolean live) {
     Map<String, List<String>> grouped = new LinkedHashMap<>();
     List<String> general = new ArrayList<>();
     Set<String> symbols = new HashSet<>();
@@ -25,7 +25,7 @@ public final class ReportFormatter {
         grouped
             .computeIfAbsent(line.substring(0, split), ignored -> new ArrayList<>())
             .add(line.substring(split + 2));
-      else general.add("Account review: " + explain(line) + ".");
+      else general.add("ACCOUNT  [REVIEW]\n" + field("Details", explain(line) + "."));
     }
     List<String> result = new ArrayList<>(general);
     grouped.forEach(
@@ -36,61 +36,129 @@ public final class ReportFormatter {
             if (hasQuoteDetail && line.equals("WAIT_QUOTE QUOTE_NOT_EXECUTABLE")) continue;
             if (line.equals("READY POLICY_PASSED")) {
               sentences.add(
-                  live
-                      ? "The entry passed its pre-trade checks."
-                      : "Ready for an entry if the checks still pass at execution.");
+                  field(
+                      "Checks",
+                      live
+                          ? "Pre-trade checks passed. See execution result below."
+                          : "Passed. Checked again before execution."));
               continue;
             }
             var buy = BUY.matcher(line);
             if (buy.matches()) {
               sentences.add(
-                  (live ? "The planned trade was to " : "A live run would attempt to ")
-                      + (buy.group(1).equals("OPEN") ? "open" : "add")
-                      + " $"
-                      + buy.group(2)
-                      + " of your money, with an agent limit of $"
-                      + buy.group(4)
-                      + " per unit and Bravos's stop at $"
-                      + buy.group(5)
-                      + ". This uses $"
-                      + buy.group(3)
-                      + " of the agent's internal balance, not additional owner money.");
+                  field(
+                      live ? "Planned action" : "On live run",
+                      buy.group(1).equals("OPEN") ? "Open position" : "Add to position"));
+              sentences.add(field("Your money", "$" + buy.group(2)));
+              sentences.add(field("Agent limit", "$" + buy.group(4) + " per unit"));
+              sentences.add(field("Bravos stop", "$" + buy.group(5)));
+              sentences.add(
+                  field(
+                      "Internal funds",
+                      "$" + buy.group(3) + " (agent accounting; not extra money)"));
               continue;
             }
             var change = CHANGE.matcher(line);
             if (change.matches()) {
               if (change.group(1).equals("STOP"))
                 sentences.add(
-                    (live ? "The planned update would set" : "A live run would request")
-                        + " the exact Bravos stop of $"
-                        + change.group(3)
-                        + ".");
+                    field(
+                        "Stop update",
+                        (live ? "The planned update would set" : "A live run would request")
+                            + " the exact Bravos stop of $"
+                            + change.group(3)
+                            + "."));
               else
                 sentences.add(
-                    (live ? "The planned action was" : "A live run would request")
-                        + " a sale of "
-                        + change.group(2)
-                        + " agent units and the corresponding copied exposure.");
+                    field(
+                        "Sale",
+                        (live ? "The planned action was" : "A live run would request")
+                            + " a sale of "
+                            + change.group(2)
+                            + " agent units and the corresponding copied exposure."));
               continue;
             }
-            if (line.startsWith("DETAIL ")) sentences.add(line.substring(7));
+            if (line.startsWith("DETAIL ")) sentences.add(field("Reason", line.substring(7)));
             else if (line.startsWith("CONFIRMED "))
               sentences.add(
-                  "Confirmed by broker read-back: "
-                      + line.substring(10).replace("owner USD ", "owner amount $")
-                      + ".");
+                  field(
+                      "Result",
+                      "Confirmed by broker read-back: "
+                          + line.substring(10).replace("owner USD ", "owner amount $")
+                          + "."));
             else if (line.startsWith("PARTIAL_FILL_KEPT "))
               sentences.add(
-                  "Only part filled; the protected filled amount is retained. "
-                      + line.substring(18)
-                          .replace("owner USD ", "Filled $")
-                          .replace("shortfall USD ", "unfilled $")
-                      + ".");
-            else sentences.add(explain(line) + ".");
+                  field(
+                      "Partial fill",
+                      "Only part filled; the protected filled amount is retained. "
+                          + line.substring(18)
+                              .replace("owner USD ", "Filled $")
+                              .replace("shortfall USD ", "unfilled $")
+                          + "."));
+            else sentences.add(field("Details", explain(line) + "."));
           }
-          result.add(symbol + ": " + String.join(" ", sentences));
+          result.add(
+              symbol
+                  + "  ["
+                  + status(lines)
+                  + "]\n"
+                  + "-".repeat(64)
+                  + "\n"
+                  + String.join("\n", sentences));
         });
     return List.copyOf(result);
+  }
+
+  private static String status(List<String> lines) {
+    if (lines.stream().anyMatch(l -> l.startsWith("BLOCKED "))) return "BLOCKED";
+    if (lines.stream().anyMatch(l -> l.startsWith("WAIT_QUOTE "))) return "WAITING FOR PRICE";
+    if (lines.stream().anyMatch(l -> l.startsWith("WATCH_PRICE "))) return "WATCHING PRICE";
+    if (lines.stream()
+        .anyMatch(
+            l ->
+                !(l.equals("READY POLICY_PASSED")
+                    || l.startsWith("DETAIL ")
+                    || l.startsWith("CONFIRMED ")
+                    || l.startsWith("PARTIAL_FILL_KEPT ")
+                    || l.equals("HOLD_UNCHANGED")
+                    || l.startsWith("TERMINAL ")
+                    || l.startsWith("NO_POSITION ")
+                    || BUY.matcher(l).matches()
+                    || CHANGE.matcher(l).matches()))) return "REVIEW";
+    if (lines.stream().anyMatch(l -> l.startsWith("CONFIRMED "))) return "EXECUTION RESULTS";
+    if (lines.contains("READY POLICY_PASSED")) return "READY";
+    if (lines.contains("HOLD_UNCHANGED")) return "UNCHANGED";
+    if (lines.stream().anyMatch(l -> l.startsWith("TERMINAL ") || l.startsWith("NO_POSITION ")))
+      return "NO ENTRY";
+    return "PLANNED ACTION";
+  }
+
+  /** Fixed-width ASCII output also stays readable when redirected to a file. */
+  private static String field(String label, String value) {
+    String prefix = "  " + String.format(Locale.ROOT, "%-15s", label + ":");
+    String continuation = " ".repeat(prefix.length());
+    StringBuilder result = new StringBuilder(prefix);
+    int column = prefix.length();
+    for (String word : value.split("\\s+")) {
+      if (column > prefix.length()) {
+        if (column + 1 + word.length() > 76) {
+          result.append('\n').append(continuation);
+          column = prefix.length();
+        } else {
+          result.append(' ');
+          column++;
+        }
+      }
+      while (word.length() > 76 - column) {
+        int count = 76 - column;
+        result.append(word, 0, count).append('\n').append(continuation);
+        word = word.substring(count);
+        column = prefix.length();
+      }
+      result.append(word);
+      column += word.length();
+    }
+    return result.toString();
   }
 
   private static String explain(String line) {

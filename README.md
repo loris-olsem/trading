@@ -57,8 +57,9 @@ and recovery. The configured US calendar requires updating before 2027 entries.
 `gr plan` reads current data and saves evidence without submitting orders.
 Stale quotes trigger a brief live-stream refresh and a final REST retry within
 the same invocation; there is no need to rerun just to request that refresh.
-Plans and runs explain each analysed instrument in its own paragraph, including
-the proposed action or reason for waiting. Confirmed holdings are not bought
+Plans and runs show each analysed instrument in a separate status block, with
+labelled amounts, price limit and stop, and explanations wrapped to 76 columns.
+Confirmed holdings are not bought
 again by tomorrow's plan; see [planning after execution](docs/operations.md#planning-after-execution).
 `gr initialize` establishes the one-time enrollment window without trading.
 State-changing Gradle operations automatically commit the authoritative ledger

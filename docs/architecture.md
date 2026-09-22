@@ -5,7 +5,8 @@ ambiguous inputs stop processing. The CLI coordinates source, policy, state
 and broker components with injectable boundaries for offline tests.
 
 `ReportFormatter` is a presentation adapter over the durable diagnostic report.
-It groups messages by instrument into console paragraphs without making trading
+It groups messages by instrument into labelled, width-limited console blocks
+without making trading
 decisions or changing the saved event/attempt records. Unknown diagnostics remain
 visible rather than being interpreted as success. Workflow records quote-wait
 details using the same observation time as the decision and explicitly reports

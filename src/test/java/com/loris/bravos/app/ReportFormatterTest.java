@@ -22,8 +22,9 @@ class ReportFormatterTest {
     messages.forEach(
         (code, phrase) ->
             assertTrue(
-                ReportFormatter.paragraphs(state("CF: BLOCKED " + code), false)
+                ReportFormatter.blocks(state("CF: BLOCKED " + code), false)
                     .getFirst()
+                    .replaceAll("\\s+", " ")
                     .contains(phrase)));
   }
 
@@ -35,28 +36,35 @@ class ReportFormatterTest {
   }
 
   @Test
-  void readyAndAmountBecomeOneParagraphWithoutClaimingARealFill() {
+  void readyEntryHasSeparateReadableFieldsWithoutClaimingARealFill() {
     var state =
         state(
             "CF: READY POLICY_PASSED",
             "CF: OPEN owner USD 184.40, internal USD 400.00, ceiling 132.97, stop 121.5");
-    var paragraphs = ReportFormatter.paragraphs(state, false);
+    var paragraphs = ReportFormatter.blocks(state, false);
     assertEquals(1, paragraphs.size());
-    String text = paragraphs.getFirst();
-    assertTrue(text.contains("would attempt to open $184.40 of your money"));
-    assertTrue(text.contains("agent limit of $132.97"));
-    assertTrue(text.contains("Bravos's stop at $121.5"));
-    assertTrue(
-        text.contains("$400.00 of the agent's internal balance, not additional owner money"));
+    String text = paragraphs.getFirst().replaceAll("\\s+", " ");
+    assertTrue(paragraphs.getFirst().lines().allMatch(line -> line.length() <= 76));
+    assertTrue(text.contains("CF [READY]"));
+    assertTrue(text.contains("On live run:"));
+    assertTrue(text.contains("Open position"));
+    assertTrue(text.contains("Your money: $184.40"));
+    assertTrue(text.contains("Agent limit: $132.97 per unit"));
+    assertTrue(text.contains("Bravos stop: $121.5"));
+    assertTrue(text.contains("$400.00 (agent accounting; not extra money)"));
     assertFalse(text.contains("Confirmed"));
     assertEquals(2, state.report.size());
-    assertTrue(ReportFormatter.paragraphs(state, true).getFirst().contains("planned trade"));
+    assertTrue(
+        ReportFormatter.blocks(state, true)
+            .getFirst()
+            .replaceAll("\\s+", " ")
+            .contains("Planned action"));
   }
 
   @Test
   void specificQuoteReasonReplacesGenericMessageAndUnknownFailuresStayVisible() {
     var paragraphs =
-        ReportFormatter.paragraphs(
+        ReportFormatter.blocks(
             state(
                 "CF: WAIT_QUOTE QUOTE_NOT_EXECUTABLE",
                 "CF: DETAIL No purchase is proposed because the quote is 90 seconds old; the maximum is 60 seconds. A later run will reassess.",
@@ -64,14 +72,14 @@ class ReportFormatterTest {
             false);
     assertEquals(2, paragraphs.size());
     assertTrue(paragraphs.get(0).contains("UNEXPLAINED_HOLDING_CHANGE"));
-    assertTrue(paragraphs.get(1).contains("90 seconds old"));
+    assertTrue(paragraphs.get(1).replaceAll("\\s+", " ").contains("90 seconds old"));
     assertFalse(paragraphs.get(1).contains("QUOTE_NOT_EXECUTABLE"));
   }
 
   @Test
   void confirmedPartialFillAndProtectionActionsAreDistinguishedFromPlans() {
     String paragraph =
-        ReportFormatter.paragraphs(
+        ReportFormatter.blocks(
                 state(
                     "CF: ADD owner USD 100.00, internal USD 200.00, ceiling 101, stop 90",
                     "CF: CONFIRMED ADD owner USD 40.00",
@@ -79,7 +87,8 @@ class ReportFormatterTest {
                     "CF: STOP units null, stop 90",
                     "CF: REDUCE units 0.5, stop null"),
                 true)
-            .getFirst();
+            .getFirst()
+            .replaceAll("\\s+", " ");
     assertTrue(paragraph.contains("Confirmed by broker read-back: ADD owner amount $40.00"));
     assertTrue(paragraph.contains("unfilled $60.00"));
     assertTrue(paragraph.contains("no automatic top-up"));
@@ -108,7 +117,10 @@ class ReportFormatterTest {
             "UNRESOLVED_ORDER_BLOCKS_NEW_SUBMISSIONS",
             "COPY_PROTECTION_UNVERIFIED",
             "COPY_EXIT_PENDING")) {
-      String paragraph = ReportFormatter.paragraphs(state("CF: BLOCKED " + code), false).getFirst();
+      String paragraph =
+          ReportFormatter.blocks(state("CF: BLOCKED " + code), false)
+              .getFirst()
+              .replaceAll("\\s+", " ");
       assertFalse(paragraph.contains(code), paragraph);
       assertFalse(paragraph.contains("Ready for an entry"), paragraph);
       assertFalse(paragraph.contains("Confirmed by broker"), paragraph);

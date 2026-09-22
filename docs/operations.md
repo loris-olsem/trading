@@ -159,8 +159,10 @@ silently become “nothing to do.”
 
 Completed plans exit successfully, including when every candidate is blocked:
 the printed report and summary distinguish readiness from successful evaluation.
-`plan` and `run` print one paragraph per analysed instrument, explaining the
-proposed action or hold and what happens next. Quote holds include the observed
+`plan` and `run` print one block per analysed instrument, with a ticker/status
+heading and labelled action, owner amount, agent price limit, Bravos stop and
+internal funds. Explanations wrap at 76 columns with aligned continuation lines.
+Quote holds include the observed
 age or other failed checks. Existing holdings with no new action are reported
 as unchanged. The private journal and `status` retain diagnostic codes for recovery.
 Quote waiting can change between runs; the executable ask must still be realtime

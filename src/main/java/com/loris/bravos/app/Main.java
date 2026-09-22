@@ -176,8 +176,8 @@ public final class Main {
           return 0;
         }
         workflow.evaluate(command.equals("run"));
-        for (String paragraph : ReportFormatter.paragraphs(store.state(), command.equals("run"))) {
-          out.println(paragraph);
+        for (String block : ReportFormatter.blocks(store.state(), command.equals("run"))) {
+          out.println(block);
           out.println();
         }
         AuditExport.write(root, store.state());
