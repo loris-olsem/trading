@@ -1,8 +1,8 @@
 {
   "schemaVersion" : 1,
-  "generation" : 34,
+  "generation" : 32,
   "enrollmentFloor" : "2026-08-23",
-  "checkpoint" : "2026-09-22T16:15:26.162311100Z",
+  "checkpoint" : "2026-09-22T15:58:53.457804500Z",
   "revisionAudit" : "2026-09-21T17:37:05.647907200Z",
   "book" : {
     "cycles" : {
@@ -2894,5 +2894,5 @@
   "batches" : { },
   "holdings" : { },
   "earlyExits" : [ ],
-  "report" : [ "BRK.B: WAIT_QUOTE QUOTE_NOT_EXECUTABLE", "BRK.B: DETAIL No purchase is proposed because the quote is 62.054 seconds old; the maximum is 60 seconds. A later run will reassess the opportunity under the same price and stop rules.", "ARGT: WAIT_QUOTE QUOTE_NOT_EXECUTABLE", "ARGT: DETAIL No purchase is proposed because the quote is 108.452 seconds old; the maximum is 60 seconds. A later run will reassess the opportunity under the same price and stop rules.", "MAGS: BLOCKED INSTRUMENT_NOT_LISTED", "IBIT: BLOCKED BOTH_ACCOUNTS_OPENING_DISABLED", "EOG: WAIT_QUOTE QUOTE_NOT_EXECUTABLE", "EOG: DETAIL No purchase is proposed because the quote is 68.313 seconds old; the maximum is 60 seconds. A later run will reassess the opportunity under the same price and stop rules.", "ETHA: BLOCKED BOTH_ACCOUNTS_OPENING_DISABLED", "SMH: WATCH_PRICE ABOVE_ORIGINAL_CEILING", "ADI: READY POLICY_PASSED", "ADI: OPEN owner USD 230.50, internal USD 500.00, ceiling 390.02, stop 347.5" ]
+  "report" : [ "BRK.B: WAIT_QUOTE QUOTE_NOT_EXECUTABLE", "BRK.B: DETAIL No purchase is proposed because the quote is 66.866 seconds old; the maximum is 60 seconds. A later run will reassess the opportunity under the same price and stop rules.", "ARGT: WAIT_QUOTE QUOTE_NOT_EXECUTABLE", "ARGT: DETAIL No purchase is proposed because the quote is 147.454 seconds old; the maximum is 60 seconds. A later run will reassess the opportunity under the same price and stop rules.", "MAGS: BLOCKED INSTRUMENT_NOT_LISTED", "IBIT: BLOCKED BOTH_ACCOUNTS_OPENING_DISABLED", "EOG: WAIT_QUOTE QUOTE_NOT_EXECUTABLE", "EOG: DETAIL No purchase is proposed because the quote is 68.168 seconds old; the maximum is 60 seconds. A later run will reassess the opportunity under the same price and stop rules.", "ETHA: BLOCKED BOTH_ACCOUNTS_OPENING_DISABLED", "SMH: WATCH_PRICE ABOVE_ORIGINAL_CEILING", "ADI: READY POLICY_PASSED", "ADI: OPEN owner USD 230.50, internal USD 500.00, ceiling 390.02, stop 347.5" ]
 }
