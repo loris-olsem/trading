@@ -1,8 +1,8 @@
 {
   "schemaVersion" : 1,
-  "generation" : 103,
+  "generation" : 101,
   "enrollmentFloor" : "2026-08-23",
-  "checkpoint" : "2026-09-22T20:16:15.738683300Z",
+  "checkpoint" : "2026-09-22T19:16:11.406929500Z",
   "revisionAudit" : "2026-09-21T17:37:05.647907200Z",
   "book" : {
     "cycles" : {
@@ -1604,9 +1604,9 @@
         "symbol" : "EOG",
         "openedOn" : "2026-09-14",
         "entry" : 150.17,
-        "weight" : 0,
+        "weight" : 5,
         "stop" : 138,
-        "sourceOpen" : false,
+        "sourceOpen" : true,
         "enrolled" : true,
         "entered" : false,
         "terminal" : false,
@@ -1623,18 +1623,6 @@
           "after" : 5,
           "stop" : 138,
           "targets" : [ 170, 178, 190 ]
-        }, {
-          "key" : "bravos:post:488695",
-          "url" : "https://bravosresearch.com/news-feed/closing-eog-resources-inc-eog-breakdown/",
-          "date" : "2026-09-22",
-          "hash" : "a9732e9db172c7d97daab9433b5c172df93ffb485d84ba47c3d0cbbd59fa8178",
-          "symbol" : "EOG",
-          "action" : "CLOSE",
-          "price" : 139.85,
-          "before" : null,
-          "after" : 0,
-          "stop" : null,
-          "targets" : [ ]
         } ],
         "positionIds" : [ ],
         "completed" : [ ],
@@ -2898,19 +2886,6 @@
         "after" : 5,
         "stop" : 347.5,
         "targets" : [ 400, 430, 455 ]
-      } ],
-      "bravos:post:488695" : [ {
-        "key" : "bravos:post:488695",
-        "url" : "https://bravosresearch.com/news-feed/closing-eog-resources-inc-eog-breakdown/",
-        "date" : "2026-09-22",
-        "hash" : "a9732e9db172c7d97daab9433b5c172df93ffb485d84ba47c3d0cbbd59fa8178",
-        "symbol" : "EOG",
-        "action" : "CLOSE",
-        "price" : 139.85,
-        "before" : null,
-        "after" : 0,
-        "stop" : null,
-        "targets" : [ ]
       } ]
     },
     "blockers" : [ ]
@@ -2929,8 +2904,7 @@
         "units" : null,
         "ceiling" : 516.63,
         "stop" : 480,
-        "settlementType" : "real",
-        "orderType" : "limitIOC"
+        "settlementType" : "real"
       },
       "reference" : "fb5d9cc6-1d85-49a9-93f8-b0b981d88393",
       "orderId" : 1591647385,
@@ -2959,8 +2933,7 @@
         "units" : null,
         "ceiling" : 516.63,
         "stop" : 480,
-        "settlementType" : "real",
-        "orderType" : "limitIOC"
+        "settlementType" : "real"
       },
       "reference" : "b92f1741-1c52-4e71-88ba-7da5c65d3bad",
       "orderId" : 1591647404,
@@ -2989,8 +2962,7 @@
         "units" : null,
         "ceiling" : 152.33,
         "stop" : 138,
-        "settlementType" : "real",
-        "orderType" : "limitIOC"
+        "settlementType" : "real"
       },
       "reference" : "38699b01-0e44-4ce6-9c59-54e4613ffe4f",
       "orderId" : 1592630625,
@@ -3019,8 +2991,7 @@
         "units" : null,
         "ceiling" : 390.02,
         "stop" : 347.5,
-        "settlementType" : "real",
-        "orderType" : "limitIOC"
+        "settlementType" : "real"
       },
       "reference" : "5d1dd3a1-c97e-4ff5-b102-af67a275498e",
       "orderId" : 1592630626,
@@ -3049,8 +3020,7 @@
         "units" : null,
         "ceiling" : 516.63,
         "stop" : 480,
-        "settlementType" : "real",
-        "orderType" : "limitIOC"
+        "settlementType" : "real"
       },
       "reference" : "4a539f4f-2298-4146-b228-5c21e19eab22",
       "orderId" : 1592630664,
@@ -3079,8 +3049,7 @@
         "units" : null,
         "ceiling" : 152.87,
         "stop" : 138,
-        "settlementType" : "real",
-        "orderType" : "limitIOC"
+        "settlementType" : "real"
       },
       "reference" : "c6c52e8f-eb6a-42d1-99d1-9881c07b4d78",
       "orderId" : 1591647454,
@@ -3109,8 +3078,7 @@
         "units" : null,
         "ceiling" : 390.02,
         "stop" : 347.5,
-        "settlementType" : "real",
-        "orderType" : "limitIOC"
+        "settlementType" : "real"
       },
       "reference" : "9b0d70c1-c26a-457d-8832-3688a7831078",
       "orderId" : 1591655469,
@@ -3134,13 +3102,12 @@
         "action" : "OPEN",
         "instrumentId" : 1118,
         "positionId" : null,
-        "ownerAmount" : 368.8,
-        "agentAmount" : 8E+2,
+        "ownerAmount" : 368.80,
+        "agentAmount" : 800.00,
         "units" : null,
         "ceiling" : 516.63,
         "stop" : 480,
-        "settlementType" : "real",
-        "orderType" : "limitIOC"
+        "settlementType" : "real"
       },
       "reference" : "7648f10a-1bcb-412d-a7e2-e42b0d738302",
       "orderId" : 1591655498,
@@ -3164,13 +3131,12 @@
         "action" : "OPEN",
         "instrumentId" : 3421,
         "positionId" : null,
-        "ownerAmount" : 230.5,
-        "agentAmount" : 5E+2,
+        "ownerAmount" : 230.50,
+        "agentAmount" : 500.00,
         "units" : null,
         "ceiling" : 98.36,
         "stop" : 89,
-        "settlementType" : "cfd",
-        "orderType" : "limitIOC"
+        "settlementType" : "cfd"
       },
       "reference" : "adcf18e0-441e-4b57-960b-e06f704c9218",
       "orderId" : 1591647468,
@@ -3194,13 +3160,12 @@
         "action" : "OPEN",
         "instrumentId" : 1581,
         "positionId" : null,
-        "ownerAmount" : 230.5,
-        "agentAmount" : 5E+2,
+        "ownerAmount" : 230.50,
+        "agentAmount" : 500.00,
         "units" : null,
         "ceiling" : 153.01,
         "stop" : 138,
-        "settlementType" : "real",
-        "orderType" : "limitIOC"
+        "settlementType" : "real"
       },
       "reference" : "23674c74-32b7-4e86-9b41-21bf18be269e",
       "orderId" : 1591647469,
@@ -3224,13 +3189,12 @@
         "action" : "OPEN",
         "instrumentId" : 4264,
         "positionId" : null,
-        "ownerAmount" : 230.5,
-        "agentAmount" : 5E+2,
+        "ownerAmount" : 230.50,
+        "agentAmount" : 500.00,
         "units" : null,
         "ceiling" : 390.02,
         "stop" : 347.5,
-        "settlementType" : "real",
-        "orderType" : "limitIOC"
+        "settlementType" : "real"
       },
       "reference" : "8bd70202-5d42-412c-b764-6d7501f20a69",
       "orderId" : 1592630689,
@@ -3260,8 +3224,7 @@
       "units" : null,
       "ceiling" : 516.63,
       "stop" : 480,
-      "settlementType" : "real",
-      "orderType" : "limitIOC"
+      "settlementType" : "real"
     } ],
     "bravos:post:487910|bravos:post:487910|OPEN|attempt:2" : [ {
       "key" : "bravos:post:487910|bravos:post:487910|OPEN|attempt:2",
@@ -3275,8 +3238,7 @@
       "units" : null,
       "ceiling" : 516.63,
       "stop" : 480,
-      "settlementType" : "real",
-      "orderType" : "limitIOC"
+      "settlementType" : "real"
     } ],
     "bravos:post:488325|bravos:post:488325|OPEN|attempt:1" : [ {
       "key" : "bravos:post:488325|bravos:post:488325|OPEN|attempt:1",
@@ -3290,8 +3252,7 @@
       "units" : null,
       "ceiling" : 152.33,
       "stop" : 138,
-      "settlementType" : "real",
-      "orderType" : "limitIOC"
+      "settlementType" : "real"
     } ],
     "bravos:post:488663|bravos:post:488663|OPEN|attempt:1" : [ {
       "key" : "bravos:post:488663|bravos:post:488663|OPEN|attempt:1",
@@ -3305,8 +3266,7 @@
       "units" : null,
       "ceiling" : 390.02,
       "stop" : 347.5,
-      "settlementType" : "real",
-      "orderType" : "limitIOC"
+      "settlementType" : "real"
     } ],
     "bravos:post:487910|bravos:post:487910|OPEN|attempt:3" : [ {
       "key" : "bravos:post:487910|bravos:post:487910|OPEN|attempt:3",
@@ -3320,8 +3280,7 @@
       "units" : null,
       "ceiling" : 516.63,
       "stop" : 480,
-      "settlementType" : "real",
-      "orderType" : "limitIOC"
+      "settlementType" : "real"
     } ],
     "bravos:post:488325|bravos:post:488325|OPEN|attempt:2" : [ {
       "key" : "bravos:post:488325|bravos:post:488325|OPEN|attempt:2",
@@ -3335,8 +3294,7 @@
       "units" : null,
       "ceiling" : 152.87,
       "stop" : 138,
-      "settlementType" : "real",
-      "orderType" : "limitIOC"
+      "settlementType" : "real"
     } ],
     "bravos:post:488663|bravos:post:488663|OPEN|attempt:2" : [ {
       "key" : "bravos:post:488663|bravos:post:488663|OPEN|attempt:2",
@@ -3350,8 +3308,7 @@
       "units" : null,
       "ceiling" : 390.02,
       "stop" : 347.5,
-      "settlementType" : "real",
-      "orderType" : "limitIOC"
+      "settlementType" : "real"
     } ],
     "bravos:post:487910|bravos:post:487910|OPEN|attempt:4" : [ {
       "key" : "bravos:post:487910|bravos:post:487910|OPEN|attempt:4",
@@ -3360,13 +3317,12 @@
       "action" : "OPEN",
       "instrumentId" : 1118,
       "positionId" : null,
-      "ownerAmount" : 368.8,
-      "agentAmount" : 8E+2,
+      "ownerAmount" : 368.80,
+      "agentAmount" : 800.00,
       "units" : null,
       "ceiling" : 516.63,
       "stop" : 480,
-      "settlementType" : "real",
-      "orderType" : "limitIOC"
+      "settlementType" : "real"
     } ],
     "bravos:post:487920|bravos:post:487920|OPEN|attempt:1" : [ {
       "key" : "bravos:post:487920|bravos:post:487920|OPEN|attempt:1",
@@ -3375,13 +3331,12 @@
       "action" : "OPEN",
       "instrumentId" : 3421,
       "positionId" : null,
-      "ownerAmount" : 230.5,
-      "agentAmount" : 5E+2,
+      "ownerAmount" : 230.50,
+      "agentAmount" : 500.00,
       "units" : null,
       "ceiling" : 98.36,
       "stop" : 89,
-      "settlementType" : "cfd",
-      "orderType" : "limitIOC"
+      "settlementType" : "cfd"
     } ],
     "bravos:post:488325|bravos:post:488325|OPEN|attempt:3" : [ {
       "key" : "bravos:post:488325|bravos:post:488325|OPEN|attempt:3",
@@ -3390,13 +3345,12 @@
       "action" : "OPEN",
       "instrumentId" : 1581,
       "positionId" : null,
-      "ownerAmount" : 230.5,
-      "agentAmount" : 5E+2,
+      "ownerAmount" : 230.50,
+      "agentAmount" : 500.00,
       "units" : null,
       "ceiling" : 153.01,
       "stop" : 138,
-      "settlementType" : "real",
-      "orderType" : "limitIOC"
+      "settlementType" : "real"
     } ],
     "bravos:post:488663|bravos:post:488663|OPEN|attempt:3" : [ {
       "key" : "bravos:post:488663|bravos:post:488663|OPEN|attempt:3",
@@ -3405,16 +3359,15 @@
       "action" : "OPEN",
       "instrumentId" : 4264,
       "positionId" : null,
-      "ownerAmount" : 230.5,
-      "agentAmount" : 5E+2,
+      "ownerAmount" : 230.50,
+      "agentAmount" : 500.00,
       "units" : null,
       "ceiling" : 390.02,
       "stop" : 347.5,
-      "settlementType" : "real",
-      "orderType" : "limitIOC"
+      "settlementType" : "real"
     } ]
   },
   "holdings" : { },
   "earlyExits" : [ ],
-  "report" : [ "BRK.B: WAIT_QUOTE QUOTE_NOT_EXECUTABLE", "BRK.B: DETAIL No purchase is proposed because the quote is not marked executable under the market-hours, realtime and broker-tradability checks; the quote is 490.48 seconds old; the maximum is 60 seconds. A later run will reassess the opportunity under the same price and stop rules.", "ARGT: WAIT_QUOTE QUOTE_NOT_EXECUTABLE", "ARGT: DETAIL No purchase is proposed because the quote is not marked executable under the market-hours, realtime and broker-tradability checks; the quote is 995.219 seconds old; the maximum is 60 seconds. A later run will reassess the opportunity under the same price and stop rules.", "MAGS: BLOCKED INSTRUMENT_NOT_LISTED", "IBIT: BLOCKED BOTH_ACCOUNTS_OPENING_DISABLED", "ETHA: BLOCKED BOTH_ACCOUNTS_OPENING_DISABLED", "SMH: WAIT_QUOTE QUOTE_NOT_EXECUTABLE", "SMH: DETAIL No purchase is proposed because the quote is not marked executable under the market-hours, realtime and broker-tradability checks; the quote is 990.529 seconds old; the maximum is 60 seconds. A later run will reassess the opportunity under the same price and stop rules.", "ADI: WAIT_QUOTE QUOTE_NOT_EXECUTABLE", "ADI: DETAIL No purchase is proposed because the quote is not marked executable under the market-hours, realtime and broker-tradability checks; the quote is 178.143 seconds old; the maximum is 60 seconds. A later run will reassess the opportunity under the same price and stop rules." ]
+  "report" : [ "BRK.B: READY POLICY_PASSED", "BRK.B: OPEN owner USD 368.80, internal USD 800.00, ceiling 516.63, stop 480", "BRK.B: NOT_FILLED CONFIRMED_NO_FILL Rejected; broker code 1065: OrderValidation - Order attempt has failed due to a connectivity or technical issue on an HBC only path. Order will be rejected back to the client; order 1591655498", "ARGT: READY POLICY_PASSED", "ARGT: OPEN owner USD 230.50, internal USD 500.00, ceiling 98.36, stop 89", "ARGT: NOT_FILLED CONFIRMED_NO_FILL Rejected; broker code 2039: Error creating limit (IOC) order - settlement type must be real (was CFD); order 1591647468", "MAGS: BLOCKED INSTRUMENT_NOT_LISTED", "IBIT: BLOCKED BOTH_ACCOUNTS_OPENING_DISABLED", "EOG: READY POLICY_PASSED", "EOG: OPEN owner USD 230.50, internal USD 500.00, ceiling 153.01, stop 138", "EOG: NOT_FILLED CONFIRMED_NO_FILL Rejected; broker code 1065: OrderValidation - Order attempt has failed due to a connectivity or technical issue on an HBC only path. Order will be rejected back to the client; order 1591647469", "ETHA: BLOCKED BOTH_ACCOUNTS_OPENING_DISABLED", "SMH: WATCH_PRICE ABOVE_ORIGINAL_CEILING", "ADI: READY POLICY_PASSED", "ADI: OPEN owner USD 230.50, internal USD 500.00, ceiling 390.02, stop 347.5", "ADI: NOT_FILLED CONFIRMED_NO_FILL Rejected; broker code 1065: OrderValidation - Order attempt has failed due to a connectivity or technical issue on an HBC only path. Order will be rejected back to the client; order 1592630689" ]
 }
