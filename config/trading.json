@@ -2,7 +2,7 @@
   "copySizingEvidence": "docs/broker-contract.md#operating-model: official Agent Portfolio proportional copying plus the CopyTrader realized-equity rule; agent-specific application is an inference, checked against every copied fill.",
   "copyStopsEvidence": "docs/broker-contract.md#operating-model: documented copying of stop-loss changes plus fixed-stop order API and live eligibility; actual protection requires agent and owner position read-back.",
   "copyPriceCeilingEvidence": "",
-  "copyPricePolicy": "AGENT_LIMIT_WITH_COPY_CHECK",
+  "copyPricePolicy": "MARKET_WITH_PRICE_CHECK",
   "copySizingModel": "REALIZED_EQUITY_RATIO",
   "lookupOnlyAssets": {
     "IBIT": { "instrumentId": 1367, "brokerSymbol": "IBIT" },

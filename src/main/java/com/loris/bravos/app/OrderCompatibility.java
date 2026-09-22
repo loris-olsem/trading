@@ -71,6 +71,7 @@ public final class OrderCompatibility {
           var body = OrderPayloads.create(attempt.intent).body().deepCopy();
           if (owner) body.put("amount", attempt.intent.ownerAmount());
           body.put("orderType", type);
+          if (type.equals("limitIOC")) body.put("limitRate", attempt.intent.ceiling());
           if (type.equals("mkt")) body.remove("limitRate");
           var response =
               http.request(

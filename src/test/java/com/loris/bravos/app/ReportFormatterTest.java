@@ -9,6 +9,23 @@ import org.junit.jupiter.api.Test;
 
 class ReportFormatterTest {
   @Test
+  void marketPlanDoesNotClaimGuaranteedExecutionPrice() {
+    var block =
+        ReportFormatter.blocks(
+                state(
+                    "CF: READY POLICY_PASSED",
+                    "CF: OPEN owner USD 184.40, internal USD 400.00, ceiling 132.97, stop 121.5, market"),
+                false)
+            .getFirst();
+    var text = block.replaceAll("\\s+", " ");
+    assertTrue(text.contains("Price check: $132.97 per unit"));
+    assertTrue(text.contains("Market buy. Final price can exceed"));
+    assertTrue(text.contains("Bravos stop: $121.5"));
+    assertFalse(text.contains("Agent limit"));
+    assertTrue(block.lines().allMatch(l -> l.length() <= 76));
+  }
+
+  @Test
   void unsuccessfulOrderReplacesReadyHeadingAndExplainsNextStepInSameBlock() {
     var state =
         state(

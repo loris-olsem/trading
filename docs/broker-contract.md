@@ -7,13 +7,19 @@ balance. No demo/live trades were made during development.
 
 ## Observed order rejection, 22 September 2026
 
+**Current override:** the owner subsequently authorized relaxing requirements.
+New buys use [market-order mode](market-order-mode.md) with a pre-trade price
+check, unchanged amount and exact stop. Historical IOC findings below do not
+prohibit the now-authorized market mode. IOC still rejects CFDs; market mode
+uses their verified eligible settlement. Live market execution remains unverified.
+
 A read-only lookup of the owner's BRK.B attempt returned terminal status
 `Rejected`, error code `1065`, and zero position executions. The broker described
 a connectivity or technical failure on an HBC-only path. It recorded the intended
 `limitIOC` request, internal amount 800 USD, limit 516.63 and fixed stop 480.
 This establishes the reported rejection, not its underlying infrastructure cause
-or that a subsequent attempt will succeed. Do not loosen the limit or stop as a
-workaround. `gr orderAudit` refreshes saved order results without submitting.
+or that a subsequent attempt will succeed. `gr orderAudit` refreshes saved order
+results without submitting. Stops remain exact in either execution mode.
 
 Status name, error code and error message are provided by the documented
 [order lookup](https://api-portal.etoro.com/api-reference/trading--real/get-order-information-and-position-details).
@@ -23,10 +29,11 @@ proven empty buy; unknown/partial outcomes still stop further submissions.
 
 The owner's later v3 run also returned 1065 for BRK.B/EOG/ADI. ARGT returned
 2039: IOC orders require real settlement, whereas its profile is CFD. The app
-now rejects CFD openings/additions before submission at the broker preflight,
+rejects CFD IOC openings/additions before submission at the broker preflight,
 policy and payload boundaries. SMH has the same known incompatibility. This is
 an order-type limitation, not absence of instrument eligibility. No market-order
-fallback or invented real-settlement profile is permitted.
+automatic fallback or invented real-settlement profile is permitted; the explicit
+market mode is a separate owner-authorized choice.
 
 ## Identity and sizing
 
@@ -83,7 +90,8 @@ requirement or the user's price-freshness rule.
 
 Execution routes are restricted to agent credentials:
 
-- `POST /api/v3/trading/execution/orders`: asynchronous `limitIOC`, leverage 1,
+- `POST /api/v3/trading/execution/orders`: asynchronous `mkt` in current mode
+  (`limitIOC` in retained capped mode), leverage 1,
   explicit settlement type and exact fixed stop. HTTP 202 is acceptance only.
 - `GET /api/v2/trading/info/orders:lookup`: order ID or durable UUID reference.
 - `PATCH /api/v2/trading/positions/{id}`: exact fixed-stop update.
@@ -128,9 +136,9 @@ repair path remains. There is no automatic corrective sale or owner-account writ
 `config/trading.json` contains sourced operating-model references and five exact
 asset profiles. No live execution evidence or copy-side price guarantee is claimed.
 
-1. **Owner price cap:** agent `limitIOC` caps the agent fill. We have not established
-   that the owner's copy inherits the same cap. The owner subsequently accepted
-   that risk, choosing `copyPricePolicy: AGENT_LIMIT_WITH_COPY_CHECK`. Keep
+1. **Purchase price:** current `MARKET_WITH_PRICE_CHECK` mode guarantees neither
+   agent nor copied fill price. Earlier `AGENT_LIMIT_WITH_COPY_CHECK` mode used
+   an agent IOC limit without an established copied-fill guarantee. Keep
    `copyPriceCeilingEvidence` empty: consent is not broker evidence. Post-fill
    `openRate` checks detect overpayment and block further purchases; they cannot
    prevent or undo it. No automatic corrective sale is authorized. The default

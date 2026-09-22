@@ -20,6 +20,34 @@ class WorkflowTest {
   @TempDir Path temp;
   final Clock clock = Clock.fixed(NOW, ZoneOffset.UTC);
 
+  @Test
+  void marketModeSurvivesAttemptNumberingRestartAndDoesNotBuyAgain() throws Exception {
+    var market =
+        new Market() {
+          @Override
+          public String entryOrderType() {
+            return "mkt";
+          }
+        };
+    try (var store = new StateStore(temp)) {
+      var workflow = new Workflow(store, market, market, clock);
+      workflow.acceptScan(
+          scan(List.of(cycle().events.getFirst()), true, d("5")), LocalDate.of(2026, 9, 1), true);
+      workflow.evaluate(false);
+      assertTrue(market.submitted.isEmpty());
+      assertTrue(ReportFormatter.blocks(store.state(), false).toString().contains("Market buy"));
+      workflow.evaluate(true);
+      assertEquals(1, market.submitted.size());
+      assertEquals("mkt", market.submitted.getFirst().orderType());
+      assertEquals(d("500.00"), market.submitted.getFirst().agentAmount());
+    }
+    try (var store = new StateStore(temp)) {
+      assertEquals("mkt", store.state().attempts.values().iterator().next().intent.orderType());
+      new Workflow(store, market, market, clock).evaluate(true);
+      assertEquals(1, market.submitted.size());
+    }
+  }
+
   class Market implements Workflow.Market, Broker {
     List<Position> lots = new ArrayList<>();
     List<Intent> submitted = new ArrayList<>();

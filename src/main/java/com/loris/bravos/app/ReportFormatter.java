@@ -8,7 +8,7 @@ import java.util.regex.Pattern;
 public final class ReportFormatter {
   private static final Pattern BUY =
       Pattern.compile(
-          "(OPEN|ADD) owner USD ([0-9.]+), internal USD ([0-9.]+), ceiling ([0-9.]+), stop ([0-9.]+)");
+          "(OPEN|ADD) owner USD ([0-9.]+), internal USD ([0-9.]+), ceiling ([0-9.]+), stop ([0-9.]+)(, market)?");
   private static final Pattern CHANGE =
       Pattern.compile("(REDUCE|CLOSE|EARLY_EXIT|STOP) units ([0-9.]+|null), stop ([0-9.]+|null)");
 
@@ -50,7 +50,14 @@ public final class ReportFormatter {
                       live ? "Planned action" : "On live run",
                       buy.group(1).equals("OPEN") ? "Open position" : "Add to position"));
               sentences.add(field("Your money", "$" + buy.group(2)));
-              sentences.add(field("Agent limit", "$" + buy.group(4) + " per unit"));
+              boolean market = buy.group(6) != null;
+              sentences.add(
+                  field(market ? "Price check" : "Agent limit", "$" + buy.group(4) + " per unit"));
+              if (market)
+                sentences.add(
+                    field(
+                        "Order",
+                        "Market buy. Final price can exceed the checked ceiling. An over-ceiling fill holds further purchases for review."));
               sentences.add(field("Bravos stop", "$" + buy.group(5)));
               sentences.add(
                   field(

@@ -202,6 +202,66 @@ class EtoroClientTest {
   }
 
   @Test
+  void marketModePreflightsRealAndCfdWithoutIocLimitButStillChecksPriceAndStop() throws Exception {
+    for (String settlement : List.of("real", "cfd")) {
+      var api = new Api();
+      var config = config();
+      config.copyPricePolicy = "MARKET_WITH_PRICE_CHECK";
+      config.assets.get("CF").settlementType = settlement;
+      ((ObjectNode) api.eligibility.path("leverageConfigs").get(0))
+          .put("settlementType", settlement);
+      var broker = offlineClient(api, secrets, config, clock, true);
+      assertEquals("mkt", broker.entryOrderType());
+      assertEquals(settlement, broker.instrument("CF", d("230.50")).settlementType());
+      var original = opening();
+      var intent =
+          new Intent(
+              original.key(),
+              original.cycleKey(),
+              original.eventKey(),
+              Action.OPEN,
+              original.instrumentId(),
+              null,
+              original.ownerAmount(),
+              original.agentAmount(),
+              null,
+              d("200"),
+              original.stop(),
+              settlement,
+              "mkt");
+      broker.prepare(new Attempt(intent, NOW));
+      assertEquals(123L, broker.submit(intent, UUID.randomUUID().toString()).orderId());
+      var body = Json.MAPPER.readTree(api.submittedBody);
+      assertEquals("mkt", body.path("orderType").asText());
+      assertFalse(body.has("limitRate"));
+      assertEquals(0, body.path("amount").decimalValue().compareTo(original.agentAmount()));
+      assertEquals(0, body.path("stopLossRate").decimalValue().compareTo(original.stop()));
+      for (var pair : List.of(List.of(d("100"), d("90")), List.of(d("200"), d("101")))) {
+        var invalid =
+            new Intent(
+                original.key(),
+                original.cycleKey(),
+                original.eventKey(),
+                Action.OPEN,
+                original.instrumentId(),
+                null,
+                original.ownerAmount(),
+                original.agentAmount(),
+                null,
+                pair.get(0),
+                pair.get(1),
+                settlement,
+                "mkt");
+        assertEquals(
+            "QUOTE_CHANGED_BEFORE_SUBMISSION",
+            assertThrows(IOException.class, () -> broker.prepare(new Attempt(invalid, NOW)))
+                .getMessage());
+      }
+      assertEquals(1, api.writes);
+    }
+  }
+
+  @Test
   void eligibleCfdIsRejectedBeforeCostOrSubmission() throws Exception {
     var api = new Api();
     var config = config();

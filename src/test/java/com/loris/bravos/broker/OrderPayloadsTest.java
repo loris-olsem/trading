@@ -10,6 +10,60 @@ import org.junit.jupiter.api.Test;
 
 class OrderPayloadsTest {
   @Test
+  void marketPayloadPreservesAmountAndStopButCannotContainLimitOrTrigger() throws Exception {
+    for (String settlement : List.of("real", "cfd")) {
+      var intent =
+          new Intent(
+              "i",
+              "c",
+              "e",
+              Action.OPEN,
+              1,
+              null,
+              d("368.80"),
+              d("800"),
+              null,
+              d("516.63"),
+              d("480"),
+              settlement,
+              "mkt");
+      var json = com.loris.bravos.util.Json.MAPPER;
+      var restored = json.readValue(json.writeValueAsString(intent), Intent.class);
+      assertEquals(intent, restored);
+      var body = OrderPayloads.create(restored).body();
+      assertEquals("mkt", body.path("orderType").asText());
+      assertEquals(d("800"), body.path("amount").decimalValue());
+      assertEquals(d("480"), body.path("stopLossRate").decimalValue());
+      assertEquals("fixed", body.path("stopLossType").asText());
+      assertEquals(settlement, body.path("settlementType").asText());
+      assertEquals(1, body.path("leverage").asInt());
+      assertFalse(body.has("limitRate"));
+      assertFalse(body.has("triggerRate"));
+      assertFalse(body.has("units"));
+      var legacy = json.valueToTree(intent);
+      ((com.fasterxml.jackson.databind.node.ObjectNode) legacy).remove("orderType");
+      assertEquals("limitIOC", json.treeToValue(legacy, Intent.class).orderType());
+    }
+    assertThrows(
+        IllegalArgumentException.class,
+        () ->
+            new Intent(
+                "i",
+                "c",
+                "e",
+                Action.OPEN,
+                1,
+                null,
+                d("50"),
+                d("100"),
+                null,
+                d("100"),
+                d("90"),
+                "real",
+                "mit"));
+  }
+
+  @Test
   void v3OpeningRetainsAmountCeilingAndExactStop() {
     var request = OrderPayloads.create(opening(d("800"), d("516.63"), d("480"), "real"));
     assertEquals("/api/v3/trading/execution/orders", request.path());

@@ -7,6 +7,18 @@ import java.util.*;
 
 /** Financial decisions only: no HTTP, persistence, wall clock, or credential access. */
 public final class Policy {
+  private final String orderType;
+
+  public Policy() {
+    this("limitIOC");
+  }
+
+  public Policy(String orderType) {
+    if (!Set.of("limitIOC", "mkt").contains(orderType))
+      throw new IllegalArgumentException("INVALID_ORDER_TYPE");
+    this.orderType = orderType;
+  }
+
   private static final BigDecimal HUNDRED = new BigDecimal("100");
   private static final BigDecimal TOLERANCE = new BigDecimal("1.02");
 
@@ -72,7 +84,7 @@ public final class Policy {
         || !"USD".equals(i.currency())
         || !Set.of("real", "cfd").contains(i.settlementType()))
       return Decision.of(Outcome.BLOCKED, "INSTRUMENT_UNVERIFIED");
-    if (!"real".equals(i.settlementType()))
+    if ("limitIOC".equals(orderType) && !"real".equals(i.settlementType()))
       return Decision.of(Outcome.BLOCKED, "CAPPED_ORDER_REQUIRES_REAL_ASSET");
     if (q == null
         || !q.exchangeOpen()
@@ -88,8 +100,9 @@ public final class Policy {
     // eToro rejects a limit over 10% away from its current price. Keep a 1%
     // margin for quote movement without ever increasing the strategy maximum.
     BigDecimal limit =
-        ceiling
-            .min(q.ask().multiply(new BigDecimal("1.09")))
+        ("limitIOC".equals(orderType)
+                ? ceiling.min(q.ask().multiply(new BigDecimal("1.09")))
+                : ceiling)
             .setScale(i.priceScale(), RoundingMode.DOWN);
     if (q.ask().compareTo(limit) > 0)
       return Decision.of(Outcome.WATCH_PRICE, "ABOVE_ORIGINAL_CEILING");
@@ -143,7 +156,8 @@ public final class Policy {
                 null,
                 limit,
                 c.stop,
-                i.settlementType())));
+                i.settlementType(),
+                orderType)));
   }
 
   public List<Intent> reduction(Cycle c, Alert event, List<Position> positions, int unitScale) {

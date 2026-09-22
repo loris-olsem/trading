@@ -21,19 +21,24 @@ public final class Workflow {
     Quote quote(Instrument instrument) throws IOException;
 
     int unitScale(String symbol) throws IOException;
+
+    default String entryOrderType() {
+      return "limitIOC";
+    }
   }
 
   private final StateStore store;
   private final Market market;
   private final Executor executor;
   private final Clock clock;
-  private final Policy policy = new Policy();
+  private final Policy policy;
 
   public Workflow(StateStore store, Market market, Broker broker, Clock clock) {
     this.store = store;
     this.market = market;
     this.executor = new Executor(store, broker, clock);
     this.clock = clock;
+    this.policy = new Policy(market.entryOrderType());
   }
 
   public static SourceBook initialBook(List<Alert> alerts, LocalDate enrollmentFloor) {
@@ -489,6 +494,7 @@ public final class Workflow {
                           + i.ceiling()
                           + ", stop "
                           + i.stop()
+                          + ("mkt".equals(i.orderType()) ? ", market" : "")
                       : "units " + i.units() + ", stop " + i.stop()));
     if (!live) return true;
     // Save every member before submission so restarts retain original proportional units.
@@ -517,7 +523,8 @@ public final class Workflow {
               first.units(),
               first.ceiling(),
               first.stop(),
-              first.settlementType());
+              first.settlementType(),
+              first.orderType());
       intents = List.of(next);
     }
     String key =

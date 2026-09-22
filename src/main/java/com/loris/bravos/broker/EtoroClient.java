@@ -193,7 +193,7 @@ public final class EtoroClient implements Broker, Workflow.Market {
     if (openingConfiguration(ownerEligibility, asset.settlementType) == null)
       throw new IOException("OWNER_INSTRUMENT_INELIGIBLE");
     // Observed broker rejection 2039: IOC limits cannot execute CFD settlement.
-    if (!"real".equals(asset.settlementType))
+    if ("limitIOC".equals(entryOrderType()) && !"real".equals(asset.settlementType))
       throw new IOException("CAPPED_ORDER_REQUIRES_REAL_ASSET");
     // Query owner-side costs for the actual copied amount, not internal agent dollars.
     var costRequest =
@@ -391,6 +391,11 @@ public final class EtoroClient implements Broker, Workflow.Market {
   }
 
   @Override
+  public String entryOrderType() {
+    return config.entryOrderType();
+  }
+
+  @Override
   public Receipt submit(Intent intent, String reference) throws IOException {
     if (!writesAllowed) throw new IOException("READ_ONLY_CLIENT");
     var request = OrderPayloads.create(intent);
@@ -549,7 +554,8 @@ public final class EtoroClient implements Broker, Workflow.Market {
           || q.timestamp().isAfter(clock.instant())
           || Duration.between(q.timestamp(), clock.instant()).getSeconds() > 60
           || q.ask().compareTo(i.ceiling()) > 0
-          || i.ceiling().compareTo(q.ask().multiply(new BigDecimal("1.10"))) > 0
+          || ("limitIOC".equals(i.orderType())
+              && i.ceiling().compareTo(q.ask().multiply(new BigDecimal("1.10"))) > 0)
           || q.ask().compareTo(i.stop()) <= 0)
         throw new IOException("QUOTE_CHANGED_BEFORE_SUBMISSION");
       BigDecimal ownerCapital =

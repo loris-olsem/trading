@@ -50,7 +50,8 @@ public final class Executor {
               intent.units(),
               intent.ceiling(),
               intent.stop(),
-              intent.settlementType());
+              intent.settlementType(),
+              intent.orderType());
       prior = store.state().attempts.get(intent.key());
     }
     if (prior != null) {

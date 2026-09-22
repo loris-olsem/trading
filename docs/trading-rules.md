@@ -1,6 +1,6 @@
 # Effective trading rules
 
-Policy `2026-09-21.3`. Detailed agreements and original answers:
+Policy `2026-09-22.1`. Detailed agreements and original answers:
 [PLANNING.md](../PLANNING.md), [decision records](../decisions/).
 
 | Situation | Required behavior |
@@ -11,7 +11,7 @@ Policy `2026-09-21.3`. Detailed agreements and original answers:
 | Routine scan | Entire gap from last complete checkpoint; deduplicate and audit revisions |
 | Never-entered open cycle | Watch while Bravos holds it |
 | Opening price | Original opening × 1.02, rounded down to precision; compare executable ask |
-| Copied purchase price | Strict agent limit, then verify real copied fill; owner accepts possible copy-side overpayment. Over-limit copies block further purchases; no automatic sale to undo them |
+| Purchase price | Market order after fresh agent ask passes source ceiling; final agent/copied price can exceed it. Over-ceiling read-back holds further purchases; no automatic undo sale |
 | Later add before our opening | Keep original ceiling; enter latest total weight once |
 | Held addition | Add weight increase × current owner equity; ceiling is addition price, no 2% tolerance |
 | Missed add then reduction | Expire unexecuted add; trim actual held units proportionally |
@@ -30,11 +30,11 @@ Policy `2026-09-21.3`. Detailed agreements and original answers:
 | Full early/stop exit | End participation; no old-cycle re-entry |
 | Instrument | Exact supported exposure, no leverage including embedded; no substitute ticker |
 | Quote | Published US core session for the configured US profiles, eToro tradability, realtime USD ask ≤60 seconds old, not future-dated; other profiles retain broker exchange flag |
-| Broker limit range | Tighten order limit to at most fresh ask × 1.09, never above the strategy ceiling; recheck broker's 10% deviation bound before submission |
+| Broker limit range | Applies only in retained IOC mode; market orders send no limit or trigger price |
 | Order | Reconcile, exits/reductions, stops, then openings/adds by source publication order |
 | Uncertain submission | Reconcile original attempt; no blind retry |
 | Addition expiry | First evaluated open New York trading-date session; outstanding attempts still reconciled |
-| Opening expiry | IOC attempt expires; never-entered source-open opportunity stays watched |
+| Opening expiry | Reconcile every submitted attempt; never-entered source-open opportunity stays watched |
 | Unexpected broker difference | Hold and report; never silently undo it |
 
 Normal owner `run` executes; `plan` never writes to the broker. Suggested times

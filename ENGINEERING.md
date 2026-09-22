@@ -7,6 +7,21 @@ The [implementation plan](docs/IMPLEMENTATION-PLAN.md) was committed before code
 
 ## Checks
 
+Market-order mode, 22 September: `gr spotlessApply check pitest installDist`
+passed under the pinned vfox tools. **220 tests**, instruction coverage
+12,795/14,369 (89.05%), branch coverage 1,738/2,140 (81.21%), and **1,001/1,106
+PIT mutations killed (90.51%)**; 89 survived and 16 were uncovered, with no
+timeout/error kills. Gates were not changed. Tests cover real/CFD market payloads,
+unchanged amount/stop, fresh pre-submit price rejection, omission of limit and
+trigger fields, historical intent decoding, persisted market intent recovery,
+no duplicate entry after restart, and truthful plan formatting.
+
+`gr instrumentPreflight plan` completed read-only externally. All six configured
+profiles passed preflight in market mode. The plan waited for executable prices
+outside the US session, retained broker restrictions/unlisted instrument holds,
+and checkpointed runtime generation 103. No live execution was attempted; these
+checks do not prove error 1065 is resolved for the new order type.
+
 Fable follow-through, 22 September: **215 tests pass**, instruction coverage
 12,640/14,214, branch coverage 1,705/2,108, and **987/1,092 PIT mutations killed
 (90.38%)**, with 89 survivors and 16 uncovered, no timeout/error kills. The vfox

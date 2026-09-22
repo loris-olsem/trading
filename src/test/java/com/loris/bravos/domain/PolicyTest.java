@@ -14,6 +14,41 @@ class PolicyTest {
   final Policy policy = new Policy();
 
   @Test
+  void marketEntryKeepsSizingStopAndSourceCeilingWithoutIocDeviationRestriction() {
+    var market = new Policy("mkt");
+    var c = cycle();
+    c.stop = d("50");
+    var i = instrument();
+    for (String settlement : List.of("real", "cfd")) {
+      var asset =
+          new Instrument(
+              i.id(),
+              i.symbol(),
+              i.currency(),
+              true,
+              true,
+              settlement,
+              i.priceScale(),
+              i.unitScale(),
+              i.minimumAgentAmount(),
+              i.estimatedOwnerCost());
+      var intent =
+          market.opening(c, asset, quote("80"), account(), NOW, d("0")).intents().getFirst();
+      assertEquals("mkt", intent.orderType());
+      assertEquals(d("102.00"), intent.ceiling());
+      assertEquals(d("230.50"), intent.ownerAmount());
+      assertEquals(d("500.00"), intent.agentAmount());
+      assertEquals(d("50"), intent.stop());
+      assertEquals(
+          Outcome.WATCH_PRICE,
+          market.opening(c, asset, quote("102.01"), account(), NOW, d("0")).outcome());
+      assertEquals(
+          Outcome.BLOCKED, market.opening(c, asset, quote("50"), account(), NOW, d("0")).outcome());
+    }
+    assertThrows(IllegalArgumentException.class, () -> new Policy("mit"));
+  }
+
+  @Test
   void eligibleUnleveragedCfdStillCannotUsePriceCappedOrder() {
     var i = instrument();
     var cfd =

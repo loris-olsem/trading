@@ -6,10 +6,12 @@ Portfolio. It parses supported alerts deterministically, keeps a durable journal
 reconciles the agent with the owner's real allocation, and applies the agreed
 price, sizing and stop rules. Gmail and an AI assistant are not runtime dependencies.
 
-**Readiness:** live execution remains unresolved. The owner's v3 run repeated
-error 1065 on real stocks; changing API version did not fix it. The confirmed
-CFD/IOC incompatibility is now blocked before submission for ARGT and SMH.
-Price ceilings, stops and amount sizing are unchanged.
+**Execution mode:** new buys now use market orders with a fresh price check,
+following the owner's authorization to relax requirements after repeated IOC
+rejections. The final fill price is not capped. Amount sizing and exact Bravos
+stops remain unchanged; an over-ceiling fill holds further purchases for review.
+Existing orders retain their saved order type. See [market-order mode](docs/market-order-mode.md).
+Live success still requires the owner's run; tests do not establish broker acceptance.
 
 Execution profiles cover CF,
 BRK.B, ARGT, EOG, SMH and now ADI (eToro's ADI.US). The app checks IBIT/ETHA's
@@ -30,6 +32,7 @@ regressions, coverage and mutation results. Current read-only service evidence:
 | Document | Purpose |
 | --- | --- |
 | [Operations](docs/operations.md) | Install, configure, plan, initialize, run and recover |
+| [Market-order mode](docs/market-order-mode.md) | Current execution choice, slippage risk and recovery behavior |
 | [Current execution failure](docs/ETORO-1065-INVESTIGATION.md) | Repeated 1065 rejections, compatibility checks and prepared support report |
 | [Fable execution review](docs/FABLE-EXECUTION-REVIEW-2026-09-22.md) | Independent review, CFD fix and owner decision to preserve sizing |
 | [Latest readiness check](docs/READINESS-2026-09-21.md) | Configured instruments, current broker-data holds and remaining verification |

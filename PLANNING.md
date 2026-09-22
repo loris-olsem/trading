@@ -1,6 +1,6 @@
 # Bravos helper specification
 
-Policy version: `2026-09-21.3`. The user chose an owner-operated Java/Gradle
+Policy version: `2026-09-22.1`. The user chose an owner-operated Java/Gradle
 program to replace the Markdown skill. Normal `run` executes eligible trades;
 `plan` and `initialize` never submit orders. No schedule has been created;
 `gr status` reports the current enrollment state. The [operations guide](docs/operations.md) describes invocation;
@@ -9,6 +9,14 @@ and unresolved broker guarantees. Development uses read-only external checks and
 isolated execution fixtures, not financial actions by the assistant.
 
 ## Provenance and conflicts
+
+Latest override, 22 September: the owner authorized "reduce our requirements
+if needed" to get execution working after IOC failures. New orders now use
+`MARKET_WITH_PRICE_CHECK`: the entry/addition price remains a fresh pre-trade
+check, not a guaranteed fill maximum. Exact stops and amount sizing remain.
+Over-ceiling read-back still holds further purchases. This supersedes the strict
+agent-limit requirements below for new market-mode orders. Historical attempts
+keep their order type. See [market-order mode](docs/market-order-mode.md).
 
 [Original form answers](decisions/2026-09-19-form.json) preserve all 49 selections
 verbatim. Responses expressing confusion are not acceptance. Technical correctness

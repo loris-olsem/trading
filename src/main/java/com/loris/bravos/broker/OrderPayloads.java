@@ -21,19 +21,19 @@ public final class OrderPayloads {
         throw new IllegalArgumentException("INVALID_OPEN_INTENT");
       if (!"real".equals(i.settlementType()) && !"cfd".equals(i.settlementType()))
         throw new IllegalArgumentException("UNSUPPORTED_SETTLEMENT");
-      if (!"real".equals(i.settlementType()))
+      if ("limitIOC".equals(i.orderType()) && !"real".equals(i.settlementType()))
         throw new IllegalArgumentException("CAPPED_ORDER_REQUIRES_REAL_ASSET");
       body.put("action", "open")
           .put("transaction", "buy")
           .put("instrumentId", i.instrumentId())
-          .put("orderType", "limitIOC")
-          .put("limitRate", i.ceiling())
+          .put("orderType", i.orderType())
           .put("leverage", 1)
           .put("amount", i.agentAmount())
           .put("orderCurrency", "usd")
           .put("stopLossRate", i.stop())
           .put("stopLossType", "fixed")
           .put("settlementType", i.settlementType());
+      if ("limitIOC".equals(i.orderType())) body.put("limitRate", i.ceiling());
       // v3 queues asynchronously; acceptance is not a fill. Reconcile through
       // the shared v2 lookup using the durable request reference/order ID.
       return new Request("POST", "/api/v3/trading/execution/orders", body);

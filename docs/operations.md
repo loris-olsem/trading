@@ -3,6 +3,10 @@
 Use PowerShell in this repository. Retain and privately back up `state/runtime`
 across upgrades. The old `state/bravos/ledger.json` is historical planning state.
 
+Current [market-order mode](market-order-mode.md) checks the price before buying
+but cannot guarantee the final price. Run `gr plan` to inspect proposals, then
+the owner can use `gr run`. Keep existing state; no reinitialization is needed.
+
 ## Setup
 
 Install vfox, then its plugins and the pinned tools:

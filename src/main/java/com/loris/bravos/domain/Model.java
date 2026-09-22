@@ -148,7 +148,44 @@ public final class Model {
       BigDecimal units,
       BigDecimal ceiling,
       BigDecimal stop,
-      String settlementType) {}
+      String settlementType,
+      String orderType) {
+    public Intent {
+      // Missing in historical journals: those orders were always IOC limits.
+      if (orderType == null) orderType = "limitIOC";
+      if (!Set.of("limitIOC", "mkt").contains(orderType))
+        throw new IllegalArgumentException("INVALID_ORDER_TYPE");
+    }
+
+    public Intent(
+        String key,
+        String cycleKey,
+        String eventKey,
+        Action action,
+        long instrumentId,
+        Long positionId,
+        BigDecimal ownerAmount,
+        BigDecimal agentAmount,
+        BigDecimal units,
+        BigDecimal ceiling,
+        BigDecimal stop,
+        String settlementType) {
+      this(
+          key,
+          cycleKey,
+          eventKey,
+          action,
+          instrumentId,
+          positionId,
+          ownerAmount,
+          agentAmount,
+          units,
+          ceiling,
+          stop,
+          settlementType,
+          "limitIOC");
+    }
+  }
 
   public record Decision(Outcome outcome, String reason, List<Intent> intents) {
     public static Decision of(Outcome o, String reason) {

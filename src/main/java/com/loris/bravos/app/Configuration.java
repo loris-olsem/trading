@@ -48,7 +48,8 @@ public final class Configuration {
         || copyStopsEvidence == null
         || copyPriceCeilingEvidence == null
         || copyPricePolicy == null
-        || !Set.of("REQUIRE_COPY_GUARANTEE", "AGENT_LIMIT_WITH_COPY_CHECK")
+        || !Set.of(
+                "REQUIRE_COPY_GUARANTEE", "AGENT_LIMIT_WITH_COPY_CHECK", "MARKET_WITH_PRICE_CHECK")
             .contains(copyPricePolicy)
         || !Set.of("UNVERIFIED", "REALIZED_EQUITY_RATIO").contains(copySizingModel)
         || assets == null
@@ -86,9 +87,14 @@ public final class Configuration {
   }
 
   public boolean copyPricePermitted() {
-    return "AGENT_LIMIT_WITH_COPY_CHECK".equals(copyPricePolicy)
+    return "MARKET_WITH_PRICE_CHECK".equals(copyPricePolicy)
+        || "AGENT_LIMIT_WITH_COPY_CHECK".equals(copyPricePolicy)
         || ("REQUIRE_COPY_GUARANTEE".equals(copyPricePolicy)
             && copyPriceCeilingEvidence != null
             && !copyPriceCeilingEvidence.isBlank());
+  }
+
+  public String entryOrderType() {
+    return "MARKET_WITH_PRICE_CHECK".equals(copyPricePolicy) ? "mkt" : "limitIOC";
   }
 }

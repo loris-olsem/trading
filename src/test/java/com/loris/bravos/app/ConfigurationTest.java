@@ -90,6 +90,11 @@ class ConfigurationTest {
     config.copyPricePolicy = "AGENT_LIMIT_WITH_COPY_CHECK";
     config.validate();
     assertTrue(config.copyPricePermitted());
+    assertEquals("limitIOC", config.entryOrderType());
+    config.copyPricePolicy = "MARKET_WITH_PRICE_CHECK";
+    config.validate();
+    assertTrue(config.copyPricePermitted());
+    assertEquals("mkt", config.entryOrderType());
     config.copyPricePolicy = "typo";
     assertThrows(IOException.class, config::validate);
     assertFalse(config.copyPricePermitted());

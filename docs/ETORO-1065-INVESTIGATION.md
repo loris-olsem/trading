@@ -3,6 +3,11 @@
 Status: unresolved execution failure. No claim of a working live trading path.
 The development investigation made only read/what-if calls; no orders were submitted.
 
+Subsequent owner-authorized change: new buys now use
+[market-order mode](market-order-mode.md), preserving amount and stop while
+relaxing the guaranteed entry cap to a pre-trade price check. The investigation
+below describes the rejected IOC attempts; no live market result is yet available.
+
 The owner subsequently ran the v3 asynchronous submission path: BRK.B, EOG and
 ADI still returned 1065, and ARGT returned error 2039 stating that IOC requires
 real settlement rather than CFD. State generation 101 recorded these results.

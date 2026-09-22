@@ -1,6 +1,6 @@
-# Constraint review — 21 September 2026
+# Constraint review — updated 22 September 2026
 
-This reviews the implemented program against policy `2026-09-21.3`. Original
+This reviews the implemented program against policy `2026-09-22.1`. Original
 answers and their dispositions are preserved in [PLANNING.md](../PLANNING.md).
 Passing local tests establishes program behavior against fixtures, not eToro's
 live copying guarantees. No trades or funding actions were used as tests.
@@ -13,7 +13,7 @@ live copying guarantees. No trades or funding actions were used as tests.
 | Initial 30 days separate from research | `Main`, `Workflow.initialBook`; explicit enrollment floor, no trading during initialize; CLI integration tests | Latest local status is initialized; historical reports alone are not activation |
 | Routine full gap, deduplication, revisions | Checkpoint-day overlap, post IDs, authored-body hashes, source revisions, active rereads and seven-day audit; source/domain tests | No claim to discover every unseen backdated article |
 | Partial scans cannot advance coverage | `acceptScan`, first-page recheck/retry, dashboard match; persisted failure tests | Source errors conservatively block the run's new actions |
-| Opening watchlist and +2% | `Policy.opening`; executable ask, floored ceiling, terminal/source-open state tests | Agent cap enforced; owner accepted unverified copied-price protection with read-back |
+| Opening watchlist and +2% | `Policy.opening`; executable ask, floored ceiling, terminal/source-open state tests | Current market mode checks the quote; agent and copied fills may exceed it |
 | Never-entered add keeps original ceiling | Opening uses reconstructed current weight exactly once; absorbed event keys tested | No historical adds replayed as separate purchases |
 | Held additions use delta and their own price | `Policy.addition`, first-evaluated-session expiry, source ordering tests | New York date is the supported session model; non-US sessions need explicit support |
 | Missed add followed by reduction expires | `Workflow.hasLaterReduction`; planning/live tests | Accepted follow-up recorded; no automatic buying of removed exposure |
@@ -24,7 +24,7 @@ live copying guarantees. No trades or funding actions were used as tests.
 | Exact published stops | Parser preserves standalone/bundled changes; exact fixed-stop payload and agent/owner read-back; tests reject trailing/disabled/wrong stops | Sourced copy-stop model configured; actual protection requires position read-back |
 | No entry without usable stop | Missing/ambiguous/crossed stop blocks; no invented or widened price | Existing protection is not cleared to resolve a conflict |
 | Targets and explicit quantities | Targets retained; no invented fractions; explicit actual reductions supported | Conditional target quantities are held as unsupported, not executed yet |
-| Entry price handling | Agent `limitIOC` payload and agent/copied fill checks tested | Latest owner decision permits agent limit plus copied-price checking. Detected overpayment blocks further purchases; it cannot be prevented by read-back |
+| Entry price handling | Market payload omits IOC limit/trigger fields; fresh ask checked before submit; historical IOC intents preserved | Owner authorized relaxed execution requirements. Market fills may exceed the check; detected overpayment holds further purchases without automatic sale |
 | Final partial fill kept, shortfall reported | Filled internal/owner amounts persisted; event consumed; restart test proves no top-up; later add still possible | Ongoing partial/copy/stop uncertainty blocks until reconciled |
 | No old-cycle re-entry after stop/full early exit | Durable terminal cycle and event participation; workflow tests | Unexplained changes held, never silently restored |
 | Early exits through program | Durable fraction request, duplicate pending request rejection, next-run processing; CLI/workflow tests | Source failures also block unsubmitted early exits |
