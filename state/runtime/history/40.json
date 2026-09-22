@@ -1,8 +1,8 @@
 {
   "schemaVersion" : 1,
-  "generation" : 42,
+  "generation" : 40,
   "enrollmentFloor" : "2026-08-23",
-  "checkpoint" : "2026-09-22T17:10:36.703859800Z",
+  "checkpoint" : "2026-09-22T16:59:23.482756900Z",
   "revisionAudit" : "2026-09-21T17:37:05.647907200Z",
   "book" : {
     "cycles" : {
@@ -2894,5 +2894,5 @@
   "batches" : { },
   "holdings" : { },
   "earlyExits" : [ ],
-  "report" : [ "BRK.B: READY POLICY_PASSED", "BRK.B: OPEN owner USD 368.80, internal USD 800.00, ceiling 516.63, stop 480", "ARGT: BLOCKED QUOTE_REFRESH_EXHAUSTED", "MAGS: BLOCKED INSTRUMENT_NOT_LISTED", "IBIT: BLOCKED BOTH_ACCOUNTS_OPENING_DISABLED", "EOG: READY POLICY_PASSED", "EOG: OPEN owner USD 230.50, internal USD 500.00, ceiling 153.17, stop 138", "ETHA: BLOCKED BOTH_ACCOUNTS_OPENING_DISABLED", "SMH: WATCH_PRICE ABOVE_ORIGINAL_CEILING", "ADI: READY POLICY_PASSED", "ADI: OPEN owner USD 230.50, internal USD 500.00, ceiling 390.02, stop 347.5" ]
+  "report" : [ "BRK.B: READY POLICY_PASSED", "BRK.B: OPEN owner USD 368.80, internal USD 800.00, ceiling 516.63, stop 480", "ARGT: READY POLICY_PASSED", "ARGT: OPEN owner USD 230.50, internal USD 500.00, ceiling 98.36, stop 89", "MAGS: BLOCKED INSTRUMENT_NOT_LISTED", "IBIT: BLOCKED BOTH_ACCOUNTS_OPENING_DISABLED", "EOG: READY POLICY_PASSED", "EOG: OPEN owner USD 230.50, internal USD 500.00, ceiling 153.14, stop 138", "ETHA: BLOCKED BOTH_ACCOUNTS_OPENING_DISABLED", "SMH: WATCH_PRICE ABOVE_ORIGINAL_CEILING", "ADI: READY POLICY_PASSED", "ADI: OPEN owner USD 230.50, internal USD 500.00, ceiling 390.02, stop 347.5" ]
 }
