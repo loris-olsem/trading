@@ -1,8 +1,8 @@
 {
   "schemaVersion" : 1,
-  "generation" : 30,
+  "generation" : 28,
   "enrollmentFloor" : "2026-08-23",
-  "checkpoint" : "2026-09-22T15:55:22.980932600Z",
+  "checkpoint" : "2026-09-22T15:46:32.347433100Z",
   "revisionAudit" : "2026-09-21T17:37:05.647907200Z",
   "book" : {
     "cycles" : {
@@ -2894,5 +2894,5 @@
   "batches" : { },
   "holdings" : { },
   "earlyExits" : [ ],
-  "report" : [ "BRK.B: READY POLICY_PASSED", "BRK.B: OPEN owner USD 368.80, internal USD 800.00, ceiling 516.63, stop 480", "ARGT: READY POLICY_PASSED", "ARGT: OPEN owner USD 230.50, internal USD 500.00, ceiling 98.36, stop 89", "MAGS: BLOCKED ETORO_HTTP_404", "IBIT: BLOCKED BOTH_ACCOUNTS_OPENING_DISABLED", "EOG: READY POLICY_PASSED", "EOG: OPEN owner USD 230.50, internal USD 500.00, ceiling 153.17, stop 138", "ETHA: BLOCKED BOTH_ACCOUNTS_OPENING_DISABLED", "SMH: WATCH_PRICE ABOVE_ORIGINAL_CEILING", "ADI: READY POLICY_PASSED", "ADI: OPEN owner USD 230.50, internal USD 500.00, ceiling 390.02, stop 347.5" ]
+  "report" : [ "BRK.B: READY POLICY_PASSED", "BRK.B: OPEN owner USD 368.80, internal USD 800.00, ceiling 516.63, stop 480", "ARGT: WAIT_QUOTE QUOTE_NOT_EXECUTABLE", "ARGT: DETAIL No purchase is proposed because the quote is 185.332 seconds old; the maximum is 60 seconds. A later run will reassess the opportunity under the same price and stop rules.", "MAGS: BLOCKED INSTRUMENT_UNVERIFIED", "IBIT: BLOCKED INSTRUMENT_UNVERIFIED", "EOG: WAIT_QUOTE QUOTE_NOT_EXECUTABLE", "EOG: DETAIL No purchase is proposed because the quote is 69.4 seconds old; the maximum is 60 seconds. A later run will reassess the opportunity under the same price and stop rules.", "ETHA: BLOCKED INSTRUMENT_UNVERIFIED", "SMH: WATCH_PRICE ABOVE_ORIGINAL_CEILING", "ADI: BLOCKED INSTRUMENT_UNVERIFIED" ]
 }
