@@ -1,8 +1,8 @@
 {
   "schemaVersion" : 1,
-  "generation" : 38,
+  "generation" : 36,
   "enrollmentFloor" : "2026-08-23",
-  "checkpoint" : "2026-09-22T16:47:03.697417600Z",
+  "checkpoint" : "2026-09-22T16:42:54.364226400Z",
   "revisionAudit" : "2026-09-21T17:37:05.647907200Z",
   "book" : {
     "cycles" : {
