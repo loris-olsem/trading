@@ -96,6 +96,14 @@ public final class ReportFormatter {
   private static String explain(String line) {
     String code = line.replaceFirst("^(BLOCKED|WAIT_QUOTE|WATCH_PRICE|TERMINAL|NO_POSITION) ", "");
     return switch (code) {
+      case "QUOTE_REFRESH_EXHAUSTED" ->
+          "No purchase is proposed: the app requested a quote, tried eToro's live price stream, then requested another quote. None provided a usable price within the freshness rule. Your entry ceiling and Bravos stop remain unchanged";
+      case "QUOTE_REFRESH_TIMEOUT" ->
+          "No purchase is proposed: the usual quote was stale, and eToro's live price stream did not provide a fresh price within 20 seconds. The app attempted to refresh it during this run; your price ceiling and stop remain unchanged";
+      case "QUOTE_STREAM_UNAVAILABLE" ->
+          "No purchase is proposed: the usual quote was stale and the live price stream could not provide a usable quote. The app attempted to refresh it during this run";
+      case "QUOTE_REFRESH_INTERRUPTED" ->
+          "The live-price refresh was interrupted. No purchase is proposed for this investment";
       case "BOTH_ACCOUNTS_OPENING_DISABLED" ->
           "No purchase is possible: eToro currently refuses new purchases of this investment on both your agent and main accounts. The app will check again on the next run; this is a broker restriction, not missing setup";
       case "AGENT_OPENING_DISABLED" ->

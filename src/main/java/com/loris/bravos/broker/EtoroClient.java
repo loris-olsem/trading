@@ -18,6 +18,12 @@ public final class EtoroClient implements Broker, Workflow.Market {
   private final Configuration config;
   private final Clock clock;
   private final boolean writesAllowed;
+  private final RateSource rateSource;
+
+  @FunctionalInterface
+  public interface RateSource {
+    StreamingRates.Rate fetch(long instrumentId) throws IOException;
+  }
 
   public EtoroClient(
       Transport transport,
@@ -25,11 +31,28 @@ public final class EtoroClient implements Broker, Workflow.Market {
       Configuration config,
       Clock clock,
       boolean writesAllowed) {
+    this(
+        transport,
+        secrets,
+        config,
+        clock,
+        writesAllowed,
+        new StreamingRates(clock, secrets)::fetch);
+  }
+
+  public EtoroClient(
+      Transport transport,
+      Secrets secrets,
+      Configuration config,
+      Clock clock,
+      boolean writesAllowed,
+      RateSource rateSource) {
     this.transport = transport;
     this.secrets = secrets;
     this.config = config;
     this.clock = clock;
     this.writesAllowed = writesAllowed;
+    this.rateSource = rateSource;
   }
 
   private JsonNode call(boolean owner, String method, String path, String body, String reference)
@@ -308,15 +331,53 @@ public final class EtoroClient implements Broker, Workflow.Market {
                 "items"),
             "instrumentId",
             i.id());
-    return new Quote(
-        decimal(rate, "ask"),
-        instant(text(rate, "date")),
-        text(rate, "quoteType").equals("realtime")
-            && (calendar
-                ? UsEquityCalendar.isOpen(clock.instant())
-                : bool(market, "isExchangeOpen"))
-            && bool(market, "isCurrentlyTradable"),
-        "USD");
+    BigDecimal ask = decimal(rate, "ask");
+    Instant timestamp = instant(text(rate, "date"));
+    boolean executable = text(rate, "quoteType").equals("realtime") && marketOpen(market, calendar);
+    if (executable
+        && !timestamp.isAfter(clock.instant())
+        && Duration.between(timestamp, clock.instant()).compareTo(Duration.ofSeconds(60)) > 0) {
+      try {
+        var fresh = rateSource.fetch(i.id());
+        ask = fresh.ask();
+        timestamp = fresh.timestamp();
+      } catch (IOException streamFailure) {
+        if (Thread.currentThread().isInterrupted()) throw streamFailure;
+        // The snapshot may have advanced while the stream was waiting. One last
+        // read can recover it; neither source is ever assigned a fabricated date.
+        var retry =
+            unique(
+                array(get(false, "/api/v2/market-data/rates?instrumentIds=" + i.id()), "results"),
+                "instrumentId",
+                i.id());
+        Instant retryDate = instant(text(retry, "date"));
+        if (!text(retry, "quoteType").equals("realtime")
+            || retryDate.isAfter(clock.instant())
+            || Duration.between(retryDate, clock.instant()).compareTo(Duration.ofSeconds(60)) > 0)
+          throw new IOException("QUOTE_REFRESH_EXHAUSTED");
+        ask = decimal(retry, "ask");
+        timestamp = retryDate;
+      }
+      // The exchange or the broker can suspend trading while waiting for a tick.
+      market =
+          unique(
+              array(
+                  get(
+                      false,
+                      "/api/v1/market-data/search?instrumentId="
+                          + i.id()
+                          + "&fields=isExchangeOpen,isCurrentlyTradable"),
+                  "items"),
+              "instrumentId",
+              i.id());
+      executable = marketOpen(market, calendar);
+    }
+    return new Quote(ask, timestamp, executable, "USD");
+  }
+
+  private boolean marketOpen(JsonNode market, boolean calendar) throws IOException {
+    return (calendar ? UsEquityCalendar.isOpen(clock.instant()) : bool(market, "isExchangeOpen"))
+        && bool(market, "isCurrentlyTradable");
   }
 
   @Override
@@ -456,6 +517,8 @@ public final class EtoroClient implements Broker, Workflow.Market {
       if (asset == null || !asset.settlementType().equals(i.settlementType()))
         throw new IOException("ELIGIBILITY_CHANGED");
       Quote q = quote(asset);
+      if (Duration.between(a.observedAt(), clock.instant()).compareTo(Duration.ofSeconds(60)) > 0)
+        throw new IOException("ACCOUNT_CHANGED_BEFORE_SUBMISSION");
       if (!q.exchangeOpen()
           || q.timestamp().isAfter(clock.instant())
           || Duration.between(q.timestamp(), clock.instant()).getSeconds() > 60

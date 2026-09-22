@@ -50,9 +50,16 @@ unchanged holdings after a complete evaluation.
 | `app/Workflow` | Ordering, enrollment, event consumption, batches, reconciliation |
 | `broker/Executor` | Durable submission boundary and attempt transitions |
 | `broker/EtoroClient` | Official API contract, identity link, preflight, execution proofs |
+| `broker/StreamingRates` | Bounded authenticated market-only price subscription, timestamp validation and socket cleanup |
 | `broker/OrderPayloads` | Order, stop and close payloads |
 | `state/StateStore` | Lock, validation, history, atomic replacement |
 | `app/Main` | CLI and connection assembly |
+
+Quote refresh is shared by planning and execution preflight. `EtoroClient` uses
+an injectable `RateSource` for the stale-REST fallback; `StreamingRates` supplies
+the production implementation and has an injectable socket connector. Tests and
+mutation runs supply fixtures at both network boundaries. The read-only preflight
+diagnostic accepts the same injection. See [quote refresh](QUOTE-REFRESH.md).
 
 ## Persistence and interruption
 

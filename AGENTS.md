@@ -7,7 +7,9 @@
 - Read `PLANNING.md` and `README.md` before extending this project. Distinguish
   agreed rules, proposals, and unverified observations.
 - Never print, copy into prompts, commit, or log the contents of `secrets/`.
-  Read eToro keys locally and send them only to the official eToro API host.
+  Read eToro keys locally and send them only to the official eToro API hosts:
+  `public-api.etoro.com` for REST and `ws.etoro.com` for the documented quote
+  stream. Quote subscriptions do not authorize private feeds or financial writes.
   Bravos credentials may be used only for the intended Bravos login.
 - Keep credentials and raw account/API captures ignored. The owner requested
   recovery state in local Git: allowlist `state/runtime/ledger.json` and numeric

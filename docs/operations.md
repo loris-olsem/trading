@@ -165,6 +165,11 @@ age or other failed checks. Existing holdings with no new action are reported
 as unchanged. The private journal and `status` retain diagnostic codes for recovery.
 Quote waiting can change between runs; the executable ask must still be realtime
 and at most 60 seconds old.
+An initially stale quote now triggers an authenticated live-price subscription
+(up to 20 seconds), then a final REST retry if needed. Market flags are rechecked
+afterward. A remaining hold means the refresh failed too, rather than only the
+first snapshot being stale. `gr quoteAudit` diagnoses the stream without orders.
+See [quote refresh](QUOTE-REFRESH.md) for the exact sequence and limits.
 Availability messages distinguish an absent listing, an application setup gap,
 and a fresh eToro refusal on the agent, main account or both. Missing profiles
 do not prove broker unavailability, and a discovered ticker cannot authorize a

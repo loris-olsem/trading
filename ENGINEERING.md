@@ -7,6 +7,18 @@ The [implementation plan](docs/IMPLEMENTATION-PLAN.md) was committed before code
 
 ## Checks
 
+Latest quote-refresh verification, 22 September: **205 tests pass**, **90.45%
+instruction coverage** (12,069/13,343), **81.20% branch coverage** (1,620/1,995),
+and **967/1,073 PIT mutations killed (90.12%)**. There are 90 survivors and 16
+uncovered mutations, with no timeout/error counted as a kill. Streaming classes
+were added to PIT's scope; gates are unchanged. Formatting and packaging pass.
+Both REST and WebSocket boundaries are injected in tests, including mutation
+runs. Coverage includes same-run refresh, final snapshot retry, ceilings and
+trading suspensions after refresh, stale account preflight, fragmented/oversized
+messages, initial socket demand, authentication, interruptions and late-connection
+cleanup. Two integrated live dry runs found BRK.B/EOG/ADI ready; ARGT still lacked
+a fresh quote after recovery. See [quote refresh](docs/QUOTE-REFRESH.md).
+
 Latest instrument-availability verification, 22 September: **195 tests pass**,
 **90.95% instruction coverage** (11,461/12,601), **80.91% branch coverage**
 (1,551/1,917), and **921/1,018 PIT mutations killed (90.47%)**. There are 83

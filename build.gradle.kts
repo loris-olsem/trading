@@ -47,7 +47,7 @@ tasks.check { dependsOn(tasks.jacocoTestCoverageVerification) }
 pitest {
     pitestVersion = "1.30.0"
     junit5PluginVersion = "1.2.3"
-    targetClasses = setOf("com.loris.bravos.domain.*", "com.loris.bravos.source.AlertParser", "com.loris.bravos.state.*", "com.loris.bravos.app.Workflow", "com.loris.bravos.app.Configuration", "com.loris.bravos.broker.Executor", "com.loris.bravos.broker.EtoroClient", "com.loris.bravos.broker.OrderPayloads")
+    targetClasses = setOf("com.loris.bravos.domain.*", "com.loris.bravos.source.AlertParser", "com.loris.bravos.state.*", "com.loris.bravos.app.Workflow", "com.loris.bravos.app.Configuration", "com.loris.bravos.broker.Executor", "com.loris.bravos.broker.EtoroClient", "com.loris.bravos.broker.StreamingRates*", "com.loris.bravos.broker.OrderPayloads")
     targetTests = setOf("com.loris.bravos.*")
     threads = 4
     outputFormats = setOf("HTML", "XML")
@@ -63,6 +63,13 @@ tasks.register<JavaExec>("capture") {
     classpath = sourceSets.main.get().runtimeClasspath
     mainClass = "com.loris.bravos.app.Capture"
     if (project.hasProperty("since")) args(project.property("since").toString())
+}
+
+tasks.register<JavaExec>("quoteAudit") {
+    group = "bravos"
+    description = "Read streaming prices without orders or private portfolio subscriptions."
+    classpath = sourceSets.main.get().runtimeClasspath
+    mainClass = "com.loris.bravos.app.QuoteAudit"
 }
 
 // Operations always use the current compiled sources and the project working directory.

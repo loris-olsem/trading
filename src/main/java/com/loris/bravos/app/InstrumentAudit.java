@@ -66,6 +66,16 @@ public final class InstrumentAudit {
   public static JsonNode preflight(
       Transport transport, Secrets secrets, Configuration config, java.time.Clock clock)
       throws IOException {
+    return preflight(transport, secrets, config, clock, new StreamingRates(clock, secrets)::fetch);
+  }
+
+  public static JsonNode preflight(
+      Transport transport,
+      Secrets secrets,
+      Configuration config,
+      java.time.Clock clock,
+      EtoroClient.RateSource rates)
+      throws IOException {
     var report = Json.MAPPER.createObjectNode().put("observedAt", clock.instant().toString());
     var reads = report.putArray("costResponses");
     var marketReads = report.putArray("marketResponses");
@@ -91,7 +101,7 @@ public final class InstrumentAudit {
           }
           return response;
         };
-    var broker = new EtoroClient(capture, secrets, config, clock, false);
+    var broker = new EtoroClient(capture, secrets, config, clock, false, rates);
     var account = broker.account();
     report.put("ownerEquity", account.ownerEquity()).put("ownerCash", account.ownerCash());
     var results = report.putArray("preflight");

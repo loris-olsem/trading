@@ -15,6 +15,26 @@ import java.util.*;
 import org.junit.jupiter.api.*;
 
 class EtoroClientTest {
+  final EtoroClient.RateSource unavailableStream =
+      id -> {
+        throw new IOException("QUOTE_STREAM_UNAVAILABLE");
+      };
+
+  EtoroClient offlineClient(
+      Transport transport, Secrets keys, Configuration configuration, Clock time, boolean writes) {
+    return new EtoroClient(transport, keys, configuration, time, writes, unavailableStream);
+  }
+
+  EtoroClient offlineClient(
+      Transport transport,
+      Secrets keys,
+      Configuration configuration,
+      Clock time,
+      boolean writes,
+      EtoroClient.RateSource rates) {
+    return new EtoroClient(transport, keys, configuration, time, writes, rates);
+  }
+
   final Clock clock = Clock.fixed(NOW, ZoneOffset.UTC);
   final Secrets secrets =
       new Secrets("app-test", "agent-test", "owner-test", "user-test", "password-test");
@@ -46,6 +66,7 @@ class EtoroClientTest {
     int status = 200, writes;
     boolean wrongOwnerScopes;
     boolean exchangeOpen = true, tradable = true;
+    String rateDate = "2026-09-21T14:00:00Z", quoteType = "realtime";
     int activityDrift;
     String submittedBody;
     Set<String> freshReads = new HashSet<>();
@@ -136,7 +157,11 @@ class EtoroClientTest {
       } else if (path.contains("/rates?"))
         response =
             node(
-                "{\"results\":[{\"instrumentId\":1890,\"ask\":100.12345678,\"date\":\"2026-09-21T14:00:00\",\"quoteType\":\"realtime\"}]}");
+                "{\"results\":[{\"instrumentId\":1890,\"ask\":100.12345678,\"date\":\""
+                    + rateDate
+                    + "\",\"quoteType\":\""
+                    + quoteType
+                    + "\"}]}");
       else if (path.contains("/search?"))
         response =
             node(
@@ -163,7 +188,7 @@ class EtoroClientTest {
   }
 
   EtoroClient client(Api api, boolean writes) {
-    return new EtoroClient(api, secrets, config(), clock, writes);
+    return offlineClient(api, secrets, config(), clock, writes);
   }
 
   Intent opening() {
@@ -179,7 +204,7 @@ class EtoroClientTest {
     var api = new Api();
     api.exchangeOpen = false;
     var config = config();
-    var broker = new EtoroClient(api, secrets, config, clock, false);
+    var broker = offlineClient(api, secrets, config, clock, false);
     var instrument = broker.instrument("CF", d("230.50"));
     assertFalse(broker.quote(instrument).exchangeOpen());
     config.assets.get("CF").marketHours = "US_EQUITIES_2026";
@@ -195,12 +220,12 @@ class EtoroClientTest {
     api.tradable = true;
     for (String instant : List.of("2026-09-21T20:00:00Z", "2026-12-25T15:00:00Z")) {
       var closed =
-          new EtoroClient(
+          offlineClient(
               api, secrets, config, Clock.fixed(Instant.parse(instant), ZoneOffset.UTC), false);
       assertFalse(closed.quote(instrument).exchangeOpen());
     }
     var expired =
-        new EtoroClient(
+        offlineClient(
             api,
             secrets,
             config,
@@ -217,7 +242,7 @@ class EtoroClientTest {
   @Test
   void preflightDiagnosticCapturesCostTimestampsWithoutCredentialsOrWrites() throws Exception {
     var api = new Api();
-    var report = InstrumentAudit.preflight(api, secrets, config(), clock);
+    var report = InstrumentAudit.preflight(api, secrets, config(), clock, unavailableStream);
     assertEquals("READ_PREFLIGHT_PASSED", report.path("preflight").get(0).path("result").asText());
     assertEquals(1, report.path("costResponses").size());
     assertEquals(
@@ -225,7 +250,7 @@ class EtoroClientTest {
     assertFalse(report.toString().contains("owner-test"));
     assertFalse(report.toString().contains("agent-test"));
     api.costs.put("lastUpdated", NOW.minusSeconds(70).toString());
-    report = InstrumentAudit.preflight(api, secrets, config(), clock);
+    report = InstrumentAudit.preflight(api, secrets, config(), clock, unavailableStream);
     assertEquals("READ_PREFLIGHT_PASSED", report.path("preflight").get(0).path("result").asText());
     assertEquals(0, api.writes);
   }
@@ -234,7 +259,7 @@ class EtoroClientTest {
   void deployedConfigurationCanPrepareAnEligibleOrderUsingOnlySyntheticAccounts() throws Exception {
     var api = new Api();
     var deployed = Configuration.load(java.nio.file.Path.of("config/trading.json"));
-    var broker = new EtoroClient(api, secrets, deployed, clock, false);
+    var broker = offlineClient(api, secrets, deployed, clock, false);
     var account = broker.account();
     var instrument = broker.instrument("CF", d("230.50"));
     var decision =
@@ -411,7 +436,7 @@ class EtoroClientTest {
             }
             return api.request(method, path, headers, body);
           };
-      var broker = new EtoroClient(transport, secrets, config(), requestClock, false);
+      var broker = offlineClient(transport, secrets, config(), requestClock, false);
       for (String amount : List.of("100", "200")) {
         moment.set(NOW);
         if (elapsed.isNegative() || elapsed.compareTo(Duration.ofSeconds(60)) > 0)
@@ -664,7 +689,7 @@ class EtoroClientTest {
     config.copyPriceCeilingEvidence = "";
     assertThrows(
         IOException.class,
-        () -> new EtoroClient(api, secrets, config, clock, false).prepare(attempt));
+        () -> offlineClient(api, secrets, config, clock, false).prepare(attempt));
     var changed =
         new Intent(
             "i",
@@ -713,7 +738,7 @@ class EtoroClientTest {
     var api = new Api();
     var config = config();
     config.copyPriceCeilingEvidence = "";
-    var broker = new EtoroClient(api, secrets, config, clock, false);
+    var broker = offlineClient(api, secrets, config, clock, false);
     assertFalse(broker.account().copyEntryPermitted());
     config.copyPricePolicy = "AGENT_LIMIT_WITH_COPY_CHECK";
     assertTrue(broker.account().copyEntryPermitted());
@@ -767,9 +792,159 @@ class EtoroClientTest {
     assertEquals(Status.PARTIAL, c.observe(a).status());
     var noConfig = new Configuration();
     assertEquals(
-        Status.PARTIAL, new EtoroClient(api, secrets, noConfig, clock, false).observe(a).status());
+        Status.PARTIAL, offlineClient(api, secrets, noConfig, clock, false).observe(a).status());
     ((ObjectNode) api.close.get("positions").get(0)).put("units", d("0.5"));
     assertEquals("CLOSE_UNITS_NOT_CONFIRMED", c.observe(a).reason());
+  }
+
+  @Test
+  void longRefreshCannotSubmitUsingAnExpiredAccountSnapshot() throws Exception {
+    var time = new java.util.concurrent.atomic.AtomicReference<>(NOW);
+    Clock advancing =
+        new Clock() {
+          public ZoneId getZone() {
+            return ZoneOffset.UTC;
+          }
+
+          public Clock withZone(ZoneId zone) {
+            return this;
+          }
+
+          public Instant instant() {
+            return time.get();
+          }
+        };
+    var api = new Api();
+    api.rateDate = NOW.minusSeconds(61).toString();
+    var broker =
+        offlineClient(
+            api,
+            secrets,
+            config(),
+            advancing,
+            false,
+            id -> {
+              time.set(NOW.plusSeconds(60).plusNanos(1));
+              return new StreamingRates.Rate(d("100"), time.get());
+            });
+    assertEquals(
+        "ACCOUNT_CHANGED_BEFORE_SUBMISSION",
+        assertThrows(IOException.class, () -> broker.prepare(new Attempt(opening(), NOW)))
+            .getMessage());
+    assertEquals(0, api.writes);
+  }
+
+  @Test
+  void staleQuotesRefreshDuringTheSameRunAndStillEnforcePriceAndMarketChecks() throws Exception {
+    var api = new Api();
+    api.rateDate = NOW.minusSeconds(61).toString();
+    var calls = new java.util.concurrent.atomic.AtomicInteger();
+    var broker =
+        offlineClient(
+            api,
+            secrets,
+            config(),
+            clock,
+            false,
+            id -> {
+              assertEquals(1890, id);
+              calls.incrementAndGet();
+              return new StreamingRates.Rate(d("103"), NOW);
+            });
+    var quote = broker.quote(instrument());
+    assertEquals(d("103"), quote.ask());
+    assertEquals(NOW, quote.timestamp());
+    assertTrue(quote.exchangeOpen());
+    assertEquals(1, calls.get());
+    assertEquals(
+        Outcome.WATCH_PRICE,
+        new Policy().opening(cycle(), instrument(), quote, account(), NOW, d("0")).outcome());
+    assertThrows(IOException.class, () -> broker.prepare(new Attempt(opening(), NOW)));
+    assertEquals(2, calls.get());
+    var suspended =
+        offlineClient(
+            api,
+            secrets,
+            config(),
+            clock,
+            false,
+            id -> {
+              api.tradable = false;
+              return new StreamingRates.Rate(d("100"), NOW);
+            });
+    assertFalse(suspended.quote(instrument()).exchangeOpen());
+    assertEquals(0, api.writes);
+  }
+
+  @Test
+  void freshFutureClosedDelayedQuotesDoNotStartAStream() throws Exception {
+    for (String scenario :
+        List.of("fresh", "boundary", "future", "closed", "suspended", "delayed")) {
+      var api = new Api();
+      api.rateDate = NOW.minusSeconds(61).toString();
+      switch (scenario) {
+        case "fresh" -> api.rateDate = NOW.toString();
+        case "boundary" -> api.rateDate = NOW.minusSeconds(60).toString();
+        case "future" -> api.rateDate = NOW.plusNanos(1).toString();
+        case "closed" -> api.exchangeOpen = false;
+        case "suspended" -> api.tradable = false;
+        case "delayed" -> api.quoteType = "delayed";
+      }
+      var broker =
+          offlineClient(
+              api,
+              secrets,
+              config(),
+              clock,
+              false,
+              id -> {
+                fail("Unexpected refresh for " + scenario);
+                return null;
+              });
+      broker.quote(instrument());
+    }
+  }
+
+  @Test
+  void streamFailureRetriesSnapshotWithoutRelabelingOldOrDelayedPrices() throws Exception {
+    for (String scenario :
+        List.of("fresh", "boundary", "old", "future", "delayed", "interrupted")) {
+      var api = new Api();
+      api.rateDate = NOW.minusSeconds(90).toString();
+      var broker =
+          offlineClient(
+              api,
+              secrets,
+              config(),
+              clock,
+              false,
+              id -> {
+                api.rateDate =
+                    switch (scenario) {
+                      case "boundary" -> NOW.minusSeconds(60).toString();
+                      case "old" -> NOW.minusSeconds(60).minusNanos(1).toString();
+                      case "future" -> NOW.plusNanos(1).toString();
+                      default -> NOW.toString();
+                    };
+                if (scenario.equals("delayed")) api.quoteType = "delayed";
+                if (scenario.equals("interrupted")) Thread.currentThread().interrupt();
+                throw new IOException("QUOTE_REFRESH_TIMEOUT");
+              });
+      try {
+        if (List.of("fresh", "boundary").contains(scenario)) {
+          var quote = broker.quote(instrument());
+          assertTrue(quote.exchangeOpen());
+          assertEquals(Instant.parse(api.rateDate), quote.timestamp());
+          assertEquals(d("100.12345678"), quote.ask());
+        } else
+          assertEquals(
+              scenario.equals("interrupted") ? "QUOTE_REFRESH_TIMEOUT" : "QUOTE_REFRESH_EXHAUSTED",
+              assertThrows(IOException.class, () -> broker.quote(instrument())).getMessage());
+      } finally {
+        Thread.interrupted();
+      }
+      assertEquals(0, api.writes);
+    }
   }
 
   @Test
@@ -786,7 +961,7 @@ class EtoroClientTest {
               response.headers());
         };
     var deployed = Configuration.load(java.nio.file.Path.of("config/trading.json"));
-    var broker = new EtoroClient(transport, secrets, deployed, clock, false);
+    var broker = offlineClient(transport, secrets, deployed, clock, false);
     var asset = broker.instrument("ADI", d("230.50"));
     assertEquals(4264, asset.id());
     assertEquals("ADI", asset.symbol());
@@ -820,7 +995,7 @@ class EtoroClientTest {
     identity.instrumentId = 1890;
     identity.brokerSymbol = "CF";
     config.lookupOnlyAssets.put("SOURCE", identity);
-    var broker = new EtoroClient(api, secrets, config, clock, false);
+    var broker = offlineClient(api, secrets, config, clock, false);
     api.ownerEligibility = api.eligibility.deepCopy();
     for (boolean agent : List.of(false, true)) {
       for (boolean owner : List.of(false, true)) {
@@ -895,7 +1070,7 @@ class EtoroClientTest {
     id.instrumentId = 12152;
     id.brokerSymbol = "ETHA.US";
     config.lookupOnlyAssets.put("ETHA", id);
-    var known = new EtoroClient(api, secrets, config, clock, false);
+    var known = offlineClient(api, secrets, config, clock, false);
     assertEquals(
         "ETORO_HTTP_404",
         assertThrows(IOException.class, () -> known.instrument("ETHA", d("1"))).getMessage());

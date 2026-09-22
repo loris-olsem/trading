@@ -28,6 +28,7 @@ regressions, coverage and mutation results. Current read-only service evidence:
 | [Latest readiness check](docs/READINESS-2026-09-21.md) | Configured instruments, current broker-data holds and remaining verification |
 | [Trading rules](docs/trading-rules.md) | Effective decisions in a compact table |
 | [Market hours](docs/market-hours.md) | Accepted US calendar, holidays, early closes and update deadline |
+| [Quote refresh](docs/QUOTE-REFRESH.md) | Automatic live-price fallback and bounded retries within the same run |
 | [Architecture](docs/architecture.md) | Discovery, policy, execution and state ownership |
 | [Broker contract](docs/broker-contract.md) | API boundaries and outstanding verification |
 | [Instrument investigation](docs/INSTRUMENTS-2026-09-21.md) | Verified IDs, account restrictions and the ETHA symbol collision |
@@ -54,6 +55,8 @@ it does not blindly execute a saved plan. Later use `gr plan` for a dry run or
 and recovery. The configured US calendar requires updating before 2027 entries.
 
 `gr plan` reads current data and saves evidence without submitting orders.
+Stale quotes trigger a brief live-stream refresh and a final REST retry within
+the same invocation; there is no need to rerun just to request that refresh.
 Plans and runs explain each analysed instrument in its own paragraph, including
 the proposed action or reason for waiting. Confirmed holdings are not bought
 again by tomorrow's plan; see [planning after execution](docs/operations.md#planning-after-execution).
