@@ -1,6 +1,6 @@
 {
   "schemaVersion" : 1,
-  "generation" : 148,
+  "generation" : 146,
   "enrollmentFloor" : "2026-08-23",
   "checkpoint" : "2026-09-23T19:32:21.146677400Z",
   "revisionAudit" : "2026-09-21T17:37:05.647907200Z",
@@ -3714,5 +3714,5 @@
     }
   },
   "earlyExits" : [ ],
-  "report" : [ "MAGS: BLOCKED INSTRUMENT_NOT_LISTED", "IBIT: BLOCKED BOTH_ACCOUNTS_OPENING_DISABLED", "ETHA: BLOCKED BOTH_ACCOUNTS_OPENING_DISABLED", "MEDP: READY POLICY_PASSED", "MEDP: OPEN owner USD 230.51, internal USD 499.92, ceiling 643.77, stop 570, market", "MEDP: CONFIRMED OPEN owner USD 230.5", "MEDP: PARTIAL_FILL_KEPT owner USD 230.5, shortfall USD 0.01; no automatic top-up", "BRK.B: HOLD_UNCHANGED", "ARGT: HOLD_UNCHANGED", "SMH: HOLD_UNCHANGED", "ADI: HOLD_UNCHANGED" ]
+  "report" : [ "MAGS: BLOCKED INSTRUMENT_NOT_LISTED", "IBIT: BLOCKED BOTH_ACCOUNTS_OPENING_DISABLED", "ETHA: BLOCKED BOTH_ACCOUNTS_OPENING_DISABLED", "MEDP: READY POLICY_PASSED", "MEDP: OPEN owner USD 230.51, internal USD 499.92, ceiling 643.77, stop 570, market" ]
 }

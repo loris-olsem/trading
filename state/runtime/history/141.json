@@ -1,6 +1,6 @@
 {
   "schemaVersion" : 1,
-  "generation" : 148,
+  "generation" : 141,
   "enrollmentFloor" : "2026-08-23",
   "checkpoint" : "2026-09-23T19:32:21.146677400Z",
   "revisionAudit" : "2026-09-21T17:37:05.647907200Z",
@@ -1736,7 +1736,7 @@
         "stop" : 570,
         "sourceOpen" : true,
         "enrolled" : true,
-        "entered" : true,
+        "entered" : false,
         "terminal" : false,
         "blocker" : null,
         "events" : [ {
@@ -1752,8 +1752,8 @@
           "stop" : 570,
           "targets" : [ 725, 750, 800 ]
         } ],
-        "positionIds" : [ 3586112808 ],
-        "completed" : [ "bravos:post:488723" ],
+        "positionIds" : [ ],
+        "completed" : [ ],
         "additionSessions" : { }
       }
     },
@@ -3407,36 +3407,6 @@
       "absorbedEvents" : [ "bravos:post:488663" ],
       "beforeAgentUnits" : null,
       "beforeOwnerUnits" : { }
-    },
-    "bravos:post:488723|bravos:post:488723|OPEN|attempt:1" : {
-      "intent" : {
-        "key" : "bravos:post:488723|bravos:post:488723|OPEN|attempt:1",
-        "cycleKey" : "bravos:post:488723",
-        "eventKey" : "bravos:post:488723",
-        "action" : "OPEN",
-        "instrumentId" : 8882,
-        "positionId" : null,
-        "ownerAmount" : 230.51,
-        "agentAmount" : 499.92,
-        "units" : null,
-        "ceiling" : 643.77,
-        "stop" : 570,
-        "settlementType" : "real",
-        "orderType" : "mkt"
-      },
-      "reference" : "0608b2b8-b526-4b0f-9bb4-df888b33201a",
-      "orderId" : 1593760619,
-      "status" : "CONFIRMED",
-      "createdAt" : "2026-09-23T19:32:51.613001700Z",
-      "result" : "PARTIAL_FILL_KEPT_AND_PROTECTED",
-      "agentFilled" : 499.92,
-      "ownerFilled" : 230.5,
-      "ownerShortfall" : 0.01,
-      "baselineSaved" : true,
-      "positionIds" : [ 3586112808 ],
-      "absorbedEvents" : [ "bravos:post:488723" ],
-      "beforeAgentUnits" : null,
-      "beforeOwnerUnits" : { }
     }
   },
   "batches" : {
@@ -3705,14 +3675,8 @@
       "ownerUnits" : {
         "3585989922" : 0.607043
       }
-    },
-    "3586112808" : {
-      "agentUnits" : 0.807377,
-      "ownerUnits" : {
-        "3586112809" : 0.372261
-      }
     }
   },
   "earlyExits" : [ ],
-  "report" : [ "MAGS: BLOCKED INSTRUMENT_NOT_LISTED", "IBIT: BLOCKED BOTH_ACCOUNTS_OPENING_DISABLED", "ETHA: BLOCKED BOTH_ACCOUNTS_OPENING_DISABLED", "MEDP: READY POLICY_PASSED", "MEDP: OPEN owner USD 230.51, internal USD 499.92, ceiling 643.77, stop 570, market", "MEDP: CONFIRMED OPEN owner USD 230.5", "MEDP: PARTIAL_FILL_KEPT owner USD 230.5, shortfall USD 0.01; no automatic top-up", "BRK.B: HOLD_UNCHANGED", "ARGT: HOLD_UNCHANGED", "SMH: HOLD_UNCHANGED", "ADI: HOLD_UNCHANGED" ]
+  "report" : [ "MAGS: BLOCKED INSTRUMENT_NOT_LISTED", "IBIT: BLOCKED BOTH_ACCOUNTS_OPENING_DISABLED", "ETHA: BLOCKED BOTH_ACCOUNTS_OPENING_DISABLED", "MEDP: READY POLICY_PASSED", "MEDP: OPEN owner USD 230.51, internal USD 499.92, ceiling 643.77, stop 570, market" ]
 }
