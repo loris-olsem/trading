@@ -1,8 +1,8 @@
 {
   "schemaVersion" : 1,
-  "generation" : 137,
+  "generation" : 135,
   "enrollmentFloor" : "2026-08-23",
-  "checkpoint" : "2026-09-23T19:09:19.952068Z",
+  "checkpoint" : "2026-09-23T16:50:44.557340900Z",
   "revisionAudit" : "2026-09-21T17:37:05.647907200Z",
   "book" : {
     "cycles" : {
@@ -3296,8 +3296,8 @@
         "action" : "OPEN",
         "instrumentId" : 1118,
         "positionId" : null,
-        "ownerAmount" : 368.8,
-        "agentAmount" : 8E+2,
+        "ownerAmount" : 368.80,
+        "agentAmount" : 800.00,
         "units" : null,
         "ceiling" : 516.63,
         "stop" : 480,
@@ -3387,7 +3387,7 @@
         "instrumentId" : 4264,
         "positionId" : null,
         "ownerAmount" : 230.48,
-        "agentAmount" : 499.9,
+        "agentAmount" : 499.90,
         "units" : null,
         "ceiling" : 390.02,
         "stop" : 347.5,
@@ -3582,8 +3582,8 @@
       "action" : "OPEN",
       "instrumentId" : 1118,
       "positionId" : null,
-      "ownerAmount" : 368.8,
-      "agentAmount" : 8E+2,
+      "ownerAmount" : 368.80,
+      "agentAmount" : 800.00,
       "units" : null,
       "ceiling" : 516.63,
       "stop" : 480,
@@ -3628,7 +3628,7 @@
       "instrumentId" : 4264,
       "positionId" : null,
       "ownerAmount" : 230.48,
-      "agentAmount" : 499.9,
+      "agentAmount" : 499.90,
       "units" : null,
       "ceiling" : 390.02,
       "stop" : 347.5,
@@ -3663,5 +3663,5 @@
     }
   },
   "earlyExits" : [ ],
-  "report" : [ "MAGS: BLOCKED INSTRUMENT_NOT_LISTED", "IBIT: BLOCKED BOTH_ACCOUNTS_OPENING_DISABLED", "ETHA: BLOCKED BOTH_ACCOUNTS_OPENING_DISABLED", "MEDP: READY POLICY_PASSED", "MEDP: OPEN owner USD 230.51, internal USD 499.92, ceiling 643.77, stop 570, market", "BRK.B: HOLD_UNCHANGED", "ARGT: HOLD_UNCHANGED", "SMH: HOLD_UNCHANGED", "ADI: HOLD_UNCHANGED" ]
+  "report" : [ "BRK.B: READY POLICY_PASSED", "BRK.B: OPEN owner USD 368.80, internal USD 800.00, ceiling 516.63, stop 480, market", "BRK.B: CONFIRMED OPEN owner USD 368.79", "BRK.B: PARTIAL_FILL_KEPT owner USD 368.79, shortfall USD 0.01; no automatic top-up", "ARGT: READY POLICY_PASSED", "ARGT: OPEN owner USD 230.49, internal USD 499.92, ceiling 98.36, stop 89, market", "ARGT: CONFIRMED OPEN owner USD 230.48", "ARGT: PARTIAL_FILL_KEPT owner USD 230.48, shortfall USD 0.01; no automatic top-up", "MAGS: BLOCKED INSTRUMENT_NOT_LISTED", "IBIT: BLOCKED BOTH_ACCOUNTS_OPENING_DISABLED", "ETHA: BLOCKED BOTH_ACCOUNTS_OPENING_DISABLED", "SMH: READY POLICY_PASSED", "SMH: OPEN owner USD 230.44, internal USD 499.82, ceiling 598.36, stop 535, market", "SMH: CONFIRMED OPEN owner USD 230.43", "SMH: PARTIAL_FILL_KEPT owner USD 230.43, shortfall USD 0.01; no automatic top-up", "ADI: READY POLICY_PASSED", "ADI: OPEN owner USD 230.48, internal USD 499.90, ceiling 390.02, stop 347.5, market", "ADI: CONFIRMED OPEN owner USD 230.47", "ADI: PARTIAL_FILL_KEPT owner USD 230.47, shortfall USD 0.01; no automatic top-up", "MEDP: BLOCKED INSTRUMENT_PROFILE_REQUIRED" ]
 }
