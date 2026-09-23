@@ -234,7 +234,9 @@ checks rather than blindly executing a saved plan. Do not initialize again.
 
 Authority: `state/runtime/ledger.json`, history and kill switch. Minimal exports:
 `state/bravos/runtime-ledger.json`, `history/runtime-*.json`, `runs/runtime-*.md`.
-Raw captures and account diagnostics stay ignored. Successful commands export;
+These generated exports stay local and ignored; they duplicate the checkpointed
+runtime journal and are not required for recovery. Historical planning records
+remain tracked. Raw review responses, captures and account diagnostics stay ignored. Successful commands export;
 after failure, inspect local `status` and the private journal.
 
 ### Automatic local state checkpoints

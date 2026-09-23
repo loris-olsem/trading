@@ -10,13 +10,18 @@
 !/state/bravos/
 /state/bravos/*
 !/state/bravos/ledger.json
-!/state/bravos/runtime-ledger.json
 !/state/bravos/history/
 !/state/bravos/runs/
 /state/bravos/history/*
 !/state/bravos/history/*.json
 /state/bravos/runs/*
 !/state/bravos/runs/*.md
+# Generated summaries duplicate the checkpointed state/runtime journal.
+/state/bravos/runtime-ledger.json
+/state/bravos/history/runtime-*.json
+/state/bravos/runs/runtime-*.md
+# Keep review requests/reports; raw tool responses are local artifacts.
+/work/fable-review/runs/*/response.json
 .env
 .env.*
 !.env.example
