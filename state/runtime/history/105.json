@@ -1,8 +1,8 @@
 {
   "schemaVersion" : 1,
-  "generation" : 135,
+  "generation" : 105,
   "enrollmentFloor" : "2026-08-23",
-  "checkpoint" : "2026-09-23T16:50:44.557340900Z",
+  "checkpoint" : "2026-09-22T20:18:44.291607900Z",
   "revisionAudit" : "2026-09-21T17:37:05.647907200Z",
   "book" : {
     "cycles" : {
@@ -1480,7 +1480,7 @@
         "stop" : 480,
         "sourceOpen" : true,
         "enrolled" : true,
-        "entered" : true,
+        "entered" : false,
         "terminal" : false,
         "blocker" : null,
         "events" : [ {
@@ -1508,8 +1508,8 @@
           "stop" : null,
           "targets" : [ ]
         } ],
-        "positionIds" : [ 3585988948 ],
-        "completed" : [ "bravos:post:487910", "bravos:post:488320" ],
+        "positionIds" : [ ],
+        "completed" : [ ],
         "additionSessions" : { }
       },
       "bravos:post:487920" : {
@@ -1521,7 +1521,7 @@
         "stop" : 89,
         "sourceOpen" : true,
         "enrolled" : true,
-        "entered" : true,
+        "entered" : false,
         "terminal" : false,
         "blocker" : null,
         "events" : [ {
@@ -1537,8 +1537,8 @@
           "stop" : 89,
           "targets" : [ 108, 112.5, 118 ]
         } ],
-        "positionIds" : [ 3585989325 ],
-        "completed" : [ "bravos:post:487920" ],
+        "positionIds" : [ ],
+        "completed" : [ ],
         "additionSessions" : { }
       },
       "bravos:post:487974" : {
@@ -1678,7 +1678,7 @@
         "stop" : 535,
         "sourceOpen" : true,
         "enrolled" : true,
-        "entered" : true,
+        "entered" : false,
         "terminal" : false,
         "blocker" : null,
         "events" : [ {
@@ -1694,8 +1694,8 @@
           "stop" : 535,
           "targets" : [ 670, 695, 730 ]
         } ],
-        "positionIds" : [ 3585989568 ],
-        "completed" : [ "bravos:post:488611" ],
+        "positionIds" : [ ],
+        "completed" : [ ],
         "additionSessions" : { }
       },
       "bravos:post:488663" : {
@@ -1707,7 +1707,7 @@
         "stop" : 347.5,
         "sourceOpen" : true,
         "enrolled" : true,
-        "entered" : true,
+        "entered" : false,
         "terminal" : false,
         "blocker" : null,
         "events" : [ {
@@ -1722,35 +1722,6 @@
           "after" : 5,
           "stop" : 347.5,
           "targets" : [ 400, 430, 455 ]
-        } ],
-        "positionIds" : [ 3585989920 ],
-        "completed" : [ "bravos:post:488663" ],
-        "additionSessions" : { }
-      },
-      "bravos:post:488723" : {
-        "key" : "bravos:post:488723",
-        "symbol" : "MEDP",
-        "openedOn" : "2026-09-23",
-        "entry" : 631.15,
-        "weight" : 5,
-        "stop" : 570,
-        "sourceOpen" : true,
-        "enrolled" : true,
-        "entered" : false,
-        "terminal" : false,
-        "blocker" : null,
-        "events" : [ {
-          "key" : "bravos:post:488723",
-          "url" : "https://bravosresearch.com/news-feed/initiating-long-on-medpace-holdings-inc-medp-breakout/",
-          "date" : "2026-09-23",
-          "hash" : "d059136d881ff05584aaff6e80c32d45d54cd6c861987b4802171728f677a932",
-          "symbol" : "MEDP",
-          "action" : "OPEN",
-          "price" : 631.15,
-          "before" : null,
-          "after" : 5,
-          "stop" : 570,
-          "targets" : [ 725, 750, 800 ]
         } ],
         "positionIds" : [ ],
         "completed" : [ ],
@@ -2940,19 +2911,6 @@
         "after" : 0,
         "stop" : null,
         "targets" : [ ]
-      } ],
-      "bravos:post:488723" : [ {
-        "key" : "bravos:post:488723",
-        "url" : "https://bravosresearch.com/news-feed/initiating-long-on-medpace-holdings-inc-medp-breakout/",
-        "date" : "2026-09-23",
-        "hash" : "d059136d881ff05584aaff6e80c32d45d54cd6c861987b4802171728f677a932",
-        "symbol" : "MEDP",
-        "action" : "OPEN",
-        "price" : 631.15,
-        "before" : null,
-        "after" : 5,
-        "stop" : 570,
-        "targets" : [ 725, 750, 800 ]
       } ]
     },
     "blockers" : [ ]
@@ -3287,126 +3245,6 @@
       "absorbedEvents" : [ "bravos:post:488663" ],
       "beforeAgentUnits" : null,
       "beforeOwnerUnits" : { }
-    },
-    "bravos:post:487910|bravos:post:487910|OPEN|attempt:5" : {
-      "intent" : {
-        "key" : "bravos:post:487910|bravos:post:487910|OPEN|attempt:5",
-        "cycleKey" : "bravos:post:487910",
-        "eventKey" : "bravos:post:487910",
-        "action" : "OPEN",
-        "instrumentId" : 1118,
-        "positionId" : null,
-        "ownerAmount" : 368.80,
-        "agentAmount" : 800.00,
-        "units" : null,
-        "ceiling" : 516.63,
-        "stop" : 480,
-        "settlementType" : "real",
-        "orderType" : "mkt"
-      },
-      "reference" : "a86b18cc-3d7c-49e4-89d4-9d0344561b34",
-      "orderId" : 1593956329,
-      "status" : "CONFIRMED",
-      "createdAt" : "2026-09-23T16:50:51.629114200Z",
-      "result" : "PARTIAL_FILL_KEPT_AND_PROTECTED",
-      "agentFilled" : 800,
-      "ownerFilled" : 368.79,
-      "ownerShortfall" : 0.01,
-      "baselineSaved" : true,
-      "positionIds" : [ 3585988948 ],
-      "absorbedEvents" : [ "bravos:post:487910", "bravos:post:488320" ],
-      "beforeAgentUnits" : null,
-      "beforeOwnerUnits" : { }
-    },
-    "bravos:post:487920|bravos:post:487920|OPEN|attempt:2" : {
-      "intent" : {
-        "key" : "bravos:post:487920|bravos:post:487920|OPEN|attempt:2",
-        "cycleKey" : "bravos:post:487920",
-        "eventKey" : "bravos:post:487920",
-        "action" : "OPEN",
-        "instrumentId" : 3421,
-        "positionId" : null,
-        "ownerAmount" : 230.49,
-        "agentAmount" : 499.92,
-        "units" : null,
-        "ceiling" : 98.36,
-        "stop" : 89,
-        "settlementType" : "cfd",
-        "orderType" : "mkt"
-      },
-      "reference" : "9d359745-6962-44b2-bb97-c1ca1c2d521c",
-      "orderId" : 1593956337,
-      "status" : "CONFIRMED",
-      "createdAt" : "2026-09-23T16:51:29.907871400Z",
-      "result" : "PARTIAL_FILL_KEPT_AND_PROTECTED",
-      "agentFilled" : 499.92,
-      "ownerFilled" : 230.48,
-      "ownerShortfall" : 0.01,
-      "baselineSaved" : true,
-      "positionIds" : [ 3585989325 ],
-      "absorbedEvents" : [ "bravos:post:487920" ],
-      "beforeAgentUnits" : null,
-      "beforeOwnerUnits" : { }
-    },
-    "bravos:post:488611|bravos:post:488611|OPEN|attempt:1" : {
-      "intent" : {
-        "key" : "bravos:post:488611|bravos:post:488611|OPEN|attempt:1",
-        "cycleKey" : "bravos:post:488611",
-        "eventKey" : "bravos:post:488611",
-        "action" : "OPEN",
-        "instrumentId" : 6357,
-        "positionId" : null,
-        "ownerAmount" : 230.44,
-        "agentAmount" : 499.82,
-        "units" : null,
-        "ceiling" : 598.36,
-        "stop" : 535,
-        "settlementType" : "cfd",
-        "orderType" : "mkt"
-      },
-      "reference" : "bbb2476c-6a9f-4dad-bfa6-85cc40d2e67a",
-      "orderId" : 1593760481,
-      "status" : "CONFIRMED",
-      "createdAt" : "2026-09-23T16:52:14.433381300Z",
-      "result" : "PARTIAL_FILL_KEPT_AND_PROTECTED",
-      "agentFilled" : 499.82,
-      "ownerFilled" : 230.43,
-      "ownerShortfall" : 0.01,
-      "baselineSaved" : true,
-      "positionIds" : [ 3585989568 ],
-      "absorbedEvents" : [ "bravos:post:488611" ],
-      "beforeAgentUnits" : null,
-      "beforeOwnerUnits" : { }
-    },
-    "bravos:post:488663|bravos:post:488663|OPEN|attempt:4" : {
-      "intent" : {
-        "key" : "bravos:post:488663|bravos:post:488663|OPEN|attempt:4",
-        "cycleKey" : "bravos:post:488663",
-        "eventKey" : "bravos:post:488663",
-        "action" : "OPEN",
-        "instrumentId" : 4264,
-        "positionId" : null,
-        "ownerAmount" : 230.48,
-        "agentAmount" : 499.90,
-        "units" : null,
-        "ceiling" : 390.02,
-        "stop" : 347.5,
-        "settlementType" : "real",
-        "orderType" : "mkt"
-      },
-      "reference" : "7d5945b9-3b92-4b6f-b359-daefc96273b3",
-      "orderId" : 1592631870,
-      "status" : "CONFIRMED",
-      "createdAt" : "2026-09-23T16:52:51.343621100Z",
-      "result" : "PARTIAL_FILL_KEPT_AND_PROTECTED",
-      "agentFilled" : 499.9,
-      "ownerFilled" : 230.47,
-      "ownerShortfall" : 0.01,
-      "baselineSaved" : true,
-      "positionIds" : [ 3585989920 ],
-      "absorbedEvents" : [ "bravos:post:488663" ],
-      "beforeAgentUnits" : null,
-      "beforeOwnerUnits" : { }
     }
   },
   "batches" : {
@@ -3574,94 +3412,9 @@
       "stop" : 347.5,
       "settlementType" : "real",
       "orderType" : "limitIOC"
-    } ],
-    "bravos:post:487910|bravos:post:487910|OPEN|attempt:5" : [ {
-      "key" : "bravos:post:487910|bravos:post:487910|OPEN|attempt:5",
-      "cycleKey" : "bravos:post:487910",
-      "eventKey" : "bravos:post:487910",
-      "action" : "OPEN",
-      "instrumentId" : 1118,
-      "positionId" : null,
-      "ownerAmount" : 368.80,
-      "agentAmount" : 800.00,
-      "units" : null,
-      "ceiling" : 516.63,
-      "stop" : 480,
-      "settlementType" : "real",
-      "orderType" : "mkt"
-    } ],
-    "bravos:post:487920|bravos:post:487920|OPEN|attempt:2" : [ {
-      "key" : "bravos:post:487920|bravos:post:487920|OPEN|attempt:2",
-      "cycleKey" : "bravos:post:487920",
-      "eventKey" : "bravos:post:487920",
-      "action" : "OPEN",
-      "instrumentId" : 3421,
-      "positionId" : null,
-      "ownerAmount" : 230.49,
-      "agentAmount" : 499.92,
-      "units" : null,
-      "ceiling" : 98.36,
-      "stop" : 89,
-      "settlementType" : "cfd",
-      "orderType" : "mkt"
-    } ],
-    "bravos:post:488611|bravos:post:488611|OPEN|attempt:1" : [ {
-      "key" : "bravos:post:488611|bravos:post:488611|OPEN|attempt:1",
-      "cycleKey" : "bravos:post:488611",
-      "eventKey" : "bravos:post:488611",
-      "action" : "OPEN",
-      "instrumentId" : 6357,
-      "positionId" : null,
-      "ownerAmount" : 230.44,
-      "agentAmount" : 499.82,
-      "units" : null,
-      "ceiling" : 598.36,
-      "stop" : 535,
-      "settlementType" : "cfd",
-      "orderType" : "mkt"
-    } ],
-    "bravos:post:488663|bravos:post:488663|OPEN|attempt:4" : [ {
-      "key" : "bravos:post:488663|bravos:post:488663|OPEN|attempt:4",
-      "cycleKey" : "bravos:post:488663",
-      "eventKey" : "bravos:post:488663",
-      "action" : "OPEN",
-      "instrumentId" : 4264,
-      "positionId" : null,
-      "ownerAmount" : 230.48,
-      "agentAmount" : 499.90,
-      "units" : null,
-      "ceiling" : 390.02,
-      "stop" : 347.5,
-      "settlementType" : "real",
-      "orderType" : "mkt"
     } ]
   },
-  "holdings" : {
-    "3585988948" : {
-      "agentUnits" : 1.568873,
-      "ownerUnits" : {
-        "3585988949" : 0.723231
-      }
-    },
-    "3585989325" : {
-      "agentUnits" : 5.457641,
-      "ownerUnits" : {
-        "3585989327" : 2.516157
-      }
-    },
-    "3585989568" : {
-      "agentUnits" : 0.838976,
-      "ownerUnits" : {
-        "3585989569" : 0.38679
-      }
-    },
-    "3585989920" : {
-      "agentUnits" : 1.316704,
-      "ownerUnits" : {
-        "3585989922" : 0.607043
-      }
-    }
-  },
+  "holdings" : { },
   "earlyExits" : [ ],
-  "report" : [ "BRK.B: READY POLICY_PASSED", "BRK.B: OPEN owner USD 368.80, internal USD 800.00, ceiling 516.63, stop 480, market", "BRK.B: CONFIRMED OPEN owner USD 368.79", "BRK.B: PARTIAL_FILL_KEPT owner USD 368.79, shortfall USD 0.01; no automatic top-up", "ARGT: READY POLICY_PASSED", "ARGT: OPEN owner USD 230.49, internal USD 499.92, ceiling 98.36, stop 89, market", "ARGT: CONFIRMED OPEN owner USD 230.48", "ARGT: PARTIAL_FILL_KEPT owner USD 230.48, shortfall USD 0.01; no automatic top-up", "MAGS: BLOCKED INSTRUMENT_NOT_LISTED", "IBIT: BLOCKED BOTH_ACCOUNTS_OPENING_DISABLED", "ETHA: BLOCKED BOTH_ACCOUNTS_OPENING_DISABLED", "SMH: READY POLICY_PASSED", "SMH: OPEN owner USD 230.44, internal USD 499.82, ceiling 598.36, stop 535, market", "SMH: CONFIRMED OPEN owner USD 230.43", "SMH: PARTIAL_FILL_KEPT owner USD 230.43, shortfall USD 0.01; no automatic top-up", "ADI: READY POLICY_PASSED", "ADI: OPEN owner USD 230.48, internal USD 499.90, ceiling 390.02, stop 347.5, market", "ADI: CONFIRMED OPEN owner USD 230.47", "ADI: PARTIAL_FILL_KEPT owner USD 230.47, shortfall USD 0.01; no automatic top-up", "MEDP: BLOCKED INSTRUMENT_PROFILE_REQUIRED" ]
+  "report" : [ "BRK.B: WAIT_QUOTE QUOTE_NOT_EXECUTABLE", "BRK.B: DETAIL No purchase is proposed because the quote is not marked executable under the market-hours, realtime and broker-tradability checks; the quote is 640.664 seconds old; the maximum is 60 seconds. A later run will reassess the opportunity under the same price and stop rules.", "ARGT: WAIT_QUOTE QUOTE_NOT_EXECUTABLE", "ARGT: DETAIL No purchase is proposed because the quote is not marked executable under the market-hours, realtime and broker-tradability checks; the quote is 1145.359 seconds old; the maximum is 60 seconds. A later run will reassess the opportunity under the same price and stop rules.", "MAGS: BLOCKED INSTRUMENT_NOT_LISTED", "IBIT: BLOCKED BOTH_ACCOUNTS_OPENING_DISABLED", "ETHA: BLOCKED BOTH_ACCOUNTS_OPENING_DISABLED", "SMH: WAIT_QUOTE QUOTE_NOT_EXECUTABLE", "SMH: DETAIL No purchase is proposed because the quote is not marked executable under the market-hours, realtime and broker-tradability checks; the quote is 1140.71 seconds old; the maximum is 60 seconds. A later run will reassess the opportunity under the same price and stop rules.", "ADI: WAIT_QUOTE QUOTE_NOT_EXECUTABLE", "ADI: DETAIL No purchase is proposed because the quote is not marked executable under the market-hours, realtime and broker-tradability checks; the quote is 131.166 seconds old; the maximum is 60 seconds. A later run will reassess the opportunity under the same price and stop rules." ]
 }
