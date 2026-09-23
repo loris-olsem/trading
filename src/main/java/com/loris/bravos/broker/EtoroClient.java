@@ -19,6 +19,7 @@ public final class EtoroClient implements Broker, Workflow.Market {
   private final Clock clock;
   private final boolean writesAllowed;
   private final RateSource rateSource;
+  private final Map<String, Configuration.Asset> discovered = new LinkedHashMap<>();
 
   @FunctionalInterface
   public interface RateSource {
@@ -161,11 +162,7 @@ public final class EtoroClient implements Broker, Workflow.Market {
   }
 
   public Instrument instrument(String symbol, BigDecimal proposedOwnerAmount) throws IOException {
-    var asset = config.assets.get(symbol);
-    if (asset == null) {
-      diagnoseUnconfigured(symbol);
-      throw new IOException("INSTRUMENT_PROFILE_REQUIRED");
-    }
+    var asset = profile(symbol);
     var identity =
         unique(
             array(
@@ -188,6 +185,21 @@ public final class EtoroClient implements Broker, Workflow.Market {
             "instrumentId",
             asset.instrumentId);
     requireOpeningAllowed(eligibility, ownerEligibility);
+    if (asset.settlementType == null) {
+      asset.settlementType =
+          List.of("real", "cfd").stream()
+              .filter(
+                  s -> {
+                    try {
+                      return openingConfiguration(eligibility, s) != null
+                          && openingConfiguration(ownerEligibility, s) != null;
+                    } catch (IOException malformed) {
+                      return false;
+                    }
+                  })
+              .findFirst()
+              .orElseThrow(() -> new IOException("NO_COMMON_UNLEVERAGED_SETTLEMENT"));
+    }
     JsonNode leverage = openingConfiguration(eligibility, asset.settlementType);
     if (leverage == null) throw new IOException("AGENT_INSTRUMENT_INELIGIBLE");
     if (openingConfiguration(ownerEligibility, asset.settlementType) == null)
@@ -241,7 +253,9 @@ public final class EtoroClient implements Broker, Workflow.Market {
         total);
   }
 
-  private void diagnoseUnconfigured(String symbol) throws IOException {
+  private Configuration.Asset profile(String symbol) throws IOException {
+    var configured = config.assets.get(symbol);
+    if (configured != null) return configured;
     if (!symbol.matches("[A-Z][A-Z0-9.]{0,12}")) throw new IOException("INVALID_INSTRUMENT_SYMBOL");
     var known = config.lookupOnlyAssets.get(symbol);
     String symbols = known == null ? symbol + "," + symbol + ".US" : known.brokerSymbol;
@@ -254,34 +268,40 @@ public final class EtoroClient implements Broker, Workflow.Market {
         throw new IOException("INSTRUMENT_NOT_LISTED");
       throw failure;
     }
-    if (bool(required(response, "pagination"), "hasNext"))
-      throw new IOException("INSTRUMENT_LOOKUP_INCOMPLETE");
-    var results = array(response, "results");
-    if (known == null) {
-      // Candidate discovery is diagnostic only. Never infer identity, leverage or
-      // currency from a similar ticker, and never turn a search hit into an order.
-      for (JsonNode candidate : results) {
-        String found = text(candidate, "symbol");
-        if (found.equals(symbol) || found.equals(symbol + ".US")) return;
-      }
-      throw new IOException("INSTRUMENT_NOT_LISTED");
-    }
-    JsonNode identity = unique(results, "instrumentId", known.instrumentId);
-    if (!text(identity, "symbol").equals(known.brokerSymbol))
+    JsonNode identity = InstrumentResolver.identity(response, symbol, known);
+    if (java.util.stream.Stream.concat(
+            config.assets.entrySet().stream(), discovered.entrySet().stream())
+        .anyMatch(
+            e ->
+                !e.getKey().equals(symbol)
+                    && e.getValue().instrumentId == identity.path("instrumentId").longValue()))
+      throw new IOException("INSTRUMENT_IDENTITY_AMBIGUOUS");
+    var prior = discovered.get(symbol);
+    if (prior != null
+        && (prior.instrumentId != integer(identity, "instrumentId")
+            || !prior.brokerSymbol.equals(text(identity, "symbol"))))
       throw new IOException("INSTRUMENT_IDENTITY_CHANGED");
-    var request = Json.MAPPER.createObjectNode().put("currency", "USD");
-    request.putArray("instrumentIds").add(known.instrumentId);
-    JsonNode agent =
-        unique(
-            array(query(false, "/api/v2/trading/info/eligibility", request), "eligibilities"),
-            "instrumentId",
-            known.instrumentId);
-    JsonNode owner =
-        unique(
-            array(query(true, "/api/v2/trading/info/eligibility", request), "eligibilities"),
-            "instrumentId",
-            known.instrumentId);
-    requireOpeningAllowed(agent, owner);
+    // Known ambiguous fund aliases retain their actual broker restriction reason.
+    if (known != null) {
+      var request = Json.MAPPER.createObjectNode().put("currency", "USD");
+      request.putArray("instrumentIds").add(integer(identity, "instrumentId"));
+      JsonNode agent =
+          unique(
+              array(query(false, "/api/v2/trading/info/eligibility", request), "eligibilities"),
+              "instrumentId",
+              integer(identity, "instrumentId"));
+      JsonNode owner =
+          unique(
+              array(query(true, "/api/v2/trading/info/eligibility", request), "eligibilities"),
+              "instrumentId",
+              integer(identity, "instrumentId"));
+      requireOpeningAllowed(agent, owner);
+    }
+    var asset =
+        InstrumentResolver.profile(
+            identity, get(false, "/api/v1/market-data/exchanges"), config.allowLeveragedFunds);
+    discovered.put(symbol, asset);
+    return asset;
   }
 
   private static void requireOpeningAllowed(JsonNode agent, JsonNode owner) throws IOException {
@@ -312,7 +332,10 @@ public final class EtoroClient implements Broker, Workflow.Market {
   }
 
   public Quote quote(Instrument i) throws IOException {
-    var profile = config.assets.get(i.symbol());
+    var profile =
+        config.assets.containsKey(i.symbol())
+            ? config.assets.get(i.symbol())
+            : discovered.get(i.symbol());
     if (profile == null || profile.instrumentId != i.id())
       throw new IOException("INSTRUMENT_UNVERIFIED");
     boolean calendar = "US_EQUITIES_2026".equals(profile.marketHours);
@@ -386,8 +409,10 @@ public final class EtoroClient implements Broker, Workflow.Market {
   @Override
   public int unitScale(String symbol) throws IOException {
     var asset = config.assets.get(symbol);
-    if (asset == null) throw new IOException("REDUCTION_PRECISION_UNVERIFIED");
-    return asset.unitScale;
+    // Discovered stocks use the same downward calculation granularity. Exits
+    // use journaled position IDs: a delisting or failed catalogue lookup must
+    // not prevent closing existing shares after restart.
+    return asset == null ? 5 : asset.unitScale;
   }
 
   @Override
@@ -539,7 +564,8 @@ public final class EtoroClient implements Broker, Workflow.Market {
       if (!a.copyEntryPermitted() || !a.copyStopModelConfigured())
         throw new IOException("COPY_CAPABILITIES_UNVERIFIED");
       String symbol =
-          config.assets.entrySet().stream()
+          java.util.stream.Stream.concat(
+                  config.assets.entrySet().stream(), discovered.entrySet().stream())
               .filter(e -> e.getValue().instrumentId == i.instrumentId())
               .map(Map.Entry::getKey)
               .findFirst()

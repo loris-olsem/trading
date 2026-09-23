@@ -49,6 +49,11 @@ class InstrumentAuditTest {
     Transport api =
         (method, path, headers, body) -> {
           calls.add(method + " " + path);
+          if (path.endsWith("/exchanges")) {
+            calls.removeLast();
+            assertEquals("GET", method);
+            return response(200, "{\"exchangeInfo\":[]}");
+          }
           if (calls.size() == 1) {
             assertEquals("GET /api/v2/market-data/instruments?symbols=CF,EOG", calls.getLast());
             assertNull(body);

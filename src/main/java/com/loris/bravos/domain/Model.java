@@ -45,7 +45,7 @@ public final class Model {
       long id,
       String symbol,
       String currency,
-      boolean unleveraged,
+      boolean productPermitted,
       boolean eligible,
       String settlementType,
       int priceScale,

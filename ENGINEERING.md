@@ -224,6 +224,18 @@ Verified 19 September 2026 on the final Java sources:
 
 ## Read-only evidence
 
+23 September automatic instrument discovery: **227 tests passed**. JaCoCo
+covered **13,159/14,747 instructions (89.23%)** and **1,795/2,205 branches
+(81.41%)**. PIT killed **1,039/1,145 mutations (90.74%)**, with 89 survivors and
+17 uncovered, no timeouts or errors. Formatting, coverage gates and packaging
+passed. Regression fixtures cover exact identities, ambiguous matches, shared
+account X1 permissions, product consent and changed identities before submission.
+The read-only plan resolved MEDP without a configured ticker entry and marked it
+ready; the four existing holdings remained unchanged. Runtime generation 137 was
+automatically checkpointed. No live orders were submitted during this work.
+See [instrument discovery](docs/instrument-discovery.md) for supported products
+and the owner's explicit embedded-fund-leverage decision.
+
 Price-risk policy update, 21 September 2026: **147 tests pass**. Coverage is
 **90.54% instructions** (9,873/10,904) and **79.37% branches** (1,316/1,658).
 PIT is **835/937 killed (89.11%)**, with 87 survivors and 15 uncovered; no timeout

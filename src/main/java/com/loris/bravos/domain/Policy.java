@@ -80,7 +80,7 @@ public final class Policy {
     if (i == null
         || !c.symbol.equals(i.symbol())
         || !i.eligible()
-        || !i.unleveraged()
+        || !i.productPermitted()
         || !"USD".equals(i.currency())
         || !Set.of("real", "cfd").contains(i.settlementType()))
       return Decision.of(Outcome.BLOCKED, "INSTRUMENT_UNVERIFIED");

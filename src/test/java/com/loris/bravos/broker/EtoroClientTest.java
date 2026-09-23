@@ -145,6 +145,9 @@ class EtoroClientTest {
                 ? metadata
                 : node(
                     "{\"results\":[{\"instrumentId\":1890,\"symbol\":\"CF\"}],\"pagination\":{\"hasNext\":false}}");
+      else if (path.endsWith("/exchanges"))
+        response =
+            node("{\"exchangeInfo\":[{\"exchangeID\":4,\"exchangeDescription\":\"NASDAQ\"}]}");
       else if (path.endsWith("/eligibility")) {
         assertEquals("POST", method);
         response = Json.MAPPER.createObjectNode();
@@ -194,11 +197,87 @@ class EtoroClientTest {
     return offlineClient(api, secrets, config(), clock, writes);
   }
 
+  @Test
+  void discoveryRequiresSharedX1ProtectionAndNeverDuplicatesAnotherTicker() throws Exception {
+    var api = new Api();
+    var config = config();
+    config.assets.clear();
+    config.copyPricePolicy = "MARKET_WITH_PRICE_CHECK";
+    api.metadata =
+        node(
+            "{\"results\":[{\"instrumentId\":1890,\"symbol\":\"CF\",\"type\":\"Stocks\",\"exchangeId\":4}],\"pagination\":{\"hasNext\":false}}");
+    var leverage = (ObjectNode) api.eligibility.path("leverageConfigs").get(0);
+    leverage.put("settlementType", "cfd");
+    var broker = offlineClient(api, secrets, config, clock, false);
+    assertEquals("cfd", broker.instrument("CF", d("100")).settlementType());
+    ((ObjectNode) api.metadata.path("results").get(0)).put("type", "ETF");
+    assertThrows(IOException.class, () -> broker.instrument("CF", d("100")));
+    config.allowLeveragedFunds = true;
+    assertEquals("cfd", broker.instrument("CF", d("100")).settlementType());
+    leverage.putArray("leverageValues").add(2);
+    assertEquals(
+        "NO_COMMON_UNLEVERAGED_SETTLEMENT",
+        assertThrows(IOException.class, () -> broker.instrument("CF", d("100"))).getMessage());
+    leverage.putArray("leverageValues").add(1);
+    api.ownerEligibility = api.eligibility.deepCopy();
+    ((ObjectNode) api.ownerEligibility.path("leverageConfigs").get(0))
+        .put("allowStopLossTakeProfit", false);
+    assertEquals(
+        "NO_COMMON_UNLEVERAGED_SETTLEMENT",
+        assertThrows(IOException.class, () -> broker.instrument("CF", d("100"))).getMessage());
+    ((ObjectNode) api.metadata.path("results").get(0)).put("symbol", "OTHER");
+    assertEquals(
+        "INSTRUMENT_IDENTITY_AMBIGUOUS",
+        assertThrows(IOException.class, () -> broker.instrument("OTHER", d("100"))).getMessage());
+    api.status = 500;
+    assertEquals(5, offlineClient(api, secrets, config, clock, false).unitScale("CF"));
+    assertEquals(0, api.writes);
+  }
+
   Intent opening() {
     return new Policy()
         .opening(cycle(), instrument(), quote("100"), account(), NOW, d("0"))
         .intents()
         .getFirst();
+  }
+
+  @Test
+  void newStockCanPlanPrepareAndSubmitWithoutAConfiguredTickerAndCloseAfterRestart()
+      throws Exception {
+    var api = new Api();
+    var config = config();
+    config.assets.clear();
+    config.copyPricePolicy = "MARKET_WITH_PRICE_CHECK";
+    api.metadata =
+        node(
+            "{\"results\":[{\"instrumentId\":1890,\"symbol\":\"CF\",\"type\":\"Stocks\",\"exchangeId\":4}],\"pagination\":{\"hasNext\":false}}");
+    var broker = offlineClient(api, secrets, config, clock, true);
+    var asset = broker.instrument("CF", d("230.50"));
+    assertEquals("real", asset.settlementType());
+    assertTrue(broker.quote(asset).exchangeOpen());
+    var intent =
+        new Policy(broker.entryOrderType())
+            .opening(cycle(), asset, quote("100"), account(), NOW, d("0"))
+            .intents()
+            .getFirst();
+    broker.prepare(new Attempt(intent, NOW));
+    broker.submit(intent, UUID.randomUUID().toString());
+    assertEquals(1, api.writes);
+    assertEquals("mkt", Json.MAPPER.readTree(api.submittedBody).path("orderType").asText());
+    assertTrue(config.assets.isEmpty());
+    api.eligibility.put("allowOpenPosition", false);
+    var restarted = offlineClient(api, secrets, config, clock, false);
+    assertEquals(5, restarted.unitScale("CF"));
+    assertEquals(
+        "BOTH_ACCOUNTS_OPENING_DISABLED",
+        assertThrows(IOException.class, () -> restarted.instrument("CF", d("100"))).getMessage());
+    api.eligibility.put("allowOpenPosition", true);
+    ((ObjectNode) api.metadata.path("results").get(0)).put("instrumentId", 99);
+    assertEquals(
+        "INSTRUMENT_IDENTITY_CHANGED",
+        assertThrows(IOException.class, () -> broker.prepare(new Attempt(intent, NOW)))
+            .getMessage());
+    assertEquals(1, api.writes);
   }
 
   @Test
@@ -840,7 +919,7 @@ class EtoroClientTest {
     c.prepare(attempt);
     assertEquals(0, api.writes);
     assertEquals(4, c.unitScale("CF"));
-    assertThrows(IOException.class, () -> c.unitScale("UNKNOWN"));
+    assertEquals(5, c.unitScale("UNKNOWN"));
     api.mirror.put("availableAmount", 5000);
     assertThrows(IOException.class, () -> c.prepare(attempt));
     api.mirror.put("availableAmount", 4610);
@@ -1168,7 +1247,7 @@ class EtoroClientTest {
                 ? "BOTH_ACCOUNTS_OPENING_DISABLED"
                 : !agent
                     ? "AGENT_OPENING_DISABLED"
-                    : !owner ? "OWNER_OPENING_DISABLED" : "INSTRUMENT_PROFILE_REQUIRED";
+                    : !owner ? "OWNER_OPENING_DISABLED" : "PRODUCT_STRUCTURE_UNVERIFIED";
         assertEquals(
             expected,
             assertThrows(IOException.class, () -> broker.instrument("SOURCE", d("100")))
@@ -1197,7 +1276,7 @@ class EtoroClientTest {
                   + found
                   + "\"}],\"pagination\":{\"hasNext\":false}}");
       assertEquals(
-          found.equals("OTHER") ? "INSTRUMENT_NOT_LISTED" : "INSTRUMENT_PROFILE_REQUIRED",
+          found.equals("OTHER") ? "INSTRUMENT_NOT_LISTED" : "PRODUCT_STRUCTURE_UNVERIFIED",
           assertThrows(IOException.class, () -> c.instrument("NEW", d("1"))).getMessage());
     }
     api.metadata.putArray("results");

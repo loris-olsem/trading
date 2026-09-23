@@ -4,6 +4,7 @@
   "copyPriceCeilingEvidence": "",
   "copyPricePolicy": "MARKET_WITH_PRICE_CHECK",
   "copySizingModel": "REALIZED_EQUITY_RATIO",
+  "allowLeveragedFunds": true,
   "lookupOnlyAssets": {
     "IBIT": { "instrumentId": 1367, "brokerSymbol": "IBIT" },
     "ETHA": { "instrumentId": 12152, "brokerSymbol": "ETHA.US" }

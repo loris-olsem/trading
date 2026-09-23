@@ -1,6 +1,6 @@
 # Effective trading rules
 
-Policy `2026-09-22.1`. Detailed agreements and original answers:
+Policy `2026-09-23.1`. Detailed agreements and original answers:
 [PLANNING.md](../PLANNING.md), [decision records](../decisions/).
 
 | Situation | Required behavior |
@@ -28,7 +28,7 @@ Policy `2026-09-22.1`. Detailed agreements and original answers:
 | Targets | Record prices; do not invent fractions. Unsupported quantified conditional instructions held |
 | Early exit | Record cycle/fraction; next owner `run` processes and verifies it; never restore sold units |
 | Full early/stop exit | End participation; no old-cycle re-entry |
-| Instrument | Exact supported exposure, no leverage including embedded; no substitute ticker |
+| Instrument | Exact supported exposure, broker leverage X1; no substitute ticker. Funds with embedded leverage are permitted when Bravos recommends them. New US stocks/ETFs resolve automatically without a configured ticker; other product/currency gaps remain explicit |
 | Quote | Published US core session for the configured US profiles, eToro tradability, realtime USD ask ≤60 seconds old, not future-dated; other profiles retain broker exchange flag |
 | Broker limit range | Applies only in retained IOC mode; market orders send no limit or trigger price |
 | Order | Reconcile, exits/reductions, stops, then openings/adds by source publication order |

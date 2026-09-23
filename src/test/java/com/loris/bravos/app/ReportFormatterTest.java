@@ -52,7 +52,7 @@ class ReportFormatterTest {
             "AGENT_OPENING_DISABLED", "in the agent account",
             "OWNER_OPENING_DISABLED", "in your main account",
             "INSTRUMENT_NOT_LISTED", "no listing under the Bravos ticker",
-            "INSTRUMENT_PROFILE_REQUIRED", "application setup gap",
+            "PRODUCT_STRUCTURE_UNVERIFIED", "product-support gap",
             "INSTRUMENT_LOOKUP_INCOMPLETE", "incomplete instrument lookup",
             "CAPPED_ORDER_REQUIRES_REAL_ASSET", "eToro rejects price-capped IOC orders for CFDs",
             "AGENT_INSTRUMENT_INELIGIBLE", "required unleveraged order and stop settings");

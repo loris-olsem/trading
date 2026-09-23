@@ -1,6 +1,6 @@
 # Bravos helper specification
 
-Policy version: `2026-09-22.1`. The user chose an owner-operated Java/Gradle
+Policy version: `2026-09-23.1`. The user chose an owner-operated Java/Gradle
 program to replace the Markdown skill. Normal `run` executes eligible trades;
 `plan` and `initialize` never submit orders. No schedule has been created;
 `gr status` reports the current enrollment state. The [operations guide](docs/operations.md) describes invocation;
@@ -9,6 +9,15 @@ and unresolved broker guarantees. Development uses read-only external checks and
 isolated execution fixtures, not financial actions by the assistant.
 
 ## Provenance and conflicts
+
+23 September: the owner reaffirmed that new Bravos instruments should not require
+manual ticker enrollment. US stocks and ETFs now resolve automatically through broker
+identity, exchange and both-account eligibility checks; the existing profile map
+is no longer a stock/ETF allowlist. After an explanation that a fund can multiply
+daily losses even at broker X1, the owner chose **"Allow them when Bravos
+recommends them"**. This supersedes the embedded-fund-leverage prohibition below;
+broker leverage stays X1. Other product and price-currency uncertainty remains
+explicit. See [instrument discovery](docs/instrument-discovery.md).
 
 Latest override, 22 September: the owner authorized "reduce our requirements
 if needed" to get execution working after IOC failures. New orders now use
@@ -51,10 +60,11 @@ the [earlier strict-copy answer](decisions/2026-09-21-price-ceiling.json).
 - Follow Bravos Tactical alerts on its website; Gmail is not required. A03 gave
   qualified assent to Tactical, while asking what Quant is. Quant is a separate
   signal/allocation system; its previously read guide included QQQ/TQQQ mixes.
-  TQQQ has built-in leverage, incompatible with the rule below. Do not add Quant.
-- **Never use leverage**, including leverage embedded in a product. A broker's
-  X1 setting alone does not establish that the instrument is unleveraged.
-- Follow any Bravos instrument this eToro account supports without leverage;
+  Quant remains outside the agreed signal source; do not add it automatically.
+- **Broker leverage stays X1.** Funds with embedded leverage are permitted when
+  recommended by the agreed Bravos source, per the 23 September answer above.
+  X1 does not remove a fund's built-in leverage.
+- Follow any Bravos instrument this eToro account supports at broker X1;
   do not impose the rejected stocks/ETFs-only restriction. Verify exact asset,
   currency, account eligibility and broker treatment. Report unavailable exposure;
   a similar ticker, underlying crypto or unrelated fund is not a replacement.

@@ -11,10 +11,12 @@ following the owner's authorization to relax requirements after repeated IOC
 rejections. The final fill price is not capped. Amount sizing and exact Bravos
 stops remain unchanged; an over-ceiling fill holds further purchases for review.
 Existing orders retain their saved order type. See [market-order mode](docs/market-order-mode.md).
-Live success still requires the owner's run; tests do not establish broker acceptance.
+The owner's 23 September run confirmed BRK.B, ARGT, SMH and ADI purchases by
+broker read-back. Tests alone do not establish broker acceptance.
 
-Execution profiles cover CF,
-BRK.B, ARGT, EOG, SMH and now ADI (eToro's ADI.US). The app checks IBIT/ETHA's
+New US stock and ETF tickers such as MEDP are discovered and checked automatically;
+they no longer need an execution-profile entry. Existing profiles cover CF,
+BRK.B, ARGT, EOG, SMH and ADI (eToro's ADI.US). The app checks IBIT/ETHA's
 account restrictions and searches for MAGS on every plan, reporting the actual
 availability reason. See the [22 September correction](docs/INSTRUMENTS-2026-09-22.md).
 Each run reassesses current conditions. No trades or schedule were created during development. See the
@@ -33,6 +35,7 @@ regressions, coverage and mutation results. Current read-only service evidence:
 | --- | --- |
 | [Operations](docs/operations.md) | Install, configure, plan, initialize, run and recover |
 | [Market-order mode](docs/market-order-mode.md) | Current execution choice, slippage risk and recovery behavior |
+| [Instrument discovery](docs/instrument-discovery.md) | Automatic stock/ETF setup, exact identity checks and remaining product coverage |
 | [Current execution failure](docs/ETORO-1065-INVESTIGATION.md) | Repeated 1065 rejections, compatibility checks and prepared support report |
 | [Fable execution review](docs/FABLE-EXECUTION-REVIEW-2026-09-22.md) | Independent review, CFD fix and owner decision to preserve sizing |
 | [Latest readiness check](docs/READINESS-2026-09-21.md) | Configured instruments, current broker-data holds and remaining verification |

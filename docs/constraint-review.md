@@ -1,6 +1,6 @@
 # Constraint review — updated 22 September 2026
 
-This reviews the implemented program against policy `2026-09-22.1`. Original
+This reviews the implemented program against policy `2026-09-23.1`. Original
 answers and their dispositions are preserved in [PLANNING.md](../PLANNING.md).
 Passing local tests establishes program behavior against fixtures, not eToro's
 live copying guarantees. No trades or funding actions were used as tests.
@@ -28,7 +28,7 @@ live copying guarantees. No trades or funding actions were used as tests.
 | Final partial fill kept, shortfall reported | Filled internal/owner amounts persisted; event consumed; restart test proves no top-up; later add still possible | Ongoing partial/copy/stop uncertainty blocks until reconciled |
 | No old-cycle re-entry after stop/full early exit | Durable terminal cycle and event participation; workflow tests | Unexplained changes held, never silently restored |
 | Early exits through program | Durable fraction request, duplicate pending request rejection, next-run processing; CLI/workflow tests | Source failures also block unsubmitted early exits |
-| Never leverage or substitute | X1 and long/settlement eligibility, exact asset ID/symbol, required issuer evidence | Current long USD unit-based adapter; unsupported semantics held |
+| Broker X1 and exact exposure | X1 and long/settlement eligibility, exact asset ID/symbol. New US stocks/ETFs resolve without ticker enrollment; owner now permits embedded fund leverage on Bravos signals | Current long USD unit-based adapter; unresolved product structure/currency is held explicitly |
 | Reconcile → reduce → protect → expose | Workflow ordering, global publication-order exposure sort; multi-event tests | No routine schedule installed |
 | Fresh executable quotes | Accepted official US 2026 calendar, broker tradability, realtime ≤60-second ask, future/stale rejection; pre-submit reread | Calendar requires updating before 2027; no promise that broker fill equals the observed quote |
 

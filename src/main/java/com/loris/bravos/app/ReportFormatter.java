@@ -207,8 +207,14 @@ public final class ReportFormatter {
           "No purchase is possible: eToro currently refuses new purchases of this investment in your main account. The app will check again on the next run";
       case "INSTRUMENT_NOT_LISTED" ->
           "No purchase is proposed: eToro returned no listing under the Bravos ticker or its US alias. The app will repeat the lookup next run. It will not buy a different fund as a substitute";
-      case "INSTRUMENT_PROFILE_REQUIRED" ->
-          "No purchase is proposed: eToro lists a candidate, but the app still needs its exact identity and unleveraged execution setup established. This is an application setup gap, not a broker refusal";
+      case "PRODUCT_STRUCTURE_UNVERIFIED" ->
+          "The listing was found, but its product type is not supported by automatic setup under the current policy. This is a product-support gap, not a missing ticker entry";
+      case "INSTRUMENT_CURRENCY_UNVERIFIED" ->
+          "The listing was found, but its price currency and trading session could not be established automatically. The app cannot safely compare its price with the Bravos alert yet";
+      case "INSTRUMENT_IDENTITY_AMBIGUOUS" ->
+          "eToro returned more than one exact ticker or US alias. The app needs to distinguish them before buying; it will not pick an arbitrary investment";
+      case "NO_COMMON_UNLEVERAGED_SETTLEMENT" ->
+          "Your agent and main account do not both permit the same X1 purchase with a fixed stop for this investment";
       case "INSTRUMENT_LOOKUP_INCOMPLETE" ->
           "No purchase is proposed because eToro returned an incomplete instrument lookup. The app will retry next run";
       case "AGENT_INSTRUMENT_INELIGIBLE" ->

@@ -91,7 +91,7 @@ class WorkflowTest {
               i.id(),
               s,
               i.currency(),
-              i.unleveraged(),
+              i.productPermitted(),
               i.eligible(),
               i.settlementType(),
               i.priceScale(),

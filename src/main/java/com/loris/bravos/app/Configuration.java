@@ -13,6 +13,7 @@ public final class Configuration {
   public String copyPriceCeilingEvidence = "";
   public String copyPricePolicy = "REQUIRE_COPY_GUARANTEE";
   public String copySizingModel = "UNVERIFIED";
+  public boolean allowLeveragedFunds = false;
   public Map<String, Asset> assets = new LinkedHashMap<>();
   // Known identities for availability checks only; these never authorize entry.
   public Map<String, Identity> lookupOnlyAssets = new LinkedHashMap<>();

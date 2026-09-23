@@ -133,8 +133,10 @@ repair path remains. There is no automatic corrective sale or owner-account writ
 
 ## Remaining broker uncertainty
 
-`config/trading.json` contains sourced operating-model references and five exact
-asset profiles. No live execution evidence or copy-side price guarantee is claimed.
+`config/trading.json` contains sourced operating-model references and explicit
+asset overrides. [Automatic discovery](instrument-discovery.md) resolves new US
+stocks and ETFs without per-ticker configuration. The owner's 23 September run confirmed
+four market entries; that is not a general copy-side price guarantee.
 
 1. **Purchase price:** current `MARKET_WITH_PRICE_CHECK` mode guarantees neither
    agent nor copied fill price. Earlier `AGENT_LIMIT_WITH_COPY_CHECK` mode used

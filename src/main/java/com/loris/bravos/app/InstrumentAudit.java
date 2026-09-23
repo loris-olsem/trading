@@ -175,6 +175,8 @@ public final class InstrumentAudit {
     if (metadata.path("pagination").path("hasNext").asBoolean())
       throw new IOException("INCOMPLETE_INSTRUMENT_RESPONSE");
     result.set("metadata", metadata);
+    result.set(
+        "exchanges", read(transport, secrets, false, "GET", "/api/v1/market-data/exchanges", null));
     var request = Json.MAPPER.createObjectNode().put("currency", "USD");
     var ids = request.putArray("instrumentIds");
     for (var item : metadata.path("results")) {
