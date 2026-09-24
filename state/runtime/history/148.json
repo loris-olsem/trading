@@ -1,8 +1,8 @@
 {
   "schemaVersion" : 1,
-  "generation" : 150,
+  "generation" : 148,
   "enrollmentFloor" : "2026-08-23",
-  "checkpoint" : "2026-09-24T16:46:57.533852200Z",
+  "checkpoint" : "2026-09-23T19:32:21.146677400Z",
   "revisionAudit" : "2026-09-21T17:37:05.647907200Z",
   "book" : {
     "cycles" : {
@@ -134,9 +134,9 @@
         "symbol" : "NTRA",
         "openedOn" : "2026-05-29",
         "entry" : 221,
-        "weight" : 0,
+        "weight" : 1,
         "stop" : 250,
-        "sourceOpen" : false,
+        "sourceOpen" : true,
         "enrolled" : false,
         "entered" : false,
         "terminal" : false,
@@ -211,18 +211,6 @@
           "price" : 360,
           "before" : 2,
           "after" : 1,
-          "stop" : null,
-          "targets" : [ ]
-        }, {
-          "key" : "bravos:post:488797",
-          "url" : "https://bravosresearch.com/news-feed/closing-natera-inc-ntra-profit-booking/",
-          "date" : "2026-09-24",
-          "hash" : "75adfae5b7f7ed6b1ccbd040765c64915b03896161550a2293756bd26d349b5b",
-          "symbol" : "NTRA",
-          "action" : "CLOSE",
-          "price" : 407.21,
-          "before" : null,
-          "after" : 0,
           "stop" : null,
           "targets" : [ ]
         } ],
@@ -1529,9 +1517,9 @@
         "symbol" : "ARGT",
         "openedOn" : "2026-09-02",
         "entry" : 96.44,
-        "weight" : 0,
+        "weight" : 5,
         "stop" : 89,
-        "sourceOpen" : false,
+        "sourceOpen" : true,
         "enrolled" : true,
         "entered" : true,
         "terminal" : false,
@@ -1548,18 +1536,6 @@
           "after" : 5,
           "stop" : 89,
           "targets" : [ 108, 112.5, 118 ]
-        }, {
-          "key" : "bravos:post:488808",
-          "url" : "https://bravosresearch.com/news-feed/closing-global-x-msci-argentina-etf-argt-breakdown-2/",
-          "date" : "2026-09-24",
-          "hash" : "7804cf6cd7b8eb76416c4e54ae9dbcdc7e7df7f5ccd370694e7bf36dbcb8e5b7",
-          "symbol" : "ARGT",
-          "action" : "CLOSE",
-          "price" : 90.47,
-          "before" : null,
-          "after" : 0,
-          "stop" : null,
-          "targets" : [ ]
         } ],
         "positionIds" : [ 3585989325 ],
         "completed" : [ "bravos:post:487920" ],
@@ -2977,32 +2953,6 @@
         "after" : 5,
         "stop" : 570,
         "targets" : [ 725, 750, 800 ]
-      } ],
-      "bravos:post:488797" : [ {
-        "key" : "bravos:post:488797",
-        "url" : "https://bravosresearch.com/news-feed/closing-natera-inc-ntra-profit-booking/",
-        "date" : "2026-09-24",
-        "hash" : "75adfae5b7f7ed6b1ccbd040765c64915b03896161550a2293756bd26d349b5b",
-        "symbol" : "NTRA",
-        "action" : "CLOSE",
-        "price" : 407.21,
-        "before" : null,
-        "after" : 0,
-        "stop" : null,
-        "targets" : [ ]
-      } ],
-      "bravos:post:488808" : [ {
-        "key" : "bravos:post:488808",
-        "url" : "https://bravosresearch.com/news-feed/closing-global-x-msci-argentina-etf-argt-breakdown-2/",
-        "date" : "2026-09-24",
-        "hash" : "7804cf6cd7b8eb76416c4e54ae9dbcdc7e7df7f5ccd370694e7bf36dbcb8e5b7",
-        "symbol" : "ARGT",
-        "action" : "CLOSE",
-        "price" : 90.47,
-        "before" : null,
-        "after" : 0,
-        "stop" : null,
-        "targets" : [ ]
       } ]
     },
     "blockers" : [ ]
@@ -3764,5 +3714,5 @@
     }
   },
   "earlyExits" : [ ],
-  "report" : [ "ARGT: CLOSE units 5.457641, stop null", "MAGS: BLOCKED INSTRUMENT_NOT_LISTED", "IBIT: BLOCKED BOTH_ACCOUNTS_OPENING_DISABLED", "ETHA: BLOCKED BOTH_ACCOUNTS_OPENING_DISABLED", "BRK.B: HOLD_UNCHANGED", "SMH: HOLD_UNCHANGED", "ADI: HOLD_UNCHANGED", "MEDP: HOLD_UNCHANGED" ]
+  "report" : [ "MAGS: BLOCKED INSTRUMENT_NOT_LISTED", "IBIT: BLOCKED BOTH_ACCOUNTS_OPENING_DISABLED", "ETHA: BLOCKED BOTH_ACCOUNTS_OPENING_DISABLED", "MEDP: READY POLICY_PASSED", "MEDP: OPEN owner USD 230.51, internal USD 499.92, ceiling 643.77, stop 570, market", "MEDP: CONFIRMED OPEN owner USD 230.5", "MEDP: PARTIAL_FILL_KEPT owner USD 230.5, shortfall USD 0.01; no automatic top-up", "BRK.B: HOLD_UNCHANGED", "ARGT: HOLD_UNCHANGED", "SMH: HOLD_UNCHANGED", "ADI: HOLD_UNCHANGED" ]
 }
