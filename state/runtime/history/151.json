@@ -1,9 +1,9 @@
 {
   "schemaVersion" : 1,
-  "generation" : 152,
+  "generation" : 151,
   "enrollmentFloor" : "2026-08-23",
   "checkpoint" : "2026-09-26T07:12:57.065714600Z",
-  "revisionAudit" : "2026-09-21T17:37:05.647907200Z",
+  "revisionAudit" : "2026-09-26T07:12:57.065714600Z",
   "book" : {
     "cycles" : {
       "bravos:post:482091" : {
@@ -1534,7 +1534,7 @@
         "sourceOpen" : false,
         "enrolled" : true,
         "entered" : true,
-        "terminal" : true,
+        "terminal" : false,
         "blocker" : null,
         "events" : [ {
           "key" : "bravos:post:487920",
@@ -3764,5 +3764,5 @@
     }
   },
   "earlyExits" : [ ],
-  "report" : [ "ARGT: POSITION_EXITED_NO_REENTRY", "MAGS: BLOCKED INSTRUMENT_NOT_LISTED", "IBIT: BLOCKED BOTH_ACCOUNTS_OPENING_DISABLED", "ETHA: BLOCKED BOTH_ACCOUNTS_OPENING_DISABLED", "BRK.B: HOLD_UNCHANGED", "SMH: HOLD_UNCHANGED", "ADI: HOLD_UNCHANGED", "MEDP: HOLD_UNCHANGED" ]
+  "report" : [ ]
 }
