@@ -1,9 +1,9 @@
 {
   "schemaVersion" : 1,
-  "generation" : 154,
+  "generation" : 153,
   "enrollmentFloor" : "2026-08-23",
   "checkpoint" : "2026-09-27T12:16:24.580331500Z",
-  "revisionAudit" : "2026-09-21T17:37:05.647907200Z",
+  "revisionAudit" : "2026-09-27T12:16:24.580331500Z",
   "book" : {
     "cycles" : {
       "bravos:post:482091" : {
@@ -3764,5 +3764,5 @@
     }
   },
   "earlyExits" : [ ],
-  "report" : [ "MAGS: BLOCKED INSTRUMENT_NOT_LISTED", "IBIT: BLOCKED BOTH_ACCOUNTS_OPENING_DISABLED", "ETHA: BLOCKED BOTH_ACCOUNTS_OPENING_DISABLED", "BRK.B: HOLD_UNCHANGED", "SMH: HOLD_UNCHANGED", "ADI: HOLD_UNCHANGED", "MEDP: HOLD_UNCHANGED" ]
+  "report" : [ ]
 }
