@@ -3,7 +3,9 @@
 - The Java program is owner-operated: normal `run` trades, `plan` does not.
   Agent development and diagnostics remain read-only externally. Do not invoke
   the live trading command, fund portfolios, move money, change stops or install
-  a live schedule. Test execution using fixtures and temporary state only.
+  a live schedule. The owner installed the scheduled run (docs/scheduling.md);
+  change it only on the owner's request. Test execution using fixtures and
+  temporary state only.
 - Read `PLANNING.md` and `README.md` before extending this project. Distinguish
   agreed rules, proposals, and unverified observations.
 - Never print, copy into prompts, commit, or log the contents of `secrets/`.
@@ -11,6 +13,7 @@
   `public-api.etoro.com` for REST and `ws.etoro.com` for the documented quote
   stream. Quote subscriptions do not authorize private feeds or financial writes.
   Bravos credentials may be used only for the intended Bravos login.
+  The Discord webhook URL in `secrets/discord/` is sent only to discord.com.
 - Keep credentials and raw account/API captures ignored. The owner requested
   recovery state in local Git: allowlist `state/runtime/ledger.json` and numeric
   `state/runtime/history/*.json`, in addition to minimal Bravos projections.

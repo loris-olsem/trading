@@ -40,6 +40,7 @@ regressions, coverage and mutation results. Current read-only service evidence:
 | [Fable execution review](docs/FABLE-EXECUTION-REVIEW-2026-09-22.md) | Independent review, CFD fix and owner decision to preserve sizing |
 | [Latest readiness check](docs/READINESS-2026-09-21.md) | Configured instruments, current broker-data holds and remaining verification |
 | [Trading rules](docs/trading-rules.md) | Effective decisions in a compact table |
+| [Scheduled runs](docs/scheduling.md) | Owner-requested twice-daily `gr run`, Discord and Windows reports |
 | [Market hours](docs/market-hours.md) | Accepted US calendar, holidays, early closes and update deadline |
 | [Quote refresh](docs/QUOTE-REFRESH.md) | Automatic live-price fallback and bounded retries within the same run |
 | [Architecture](docs/architecture.md) | Discovery, policy, execution and state ownership |
@@ -84,7 +85,8 @@ does this explicitly. Git must be installed and the repository author configured
 Nothing is pushed; a separate backup or private remote is
 still needed for disk loss. See [state checkpoints and recovery](docs/operations.md#automatic-local-state-checkpoints).
 The owner's `gr run` command submits eligible trades; it is not proposal-only.
-Read the operations guide before invoking it. No schedule is installed.
+Read the operations guide before invoking it. Since 27 September 2026 the owner
+runs it on a schedule: see [scheduled trading runs](docs/scheduling.md).
 
 Dot-source `env.ps1` once per PowerShell session. It activates vfox from
 `.vfox.toml` and defines the session-local `gr` alias; it contains no application
