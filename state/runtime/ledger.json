@@ -1,9 +1,9 @@
 {
   "schemaVersion" : 1,
-  "generation" : 156,
+  "generation" : 158,
   "enrollmentFloor" : "2026-08-23",
-  "checkpoint" : "2026-09-28T13:46:01.578180800Z",
-  "revisionAudit" : "2026-09-21T17:37:05.647907200Z",
+  "checkpoint" : "2026-09-28T19:32:01.536325500Z",
+  "revisionAudit" : "2026-09-28T19:32:01.536325500Z",
   "book" : {
     "cycles" : {
       "bravos:post:482091" : {
@@ -471,9 +471,9 @@
         "symbol" : "XLF",
         "openedOn" : "2026-06-12",
         "entry" : 52.92,
-        "weight" : 3,
+        "weight" : 0,
         "stop" : 52.5,
-        "sourceOpen" : true,
+        "sourceOpen" : false,
         "enrolled" : false,
         "entered" : false,
         "terminal" : false,
@@ -512,6 +512,18 @@
           "price" : 57.07,
           "before" : 6,
           "after" : 3,
+          "stop" : null,
+          "targets" : [ ]
+        }, {
+          "key" : "bravos:post:488964",
+          "url" : "https://bravosresearch.com/news-feed/closing-financial-select-sector-spdr-fund-xlf-breakdown-2/",
+          "date" : "2026-09-28",
+          "hash" : "6376799b4d45172c42ce1f746c837390228ff985e94f4bc8789b787529862bc5",
+          "symbol" : "XLF",
+          "action" : "CLOSE",
+          "price" : 54.4,
+          "before" : null,
+          "after" : 0,
           "stop" : null,
           "targets" : [ ]
         } ],
@@ -2999,6 +3011,19 @@
         "symbol" : "ARGT",
         "action" : "CLOSE",
         "price" : 90.47,
+        "before" : null,
+        "after" : 0,
+        "stop" : null,
+        "targets" : [ ]
+      } ],
+      "bravos:post:488964" : [ {
+        "key" : "bravos:post:488964",
+        "url" : "https://bravosresearch.com/news-feed/closing-financial-select-sector-spdr-fund-xlf-breakdown-2/",
+        "date" : "2026-09-28",
+        "hash" : "6376799b4d45172c42ce1f746c837390228ff985e94f4bc8789b787529862bc5",
+        "symbol" : "XLF",
+        "action" : "CLOSE",
+        "price" : 54.4,
         "before" : null,
         "after" : 0,
         "stop" : null,
