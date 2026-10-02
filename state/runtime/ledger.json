@@ -1,8 +1,8 @@
 {
   "schemaVersion" : 1,
-  "generation" : 170,
+  "generation" : 172,
   "enrollmentFloor" : "2026-08-23",
-  "checkpoint" : "2026-10-01T19:30:55.478043200Z",
+  "checkpoint" : "2026-10-02T13:46:00.082969800Z",
   "revisionAudit" : "2026-09-28T19:32:01.536325500Z",
   "book" : {
     "cycles" : {
@@ -842,7 +842,7 @@
         "symbol" : "NVDA",
         "openedOn" : "2026-07-10",
         "entry" : 209.5,
-        "weight" : 6,
+        "weight" : 4,
         "stop" : 190,
         "sourceOpen" : true,
         "enrolled" : false,
@@ -883,6 +883,18 @@
           "price" : 213.42,
           "before" : 8,
           "after" : 6,
+          "stop" : null,
+          "targets" : [ ]
+        }, {
+          "key" : "bravos:post:489246",
+          "url" : "https://bravosresearch.com/news-feed/booking-partial-profits-in-nvidia-nvda-profit-booking/",
+          "date" : "2026-10-02",
+          "hash" : "fb8eba5e00a30c1f0c748ad83eb61ca52c6aaac16c5d80e7f0a52163ab913e5a",
+          "symbol" : "NVDA",
+          "action" : "REDUCE",
+          "price" : 235.23,
+          "before" : 6,
+          "after" : 4,
           "stop" : null,
           "targets" : [ ]
         } ],
@@ -3026,6 +3038,19 @@
         "price" : 54.4,
         "before" : null,
         "after" : 0,
+        "stop" : null,
+        "targets" : [ ]
+      } ],
+      "bravos:post:489246" : [ {
+        "key" : "bravos:post:489246",
+        "url" : "https://bravosresearch.com/news-feed/booking-partial-profits-in-nvidia-nvda-profit-booking/",
+        "date" : "2026-10-02",
+        "hash" : "fb8eba5e00a30c1f0c748ad83eb61ca52c6aaac16c5d80e7f0a52163ab913e5a",
+        "symbol" : "NVDA",
+        "action" : "REDUCE",
+        "price" : 235.23,
+        "before" : 6,
+        "after" : 4,
         "stop" : null,
         "targets" : [ ]
       } ]
