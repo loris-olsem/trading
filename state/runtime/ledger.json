@@ -1,8 +1,8 @@
 {
   "schemaVersion" : 1,
-  "generation" : 176,
+  "generation" : 178,
   "enrollmentFloor" : "2026-08-23",
-  "checkpoint" : "2026-10-05T13:45:57.167947800Z",
+  "checkpoint" : "2026-10-05T19:30:56.642950500Z",
   "revisionAudit" : "2026-09-28T19:32:01.536325500Z",
   "book" : {
     "cycles" : {
@@ -789,7 +789,7 @@
         "symbol" : "TBBB",
         "openedOn" : "2026-07-10",
         "entry" : 42.43,
-        "weight" : 3,
+        "weight" : 2,
         "stop" : 40,
         "sourceOpen" : true,
         "enrolled" : false,
@@ -830,6 +830,18 @@
           "price" : 51.6,
           "before" : 4,
           "after" : 3,
+          "stop" : null,
+          "targets" : [ ]
+        }, {
+          "key" : "bravos:post:489407",
+          "url" : "https://bravosresearch.com/news-feed/booking-partial-profits-in-bbb-foods-inc-tbbb-profit-booking-3/",
+          "date" : "2026-10-05",
+          "hash" : "ff3241407821e1295cd091e9d264fca0a4dd7cc9309a0a6a062a099b9c64e8ed",
+          "symbol" : "TBBB",
+          "action" : "REDUCE",
+          "price" : 54.05,
+          "before" : 3,
+          "after" : 2,
           "stop" : null,
           "targets" : [ ]
         } ],
@@ -3051,6 +3063,19 @@
         "price" : 235.23,
         "before" : 6,
         "after" : 4,
+        "stop" : null,
+        "targets" : [ ]
+      } ],
+      "bravos:post:489407" : [ {
+        "key" : "bravos:post:489407",
+        "url" : "https://bravosresearch.com/news-feed/booking-partial-profits-in-bbb-foods-inc-tbbb-profit-booking-3/",
+        "date" : "2026-10-05",
+        "hash" : "ff3241407821e1295cd091e9d264fca0a4dd7cc9309a0a6a062a099b9c64e8ed",
+        "symbol" : "TBBB",
+        "action" : "REDUCE",
+        "price" : 54.05,
+        "before" : 3,
+        "after" : 2,
         "stop" : null,
         "targets" : [ ]
       } ]
