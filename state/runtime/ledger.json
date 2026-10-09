@@ -1,8 +1,8 @@
 {
   "schemaVersion" : 1,
-  "generation" : 192,
+  "generation" : 194,
   "enrollmentFloor" : "2026-08-23",
-  "checkpoint" : "2026-10-09T13:46:45.690887300Z",
+  "checkpoint" : "2026-10-09T19:30:51.219720200Z",
   "revisionAudit" : "2026-10-06T13:47:23.551398700Z",
   "book" : {
     "cycles" : {
@@ -1278,7 +1278,7 @@
         "symbol" : "TEVA",
         "openedOn" : "2026-08-07",
         "entry" : 35.37,
-        "weight" : 5,
+        "weight" : 3,
         "stop" : 33,
         "sourceOpen" : true,
         "enrolled" : false,
@@ -1308,6 +1308,18 @@
           "before" : 3,
           "after" : 5,
           "stop" : 33,
+          "targets" : [ ]
+        }, {
+          "key" : "bravos:post:489669",
+          "url" : "https://bravosresearch.com/news-feed/booking-partial-profits-on-teva-pharmaceutical-limited-teva-profit-booking/",
+          "date" : "2026-10-09",
+          "hash" : "2f7ce1d27a0cdb67a6b345658552966c5f58b8267e314e4eb09b8e624751751d",
+          "symbol" : "TEVA",
+          "action" : "REDUCE",
+          "price" : 41.2,
+          "before" : 5,
+          "after" : 3,
+          "stop" : null,
           "targets" : [ ]
         } ],
         "positionIds" : [ ],
@@ -3101,6 +3113,19 @@
         "price" : 199.58,
         "before" : null,
         "after" : 0,
+        "stop" : null,
+        "targets" : [ ]
+      } ],
+      "bravos:post:489669" : [ {
+        "key" : "bravos:post:489669",
+        "url" : "https://bravosresearch.com/news-feed/booking-partial-profits-on-teva-pharmaceutical-limited-teva-profit-booking/",
+        "date" : "2026-10-09",
+        "hash" : "2f7ce1d27a0cdb67a6b345658552966c5f58b8267e314e4eb09b8e624751751d",
+        "symbol" : "TEVA",
+        "action" : "REDUCE",
+        "price" : 41.2,
+        "before" : 5,
+        "after" : 3,
         "stop" : null,
         "targets" : [ ]
       } ]
