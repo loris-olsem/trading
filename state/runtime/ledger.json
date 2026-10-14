@@ -1,8 +1,8 @@
 {
   "schemaVersion" : 1,
-  "generation" : 204,
+  "generation" : 214,
   "enrollmentFloor" : "2026-08-23",
-  "checkpoint" : "2026-10-14T13:45:55.942431500Z",
+  "checkpoint" : "2026-10-14T19:30:59.789522500Z",
   "revisionAudit" : "2026-10-13T19:32:07.392668900Z",
   "book" : {
     "cycles" : {
@@ -11,9 +11,9 @@
         "symbol" : "EWJ",
         "openedOn" : "2026-05-08",
         "entry" : 92,
-        "weight" : 8,
+        "weight" : 0,
         "stop" : 83.5,
-        "sourceOpen" : true,
+        "sourceOpen" : false,
         "enrolled" : false,
         "entered" : false,
         "terminal" : false,
@@ -40,6 +40,18 @@
           "price" : 94.65,
           "before" : 5,
           "after" : 8,
+          "stop" : null,
+          "targets" : [ ]
+        }, {
+          "key" : "bravos:post:489790",
+          "url" : "https://bravosresearch.com/news-feed/closing-ishares-msci-japan-etf-ewj-breakdown/",
+          "date" : "2026-10-14",
+          "hash" : "f3e4923f7b5da61ffde9f23e549585db8165c4b4e7b5b376aa58e8dd3241ac16",
+          "symbol" : "EWJ",
+          "action" : "CLOSE",
+          "price" : 96.31,
+          "before" : null,
+          "after" : 0,
           "stop" : null,
           "targets" : [ ]
         } ],
@@ -866,9 +878,9 @@
         "symbol" : "NVDA",
         "openedOn" : "2026-07-10",
         "entry" : 209.5,
-        "weight" : 4,
+        "weight" : 0,
         "stop" : 190,
-        "sourceOpen" : true,
+        "sourceOpen" : false,
         "enrolled" : false,
         "entered" : false,
         "terminal" : false,
@@ -919,6 +931,18 @@
           "price" : 235.23,
           "before" : 6,
           "after" : 4,
+          "stop" : null,
+          "targets" : [ ]
+        }, {
+          "key" : "bravos:post:489808",
+          "url" : "https://bravosresearch.com/news-feed/closing-nvidia-nvda-breakdown-2/",
+          "date" : "2026-10-14",
+          "hash" : "4740f4c0d5c5ff221de9366a269b44c4dfc64e0d216596dbededcba620230b98",
+          "symbol" : "NVDA",
+          "action" : "CLOSE",
+          "price" : 220.60,
+          "before" : null,
+          "after" : 0,
           "stop" : null,
           "targets" : [ ]
         } ],
@@ -1758,9 +1782,9 @@
         "symbol" : "SMH",
         "openedOn" : "2026-09-21",
         "entry" : 586.63,
-        "weight" : 5,
+        "weight" : 0,
         "stop" : 535,
-        "sourceOpen" : true,
+        "sourceOpen" : false,
         "enrolled" : true,
         "entered" : true,
         "terminal" : false,
@@ -1777,6 +1801,18 @@
           "after" : 5,
           "stop" : 535,
           "targets" : [ 670, 695, 730 ]
+        }, {
+          "key" : "bravos:post:489798",
+          "url" : "https://bravosresearch.com/news-feed/closing-vaneck-semiconductor-etf-smh-breakdown-2/",
+          "date" : "2026-10-14",
+          "hash" : "c19a01ee781ae2a34452d9715b1e2c883da993a2da84efed509b14c906c21d4d",
+          "symbol" : "SMH",
+          "action" : "CLOSE",
+          "price" : null,
+          "before" : null,
+          "after" : 0,
+          "stop" : null,
+          "targets" : [ ]
         } ],
         "positionIds" : [ 3585989568 ],
         "completed" : [ "bravos:post:488611" ],
@@ -3128,6 +3164,45 @@
         "after" : 3,
         "stop" : null,
         "targets" : [ ]
+      } ],
+      "bravos:post:489790" : [ {
+        "key" : "bravos:post:489790",
+        "url" : "https://bravosresearch.com/news-feed/closing-ishares-msci-japan-etf-ewj-breakdown/",
+        "date" : "2026-10-14",
+        "hash" : "f3e4923f7b5da61ffde9f23e549585db8165c4b4e7b5b376aa58e8dd3241ac16",
+        "symbol" : "EWJ",
+        "action" : "CLOSE",
+        "price" : 96.31,
+        "before" : null,
+        "after" : 0,
+        "stop" : null,
+        "targets" : [ ]
+      } ],
+      "bravos:post:489798" : [ {
+        "key" : "bravos:post:489798",
+        "url" : "https://bravosresearch.com/news-feed/closing-vaneck-semiconductor-etf-smh-breakdown-2/",
+        "date" : "2026-10-14",
+        "hash" : "c19a01ee781ae2a34452d9715b1e2c883da993a2da84efed509b14c906c21d4d",
+        "symbol" : "SMH",
+        "action" : "CLOSE",
+        "price" : null,
+        "before" : null,
+        "after" : 0,
+        "stop" : null,
+        "targets" : [ ]
+      } ],
+      "bravos:post:489808" : [ {
+        "key" : "bravos:post:489808",
+        "url" : "https://bravosresearch.com/news-feed/closing-nvidia-nvda-breakdown-2/",
+        "date" : "2026-10-14",
+        "hash" : "4740f4c0d5c5ff221de9366a269b44c4dfc64e0d216596dbededcba620230b98",
+        "symbol" : "NVDA",
+        "action" : "CLOSE",
+        "price" : 220.60,
+        "before" : null,
+        "after" : 0,
+        "stop" : null,
+        "targets" : [ ]
       } ]
     },
     "blockers" : [ ]
@@ -3612,6 +3687,38 @@
       "absorbedEvents" : [ "bravos:post:488723" ],
       "beforeAgentUnits" : null,
       "beforeOwnerUnits" : { }
+    },
+    "bravos:post:488611|bravos:post:489798|CLOSE|3585989568" : {
+      "intent" : {
+        "key" : "bravos:post:488611|bravos:post:489798|CLOSE|3585989568",
+        "cycleKey" : "bravos:post:488611",
+        "eventKey" : "bravos:post:489798",
+        "action" : "CLOSE",
+        "instrumentId" : 6357,
+        "positionId" : 3585989568,
+        "ownerAmount" : null,
+        "agentAmount" : null,
+        "units" : 0.838976,
+        "ceiling" : null,
+        "stop" : null,
+        "settlementType" : null,
+        "orderType" : "limitIOC"
+      },
+      "reference" : "b1e021ff-fb57-4e53-a07a-49c1853addcb",
+      "orderId" : 1612879026,
+      "status" : "SUBMITTED",
+      "createdAt" : "2026-10-14T19:31:04.088451700Z",
+      "result" : "RECONCILIATION_UNAVAILABLE",
+      "agentFilled" : null,
+      "ownerFilled" : null,
+      "ownerShortfall" : null,
+      "baselineSaved" : false,
+      "positionIds" : [ ],
+      "absorbedEvents" : [ ],
+      "beforeAgentUnits" : 0.838976,
+      "beforeOwnerUnits" : {
+        "3585989569" : 0.38679
+      }
     }
   },
   "batches" : {
@@ -3854,6 +3961,21 @@
       "stop" : 570,
       "settlementType" : "real",
       "orderType" : "mkt"
+    } ],
+    "bravos:post:488611|bravos:post:489798|CLOSE" : [ {
+      "key" : "bravos:post:488611|bravos:post:489798|CLOSE|3585989568",
+      "cycleKey" : "bravos:post:488611",
+      "eventKey" : "bravos:post:489798",
+      "action" : "CLOSE",
+      "instrumentId" : 6357,
+      "positionId" : 3585989568,
+      "ownerAmount" : null,
+      "agentAmount" : null,
+      "units" : 0.838976,
+      "ceiling" : null,
+      "stop" : null,
+      "settlementType" : null,
+      "orderType" : "limitIOC"
     } ]
   },
   "holdings" : {
@@ -3889,5 +4011,5 @@
     }
   },
   "earlyExits" : [ ],
-  "report" : [ "MAGS: BLOCKED INSTRUMENT_NOT_LISTED", "IBIT: BLOCKED BOTH_ACCOUNTS_OPENING_DISABLED", "ETHA: BLOCKED BOTH_ACCOUNTS_OPENING_DISABLED", "BRK.B: HOLD_UNCHANGED", "SMH: HOLD_UNCHANGED", "ADI: HOLD_UNCHANGED", "MEDP: HOLD_UNCHANGED" ]
+  "report" : [ "SMH: CLOSE units 0.838976, stop null", "SMH: ORDER_PENDING_OR_REJECTED RECONCILIATION_UNAVAILABLE; order 1612879026", "UNRESOLVED_ATTEMPT b1e021ff-fb57-4e53-a07a-49c1853addcb RECONCILIATION_UNAVAILABLE" ]
 }
