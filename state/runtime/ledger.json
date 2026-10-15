@@ -1,8 +1,8 @@
 {
   "schemaVersion" : 1,
-  "generation" : 219,
+  "generation" : 222,
   "enrollmentFloor" : "2026-08-23",
-  "checkpoint" : "2026-10-15T13:46:00.733511600Z",
+  "checkpoint" : "2026-10-15T13:58:14.135142700Z",
   "revisionAudit" : "2026-10-13T19:32:07.392668900Z",
   "book" : {
     "cycles" : {
@@ -3222,7 +3222,8 @@
         "ceiling" : 516.63,
         "stop" : 480,
         "settlementType" : "real",
-        "orderType" : "limitIOC"
+        "orderType" : "limitIOC",
+        "fullClose" : false
       },
       "reference" : "fb5d9cc6-1d85-49a9-93f8-b0b981d88393",
       "orderId" : 1591647385,
@@ -3252,7 +3253,8 @@
         "ceiling" : 516.63,
         "stop" : 480,
         "settlementType" : "real",
-        "orderType" : "limitIOC"
+        "orderType" : "limitIOC",
+        "fullClose" : false
       },
       "reference" : "b92f1741-1c52-4e71-88ba-7da5c65d3bad",
       "orderId" : 1591647404,
@@ -3282,7 +3284,8 @@
         "ceiling" : 152.33,
         "stop" : 138,
         "settlementType" : "real",
-        "orderType" : "limitIOC"
+        "orderType" : "limitIOC",
+        "fullClose" : false
       },
       "reference" : "38699b01-0e44-4ce6-9c59-54e4613ffe4f",
       "orderId" : 1592630625,
@@ -3312,7 +3315,8 @@
         "ceiling" : 390.02,
         "stop" : 347.5,
         "settlementType" : "real",
-        "orderType" : "limitIOC"
+        "orderType" : "limitIOC",
+        "fullClose" : false
       },
       "reference" : "5d1dd3a1-c97e-4ff5-b102-af67a275498e",
       "orderId" : 1592630626,
@@ -3342,7 +3346,8 @@
         "ceiling" : 516.63,
         "stop" : 480,
         "settlementType" : "real",
-        "orderType" : "limitIOC"
+        "orderType" : "limitIOC",
+        "fullClose" : false
       },
       "reference" : "4a539f4f-2298-4146-b228-5c21e19eab22",
       "orderId" : 1592630664,
@@ -3372,7 +3377,8 @@
         "ceiling" : 152.87,
         "stop" : 138,
         "settlementType" : "real",
-        "orderType" : "limitIOC"
+        "orderType" : "limitIOC",
+        "fullClose" : false
       },
       "reference" : "c6c52e8f-eb6a-42d1-99d1-9881c07b4d78",
       "orderId" : 1591647454,
@@ -3402,7 +3408,8 @@
         "ceiling" : 390.02,
         "stop" : 347.5,
         "settlementType" : "real",
-        "orderType" : "limitIOC"
+        "orderType" : "limitIOC",
+        "fullClose" : false
       },
       "reference" : "9b0d70c1-c26a-457d-8832-3688a7831078",
       "orderId" : 1591655469,
@@ -3432,7 +3439,8 @@
         "ceiling" : 516.63,
         "stop" : 480,
         "settlementType" : "real",
-        "orderType" : "limitIOC"
+        "orderType" : "limitIOC",
+        "fullClose" : false
       },
       "reference" : "7648f10a-1bcb-412d-a7e2-e42b0d738302",
       "orderId" : 1591655498,
@@ -3462,7 +3470,8 @@
         "ceiling" : 98.36,
         "stop" : 89,
         "settlementType" : "cfd",
-        "orderType" : "limitIOC"
+        "orderType" : "limitIOC",
+        "fullClose" : false
       },
       "reference" : "adcf18e0-441e-4b57-960b-e06f704c9218",
       "orderId" : 1591647468,
@@ -3492,7 +3501,8 @@
         "ceiling" : 153.01,
         "stop" : 138,
         "settlementType" : "real",
-        "orderType" : "limitIOC"
+        "orderType" : "limitIOC",
+        "fullClose" : false
       },
       "reference" : "23674c74-32b7-4e86-9b41-21bf18be269e",
       "orderId" : 1591647469,
@@ -3522,7 +3532,8 @@
         "ceiling" : 390.02,
         "stop" : 347.5,
         "settlementType" : "real",
-        "orderType" : "limitIOC"
+        "orderType" : "limitIOC",
+        "fullClose" : false
       },
       "reference" : "8bd70202-5d42-412c-b764-6d7501f20a69",
       "orderId" : 1592630689,
@@ -3552,7 +3563,8 @@
         "ceiling" : 516.63,
         "stop" : 480,
         "settlementType" : "real",
-        "orderType" : "mkt"
+        "orderType" : "mkt",
+        "fullClose" : false
       },
       "reference" : "a86b18cc-3d7c-49e4-89d4-9d0344561b34",
       "orderId" : 1593956329,
@@ -3582,7 +3594,8 @@
         "ceiling" : 98.36,
         "stop" : 89,
         "settlementType" : "cfd",
-        "orderType" : "mkt"
+        "orderType" : "mkt",
+        "fullClose" : false
       },
       "reference" : "9d359745-6962-44b2-bb97-c1ca1c2d521c",
       "orderId" : 1593956337,
@@ -3612,7 +3625,8 @@
         "ceiling" : 598.36,
         "stop" : 535,
         "settlementType" : "cfd",
-        "orderType" : "mkt"
+        "orderType" : "mkt",
+        "fullClose" : false
       },
       "reference" : "bbb2476c-6a9f-4dad-bfa6-85cc40d2e67a",
       "orderId" : 1593760481,
@@ -3642,7 +3656,8 @@
         "ceiling" : 390.02,
         "stop" : 347.5,
         "settlementType" : "real",
-        "orderType" : "mkt"
+        "orderType" : "mkt",
+        "fullClose" : false
       },
       "reference" : "7d5945b9-3b92-4b6f-b359-daefc96273b3",
       "orderId" : 1592631870,
@@ -3672,7 +3687,8 @@
         "ceiling" : 643.77,
         "stop" : 570,
         "settlementType" : "real",
-        "orderType" : "mkt"
+        "orderType" : "mkt",
+        "fullClose" : false
       },
       "reference" : "0608b2b8-b526-4b0f-9bb4-df888b33201a",
       "orderId" : 1593760619,
@@ -3702,13 +3718,14 @@
         "ceiling" : null,
         "stop" : null,
         "settlementType" : null,
-        "orderType" : "limitIOC"
+        "orderType" : "limitIOC",
+        "fullClose" : true
       },
       "reference" : "b1e021ff-fb57-4e53-a07a-49c1853addcb",
       "orderId" : 1612879026,
-      "status" : "SUBMITTED",
+      "status" : "REJECTED",
       "createdAt" : "2026-10-14T19:31:04.088451700Z",
-      "result" : "RECONCILIATION_UNAVAILABLE",
+      "result" : "FULL_CLOSE_REQUEST_REJECTED_NO_FILL",
       "agentFilled" : null,
       "ownerFilled" : null,
       "ownerShortfall" : null,
@@ -3735,7 +3752,8 @@
       "ceiling" : 516.63,
       "stop" : 480,
       "settlementType" : "real",
-      "orderType" : "limitIOC"
+      "orderType" : "limitIOC",
+      "fullClose" : false
     } ],
     "bravos:post:487910|bravos:post:487910|OPEN|attempt:2" : [ {
       "key" : "bravos:post:487910|bravos:post:487910|OPEN|attempt:2",
@@ -3750,7 +3768,8 @@
       "ceiling" : 516.63,
       "stop" : 480,
       "settlementType" : "real",
-      "orderType" : "limitIOC"
+      "orderType" : "limitIOC",
+      "fullClose" : false
     } ],
     "bravos:post:488325|bravos:post:488325|OPEN|attempt:1" : [ {
       "key" : "bravos:post:488325|bravos:post:488325|OPEN|attempt:1",
@@ -3765,7 +3784,8 @@
       "ceiling" : 152.33,
       "stop" : 138,
       "settlementType" : "real",
-      "orderType" : "limitIOC"
+      "orderType" : "limitIOC",
+      "fullClose" : false
     } ],
     "bravos:post:488663|bravos:post:488663|OPEN|attempt:1" : [ {
       "key" : "bravos:post:488663|bravos:post:488663|OPEN|attempt:1",
@@ -3780,7 +3800,8 @@
       "ceiling" : 390.02,
       "stop" : 347.5,
       "settlementType" : "real",
-      "orderType" : "limitIOC"
+      "orderType" : "limitIOC",
+      "fullClose" : false
     } ],
     "bravos:post:487910|bravos:post:487910|OPEN|attempt:3" : [ {
       "key" : "bravos:post:487910|bravos:post:487910|OPEN|attempt:3",
@@ -3795,7 +3816,8 @@
       "ceiling" : 516.63,
       "stop" : 480,
       "settlementType" : "real",
-      "orderType" : "limitIOC"
+      "orderType" : "limitIOC",
+      "fullClose" : false
     } ],
     "bravos:post:488325|bravos:post:488325|OPEN|attempt:2" : [ {
       "key" : "bravos:post:488325|bravos:post:488325|OPEN|attempt:2",
@@ -3810,7 +3832,8 @@
       "ceiling" : 152.87,
       "stop" : 138,
       "settlementType" : "real",
-      "orderType" : "limitIOC"
+      "orderType" : "limitIOC",
+      "fullClose" : false
     } ],
     "bravos:post:488663|bravos:post:488663|OPEN|attempt:2" : [ {
       "key" : "bravos:post:488663|bravos:post:488663|OPEN|attempt:2",
@@ -3825,7 +3848,8 @@
       "ceiling" : 390.02,
       "stop" : 347.5,
       "settlementType" : "real",
-      "orderType" : "limitIOC"
+      "orderType" : "limitIOC",
+      "fullClose" : false
     } ],
     "bravos:post:487910|bravos:post:487910|OPEN|attempt:4" : [ {
       "key" : "bravos:post:487910|bravos:post:487910|OPEN|attempt:4",
@@ -3840,7 +3864,8 @@
       "ceiling" : 516.63,
       "stop" : 480,
       "settlementType" : "real",
-      "orderType" : "limitIOC"
+      "orderType" : "limitIOC",
+      "fullClose" : false
     } ],
     "bravos:post:487920|bravos:post:487920|OPEN|attempt:1" : [ {
       "key" : "bravos:post:487920|bravos:post:487920|OPEN|attempt:1",
@@ -3855,7 +3880,8 @@
       "ceiling" : 98.36,
       "stop" : 89,
       "settlementType" : "cfd",
-      "orderType" : "limitIOC"
+      "orderType" : "limitIOC",
+      "fullClose" : false
     } ],
     "bravos:post:488325|bravos:post:488325|OPEN|attempt:3" : [ {
       "key" : "bravos:post:488325|bravos:post:488325|OPEN|attempt:3",
@@ -3870,7 +3896,8 @@
       "ceiling" : 153.01,
       "stop" : 138,
       "settlementType" : "real",
-      "orderType" : "limitIOC"
+      "orderType" : "limitIOC",
+      "fullClose" : false
     } ],
     "bravos:post:488663|bravos:post:488663|OPEN|attempt:3" : [ {
       "key" : "bravos:post:488663|bravos:post:488663|OPEN|attempt:3",
@@ -3885,7 +3912,8 @@
       "ceiling" : 390.02,
       "stop" : 347.5,
       "settlementType" : "real",
-      "orderType" : "limitIOC"
+      "orderType" : "limitIOC",
+      "fullClose" : false
     } ],
     "bravos:post:487910|bravos:post:487910|OPEN|attempt:5" : [ {
       "key" : "bravos:post:487910|bravos:post:487910|OPEN|attempt:5",
@@ -3900,7 +3928,8 @@
       "ceiling" : 516.63,
       "stop" : 480,
       "settlementType" : "real",
-      "orderType" : "mkt"
+      "orderType" : "mkt",
+      "fullClose" : false
     } ],
     "bravos:post:487920|bravos:post:487920|OPEN|attempt:2" : [ {
       "key" : "bravos:post:487920|bravos:post:487920|OPEN|attempt:2",
@@ -3915,7 +3944,8 @@
       "ceiling" : 98.36,
       "stop" : 89,
       "settlementType" : "cfd",
-      "orderType" : "mkt"
+      "orderType" : "mkt",
+      "fullClose" : false
     } ],
     "bravos:post:488611|bravos:post:488611|OPEN|attempt:1" : [ {
       "key" : "bravos:post:488611|bravos:post:488611|OPEN|attempt:1",
@@ -3930,7 +3960,8 @@
       "ceiling" : 598.36,
       "stop" : 535,
       "settlementType" : "cfd",
-      "orderType" : "mkt"
+      "orderType" : "mkt",
+      "fullClose" : false
     } ],
     "bravos:post:488663|bravos:post:488663|OPEN|attempt:4" : [ {
       "key" : "bravos:post:488663|bravos:post:488663|OPEN|attempt:4",
@@ -3945,7 +3976,8 @@
       "ceiling" : 390.02,
       "stop" : 347.5,
       "settlementType" : "real",
-      "orderType" : "mkt"
+      "orderType" : "mkt",
+      "fullClose" : false
     } ],
     "bravos:post:488723|bravos:post:488723|OPEN|attempt:1" : [ {
       "key" : "bravos:post:488723|bravos:post:488723|OPEN|attempt:1",
@@ -3960,7 +3992,8 @@
       "ceiling" : 643.77,
       "stop" : 570,
       "settlementType" : "real",
-      "orderType" : "mkt"
+      "orderType" : "mkt",
+      "fullClose" : false
     } ],
     "bravos:post:488611|bravos:post:489798|CLOSE" : [ {
       "key" : "bravos:post:488611|bravos:post:489798|CLOSE|3585989568",
@@ -3975,7 +4008,8 @@
       "ceiling" : null,
       "stop" : null,
       "settlementType" : null,
-      "orderType" : "limitIOC"
+      "orderType" : "limitIOC",
+      "fullClose" : true
     } ]
   },
   "holdings" : {
@@ -4011,5 +4045,5 @@
     }
   },
   "earlyExits" : [ ],
-  "report" : [ "UNRESOLVED_ATTEMPT b1e021ff-fb57-4e53-a07a-49c1853addcb RECONCILIATION_UNAVAILABLE", "UNRESOLVED_ORDER_BLOCKS_NEW_SUBMISSIONS" ]
+  "report" : [ "SMH: CLOSE units 0.838976, stop null", "MAGS: BLOCKED INSTRUMENT_NOT_LISTED", "IBIT: BLOCKED BOTH_ACCOUNTS_OPENING_DISABLED", "ETHA: BLOCKED BOTH_ACCOUNTS_OPENING_DISABLED", "BRK.B: HOLD_UNCHANGED", "ADI: HOLD_UNCHANGED", "MEDP: HOLD_UNCHANGED" ]
 }
