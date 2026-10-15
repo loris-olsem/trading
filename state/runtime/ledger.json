@@ -1,8 +1,8 @@
 {
   "schemaVersion" : 1,
-  "generation" : 214,
+  "generation" : 219,
   "enrollmentFloor" : "2026-08-23",
-  "checkpoint" : "2026-10-14T19:30:59.789522500Z",
+  "checkpoint" : "2026-10-15T13:46:00.733511600Z",
   "revisionAudit" : "2026-10-13T19:32:07.392668900Z",
   "book" : {
     "cycles" : {
@@ -940,7 +940,7 @@
           "hash" : "4740f4c0d5c5ff221de9366a269b44c4dfc64e0d216596dbededcba620230b98",
           "symbol" : "NVDA",
           "action" : "CLOSE",
-          "price" : 220.60,
+          "price" : 220.6,
           "before" : null,
           "after" : 0,
           "stop" : null,
@@ -3198,7 +3198,7 @@
         "hash" : "4740f4c0d5c5ff221de9366a269b44c4dfc64e0d216596dbededcba620230b98",
         "symbol" : "NVDA",
         "action" : "CLOSE",
-        "price" : 220.60,
+        "price" : 220.6,
         "before" : null,
         "after" : 0,
         "stop" : null,
@@ -4011,5 +4011,5 @@
     }
   },
   "earlyExits" : [ ],
-  "report" : [ "SMH: CLOSE units 0.838976, stop null", "SMH: ORDER_PENDING_OR_REJECTED RECONCILIATION_UNAVAILABLE; order 1612879026", "UNRESOLVED_ATTEMPT b1e021ff-fb57-4e53-a07a-49c1853addcb RECONCILIATION_UNAVAILABLE" ]
+  "report" : [ "UNRESOLVED_ATTEMPT b1e021ff-fb57-4e53-a07a-49c1853addcb RECONCILIATION_UNAVAILABLE", "UNRESOLVED_ORDER_BLOCKS_NEW_SUBMISSIONS" ]
 }
