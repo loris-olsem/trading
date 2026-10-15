@@ -5,6 +5,28 @@ only to `https://public-api.etoro.com`. Credentials never enter reports or error
 output. Agent activity affects **real owner money**, despite the internal virtual
 balance. No demo/live trades were made during development.
 
+## Full-close rejection, 15 October 2026
+
+Read-only inspection of the 14 October SMH sale found `statusID: 4`, broker
+error `776`, and no executed positions. The broker's explanation was that the
+requested unit deduction left a zero-dollar remainder below its minimum. Both
+agent and copied holdings still had their exact pre-request units and fixed
+stops; the account had no pending activity. Raw details stay in ignored captures.
+
+The close API distinguishes a partial sale (`UnitsToDeduct` supplied) from a full
+exit (field omitted or null). Full exits now omit that field, retaining expected
+units in the journal and checking them before submission. Close-order inspection
+uses `/api/v1/trading/info/real/close-orders/{orderId}`. The v2 opening-order lookup
+returns 404 for this close and cannot establish its outcome.
+
+Only the observed combination of rejection 776, matching order/instrument,
+zero executions, unchanged agent/copied lots and complete idle accounts marks
+the old whole-lot request as proven unfilled. One corrected attempt may then be
+made by a live invocation, with a new durable reference. A second rejected
+correction or uncertain result cannot create an endless retry. A live `plan`
+cleared the old hold and proposed the same SMH exit without submitting it;
+this is not evidence of an accepted live full-close order.
+
 ## Observed order rejection, 22 September 2026
 
 **Current override:** the owner subsequently authorized relaxing requirements.

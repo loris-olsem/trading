@@ -35,8 +35,16 @@ public final class Executor {
     Attempt prior = store.state().attempts.get(intent.key());
     while (prior != null
         && prior.status == Status.REJECTED
-        && "KILL_BEFORE_SUBMISSION".equals(prior.result)) {
-      // This is affirmative proof that submit was never called, not a timeout.
+        && ("KILL_BEFORE_SUBMISSION".equals(prior.result)
+            || retry == 0
+                && "FULL_CLOSE_REQUEST_REJECTED_NO_FILL".equals(prior.result)
+                && prior.beforeAgentUnits != null
+                && prior.intent.units() != null
+                && prior.intent.units().compareTo(prior.beforeAgentUnits) == 0
+                && java.util.Set.of(Action.CLOSE, Action.REDUCE, Action.EARLY_EXIT)
+                    .contains(prior.intent.action()))) {
+      // Retry only a proven non-submission or one rejected full-unit request.
+      // A rejection of the corrected request must not cause an endless retry.
       intent =
           new Intent(
               baseKey + "|retry:" + ++retry,
@@ -51,7 +59,8 @@ public final class Executor {
               intent.ceiling(),
               intent.stop(),
               intent.settlementType(),
-              intent.orderType());
+              intent.orderType(),
+              intent.fullClose() || "FULL_CLOSE_REQUEST_REJECTED_NO_FILL".equals(prior.result));
       prior = store.state().attempts.get(intent.key());
     }
     if (prior != null) {
@@ -104,7 +113,7 @@ public final class Executor {
   }
 
   private static boolean awaitingReadback(Attempt attempt) {
-    return "RECONCILIATION_UNAVAILABLE".equals(attempt.result)
+    return attempt.result != null && attempt.result.startsWith("RECONCILIATION_UNAVAILABLE")
         || attempt.status == Status.SUBMITTED
         || attempt.status == Status.PARTIAL;
   }
@@ -116,6 +125,8 @@ public final class Executor {
       observed = broker.observe(attempt);
     } catch (IOException e) {
       attempt.result = "RECONCILIATION_UNAVAILABLE";
+      String code = e.getMessage();
+      if (code != null && code.matches("[A-Z][A-Z0-9_]{0,79}")) attempt.result += " " + code;
       store.save();
       return;
     }

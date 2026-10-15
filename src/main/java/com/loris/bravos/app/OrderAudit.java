@@ -24,10 +24,12 @@ public final class OrderAudit {
     for (var attempt : state.path("attempts")) {
       if (!attempt.path("orderId").canConvertToLong()) continue;
       long id = attempt.path("orderId").longValue();
+      String action = attempt.path("intent").path("action").asText();
+      boolean close = java.util.Set.of("CLOSE", "REDUCE", "EARLY_EXIT").contains(action);
       var response =
           http.request(
               "GET",
-              "/api/v2/trading/info/orders:lookup?orderId=" + id,
+              lookupPath(action, id),
               secrets.headers(false, UUID.randomUUID().toString()),
               null);
       if (response.status() != 200) {
@@ -40,9 +42,20 @@ public final class OrderAudit {
           "Order "
               + id
               + ": "
-              + EtoroClient.orderFailure(order)
+              + (close
+                  ? "Close status "
+                      + order.path("statusID").asInt()
+                      + "; broker code "
+                      + order.path("errorCode").asInt()
+                  : EtoroClient.orderFailure(order))
               + "; executions="
-              + order.path("positionExecutions").size());
+              + order.path(close ? "positions" : "positionExecutions").size());
     }
+  }
+
+  static String lookupPath(String action, long id) {
+    return java.util.Set.of("CLOSE", "REDUCE", "EARLY_EXIT").contains(action)
+        ? "/api/v1/trading/info/real/close-orders/" + id
+        : "/api/v2/trading/info/orders:lookup?orderId=" + id;
   }
 }

@@ -509,7 +509,34 @@ public final class EtoroClient implements Broker, Workflow.Market {
     if (attempt.orderId == null)
       return observation(Status.UNKNOWN, "CLOSE_RESPONSE_LOST_REQUIRES_RECOVERY", List.of());
     JsonNode close = get(false, "/api/v1/trading/info/real/close-orders/" + attempt.orderId);
-    JsonNode execution = unique(array(close, "positions"), "positionID", i.positionId());
+    if (integer(close, "orderID") != attempt.orderId
+        || integer(close, "instrumentID") != i.instrumentId())
+      throw new IOException("CLOSE_ORDER_IDENTITY_MISMATCH");
+    JsonNode executions = array(close, "positions");
+    if (executions.isEmpty()) {
+      // Observed rejected full-unit request: no execution and both original lots
+      // unchanged. Only this precise validation failure authorizes a new attempt.
+      boolean unchanged =
+          p != null
+              && attempt.beforeAgentUnits != null
+              && p.units().compareTo(attempt.beforeAgentUnits) == 0
+              && i.units().compareTo(attempt.beforeAgentUnits) == 0
+              && !copies.isEmpty()
+              && copies.size() == attempt.beforeOwnerUnits.size()
+              && copies.stream()
+                  .allMatch(
+                      c ->
+                          attempt.beforeOwnerUnits.containsKey(c.id())
+                              && c.units().compareTo(attempt.beforeOwnerUnits.get(c.id())) == 0);
+      if (integer(close, "statusID") == 4
+          && close.path("errorCode").asInt() == 776
+          && unchanged
+          && account.ordersComplete()
+          && !account.pending())
+        return observation(Status.REJECTED, "FULL_CLOSE_REQUEST_REJECTED_NO_FILL", List.of());
+      return observation(Status.SUBMITTED, "CLOSE_AWAITING_EXECUTION", List.of(i.positionId()));
+    }
+    JsonNode execution = unique(executions, "positionID", i.positionId());
     if (decimal(execution, "units").compareTo(i.units()) != 0)
       return observation(Status.PARTIAL, "CLOSE_UNITS_NOT_CONFIRMED", List.of(i.positionId()));
     if (p == null && copies.isEmpty())
@@ -608,7 +635,8 @@ public final class EtoroClient implements Broker, Workflow.Market {
     if (p == null) throw new IOException("POSITION_CHANGED_BEFORE_SUBMISSION");
     if (p.instrumentId() != i.instrumentId()
         || !p.longOnly()
-        || i.units() != null && i.units().compareTo(p.units()) > 0)
+        || i.units() != null && i.units().compareTo(p.units()) > 0
+        || i.fullClose() && (i.units() == null || i.units().compareTo(p.units()) != 0))
       throw new IOException("POSITION_CONTRACT_MISMATCH");
     attempt.beforeAgentUnits = p.units();
     for (Position copy : a.ownerPositions())

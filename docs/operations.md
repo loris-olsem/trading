@@ -167,6 +167,7 @@ order executed. Read each instrument's result.
 | --- | --- |
 | Unknown/unresolved order | Inspect saved reference/order and broker history. Opening lookup may resolve on the next invocation. Never delete an attempt to retry. |
 | Lost close response | Reconcile close history and both accounts. No automatic resubmission. |
+| Full-unit close rejected with broker code 776 | The app verifies the exact saved order, zero executions, unchanged agent/copy units and no pending activity. The next live run may make one corrected full-close request with `UnitsToDeduct` omitted. Other errors or uncertain outcomes stay held; no manual journal edit is needed. |
 | Filled agent position missing its stop | Next owner run may repair only known PARTIAL fills with matching source stop, fresh complete accounts, no pending broker orders and verified lot links. No purchases are allowed during recovery. Dry runs only report the problem. |
 | Owner copy missing its stop | The report names the copied position and required stop. Owner intervention is required if propagation fails; the program has no owner-side write credential. Do not assume an agent stop acknowledgement fixed the copy. |
 | Other copy/stop pending | Leave attempt intact for next read-back. Terminal protected partial fills are confirmed, never topped up. |
@@ -181,6 +182,12 @@ order executed. Read each instrument's result.
 
 Source failures block new decisions, including unsubmitted early exits.
 Reconciliation runs before source login; existing broker stops operate independently.
+Full exits use eToro's full-close operation, omitting `UnitsToDeduct`; partial
+sales retain their exact unit amount. The saved intent keeps the expected units
+and whether the sale is full, so preflight rejects a changed holding and read-back
+still proves both sides of the exit. Historical `CLOSE` intents mean full exits;
+their original units, references and order IDs are retained. `gr orderAudit`
+uses the close-order endpoint for sales and the opening lookup for buys.
 Unknown close outcomes and material source corrections still need evidence-backed
 maintenance changes, tested before execution. A conflicting close is reported as
 BLOCKED with its before/after source weights and retained agent units; it cannot

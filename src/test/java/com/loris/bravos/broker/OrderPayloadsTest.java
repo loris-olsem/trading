@@ -10,6 +10,44 @@ import org.junit.jupiter.api.Test;
 
 class OrderPayloadsTest {
   @Test
+  void fullExitOmitsPartialQuantityWhileTrimsKeepExactUnits() throws Exception {
+    for (Action action : List.of(Action.CLOSE, Action.EARLY_EXIT, Action.REDUCE)) {
+      var partial = position(action, 1L, d("0.838976"), null);
+      var full =
+          new Intent(
+              partial.key(),
+              partial.cycleKey(),
+              partial.eventKey(),
+              action,
+              partial.instrumentId(),
+              partial.positionId(),
+              null,
+              null,
+              partial.units(),
+              null,
+              null,
+              null,
+              "limitIOC",
+              true);
+      var json = com.loris.bravos.util.Json.MAPPER;
+      full = json.readValue(json.writeValueAsString(full), Intent.class);
+      assertTrue(full.fullClose());
+      assertFalse(OrderPayloads.create(full).body().has("UnitsToDeduct"));
+      if (action != Action.CLOSE) {
+        assertFalse(partial.fullClose());
+        assertEquals(
+            d("0.838976"),
+            OrderPayloads.create(partial).body().path("UnitsToDeduct").decimalValue());
+      }
+    }
+    var legacy =
+        com.loris.bravos.util.Json.MAPPER.valueToTree(
+            position(Action.CLOSE, 1L, d("0.838976"), null));
+    ((com.fasterxml.jackson.databind.node.ObjectNode) legacy).remove("fullClose");
+    assertTrue(com.loris.bravos.util.Json.MAPPER.treeToValue(legacy, Intent.class).fullClose());
+  }
+
+  @Test
   void marketPayloadPreservesAmountAndStopButCannotContainLimitOrTrigger() throws Exception {
     for (String settlement : List.of("real", "cfd")) {
       var intent =

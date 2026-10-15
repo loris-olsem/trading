@@ -48,7 +48,10 @@ public final class OrderPayloads {
     }
     if (i.units() == null || i.units().signum() <= 0)
       throw new IllegalArgumentException("INVALID_CLOSE_UNITS");
-    body.put("InstrumentId", i.instrumentId()).put("UnitsToDeduct", i.units());
+    body.put("InstrumentId", i.instrumentId());
+    // eToro treats an explicit unit amount as a partial close, even if it equals
+    // the entire lot, and rejects the zero remainder (776). Omit for full exits.
+    if (!i.fullClose()) body.put("UnitsToDeduct", i.units());
     return new Request(
         "POST", "/api/v1/trading/execution/market-close-orders/positions/" + i.positionId(), body);
   }

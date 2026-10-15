@@ -306,6 +306,18 @@ class PolicyTest {
             .reduction(c, alert("trim", Action.REDUCE, "120", "5", "4", null), positions, 4)
             .getFirst();
     assertEquals(d("1.4246"), trim.units());
+    assertFalse(trim.fullClose());
+    assertTrue(
+        policy
+            .reduction(c, alert("early", Action.EARLY_EXIT, "120", "1", "0", null), positions, 4)
+            .getFirst()
+            .fullClose());
+    assertFalse(
+        policy
+            .reduction(
+                c, alert("early-part", Action.EARLY_EXIT, "120", "1", "0.5", null), positions, 4)
+            .getFirst()
+            .fullClose());
     assertEquals(1L, trim.positionId());
     assertEquals(
         d("7.123456"),

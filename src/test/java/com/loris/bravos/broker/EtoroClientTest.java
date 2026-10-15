@@ -97,7 +97,9 @@ class EtoroClientTest {
       costs =
           node(
               "{\"instrumentId\":1890,\"lastUpdated\":\"2026-09-21T14:00:00Z\",\"costs\":[{\"costType\":\"transactionFee\",\"currency\":\"USD\",\"value\":1}]}");
-      close = node("{\"orderID\":123,\"positions\":[{\"positionID\":900,\"units\":1}]}");
+      close =
+          node(
+              "{\"orderID\":123,\"instrumentID\":1890,\"statusID\":3,\"positions\":[{\"positionID\":900,\"units\":1}]}");
     }
 
     void position(boolean ownerCopy, String units, String stop) throws IOException {
@@ -850,6 +852,173 @@ class EtoroClientTest {
     api.mirror.putArray("positions");
     assertEquals(Status.CONFIRMED, client.observe(a).status());
     assertThrows(IOException.class, () -> client.prepare(a));
+  }
+
+  @Test
+  void rejectedWholeLotCloseIsRetryableOnlyWithUnchangedLotsAndNoActivity() throws Exception {
+    var api = new Api();
+    api.position(false, "0.838976", "90");
+    api.position(true, "0.38679", "90");
+    var c = client(api, false);
+    var intent =
+        new Intent(
+            "close",
+            "opening",
+            "close",
+            Action.CLOSE,
+            1890,
+            900L,
+            null,
+            null,
+            d("0.838976"),
+            null,
+            null,
+            null);
+    var a = new Attempt(intent, NOW);
+    c.prepare(a);
+    a.orderId = 123L;
+    api.close =
+        node(
+            "{\"orderID\":123,\"instrumentID\":1890,\"statusID\":4,\"errorCode\":776,\"positions\":[]}");
+    var result = c.observe(a);
+    assertEquals(Status.REJECTED, result.status());
+    assertEquals("FULL_CLOSE_REQUEST_REJECTED_NO_FILL", result.reason());
+    ((ObjectNode) api.mirror.get("positions").get(0)).put("units", d("0.3"));
+    assertEquals(Status.SUBMITTED, c.observe(a).status());
+    ((ObjectNode) api.mirror.get("positions").get(0)).put("units", d("0.38679"));
+    ((ObjectNode) api.agent.get("positions").get(0)).put("units", d("0.8"));
+    assertEquals(Status.SUBMITTED, c.observe(a).status());
+    assertThrows(IOException.class, () -> c.prepare(new Attempt(intent, NOW)));
+    ((ObjectNode) api.agent.get("positions").get(0)).put("units", d("0.838976"));
+    ((ArrayNode) api.agent.get("ordersForClose")).addObject().put("orderID", 123);
+    assertEquals(Status.SUBMITTED, c.observe(a).status());
+    api.agent.putArray("ordersForClose");
+    api.agent.remove("ordersForClose");
+    assertEquals(Status.SUBMITTED, c.observe(a).status());
+    api.agent.putArray("ordersForClose");
+    api.close.put("errorCode", 999);
+    assertEquals(Status.SUBMITTED, c.observe(a).status());
+    api.close.put("errorCode", 776).put("statusID", 1);
+    assertEquals(Status.SUBMITTED, c.observe(a).status());
+    api.close.put("statusID", 4).put("orderID", 456);
+    assertEquals(
+        "CLOSE_ORDER_IDENTITY_MISMATCH",
+        assertThrows(IOException.class, () -> c.observe(a)).getMessage());
+    api.close.put("orderID", 123).put("instrumentID", 999);
+    assertThrows(IOException.class, () -> c.observe(a));
+    api.close.put("instrumentID", 1890);
+    a.beforeOwnerUnits.clear();
+    assertEquals(Status.SUBMITTED, c.observe(a).status());
+    a.beforeAgentUnits = null;
+    assertEquals(Status.SUBMITTED, c.observe(a).status());
+    assertEquals(0, api.writes);
+  }
+
+  @Test
+  void savedRejectedSaleRecoversAcrossRestartWithoutRepeatingAConfirmedExit(
+      @org.junit.jupiter.api.io.TempDir java.nio.file.Path temp) throws Exception {
+    var api = new Api();
+    api.position(false, "0.838976", "90");
+    api.position(true, "0.38679", "90");
+    api.close =
+        node(
+            "{\"orderID\":123,\"instrumentID\":1890,\"statusID\":4,\"errorCode\":776,\"positions\":[]}");
+    var intent =
+        new Intent(
+            "close",
+            "opening",
+            "close",
+            Action.CLOSE,
+            1890,
+            900L,
+            null,
+            null,
+            d("0.838976"),
+            null,
+            null,
+            null);
+    try (var store = new com.loris.bravos.state.StateStore(temp)) {
+      store.state().book.cycles.put("opening", cycle());
+      var original = new Attempt(intent, NOW);
+      client(api, false).prepare(original);
+      original.orderId = 123L;
+      original.status = Status.SUBMITTED;
+      store.state().attempts.put(intent.key(), original);
+      store.save();
+    }
+    Transport execution =
+        (method, path, headers, body) -> {
+          var response = api.request(method, path, headers, body);
+          if (method.equals("POST") && path.contains("market-close-orders/positions/")) {
+            assertFalse(Json.MAPPER.readTree(body).has("UnitsToDeduct"));
+            api.agent.putArray("positions");
+            api.mirror.putArray("positions");
+            api.close.put("statusID", 3).put("errorCode", 0);
+            api.close
+                .putArray("positions")
+                .addObject()
+                .put("positionID", 900)
+                .put("units", d("0.838976"));
+          }
+          return response;
+        };
+    var c = offlineClient(execution, secrets, config(), clock, true);
+    try (var store = new com.loris.bravos.state.StateStore(temp)) {
+      var executor = new Executor(store, c, clock);
+      var original = store.state().attempts.get(intent.key());
+      executor.reconcile(original);
+      assertEquals(Status.REJECTED, original.status);
+      assertEquals("FULL_CLOSE_REQUEST_REJECTED_NO_FILL", original.result);
+      var corrected = executor.execute(intent);
+      assertEquals(Status.CONFIRMED, corrected.status);
+      assertEquals("FULL_CLOSE_CONFIRMED", corrected.result);
+      assertEquals(1, api.writes);
+    }
+    try (var store = new com.loris.bravos.state.StateStore(temp)) {
+      assertEquals(Status.CONFIRMED, new Executor(store, c, clock).execute(intent).status);
+      assertEquals(1, api.writes);
+    }
+  }
+
+  @Test
+  void fullCloseCannotExpandToChangedPositionButPartialTrimKeepsUnits() throws Exception {
+    var api = new Api();
+    api.position(false, "2", "90");
+    api.position(true, "0.922", "90");
+    var c = client(api, false);
+    var full =
+        new Intent(
+            "close",
+            "opening",
+            "close",
+            Action.CLOSE,
+            1890,
+            900L,
+            null,
+            null,
+            d("1"),
+            null,
+            null,
+            null);
+    assertEquals(
+        "POSITION_CONTRACT_MISMATCH",
+        assertThrows(IOException.class, () -> c.prepare(new Attempt(full, NOW))).getMessage());
+    var trim =
+        new Intent(
+            "trim",
+            "opening",
+            "trim",
+            Action.REDUCE,
+            1890,
+            900L,
+            null,
+            null,
+            d("1"),
+            null,
+            null,
+            null);
+    c.prepare(new Attempt(trim, NOW));
+    assertEquals(d("1"), OrderPayloads.create(trim).body().path("UnitsToDeduct").decimalValue());
   }
 
   @Test

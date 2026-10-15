@@ -327,6 +327,144 @@ class ExecutorTest {
     }
   }
 
+  @org.junit.jupiter.params.ParameterizedTest
+  @org.junit.jupiter.params.provider.EnumSource(
+      value = Action.class,
+      names = {"CLOSE", "REDUCE", "EARLY_EXIT"})
+  void provenRejectedWholeLotCloseGetsOneDurableCorrectedAttempt(Action action) throws Exception {
+    var broker = new Fake();
+    var close =
+        new Intent(
+            "close",
+            "opening",
+            "close",
+            action,
+            1890,
+            1L,
+            null,
+            null,
+            d("0.838976"),
+            null,
+            null,
+            null);
+    String originalReference;
+    try (var store = store()) {
+      var original = new Attempt(close, NOW);
+      original.orderId = 456L;
+      original.status = Status.REJECTED;
+      original.result = "FULL_CLOSE_REQUEST_REJECTED_NO_FILL";
+      original.beforeAgentUnits = close.units();
+      originalReference = original.reference;
+      store.state().attempts.put(close.key(), original);
+      store.save();
+    }
+    try (var store = new StateStore(temp)) {
+      var executor = new Executor(store, broker, clock);
+      var corrected = executor.execute(close);
+      assertEquals(Status.CONFIRMED, corrected.status);
+      assertEquals("close|retry:1", corrected.intent.key());
+      assertTrue(corrected.intent.fullClose());
+      assertNotEquals(originalReference, corrected.reference);
+      executor.execute(close);
+      assertEquals(1, broker.submits);
+    }
+    try (var store = new StateStore(temp)) {
+      new Executor(store, broker, clock).execute(close);
+      assertEquals(1, broker.submits);
+      var corrected = store.state().attempts.get("close|retry:1");
+      corrected.status = Status.REJECTED;
+      corrected.result = "FULL_CLOSE_REQUEST_REJECTED_NO_FILL";
+      corrected.beforeAgentUnits = close.units();
+      new Executor(store, broker, clock).execute(close);
+      assertEquals(1, broker.submits, "A rejected correction must not loop");
+    }
+  }
+
+  @Test
+  void fullEarlyExitKeepsFullCloseModeAfterKillCancelledSubmission() throws Exception {
+    var broker = new Fake();
+    var full =
+        new Intent(
+            "exit",
+            "opening",
+            "exit",
+            Action.EARLY_EXIT,
+            1890,
+            1L,
+            null,
+            null,
+            d("1"),
+            null,
+            null,
+            null,
+            "limitIOC",
+            true);
+    try (var store = store()) {
+      var cancelled = new Attempt(full, NOW);
+      cancelled.status = Status.REJECTED;
+      cancelled.result = "KILL_BEFORE_SUBMISSION";
+      store.state().attempts.put(full.key(), cancelled);
+      var retried = new Executor(store, broker, clock).execute(full);
+      assertTrue(retried.intent.fullClose());
+      assertEquals(Status.CONFIRMED, retried.status);
+      assertEquals(1, broker.submits);
+    }
+  }
+
+  @Test
+  void partialOrUnprovedCloseRejectionCannotAuthorizeCorrection() throws Exception {
+    var broker = new Fake();
+    try (var store = store()) {
+      for (String proof : List.of("missing-baseline", "different-units", "unknown-result")) {
+        var intent =
+            new Intent(
+                proof,
+                "opening",
+                "close",
+                Action.REDUCE,
+                1890,
+                1L,
+                null,
+                null,
+                d("1"),
+                null,
+                null,
+                null);
+        var a = new Attempt(intent, NOW);
+        a.status = Status.REJECTED;
+        a.result =
+            "unknown-result".equals(proof)
+                ? "CLOSE_UNPROVED"
+                : "FULL_CLOSE_REQUEST_REJECTED_NO_FILL";
+        a.beforeAgentUnits = "missing-baseline".equals(proof) ? null : d("2");
+        store.state().attempts.put(intent.key(), a);
+        new Executor(store, broker, clock).execute(intent);
+      }
+      assertEquals(0, broker.submits);
+    }
+  }
+
+  @Test
+  void reconciliationKeepsOnlySafeDiagnosticCodes() throws Exception {
+    for (String message : List.of("BROKER_ID_NOT_FOUND", "sensitive response or credential")) {
+      var broker =
+          new Fake() {
+            public Observation observe(Attempt a) throws IOException {
+              throw new IOException(message);
+            }
+          };
+      try (var store = store()) {
+        var a = new Attempt(intent(), NOW);
+        new Executor(store, broker, clock).reconcile(a);
+        assertEquals(
+            message.startsWith("BROKER_")
+                ? "RECONCILIATION_UNAVAILABLE BROKER_ID_NOT_FOUND"
+                : "RECONCILIATION_UNAVAILABLE",
+            a.result);
+      }
+    }
+  }
+
   @Test
   void receiptIsSavedBeforeReadbackCanCrash() throws Exception {
     var broker =

@@ -7,6 +7,25 @@ The [implementation plan](docs/IMPLEMENTATION-PLAN.md) was committed before code
 
 ## Checks
 
+15 October full-close recovery: **238 tests pass**, with **89.25% instruction
+coverage** (13,395/15,009) and **81.64% branch coverage** (1,859/2,277).
+`gr spotlessApply check pitest installDist` passed with the vfox pins. PIT killed
+**1,077/1,181 mutations (91.19%)**, with 87 survivors, 17 uncovered and no
+timeouts or errors. All gates remain unchanged.
+Fixtures reproduce the rejected whole-lot sale, recover it through the real
+executor and broker adapter against a mock transport, prove both accounts closed,
+then restart without a second submission. Partial sales keep explicit quantities;
+full early exits keep their full-close setting across retries. Changed holdings,
+pending activity, mismatched identities, missing baseline proof and other errors
+cannot authorize the corrected attempt; a rejected correction cannot loop.
+
+Read-only broker inspection found SMH's 14 October sale rejected with code 776,
+zero executions and unchanged protected lots. `gr plan` recognized it as unfilled,
+cleared the account hold and proposed the same exit without financial writes.
+The authoritative journal was checkpointed at generation 222. Actual acceptance
+of the corrected full-close request awaits the next owner/scheduled live run.
+See [close recovery](docs/broker-contract.md#full-close-rejection-15-october-2026).
+
 Market-order mode, 22 September: `gr spotlessApply check pitest installDist`
 passed under the pinned vfox tools. **220 tests**, instruction coverage
 12,795/14,369 (89.05%), branch coverage 1,738/2,140 (81.21%), and **1,001/1,106

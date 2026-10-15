@@ -149,12 +149,46 @@ public final class Model {
       BigDecimal ceiling,
       BigDecimal stop,
       String settlementType,
-      String orderType) {
+      String orderType,
+      boolean fullClose) {
     public Intent {
+      // CLOSE has always meant all linked units, including in older journals.
+      if (action == Action.CLOSE) fullClose = true;
       // Missing in historical journals: those orders were always IOC limits.
       if (orderType == null) orderType = "limitIOC";
       if (!Set.of("limitIOC", "mkt").contains(orderType))
         throw new IllegalArgumentException("INVALID_ORDER_TYPE");
+    }
+
+    public Intent(
+        String key,
+        String cycleKey,
+        String eventKey,
+        Action action,
+        long instrumentId,
+        Long positionId,
+        BigDecimal ownerAmount,
+        BigDecimal agentAmount,
+        BigDecimal units,
+        BigDecimal ceiling,
+        BigDecimal stop,
+        String settlementType,
+        String orderType) {
+      this(
+          key,
+          cycleKey,
+          eventKey,
+          action,
+          instrumentId,
+          positionId,
+          ownerAmount,
+          agentAmount,
+          units,
+          ceiling,
+          stop,
+          settlementType,
+          orderType,
+          false);
     }
 
     public Intent(
