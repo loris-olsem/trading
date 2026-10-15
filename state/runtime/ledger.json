@@ -1,8 +1,8 @@
 {
   "schemaVersion" : 1,
-  "generation" : 224,
+  "generation" : 233,
   "enrollmentFloor" : "2026-08-23",
-  "checkpoint" : "2026-10-15T14:20:38.041606100Z",
+  "checkpoint" : "2026-10-15T19:31:28.350637400Z",
   "revisionAudit" : "2026-10-13T19:32:07.392668900Z",
   "book" : {
     "cycles" : {
@@ -1787,7 +1787,7 @@
         "sourceOpen" : false,
         "enrolled" : true,
         "entered" : true,
-        "terminal" : false,
+        "terminal" : true,
         "blocker" : null,
         "events" : [ {
           "key" : "bravos:post:488611",
@@ -1814,8 +1814,8 @@
           "stop" : null,
           "targets" : [ ]
         } ],
-        "positionIds" : [ 3585989568 ],
-        "completed" : [ "bravos:post:488611" ],
+        "positionIds" : [ ],
+        "completed" : [ "bravos:post:488611", "bravos:post:489798" ],
         "additionSessions" : { }
       },
       "bravos:post:488663" : {
@@ -3736,6 +3736,39 @@
       "beforeOwnerUnits" : {
         "3585989569" : 0.38679
       }
+    },
+    "bravos:post:488611|bravos:post:489798|CLOSE|3585989568|retry:1" : {
+      "intent" : {
+        "key" : "bravos:post:488611|bravos:post:489798|CLOSE|3585989568|retry:1",
+        "cycleKey" : "bravos:post:488611",
+        "eventKey" : "bravos:post:489798",
+        "action" : "CLOSE",
+        "instrumentId" : 6357,
+        "positionId" : 3585989568,
+        "ownerAmount" : null,
+        "agentAmount" : null,
+        "units" : 0.838976,
+        "ceiling" : null,
+        "stop" : null,
+        "settlementType" : null,
+        "orderType" : "limitIOC",
+        "fullClose" : true
+      },
+      "reference" : "402c6c83-4e30-4fd8-a6e1-6cc2fafccff9",
+      "orderId" : 1614528008,
+      "status" : "CONFIRMED",
+      "createdAt" : "2026-10-15T19:31:31.947209100Z",
+      "result" : "FULL_CLOSE_CONFIRMED",
+      "agentFilled" : null,
+      "ownerFilled" : null,
+      "ownerShortfall" : null,
+      "baselineSaved" : true,
+      "positionIds" : [ ],
+      "absorbedEvents" : [ ],
+      "beforeAgentUnits" : 0.838976,
+      "beforeOwnerUnits" : {
+        "3585989569" : 0.38679
+      }
     }
   },
   "batches" : {
@@ -4025,12 +4058,6 @@
         "3585989327" : 2.516157
       }
     },
-    "3585989568" : {
-      "agentUnits" : 0.838976,
-      "ownerUnits" : {
-        "3585989569" : 0.38679
-      }
-    },
     "3585989920" : {
       "agentUnits" : 1.316704,
       "ownerUnits" : {
@@ -4045,5 +4072,5 @@
     }
   },
   "earlyExits" : [ ],
-  "report" : [ "SMH: CLOSE units 0.838976, stop null", "MAGS: BLOCKED INSTRUMENT_NOT_LISTED", "IBIT: BLOCKED BOTH_ACCOUNTS_OPENING_DISABLED", "ETHA: BLOCKED BOTH_ACCOUNTS_OPENING_DISABLED", "BRK.B: HOLD_UNCHANGED", "ADI: HOLD_UNCHANGED", "MEDP: HOLD_UNCHANGED" ]
+  "report" : [ "SMH: CLOSE units 0.838976, stop null", "SMH: CONFIRMED CLOSE", "MAGS: BLOCKED INSTRUMENT_NOT_LISTED", "IBIT: BLOCKED BOTH_ACCOUNTS_OPENING_DISABLED", "ETHA: BLOCKED BOTH_ACCOUNTS_OPENING_DISABLED", "BRK.B: HOLD_UNCHANGED", "ADI: HOLD_UNCHANGED", "MEDP: HOLD_UNCHANGED" ]
 }
