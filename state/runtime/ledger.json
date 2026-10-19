@@ -1,6 +1,6 @@
 {
   "schemaVersion" : 1,
-  "generation" : 239,
+  "generation" : 240,
   "enrollmentFloor" : "2026-08-23",
   "checkpoint" : "2026-10-19T13:45:55.117821300Z",
   "revisionAudit" : "2026-10-13T19:32:07.392668900Z",
@@ -4072,5 +4072,5 @@
     }
   },
   "earlyExits" : [ ],
-  "report" : [ "MAGS: BLOCKED INSTRUMENT_NOT_LISTED", "IBIT: BLOCKED BOTH_ACCOUNTS_OPENING_DISABLED", "ETHA: BLOCKED BOTH_ACCOUNTS_OPENING_DISABLED", "BRK.B: HOLD_UNCHANGED", "ADI: HOLD_UNCHANGED", "MEDP: HOLD_UNCHANGED" ]
+  "report" : [ "ARCHIVE_EMPTY_OR_CHANGED:1", "ARTICLE_REQUIRES_REVIEW:https://bravosresearch.com/news-feed/initiating-long-on-bbb-foods-inc-tbbb-breakout/", "ARTICLE_REQUIRES_REVIEW:https://bravosresearch.com/news-feed/booking-partial-profits-in-bbb-foods-inc-tbbb-profit-booking/", "ARTICLE_REQUIRES_REVIEW:https://bravosresearch.com/portfolio-update/booking-partial-profits-in-bbb-foods-inc-tbbb-profit-booking-2/", "ARTICLE_REQUIRES_REVIEW:https://bravosresearch.com/news-feed/booking-partial-profits-in-bbb-foods-inc-tbbb-profit-booking-3/", "ARTICLE_REQUIRES_REVIEW:https://bravosresearch.com/news-feed/initiating-long-on-health-care-select-sector-spdr-fund-xlv-breakout/", "ARTICLE_REQUIRES_REVIEW:https://bravosresearch.com/portfolio-update/booking-partial-profits-in-health-care-select-sector-spdr-fund-xlv-profit-booking/", "ARTICLE_REQUIRES_REVIEW:https://bravosresearch.com/news-feed/initiating-long-on-teva-pharmaceutical-limited-teva-potential-breakout/", "ARTICLE_REQUIRES_REVIEW:https://bravosresearch.com/news-feed/increasing-exposure-to-teva-pharmaceutical-limited-teva-breakout-2/", "ARTICLE_REQUIRES_REVIEW:https://bravosresearch.com/news-feed/booking-partial-profits-on-teva-pharmaceutical-limited-teva-profit-booking/", "ARTICLE_REQUIRES_REVIEW:https://bravosresearch.com/news-feed/initiating-long-on-berkshire-hathaway-inc-brk-b-breakout-2/", "ARTICLE_REQUIRES_REVIEW:https://bravosresearch.com/news-feed/increasing-exposure-to-berkshire-hathaway-inc-brk-b-technical-strength/", "ARTICLE_REQUIRES_REVIEW:https://bravosresearch.com/news-feed/initiating-long-on-roundhill-magnificent-seven-etf-mags-breakout/", "ARTICLE_REQUIRES_REVIEW:https://bravosresearch.com/news-feed/initiating-long-on-ishares-bitcoin-trust-ibit-breakout/", "ARTICLE_REQUIRES_REVIEW:https://bravosresearch.com/news-feed/initiating-long-on-ishares-ethereum-trust-etf-etha-breakout/", "ARTICLE_REQUIRES_REVIEW:https://bravosresearch.com/news-feed/initiating-long-on-analog-devices-inc-adi-breakout/", "ARTICLE_REQUIRES_REVIEW:https://bravosresearch.com/news-feed/initiating-long-on-medpace-holdings-inc-medp-breakout/", "DASHBOARD_UNAVAILABLE", "SOURCE_SCAN_INCOMPLETE" ]
 }
