@@ -29,6 +29,14 @@ confirmation, retry or duplicate-submission issue. See the
 The final checks ran in an isolated worktree before applying the reviewed code
 to the owner's scheduled checkout. Tests do not establish a new broker guarantee.
 
+After applying the reviewed fix, `gr plan` confirmed the existing MEDP order as
+`PARTIAL_CLOSE_CONFIRMED` and refreshed the baseline to 0.484427 internal agent
+units and 0.223357 owner units. It reported the earlier order as confirmed,
+with no new order attempt or account review hold. Runtime generation 256 was
+automatically checkpointed locally. The source reduction event remains pending
+for the next owner/scheduled run to record through the saved batch; no sale was
+repeated and no financial writes were made during recovery.
+
 15 October full-close recovery: **238 tests pass**, with **89.25% instruction
 coverage** (13,395/15,009) and **81.64% branch coverage** (1,859/2,277).
 `gr spotlessApply check pitest installDist` passed with the vfox pins. PIT killed
