@@ -476,7 +476,16 @@ public final class Workflow {
   private boolean batch(Cycle c, String event, List<Intent> intents, boolean live)
       throws IOException {
     if (intents.isEmpty()) return true;
-    for (Intent i : intents)
+    for (Intent i : intents) {
+      Attempt prior = executor.latest(i);
+      if (prior != null && prior.status == Status.CONFIRMED) {
+        if (!live)
+          store
+              .state()
+              .report
+              .add(c.symbol + ": ALREADY_CONFIRMED " + i.action() + "; order " + prior.orderId);
+        continue;
+      }
       store
           .state()
           .report
@@ -496,6 +505,7 @@ public final class Workflow {
                           + i.stop()
                           + ("mkt".equals(i.orderType()) ? ", market" : "")
                       : "units " + i.units() + ", stop " + i.stop()));
+    }
     if (!live) return true;
     // Save every member before submission so restarts retain original proportional units.
     Intent first = intents.getFirst();
@@ -536,7 +546,13 @@ public final class Workflow {
         store.state().batches.computeIfAbsent(key, unused -> new ArrayList<>(proposed));
     store.save();
     for (Intent i : durable) {
+      Set<String> confirmedReferences =
+          store.state().attempts.values().stream()
+              .filter(a -> a.status == Status.CONFIRMED)
+              .map(a -> a.reference)
+              .collect(java.util.stream.Collectors.toSet());
       Attempt attempt = executor.execute(i);
+      boolean alreadyConfirmed = confirmedReferences.contains(attempt.reference);
       if (attempt.status != Status.CONFIRMED) {
         boolean noFill =
             buy
@@ -551,7 +567,11 @@ public final class Workflow {
             .add(
                 c.symbol
                     + ": "
-                    + (noFill ? "NOT_FILLED " : "ORDER_PENDING_OR_REJECTED ")
+                    + (noFill
+                        ? "NOT_FILLED "
+                        : attempt.status == Status.REJECTED
+                            ? "ORDER_REJECTED "
+                            : "ORDER_UNCONFIRMED ")
                     + attempt.result
                     + "; order "
                     + attempt.orderId);
@@ -567,9 +587,10 @@ public final class Workflow {
           .report
           .add(
               c.symbol
-                  + ": CONFIRMED "
+                  + (alreadyConfirmed ? ": ALREADY_CONFIRMED " : ": CONFIRMED ")
                   + i.action()
-                  + (attempt.ownerFilled == null ? "" : " owner USD " + attempt.ownerFilled));
+                  + (attempt.ownerFilled == null ? "" : " owner USD " + attempt.ownerFilled)
+                  + (alreadyConfirmed ? "; order " + attempt.orderId : ""));
       if (attempt.ownerShortfall != null && attempt.ownerShortfall.signum() > 0)
         store
             .state()

@@ -850,8 +850,240 @@ class EtoroClientTest {
     assertEquals(Status.CONFIRMED, client.observe(a).status());
     api.agent.putArray("positions");
     api.mirror.putArray("positions");
-    assertEquals(Status.CONFIRMED, client.observe(a).status());
+    // Disappearing whole lots cannot prove a requested partial sale.
+    assertEquals(Status.PARTIAL, client.observe(a).status());
     assertThrows(IOException.class, () -> client.prepare(a));
+  }
+
+  @Test
+  void partialCloseConfirmsADistinctClosedSliceAgainstBothOriginalHoldings() throws Exception {
+    var api = new Api();
+    var c = client(api, false);
+    var a = preparedPartialSale(api, c);
+    ((ObjectNode) api.close.path("positions").get(0)).put("positionID", 902);
+    assertEquals(Status.CONFIRMED, c.observe(a).status());
+    assertEquals("PARTIAL_CLOSE_CONFIRMED", c.observe(a).reason());
+    assertEquals(List.of(900L), c.observe(a).positionIds());
+    assertEquals(0, api.writes);
+  }
+
+  @Test
+  void partialCloseConfirmsAfterRestartWithoutAConfiguredInstrument() throws Exception {
+    var api = new Api();
+    var config = config();
+    config.assets.clear();
+    var c = offlineClient(api, secrets, config, clock, false);
+    var a = preparedPartialSale(api, c);
+    assertEquals(Status.CONFIRMED, c.observe(a).status());
+    assertEquals(0, api.writes);
+  }
+
+  Attempt preparedPartialSale(Api api, EtoroClient c) throws Exception {
+    api.position(false, "0.807377", "90");
+    api.position(true, "0.372261", "90");
+    var intent =
+        new Intent(
+            "trim",
+            "opening",
+            "trim",
+            Action.REDUCE,
+            1890,
+            900L,
+            null,
+            null,
+            d("0.32295"),
+            null,
+            null,
+            null);
+    var a = new Attempt(intent, NOW);
+    c.prepare(a);
+    a.orderId = 123L;
+    ((ObjectNode) api.close.path("positions").get(0)).put("units", d("0.32295"));
+    ((ObjectNode) api.agent.path("positions").get(0)).put("units", d("0.484427"));
+    ((ObjectNode) api.mirror.path("positions").get(0)).put("units", d("0.223357"));
+    return a;
+  }
+
+  @org.junit.jupiter.params.ParameterizedTest
+  @org.junit.jupiter.params.provider.ValueSource(
+      strings = {
+        "agent-baseline",
+        "zero-baseline",
+        "owner-baseline",
+        "agent-units",
+        "agent-unit-boundary",
+        "owner-units",
+        "owner-id",
+        "agent-asset",
+        "owner-asset",
+        "pending",
+        "incomplete-orders",
+        "pending-status",
+        "broker-error",
+        "multiple-executions",
+        "missing-agent",
+        "missing-copy",
+        "execution-units",
+        "agent-direction",
+        "owner-direction",
+        "closed-id-open-agent",
+        "closed-id-open-copy",
+        "closed-id-saved-copy",
+        "invalid-closed-id"
+      })
+  void distinctClosedSliceNeedsUnambiguousExecutionAndBothSavedHoldings(String missingProof)
+      throws Exception {
+    var api = new Api();
+    var c = client(api, false);
+    var a = preparedPartialSale(api, c);
+    ((ObjectNode) api.close.path("positions").get(0)).put("positionID", 902);
+    var agent = (ObjectNode) api.agent.path("positions").get(0);
+    var copy = (ObjectNode) api.mirror.path("positions").get(0);
+    switch (missingProof) {
+      case "agent-baseline" -> a.beforeAgentUnits = null;
+      case "zero-baseline" -> a.beforeAgentUnits = d("0");
+      case "owner-baseline" -> a.beforeOwnerUnits.clear();
+      case "agent-units" -> agent.put("units", d("0.49"));
+      case "agent-unit-boundary" -> agent.put("units", d("0.484428"));
+      case "owner-units" -> copy.put("units", d("0.23"));
+      case "owner-id" -> copy.put("positionID", 903);
+      case "agent-asset" -> agent.put("instrumentID", 999);
+      case "owner-asset" -> copy.put("instrumentID", 999);
+      case "pending" -> ((ArrayNode) api.agent.path("ordersForClose")).addObject();
+      case "incomplete-orders" -> api.agent.remove("ordersForClose");
+      case "pending-status" -> api.close.put("statusID", 1);
+      case "broker-error" -> api.close.put("errorCode", 999);
+      case "multiple-executions" ->
+          ((ArrayNode) api.close.path("positions"))
+              .add(api.close.path("positions").get(0).deepCopy());
+      case "missing-agent" -> api.agent.putArray("positions");
+      case "missing-copy" -> api.mirror.putArray("positions");
+      case "execution-units" ->
+          ((ObjectNode) api.close.path("positions").get(0)).put("units", d("0.32296"));
+      case "agent-direction" -> agent.put("isBuy", false);
+      case "owner-direction" -> copy.put("leverage", 2);
+      case "closed-id-open-agent" ->
+          ((ArrayNode) api.agent.path("positions")).add(agent.deepCopy().put("positionID", 902));
+      case "closed-id-open-copy" ->
+          ((ArrayNode) api.mirror.path("positions"))
+              .add(copy.deepCopy().put("positionID", 902).put("parentPositionID", 999));
+      case "closed-id-saved-copy" -> a.beforeOwnerUnits.put(902L, d("1"));
+      case "invalid-closed-id" ->
+          ((ObjectNode) api.close.path("positions").get(0)).put("positionID", 0);
+    }
+    assertNotEquals(Status.CONFIRMED, c.observe(a).status());
+    assertEquals(0, api.writes);
+  }
+
+  @Test
+  void fullCloseStillRequiresItsOriginalPositionId() throws Exception {
+    var api = new Api();
+    var c = client(api, false);
+    api.position(false, "1", "90");
+    api.position(true, "0.461", "90");
+    var a =
+        new Attempt(
+            new Intent(
+                "close",
+                "opening",
+                "close",
+                Action.CLOSE,
+                1890,
+                900L,
+                null,
+                null,
+                d("1"),
+                null,
+                null,
+                null),
+            NOW);
+    c.prepare(a);
+    a.orderId = 123L;
+    api.agent.putArray("positions");
+    api.mirror.putArray("positions");
+    ((ObjectNode) api.close.path("positions").get(0)).put("positionID", 902);
+    assertEquals(Status.PARTIAL, c.observe(a).status());
+    ((ObjectNode) api.close.path("positions").get(0)).put("positionID", 900);
+    assertEquals(Status.CONFIRMED, c.observe(a).status());
+    assertEquals(0, api.writes);
+  }
+
+  @Test
+  void savedPartialSaleRecoversInPlanAndCompletesAfterRestartWithoutAnotherSubmission(
+      @org.junit.jupiter.api.io.TempDir java.nio.file.Path temp) throws Exception {
+    var api = new Api();
+    var config = config();
+    config.assets.clear();
+    var c = offlineClient(api, secrets, config, clock, true);
+    // Keep real adapter/account/order checks, with the fixture's zero polling delay
+    // even when a mutation deliberately prevents confirmation.
+    Broker immediate =
+        new Broker() {
+          public void prepare(Attempt a) throws IOException {
+            c.prepare(a);
+          }
+
+          public Receipt submit(Intent i, String reference) throws IOException {
+            return c.submit(i, reference);
+          }
+
+          public Observation observe(Attempt a) throws IOException {
+            return c.observe(a);
+          }
+        };
+    String reference;
+    try (var store = new com.loris.bravos.state.StateStore(temp)) {
+      var cycle = cycle();
+      cycle.entered = true;
+      cycle.positionIds.add(900L);
+      cycle.completed.add("opening");
+      cycle.events.add(alert("trim", Action.REDUCE, "100", "5", "3", null));
+      cycle.weight = d("3");
+      store.state().book.cycles.put(cycle.key, cycle);
+      store.state().enrollmentFloor = java.time.LocalDate.of(2026, 9, 1);
+      store.state().checkpoint = NOW;
+      var a = preparedPartialSale(api, c);
+      reference = a.reference;
+      a.status = Status.SUBMITTED;
+      a.result = "RECONCILIATION_UNAVAILABLE BROKER_ID_NOT_FOUND";
+      ((ObjectNode) api.close.path("positions").get(0)).put("positionID", 902);
+      store.state().attempts.put(a.intent.key(), a);
+      store.state().batches.put("opening|trim|REDUCE", List.of(a.intent));
+      store
+          .state()
+          .holdings
+          .put(
+              900L,
+              new com.loris.bravos.state.TradingState.Holding(
+                  a.beforeAgentUnits, Map.copyOf(a.beforeOwnerUnits)));
+      store.save();
+    }
+    try (var store = new com.loris.bravos.state.StateStore(temp)) {
+      var report = new Workflow(store, c, immediate, clock).evaluate(false);
+      var a = store.state().attempts.get("trim");
+      assertEquals(reference, a.reference);
+      assertEquals(Status.CONFIRMED, a.status);
+      assertEquals("PARTIAL_CLOSE_CONFIRMED", a.result);
+      assertTrue(a.baselineSaved);
+      assertEquals(d("0.484427"), store.state().holdings.get(900L).agentUnits());
+      assertEquals(d("0.223357"), store.state().holdings.get(900L).ownerUnits().get(901L));
+      assertFalse(store.state().book.cycles.get("opening").completed.contains("trim"));
+      assertTrue(report.contains("CF: ALREADY_CONFIRMED REDUCE; order 123"));
+      assertFalse(
+          String.join(" ", ReportFormatter.blocks(store.state(), false))
+              .contains("A live run would request"));
+      assertEquals(0, api.writes);
+    }
+    try (var store = new com.loris.bravos.state.StateStore(temp)) {
+      var workflow = new Workflow(store, c, immediate, clock);
+      var report = workflow.evaluate(true);
+      assertTrue(report.contains("CF: ALREADY_CONFIRMED REDUCE; order 123"));
+      assertTrue(store.state().book.cycles.get("opening").completed.contains("trim"));
+      assertEquals(1, store.state().attempts.size());
+      workflow.evaluate(true);
+      assertEquals(List.of("CF: HOLD_UNCHANGED"), store.state().report);
+      assertEquals(0, api.writes);
+    }
   }
 
   @Test
@@ -1170,7 +1402,8 @@ class EtoroClientTest {
   }
 
   @Test
-  void closeReadbackRejectsUnrelatedCopiesRoundingAndMissingPrecision() throws Exception {
+  void closeReadbackRejectsUnrelatedCopiesAndKeepsTheDiscoveredCalculationPrecision()
+      throws Exception {
     var api = new Api();
     var c = client(api, false);
     api.position(false, "5", "90");
@@ -1203,6 +1436,14 @@ class EtoroClientTest {
     var noConfig = new Configuration();
     assertEquals(
         Status.PARTIAL, offlineClient(api, secrets, noConfig, clock, false).observe(a).status());
+    ((ObjectNode) api.mirror.get("positions").get(0)).put("parentPositionID", 900);
+    var restarted = offlineClient(api, secrets, noConfig, clock, false);
+    // No profile after restart uses the same five-place calculation step as discovery.
+    assertEquals(Status.PARTIAL, restarted.observe(a).status());
+    ((ObjectNode) api.mirror.get("positions").get(0)).put("units", d("1.84401"));
+    assertEquals(Status.CONFIRMED, restarted.observe(a).status());
+    ((ObjectNode) api.mirror.get("positions").get(0)).put("units", d("1.844010001"));
+    assertEquals(Status.PARTIAL, restarted.observe(a).status());
     ((ObjectNode) api.close.get("positions").get(0)).put("units", d("0.5"));
     assertEquals("CLOSE_UNITS_NOT_CONFIRMED", c.observe(a).reason());
   }

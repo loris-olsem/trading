@@ -45,6 +45,7 @@ regressions, coverage and mutation results. Current read-only service evidence:
 | [Quote refresh](docs/QUOTE-REFRESH.md) | Automatic live-price fallback and bounded retries within the same run |
 | [Architecture](docs/architecture.md) | Discovery, policy, execution and state ownership |
 | [Broker contract](docs/broker-contract.md) | API boundaries and outstanding verification |
+| [Partial-sale recovery](docs/broker-contract.md#partial-sale-read-back-20-october-2026) | MEDP closed-portion IDs, both-account proof and recovery without a repeated sale |
 | [Instrument investigation](docs/INSTRUMENTS-2026-09-21.md) | Verified IDs, account restrictions and the ETHA symbol collision |
 | [Instrument availability correction](docs/INSTRUMENTS-2026-09-22.md) | ADI support, fresh broker restrictions and automatic listing diagnostics |
 | [Constraint review](docs/constraint-review.md) | Requirements mapped to code and tests |

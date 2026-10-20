@@ -134,10 +134,16 @@ foreach ($line in $lines) {
 }
 foreach ($b in $blocks) { $b.Text = ($b.Fields | ForEach-Object { $_.Label + ': ' + $_.Value }) -join ' ' }
 
-$trades = @(); $notFilled = @(); $attention = @(); $watching = @()
+$trades = @(); $recovered = @(); $unconfirmed = @(); $notFilled = @(); $attention = @(); $watching = @()
 foreach ($b in $blocks) {
     if ($b.Text -match 'Result: Confirmed by broker read-back:\s*([^.]*(\.\d+)?)') {
         $trades += ($b.Symbol + ' ' + $Matches[1].Trim())
+    }
+    if ($b.Text -match 'Result: Earlier order confirmed by broker read-back:\s*([^;]*);') {
+        $recovered += ($b.Symbol + ' ' + $Matches[1].Trim())
+    }
+    if ($b.Text -match 'Outcome unconfirmed|An earlier order may have executed') {
+        $unconfirmed += $b.Symbol
     }
     if ($b.Status -eq 'NOT FILLED') { $notFilled += $b.Symbol }
     if ($b.Status -eq 'REVIEW' -or $b.Text -match 'Result: Not confirmed') { $attention += $b.Symbol }
@@ -146,6 +152,12 @@ foreach ($b in $blocks) {
     }
 }
 $finished = $lines | Where-Object { $_ -match '^(Run completed|Run finished with held|Plan completed)' } | Select-Object -Last 1
+$ending = $finished
+if ($finished -like 'Run finished with held*') {
+    if ($attention.Count -gt 0) { $ending = 'Run finished; execution or account checks need review.' }
+    elseif ($notFilled.Count -gt 0) { $ending = 'Run finished; some orders were not filled.' }
+    else { $ending = 'Run finished; some items are held (blocked/waiting items above are expected).' }
+}
 $killed = Test-Path -LiteralPath (Join-Path $Root 'state\runtime\KILL')
 
 $color = 9807270   # grey
@@ -155,23 +167,33 @@ if (-not $finished) {
     $title = "Bravos $operation FAILED ($nyLabel)"
     $body = "No report produced: $errorCode. Nothing is retried automatically."
     $result = 'FAILED'; $color = 15548997
+} elseif ($unconfirmed.Count -gt 0) {
+    $title = "Bravos: order outcome unconfirmed ($nyLabel)"
+    $body = 'May have executed: ' + ($unconfirmed -join ', ') + '. Further submissions are held.'
+    if ($trades.Count -gt 0) { $body += ' Confirmed: ' + ($trades -join '; ') }
+    $result = 'UNCONFIRMED'; $color = 16753920
 } elseif ($trades.Count -gt 0) {
     $title = "Bravos: $($trades.Count) trade(s) confirmed ($nyLabel)"
     $body = ($trades -join '; ')
     $result = 'TRADED'; $color = 5763719
 } elseif ($attention.Count -gt 0 -or $notFilled.Count -gt 0) {
-    $title = "Bravos: no trades, needs a look ($nyLabel)"
+    $title = "Bravos: needs a look ($nyLabel)"
     $body = ''
     if ($notFilled.Count -gt 0) { $body += 'Not filled: ' + ($notFilled -join ', ') + '. ' }
     if ($attention.Count -gt 0) { $body += 'Review: ' + ($attention -join ', ') + '.' }
     $result = 'ATTENTION'; $color = 16753920
+} elseif ($recovered.Count -gt 0) {
+    $title = "Bravos: earlier order(s) confirmed ($nyLabel)"
+    $body = 'Earlier orders verified: ' + ($recovered -join '; ')
+    $result = 'RECOVERED'; $color = 5763719
 } else {
     $title = "Bravos: nothing to trade ($nyLabel)"
     $body = 'All positions unchanged; no new eligible Bravos actions.'
     $result = 'NOTHING'
 }
 if ($DryRun) { $title = '[DRY RUN - no orders] ' + $title }
-if ($attention.Count -gt 0 -and $result -eq 'TRADED') { $body += ' | Review: ' + ($attention -join ', ') }
+if ($attention.Count -gt 0 -and @('TRADED', 'UNCONFIRMED') -contains $result) { $body += ' | Review: ' + ($attention -join ', ') }
+if ($recovered.Count -gt 0 -and $result -ne 'RECOVERED' -and $result -ne 'FAILED') { $body += ' | Earlier orders verified: ' + ($recovered -join '; ') }
 if ($watching.Count -gt 0 -and $result -ne 'FAILED') { $body += ' | Waiting: ' + ($watching -join ', ') }
 if ($killed) { $body = 'KILL switch is set, no submissions. ' + $body }
 
@@ -231,8 +253,6 @@ if (Test-Path -LiteralPath $webhookFile) {
             [void]$sections.Add($headLine)
         }
         if ($finished) {
-            $ending = $finished
-            if ($finished -like 'Run finished with held*') { $ending = 'Run finished; some items are held (blocked/waiting items above are expected).' }
             [void]$sections.Add('_' + $ending + '_')
         }
         if (-not $finished) {

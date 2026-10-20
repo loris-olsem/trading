@@ -263,6 +263,94 @@ class WorkflowTest {
   }
 
   @Test
+  void recoveredMultiLotCloseFollowsTheConfirmedRetryInPlanAndLiveReports() throws Exception {
+    var market = new Market();
+    try (var store = new StateStore(temp)) {
+      var c = cycle();
+      c.entered = true;
+      c.sourceOpen = false;
+      c.weight = d("0");
+      c.positionIds.add(12L); // first lot's corrected full close was already confirmed
+      c.completed.add("opening");
+      c.events.add(alert("exit", Action.CLOSE, "110", "5", "0", null));
+      store.state().book.cycles.put(c.key, c);
+      store.state().enrollmentFloor = LocalDate.of(2026, 9, 1);
+      store.state().checkpoint = NOW;
+      var first =
+          new Intent(
+              "lot-a",
+              c.key,
+              "exit",
+              Action.CLOSE,
+              1890,
+              11L,
+              null,
+              null,
+              d("5"),
+              null,
+              null,
+              null);
+      var retry =
+          new Intent(
+              "lot-a|retry:1",
+              c.key,
+              "exit",
+              Action.CLOSE,
+              1890,
+              11L,
+              null,
+              null,
+              d("5"),
+              null,
+              null,
+              null);
+      var second =
+          new Intent(
+              "lot-b",
+              c.key,
+              "exit",
+              Action.CLOSE,
+              1890,
+              12L,
+              null,
+              null,
+              d("5"),
+              null,
+              null,
+              null);
+      var original = new Attempt(first, NOW);
+      original.status = Status.REJECTED;
+      original.result = "FULL_CLOSE_REQUEST_REJECTED_NO_FILL";
+      original.beforeAgentUnits = d("5");
+      var corrected = new Attempt(retry, NOW);
+      corrected.status = Status.CONFIRMED;
+      corrected.orderId = 123L;
+      var pending = new Attempt(second, NOW);
+      pending.status = Status.SUBMITTED;
+      pending.orderId = 124L;
+      for (var a : List.of(original, corrected, pending))
+        store.state().attempts.put(a.intent.key(), a);
+      store.state().batches.put("opening|exit|CLOSE", List.of(first, second));
+      store.save();
+    }
+    try (var store = new StateStore(temp)) {
+      var workflow = new Workflow(store, market, market, clock);
+      for (boolean live : List.of(false, true)) {
+        var report = workflow.evaluate(live);
+        assertTrue(report.contains("CF: ALREADY_CONFIRMED CLOSE; order 123"), report.toString());
+        assertTrue(report.contains("CF: ALREADY_CONFIRMED CLOSE; order 124"), report.toString());
+        assertFalse(report.stream().anyMatch(line -> line.startsWith("CF: CONFIRMED ")));
+        assertFalse(
+            String.join(" ", ReportFormatter.blocks(store.state(), live)).contains("Sale:"));
+        assertEquals(live, store.state().book.cycles.get("opening").completed.contains("exit"));
+        assertTrue(market.submitted.isEmpty());
+      }
+      workflow.evaluate(true);
+      assertTrue(market.submitted.isEmpty());
+    }
+  }
+
+  @Test
   void multiLotTrimResumesOriginalBatchWithoutTrimmingFirstLotTwice() throws Exception {
     var market = new Market();
     try (var store = new StateStore(temp)) {
@@ -278,7 +366,7 @@ class WorkflowTest {
       c.events.add(alert("trim", Action.REDUCE, "100", "8", "4", null));
       c.weight = d("4");
       market.copyPending = true;
-      assertTrue(w.evaluate(true).stream().anyMatch(s -> s.contains("ORDER_PENDING_OR_REJECTED")));
+      assertTrue(w.evaluate(true).stream().anyMatch(s -> s.contains("ORDER_UNCONFIRMED")));
       assertEquals(3, market.submitted.size());
       assertFalse(c.completed.contains("trim"));
       assertEquals(2, store.state().batches.get("opening|trim|REDUCE").size());
@@ -636,7 +724,7 @@ class WorkflowTest {
         if (status == Status.REJECTED) {
           assertTrue(report.stream().anyMatch(s -> s.startsWith("ABC: NOT_FILLED ")));
           assertTrue(report.stream().anyMatch(s -> s.contains("broker code 1065")));
-        } else assertTrue(report.stream().anyMatch(s -> s.contains("ORDER_PENDING_OR_REJECTED")));
+        } else assertTrue(report.stream().anyMatch(s -> s.contains("ORDER_UNCONFIRMED")));
       }
     }
   }

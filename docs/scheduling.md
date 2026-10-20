@@ -33,6 +33,11 @@ trades confirmed (green), nothing to trade (grey), needs a look (orange) or
 failed (red), with a short block per instrument. The webhook URL is a secret and
 is sent only to discord.com.
 
+Unconfirmed orders are reported as possibly executed, with further submissions
+held. A later read-back that confirms a saved order is labelled as an earlier
+order, separately from a newly executed trade. Review items are not described
+as expected availability holds.
+
 Test without orders: `powershell -ExecutionPolicy Bypass -File scripts\scheduled-run.ps1 -DryRun -Force`.
 
 ## Calendar reminder

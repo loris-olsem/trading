@@ -365,6 +365,12 @@ class ExecutorTest {
       assertEquals("close|retry:1", corrected.intent.key());
       assertTrue(corrected.intent.fullClose());
       assertNotEquals(originalReference, corrected.reference);
+      long generation = store.state().generation;
+      int observes = broker.observes;
+      assertSame(corrected, executor.latest(close));
+      assertEquals(generation, store.state().generation);
+      assertEquals(observes, broker.observes);
+      assertEquals(1, broker.submits);
       executor.execute(close);
       assertEquals(1, broker.submits);
     }

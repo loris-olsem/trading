@@ -95,14 +95,37 @@ public final class ReportFormatter {
                   field(
                       "Next step",
                       "Other opportunities are checked in this run. A later run can retry after fresh checks; no automatic retry in this run."));
+            } else if (line.startsWith("ORDER_UNCONFIRMED ")) {
+              sentences.add(
+                  field(
+                      "Result",
+                      "Outcome unconfirmed. The order may already have executed. "
+                          + line.substring(18)));
+              sentences.add(
+                  field(
+                      "Next step",
+                      "Further submissions are held. The saved order is checked again before any retry."));
+            } else if (line.startsWith("ORDER_REJECTED ")) {
+              sentences.add(
+                  field("Result", "Rejected; no execution recorded. " + line.substring(15)));
+              sentences.add(
+                  field(
+                      "Next step",
+                      "Further submissions are held. Review the saved rejection before another attempt."));
             } else if (line.startsWith("ORDER_PENDING_OR_REJECTED ")) {
               sentences.add(field("Result", "Not confirmed: " + line.substring(26)));
               sentences.add(
                   field(
                       "Next step",
                       "Further submissions are held. Keep the saved state; the next invocation reconciles unresolved orders first."));
-            } else if (line.startsWith("DETAIL "))
-              sentences.add(field("Reason", line.substring(7)));
+            } else if (line.startsWith("ALREADY_CONFIRMED "))
+              sentences.add(
+                  field(
+                      "Result",
+                      "Earlier order confirmed by broker read-back: "
+                          + line.substring(18)
+                          + ". No new order was sent for this action."));
+            else if (line.startsWith("DETAIL ")) sentences.add(field("Reason", line.substring(7)));
             else if (line.startsWith("CONFIRMED "))
               sentences.add(
                   field(
@@ -144,13 +167,16 @@ public final class ReportFormatter {
                 !(l.equals("READY POLICY_PASSED")
                     || l.startsWith("DETAIL ")
                     || l.startsWith("CONFIRMED ")
+                    || l.startsWith("ALREADY_CONFIRMED ")
                     || l.startsWith("PARTIAL_FILL_KEPT ")
                     || l.equals("HOLD_UNCHANGED")
                     || l.startsWith("TERMINAL ")
                     || l.startsWith("NO_POSITION ")
                     || BUY.matcher(l).matches()
                     || CHANGE.matcher(l).matches()))) return "REVIEW";
-    if (lines.stream().anyMatch(l -> l.startsWith("CONFIRMED "))) return "EXECUTION RESULTS";
+    if (lines.stream()
+        .anyMatch(l -> l.startsWith("CONFIRMED ") || l.startsWith("ALREADY_CONFIRMED ")))
+      return "EXECUTION RESULTS";
     if (lines.contains("READY POLICY_PASSED")) return "READY";
     if (lines.contains("HOLD_UNCHANGED")) return "UNCHANGED";
     if (lines.stream().anyMatch(l -> l.startsWith("TERMINAL ") || l.startsWith("NO_POSITION ")))
@@ -187,6 +213,8 @@ public final class ReportFormatter {
   }
 
   private static String explain(String line) {
+    if (line.startsWith("UNRESOLVED_ATTEMPT "))
+      return "An earlier order may have executed, but its result has not been confirmed. New submissions remain held while the saved order is checked again";
     String code = line.replaceFirst("^(BLOCKED|WAIT_QUOTE|WATCH_PRICE|TERMINAL|NO_POSITION) ", "");
     return switch (code) {
       case "CAPPED_ORDER_REQUIRES_REAL_ASSET" ->

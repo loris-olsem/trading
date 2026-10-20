@@ -9,6 +9,37 @@ import org.junit.jupiter.api.Test;
 
 class ReportFormatterTest {
   @Test
+  void uncertainOrderDoesNotClaimNoExecutionAndRecoveredSaleIsNotProposedAgain() {
+    var unknown =
+        ReportFormatter.blocks(
+            state(
+                "CF: ORDER_UNCONFIRMED RECONCILIATION_UNAVAILABLE BROKER_ID_NOT_FOUND; order 123",
+                "UNRESOLVED_ATTEMPT reference RECONCILIATION_UNAVAILABLE BROKER_ID_NOT_FOUND"),
+            true);
+    var text = String.join(" ", unknown).replaceAll("\\s+", " ");
+    assertTrue(text.contains("Outcome unconfirmed. The order may already have executed."));
+    assertTrue(text.contains("order 123"));
+    assertTrue(text.contains("saved order is checked again before any retry"));
+    assertTrue(
+        unknown.getFirst().replaceAll("\\s+", " ").contains("An earlier order may have executed"));
+    var recovered = ReportFormatter.blocks(state("CF: ALREADY_CONFIRMED REDUCE; order 123"), false);
+    assertTrue(recovered.getFirst().contains("[EXECUTION RESULTS]"));
+    assertTrue(
+        recovered
+            .getFirst()
+            .replaceAll("\\s+", " ")
+            .contains("Earlier order confirmed by broker read-back: REDUCE; order 123"));
+    assertFalse(recovered.getFirst().contains("Sale:"));
+    assertFalse(recovered.getFirst().contains("A live run would request"));
+    var rejected =
+        ReportFormatter.blocks(
+            state("CF: ORDER_REJECTED KILL_BEFORE_SUBMISSION; order null"), true);
+    assertTrue(
+        rejected.getFirst().replaceAll("\\s+", " ").contains("Rejected; no execution recorded"));
+    assertFalse(rejected.getFirst().contains("may already have executed"));
+  }
+
+  @Test
   void marketPlanDoesNotClaimGuaranteedExecutionPrice() {
     var block =
         ReportFormatter.blocks(

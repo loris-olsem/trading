@@ -188,11 +188,14 @@ public final class Main {
                         line.contains(": BLOCKED ")
                             || line.startsWith("UNPROTECTED_")
                             || line.startsWith("UNRESOLVED_ORDER_")
+                            || line.startsWith("UNRESOLVED_ATTEMPT ")
                             || line.startsWith("UNEXPLAINED_")
                             || line.equals("ACCOUNT_ACTIVITY_UNVERIFIED")
                             || line.endsWith(": COPY_EXIT_PENDING")
                             || line.endsWith(": COPY_PROTECTION_UNVERIFIED")
                             || line.contains("ORDER_PENDING_OR_REJECTED")
+                            || line.contains(": ORDER_UNCONFIRMED ")
+                            || line.contains(": ORDER_REJECTED ")
                             || line.contains(": NOT_FILLED "));
         if (command.equals("plan")) {
           out.println(

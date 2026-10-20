@@ -5,6 +5,40 @@ only to `https://public-api.etoro.com`. Credentials never enter reports or error
 output. Agent activity affects **real owner money**, despite the internal virtual
 balance. No demo/live trades were made during development.
 
+## Partial-sale read-back, 20 October 2026
+
+MEDP reduction order `1617746159` returned status 3, error 0 and an execution
+of 0.32295 internal agent units. The execution used a new position ID for the
+closed portion; the original agent position remained open. Read-only inspection
+also verified the proportional reduction on the owner's real copied position.
+The agent remainder was exactly 0.807377 - 0.32295 = 0.484427 units; the owner's
+remainder was 0.223357 units from 0.372261. Both retained the fixed $570 stop.
+The earlier SMH full close returned its original position ID. These observations
+do not establish a guarantee that every close has either response shape.
+
+Partial-sale confirmation accepts a separate closed-portion ID only with the
+saved order ID and instrument, one execution with the exact requested units,
+status 3 and no reported error. The closed ID must not identify an open agent or
+owner position or a saved copied lot. Complete, idle account read-back must
+show the exact original agent-unit reduction and the same copied-lot IDs with
+proportional remaining units. Full closes still require the original ID and
+both accounts' positions to be gone. A partial-sale request followed by both
+whole positions disappearing cannot establish the requested partial sale.
+
+Copied-unit comparison uses the configured calculation step, or the same five
+decimal places used when automatically discovered stock/ETF reductions are
+sized. This fallback survives a restart without looking up opening eligibility
+or adding a manual ticker profile. It is calculation granularity, not a broker
+precision claim. Missing or conflicting evidence leaves the attempt unresolved.
+
+After this correction passes verification and review, `gr plan` reconciles the
+saved attempt read-only externally and refreshes the local holdings baseline.
+It reports the earlier sale as confirmed rather than proposing it again. The
+source event remains pending until the next owner/scheduled live run processes
+the saved batch; that run records completion without submitting a second sale.
+Never delete the saved attempt, change its units or submit a replacement order
+to clear this confirmation failure.
+
 ## Full-close rejection, 15 October 2026
 
 Read-only inspection of the 14 October SMH sale found `statusID: 4`, broker

@@ -7,6 +7,28 @@ The [implementation plan](docs/IMPLEMENTATION-PLAN.md) was committed before code
 
 ## Checks
 
+20 October partial-sale recovery: **269 tests pass**, with **89.48% instruction
+coverage** (13,732/15,347) and **82.11% branch coverage** (1,937/2,359).
+`gr spotlessApply check pitest installDist` passed with the vfox pins. PIT killed
+**1,117/1,225 mutations (91.18%)**, with 91 survivors, 17 uncovered and no
+timeouts or execution errors. Gates and mutation scope remain unchanged.
+
+Fixtures reproduce a distinct closed-portion ID with MEDP's recorded unit
+amounts, reject conflicting or incomplete proof, and recover a saved submitted
+attempt through the actual broker adapter and executor in temporary state.
+They verify zero submissions during recovery, refreshed holdings, truthful
+plan/live reports, and no repeated sale after restarting. Other regressions
+cover corrected full-close retry keys, same-run unresolved-sale exit code 2,
+and rejected orders. Offline scheduler report tests use only its summary code
+with temporary logs; they cannot invoke the scheduler, Discord or notifications.
+
+Opus assessed the design and reviewed the implementation twice. All five review
+findings were corrected and rechecked; the final review found no blocking
+confirmation, retry or duplicate-submission issue. See the
+[observed broker response and recovery rules](docs/broker-contract.md#partial-sale-read-back-20-october-2026).
+The final checks ran in an isolated worktree before applying the reviewed code
+to the owner's scheduled checkout. Tests do not establish a new broker guarantee.
+
 15 October full-close recovery: **238 tests pass**, with **89.25% instruction
 coverage** (13,395/15,009) and **81.64% branch coverage** (1,859/2,277).
 `gr spotlessApply check pitest installDist` passed with the vfox pins. PIT killed

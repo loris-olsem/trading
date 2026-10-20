@@ -408,11 +408,15 @@ public final class EtoroClient implements Broker, Workflow.Market {
 
   @Override
   public int unitScale(String symbol) throws IOException {
-    var asset = config.assets.get(symbol);
+    var asset = config.assets.getOrDefault(symbol, discovered.get(symbol));
     // Discovered stocks use the same downward calculation granularity. Exits
     // use journaled position IDs: a delisting or failed catalogue lookup must
     // not prevent closing existing shares after restart.
-    return asset == null ? 5 : asset.unitScale;
+    return reductionUnitScale(asset);
+  }
+
+  private static int reductionUnitScale(Configuration.Asset asset) {
+    return asset == null ? InstrumentResolver.REDUCTION_UNIT_SCALE : asset.unitScale;
   }
 
   @Override
@@ -536,13 +540,32 @@ public final class EtoroClient implements Broker, Workflow.Market {
         return observation(Status.REJECTED, "FULL_CLOSE_REQUEST_REJECTED_NO_FILL", List.of());
       return observation(Status.SUBMITTED, "CLOSE_AWAITING_EXECUTION", List.of(i.positionId()));
     }
-    JsonNode execution = unique(executions, "positionID", i.positionId());
+    if (integer(close, "statusID") != 3
+        || close.hasNonNull("errorCode") && integer(close, "errorCode") != 0
+        || executions.size() != 1
+        || !account.ordersComplete()
+        || account.pending())
+      return observation(Status.PARTIAL, "CLOSE_EXECUTION_UNVERIFIED", List.of(i.positionId()));
+    JsonNode execution = executions.get(0);
+    long closedId = integer(execution, "positionID");
+    // A partial sale can create a separate history position for the closed slice.
+    // Its link is proved by this saved order plus exact changes to both original lots.
+    if (closedId <= 0
+        || closedId != i.positionId()
+            && (i.fullClose()
+                || find(account.agentPositions(), closedId) != null
+                || find(account.ownerPositions(), closedId) != null
+                || attempt.beforeOwnerUnits.containsKey(closedId)))
+      return observation(Status.PARTIAL, "CLOSE_EXECUTION_UNVERIFIED", List.of(i.positionId()));
     if (decimal(execution, "units").compareTo(i.units()) != 0)
       return observation(Status.PARTIAL, "CLOSE_UNITS_NOT_CONFIRMED", List.of(i.positionId()));
-    if (p == null && copies.isEmpty())
+    if (i.fullClose() && p == null && copies.isEmpty())
       return observation(Status.CONFIRMED, "FULL_CLOSE_CONFIRMED", List.of());
     // A partial close must also be proved against pre-submission agent and owner lots.
-    if (p != null
+    if (!i.fullClose()
+        && p != null
+        && p.instrumentId() == i.instrumentId()
+        && p.longOnly()
         && attempt.beforeAgentUnits != null
         && p.units().compareTo(attempt.beforeAgentUnits.subtract(i.units())) == 0
         && copiedReductionConfirmed(attempt, copies))
@@ -645,20 +668,33 @@ public final class EtoroClient implements Broker, Workflow.Market {
   }
 
   private boolean copiedReductionConfirmed(Attempt a, List<Position> copies) {
+    if (a.beforeAgentUnits == null
+        || a.beforeAgentUnits.signum() <= 0
+        || a.intent.units().signum() <= 0
+        || a.intent.units().compareTo(a.beforeAgentUnits) >= 0
+        || a.beforeOwnerUnits.isEmpty()
+        || a.beforeOwnerUnits.values().stream().anyMatch(units -> units.signum() <= 0)
+        || copies.size() != a.beforeOwnerUnits.size()
+        || !copies.stream()
+            .map(Position::id)
+            .collect(java.util.stream.Collectors.toSet())
+            .equals(a.beforeOwnerUnits.keySet())) return false;
     BigDecimal ratio =
         a.beforeAgentUnits
             .subtract(a.intent.units())
             .divide(a.beforeAgentUnits, MathContext.DECIMAL128);
     var asset =
-        config.assets.values().stream()
+        java.util.stream.Stream.concat(
+                config.assets.values().stream(), discovered.values().stream())
             .filter(x -> x.instrumentId == a.intent.instrumentId())
-            .findFirst();
-    if (asset.isEmpty() || copies.size() != a.beforeOwnerUnits.size()) return false;
-    BigDecimal step = BigDecimal.ONE.scaleByPowerOfTen(-asset.get().unitScale);
+            .findFirst()
+            .orElse(null);
+    BigDecimal step = BigDecimal.ONE.scaleByPowerOfTen(-reductionUnitScale(asset));
     return copies.stream()
         .allMatch(
             p ->
-                a.beforeOwnerUnits.containsKey(p.id())
+                p.instrumentId() == a.intent.instrumentId()
+                    && p.longOnly()
                     && p.units()
                             .subtract(a.beforeOwnerUnits.get(p.id()).multiply(ratio))
                             .abs()

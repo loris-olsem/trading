@@ -166,6 +166,7 @@ order executed. Read each instrument's result.
 | Condition | Recovery |
 | --- | --- |
 | Unknown/unresolved order | Inspect saved reference/order and broker history. Opening lookup may resolve on the next invocation. Never delete an attempt to retry. |
+| Partial sale returned a separate closed-portion ID | Read-back must match the saved order, exact agent reduction and proportional copied lots. After verification, `gr plan` can confirm the earlier sale and refresh the local baseline without trading. The next live run completes the saved batch without repeating the sale. See [partial-sale evidence](broker-contract.md#partial-sale-read-back-20-october-2026). |
 | Lost close response | Reconcile close history and both accounts. No automatic resubmission. |
 | Full-unit close rejected with broker code 776 | The app verifies the exact saved order, zero executions, unchanged agent/copy units and no pending activity. The next live run may make one corrected full-close request with `UnitsToDeduct` omitted. Other errors or uncertain outcomes stay held; no manual journal edit is needed. |
 | Filled agent position missing its stop | Next owner run may repair only known PARTIAL fills with matching source stop, fresh complete accounts, no pending broker orders and verified lot links. No purchases are allowed during recovery. Dry runs only report the problem. |

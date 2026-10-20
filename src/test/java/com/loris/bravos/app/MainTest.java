@@ -181,6 +181,52 @@ class MainTest {
   }
 
   @Test
+  void sameRunUnconfirmedSaleReturnsHeldExitCodeAndCannotClaimCompletion() throws Exception {
+    var holder = new WorkflowTest();
+    var market = holder.new Market();
+    var reduced = new java.util.concurrent.atomic.AtomicBoolean();
+    var source =
+        new BravosSource(
+            (m, p, h, b) -> {
+              String body;
+              if (p.equals("/category/portfolio-update/")) {
+                body =
+                    (reduced.get()
+                            ? "<div class=right><a href='/news-feed/trim/'>Reducing CF ($CF)</a> 09/21/2026</div>"
+                            : "")
+                        + "<div class=right><a href='/news-feed/cf/'>Initiating Long on CF</a> 09/01/2026</div>";
+              } else if (p.contains("/page/")) {
+                body =
+                    "<div class=right><a href='/news-feed/old/'>Initiating Long on OLD</a> 01/01/2020</div>";
+              } else if (p.equals("/research/")) {
+                body =
+                    "<div class=dash-newsletter><p class=h4>Tactical Portfolio</p><div class=asset-ratings><div class=tbody><div class=tr><div class=td>Company ($CF)</div><div class=td>Long</div><div class=td>"
+                        + (reduced.get() ? "3" : "5")
+                        + "</div></div></div></div></div>";
+              } else if (p.equals("/news-feed/trim/")) {
+                body =
+                    "<article id=post-13><h1>Reducing CF ($CF)</h1><div class=entry-content>09/21/2026<br>We are further trimming at $110, reducing the weight from 5 to 3.</div></article>";
+              } else {
+                body =
+                    "<article id=post-12><h1>Initiating Long on CF ($CF)</h1><div class=entry-content>09/01/2026<br>We are initiating CF at $100 with a weight of 5.<br>Entry: $100<br>Weight Allocation: 5<br>Suggested Stop Loss (SL): $90</div></article>";
+              }
+              return new Transport.Response(200, body, Map.of());
+            });
+    offline = (r, c, l) -> new Main.Connections(market, market, source);
+    assertEquals(0, run("initialize", "--since", "2026-08-21"), output.toString());
+    assertEquals(0, run("run"), output.toString());
+    reduced.set(true);
+    market.copyPending = true;
+    assertEquals(2, run("run"), output.toString());
+    assertTrue(output.toString().contains("Run finished with held or unresolved items."));
+    assertFalse(output.toString().contains("Run completed."));
+    assertTrue(
+        output.toString().replaceAll("\\s+", " ").contains("The order may already have executed"));
+    assertEquals(2, market.submitted.size());
+    assertEquals(com.loris.bravos.domain.Model.Action.REDUCE, market.submitted.getLast().action());
+  }
+
+  @Test
   void unexpectedExceptionTextIsNeverEchoed() {
     offline =
         (r, c, l) -> {

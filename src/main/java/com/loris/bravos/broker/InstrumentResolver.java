@@ -7,6 +7,8 @@ import java.util.*;
 
 /** Resolves exact broker identities; never substitutes a fuzzy search result. */
 final class InstrumentResolver {
+  static final int REDUCTION_UNIT_SCALE = 5;
+
   private InstrumentResolver() {}
 
   static JsonNode identity(JsonNode response, String symbol, Configuration.Identity pinned)
@@ -64,7 +66,7 @@ final class InstrumentResolver {
         null; // Selected from the intersection of both accounts' live permissions.
     asset.marketHours = "US_EQUITIES_2026";
     asset.priceScale = 2;
-    asset.unitScale = 5;
+    asset.unitScale = REDUCTION_UNIT_SCALE;
     asset.unleveragedEvidence =
         "Live broker "
             + type

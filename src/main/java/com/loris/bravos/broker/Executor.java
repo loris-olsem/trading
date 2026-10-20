@@ -29,7 +29,14 @@ public final class Executor {
     this.sleeper = sleeper;
   }
 
-  public Attempt execute(Intent intent) throws IOException {
+  private record Resolution(Intent intent, Attempt prior) {}
+
+  /** Follow the saved retry chain without reconciling, saving or submitting anything. */
+  public Attempt latest(Intent intent) {
+    return resolve(intent).prior();
+  }
+
+  private Resolution resolve(Intent intent) {
     String baseKey = intent.key();
     int retry = 0;
     Attempt prior = store.state().attempts.get(intent.key());
@@ -63,6 +70,13 @@ public final class Executor {
               intent.fullClose() || "FULL_CLOSE_REQUEST_REJECTED_NO_FILL".equals(prior.result));
       prior = store.state().attempts.get(intent.key());
     }
+    return new Resolution(intent, prior);
+  }
+
+  public Attempt execute(Intent intent) throws IOException {
+    Resolution resolved = resolve(intent);
+    intent = resolved.intent();
+    Attempt prior = resolved.prior();
     if (prior != null) {
       reconcile(prior);
       return prior;
