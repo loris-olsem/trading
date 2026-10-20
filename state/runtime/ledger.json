@@ -1,8 +1,8 @@
 {
   "schemaVersion" : 1,
-  "generation" : 242,
+  "generation" : 252,
   "enrollmentFloor" : "2026-08-23",
-  "checkpoint" : "2026-10-20T13:45:52.761543400Z",
+  "checkpoint" : "2026-10-20T19:30:45.017818300Z",
   "revisionAudit" : "2026-10-13T19:32:07.392668900Z",
   "book" : {
     "cycles" : {
@@ -1852,7 +1852,7 @@
         "symbol" : "MEDP",
         "openedOn" : "2026-09-23",
         "entry" : 631.15,
-        "weight" : 5,
+        "weight" : 3,
         "stop" : 570,
         "sourceOpen" : true,
         "enrolled" : true,
@@ -1871,6 +1871,18 @@
           "after" : 5,
           "stop" : 570,
           "targets" : [ 725, 750, 800 ]
+        }, {
+          "key" : "bravos:post:490046",
+          "url" : "https://bravosresearch.com/news-feed/reducing-exposure-to-medpace-holdings-inc-medp-upcoming-earnings/",
+          "date" : "2026-10-20",
+          "hash" : "21b68c386ba1f36a1de75b2df02a0ada38342569ae104acef723c310fa678e37",
+          "symbol" : "MEDP",
+          "action" : "REDUCE",
+          "price" : 630.05,
+          "before" : 5,
+          "after" : 3,
+          "stop" : null,
+          "targets" : [ ]
         } ],
         "positionIds" : [ 3586112808 ],
         "completed" : [ "bravos:post:488723" ],
@@ -3203,6 +3215,19 @@
         "after" : 0,
         "stop" : null,
         "targets" : [ ]
+      } ],
+      "bravos:post:490046" : [ {
+        "key" : "bravos:post:490046",
+        "url" : "https://bravosresearch.com/news-feed/reducing-exposure-to-medpace-holdings-inc-medp-upcoming-earnings/",
+        "date" : "2026-10-20",
+        "hash" : "21b68c386ba1f36a1de75b2df02a0ada38342569ae104acef723c310fa678e37",
+        "symbol" : "MEDP",
+        "action" : "REDUCE",
+        "price" : 630.05,
+        "before" : 5,
+        "after" : 3,
+        "stop" : null,
+        "targets" : [ ]
       } ]
     },
     "blockers" : [ ]
@@ -3769,6 +3794,39 @@
       "beforeOwnerUnits" : {
         "3585989569" : 0.38679
       }
+    },
+    "bravos:post:488723|bravos:post:490046|REDUCE|3586112808" : {
+      "intent" : {
+        "key" : "bravos:post:488723|bravos:post:490046|REDUCE|3586112808",
+        "cycleKey" : "bravos:post:488723",
+        "eventKey" : "bravos:post:490046",
+        "action" : "REDUCE",
+        "instrumentId" : 8882,
+        "positionId" : 3586112808,
+        "ownerAmount" : null,
+        "agentAmount" : null,
+        "units" : 0.32295,
+        "ceiling" : null,
+        "stop" : null,
+        "settlementType" : null,
+        "orderType" : "limitIOC",
+        "fullClose" : false
+      },
+      "reference" : "586b35ec-0829-44fc-88a2-965867ba1d82",
+      "orderId" : 1617746159,
+      "status" : "SUBMITTED",
+      "createdAt" : "2026-10-20T19:30:49.746767Z",
+      "result" : "RECONCILIATION_UNAVAILABLE BROKER_ID_NOT_FOUND",
+      "agentFilled" : null,
+      "ownerFilled" : null,
+      "ownerShortfall" : null,
+      "baselineSaved" : false,
+      "positionIds" : [ ],
+      "absorbedEvents" : [ ],
+      "beforeAgentUnits" : 0.807377,
+      "beforeOwnerUnits" : {
+        "3586112809" : 0.372261
+      }
     }
   },
   "batches" : {
@@ -4043,6 +4101,22 @@
       "settlementType" : null,
       "orderType" : "limitIOC",
       "fullClose" : true
+    } ],
+    "bravos:post:488723|bravos:post:490046|REDUCE" : [ {
+      "key" : "bravos:post:488723|bravos:post:490046|REDUCE|3586112808",
+      "cycleKey" : "bravos:post:488723",
+      "eventKey" : "bravos:post:490046",
+      "action" : "REDUCE",
+      "instrumentId" : 8882,
+      "positionId" : 3586112808,
+      "ownerAmount" : null,
+      "agentAmount" : null,
+      "units" : 0.32295,
+      "ceiling" : null,
+      "stop" : null,
+      "settlementType" : null,
+      "orderType" : "limitIOC",
+      "fullClose" : false
     } ]
   },
   "holdings" : {
@@ -4072,5 +4146,5 @@
     }
   },
   "earlyExits" : [ ],
-  "report" : [ "MAGS: BLOCKED INSTRUMENT_NOT_LISTED", "IBIT: BLOCKED BOTH_ACCOUNTS_OPENING_DISABLED", "ETHA: BLOCKED BOTH_ACCOUNTS_OPENING_DISABLED", "BRK.B: HOLD_UNCHANGED", "ADI: HOLD_UNCHANGED", "MEDP: HOLD_UNCHANGED" ]
+  "report" : [ "MEDP: REDUCE units 0.32295, stop null", "MEDP: ORDER_PENDING_OR_REJECTED RECONCILIATION_UNAVAILABLE BROKER_ID_NOT_FOUND; order 1617746159", "UNRESOLVED_ATTEMPT 586b35ec-0829-44fc-88a2-965867ba1d82 RECONCILIATION_UNAVAILABLE BROKER_ID_NOT_FOUND" ]
 }
