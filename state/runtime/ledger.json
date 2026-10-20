@@ -1,9 +1,9 @@
 {
   "schemaVersion" : 1,
-  "generation" : 252,
+  "generation" : 256,
   "enrollmentFloor" : "2026-08-23",
-  "checkpoint" : "2026-10-20T19:30:45.017818300Z",
-  "revisionAudit" : "2026-10-13T19:32:07.392668900Z",
+  "checkpoint" : "2026-10-20T20:10:44.751636100Z",
+  "revisionAudit" : "2026-10-20T20:10:44.751636100Z",
   "book" : {
     "cycles" : {
       "bravos:post:482091" : {
@@ -3814,14 +3814,14 @@
       },
       "reference" : "586b35ec-0829-44fc-88a2-965867ba1d82",
       "orderId" : 1617746159,
-      "status" : "SUBMITTED",
+      "status" : "CONFIRMED",
       "createdAt" : "2026-10-20T19:30:49.746767Z",
-      "result" : "RECONCILIATION_UNAVAILABLE BROKER_ID_NOT_FOUND",
+      "result" : "PARTIAL_CLOSE_CONFIRMED",
       "agentFilled" : null,
       "ownerFilled" : null,
       "ownerShortfall" : null,
-      "baselineSaved" : false,
-      "positionIds" : [ ],
+      "baselineSaved" : true,
+      "positionIds" : [ 3586112808 ],
       "absorbedEvents" : [ ],
       "beforeAgentUnits" : 0.807377,
       "beforeOwnerUnits" : {
@@ -4139,12 +4139,12 @@
       }
     },
     "3586112808" : {
-      "agentUnits" : 0.807377,
+      "agentUnits" : 0.484427,
       "ownerUnits" : {
-        "3586112809" : 0.372261
+        "3586112809" : 0.223357
       }
     }
   },
   "earlyExits" : [ ],
-  "report" : [ "MEDP: REDUCE units 0.32295, stop null", "MEDP: ORDER_PENDING_OR_REJECTED RECONCILIATION_UNAVAILABLE BROKER_ID_NOT_FOUND; order 1617746159", "UNRESOLVED_ATTEMPT 586b35ec-0829-44fc-88a2-965867ba1d82 RECONCILIATION_UNAVAILABLE BROKER_ID_NOT_FOUND" ]
+  "report" : [ "MEDP: ALREADY_CONFIRMED REDUCE; order 1617746159", "MAGS: BLOCKED INSTRUMENT_NOT_LISTED", "IBIT: BLOCKED BOTH_ACCOUNTS_OPENING_DISABLED", "ETHA: BLOCKED BOTH_ACCOUNTS_OPENING_DISABLED", "BRK.B: HOLD_UNCHANGED", "ADI: HOLD_UNCHANGED" ]
 }
