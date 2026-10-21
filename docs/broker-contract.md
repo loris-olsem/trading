@@ -207,10 +207,13 @@ four market entries; that is not a general copy-side price guarantee.
 3. **Stop propagation:** exact fixed stops are requested on entries and edits.
    Empty accounts cannot prove propagation. Only actual position read-back
    establishes whether the requested protection has been applied.
-4. **Cash-only funding:** the owner supplied an eToro help-bot answer saying agent
-   top-ups stay cash without rebalancing. This is attributed guidance, not an
-   observed test with holdings. The program never rebalances from funding and
-   detects unit drift; it cannot control broker-side behavior.
+4. **Cash-only funding:** the 21 October Agent Portfolio **Invest More** dialog
+   warns of automatic rebalancing. The current Copy Trading API also documents
+   realignment whenever funding changes, without a disable option. This
+   contradicts the earlier help-bot answer that top-ups stay cash. No cash-only
+   route is verified; see the [funding evidence](../ETORO-FUNDING.md#adding-capital-with-existing-positions-21-october-2026).
+   The program never rebalances from funding and detects unit drift, but cannot
+   prevent broker-side changes. Detecting drift does not preserve original units.
 5. **Asset profiles:** verify exact ID/symbol, USD quote basis, absence of embedded
    leverage, settlement and supported precision. Eligibility, costs and quotes
    are refreshed before attempts. MAGS was not found; no substitute is configured.

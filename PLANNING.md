@@ -248,8 +248,12 @@ Previously verified on 2026-09-19: $500 owner contributions, $500 mirror cash,
 no positions; the agent reported $10,000 internal capital. A funding query does
 not establish how the next internal order converts to copied dollars.
 
-The supplied eToro help-bot answer says top-ups stay cash. Keep this attributed;
-it was not tested with open positions. Do not move money or trade merely to test.
+The earlier eToro help-bot answer said top-ups stay cash; it was not tested with
+open positions. On 21 October the Agent Portfolio funding dialog instead warns
+of automatic rebalancing, consistent with current copy-funding documentation.
+No cash-only route is verified. See [funding evidence](ETORO-FUNDING.md#adding-capital-with-existing-positions-21-october-2026).
+The no-rebalance rule above governs the helper; it is not a broker guarantee.
+Do not move money or trade merely to test.
 
 Latest refresh: 2026-09-19 07:57 UTC, **$4,610 net contributions and available
 mirror cash, zero positions** ($500 initial + $4,110 deposits, no withdrawals).

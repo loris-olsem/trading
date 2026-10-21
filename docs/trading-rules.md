@@ -17,7 +17,7 @@ Policy `2026-09-23.1`. Detailed agreements and original answers:
 | Missed add then reduction | Expire unexecuted add; trim actual held units proportionally |
 | Opening size | Latest source weight × real total equity of owner's Bravos allocation |
 | Agent conversion | Sourced realized-copy-capital model; verify actual copied amount after every fill; internal capital is not owner money |
-| Funding | No rebalance or order; cash available for future qualifying actions |
+| Funding | Helper creates no rebalance or order. Broker top-ups warn of automatic rebalancing; no cash-only route verified. See [funding evidence](../ETORO-FUNDING.md#adding-capital-with-existing-positions-21-october-2026) |
 | Cash/minimum/cost failure | Report/skip; do not inflate size or redistribute skipped weights |
 | Cost estimates | Fresh owner-side what-if request for each amount and before submission; older figure-generation dates accepted, not a final-fee guarantee. Prices retain their separate 60-second limit |
 | Final partial fill | Keep protected units, report shortfall, consume event; no automatic top-up |

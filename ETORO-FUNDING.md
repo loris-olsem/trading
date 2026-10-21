@@ -2,6 +2,32 @@
 
 Investigated 2026-09-19. Research and GET requests only; no funding or trades.
 
+## Adding capital with existing positions: 21 October 2026
+
+No supported cash-only top-up route has been verified for the existing Bravos
+Agent Portfolio. Its owner-provided **Invest More** dialog warns that adding
+funds automatically rebalances the copy; no cash-only option is shown.
+
+The current [Copy Trading API](https://api-portal.etoro.com/api-reference/copy-trading/start-copying-an-investor-or-adjust-an-existing-copy)
+documents realignment of existing positions whenever copy funding changes.
+Its request has only `parentCID`, `amount` and `referenceID`, with no option to
+disable realignment (OpenAPI v1.399.0). The [CopyTrader explanation](https://www.etoro.com/copytrader/how-it-works/)
+also lists funding changes and resuming a paused copy as triggers; positions may
+be opened or closed automatically. Pausing and resuming is not a verified way
+to preserve holdings during a top-up.
+
+The earlier help-bot answer that top-ups remain cash is not a usable guarantee
+against this warning. The helper creates no orders from funding changes, but
+cannot prevent eToro's own rebalancing. The owner's existing rule to preserve
+held units remains unchanged.
+
+Depositing into the owner's main account alone does not allocate that money to
+Bravos. To fund this same portfolio while preserving its positions, obtain
+eToro confirmation of an Agent Portfolio cash-only route that leaves units and
+protection unchanged. The separate [sub-account transfer API](https://api-portal.etoro.com/api-reference/sub-accounts--etoro-trading/create-sub-account-money-transfer)
+does not document that guarantee for an Agent Portfolio copy. No financial
+action was taken to test either route.
+
 ## Recommended route: owner read-only API access
 
 The public API exposes the required fields on the owner's copy relationship
@@ -120,11 +146,12 @@ agent order after a cash-only top-up. That mapping and order minimums remain
 separate verification items. Existing units must be tracked directly rather
 than reconstructed from a single changing ratio.
 
-The help-bot claim that top-ups remain cash is still attributed guidance. At a
-future user-directed top-up, compare mirror funding, cash, units and orders
-before/after. Do not move money merely to test this. The generic mirror schema
-also describes funding-related copy-stop-loss recalculation; applicability to
-Agent Portfolios should be checked without changing any settings.
+The earlier help-bot claim that top-ups remain cash is contradicted by the
+current UI warning and general copy-funding documentation above. A before/after
+comparison would detect changes after they happened, not prevent them. Do not
+move money merely to test this. The generic mirror schema also describes
+funding-related copy-stop-loss recalculation; applicability to Agent Portfolios
+should be checked without changing any settings.
 
 ## Official sources
 
