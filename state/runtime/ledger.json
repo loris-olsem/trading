@@ -1,6 +1,6 @@
 {
   "schemaVersion" : 1,
-  "generation" : 261,
+  "generation" : 262,
   "enrollmentFloor" : "2026-08-23",
   "checkpoint" : "2026-10-21T13:45:46.731018800Z",
   "revisionAudit" : "2026-10-20T20:10:44.751636100Z",
@@ -4146,5 +4146,5 @@
     }
   },
   "earlyExits" : [ ],
-  "report" : [ "MEDP: ALREADY_CONFIRMED REDUCE; order 1617746159", "MAGS: BLOCKED INSTRUMENT_NOT_LISTED", "IBIT: BLOCKED BOTH_ACCOUNTS_OPENING_DISABLED", "ETHA: BLOCKED BOTH_ACCOUNTS_OPENING_DISABLED", "BRK.B: HOLD_UNCHANGED", "ADI: HOLD_UNCHANGED" ]
+  "report" : [ "ARTICLE_REQUIRES_REVIEW:https://bravosresearch.com/news-feed/booking-partial-profits-in-berkshire-hathaway-inc-brk-b-profit-booking/", "SOURCE_SCAN_INCOMPLETE" ]
 }
