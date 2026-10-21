@@ -1,8 +1,8 @@
 {
   "schemaVersion" : 1,
-  "generation" : 262,
+  "generation" : 278,
   "enrollmentFloor" : "2026-08-23",
-  "checkpoint" : "2026-10-21T13:45:46.731018800Z",
+  "checkpoint" : "2026-10-21T20:21:57.836940900Z",
   "revisionAudit" : "2026-10-20T20:10:44.751636100Z",
   "book" : {
     "cycles" : {
@@ -1572,8 +1572,8 @@
         "symbol" : "BRK.B",
         "openedOn" : "2026-09-02",
         "entry" : 506.5,
-        "weight" : 8,
-        "stop" : 480,
+        "weight" : 6,
+        "stop" : 495,
         "sourceOpen" : true,
         "enrolled" : true,
         "entered" : true,
@@ -1603,9 +1603,21 @@
           "after" : 8,
           "stop" : null,
           "targets" : [ ]
+        }, {
+          "key" : "bravos:post:490108",
+          "url" : "https://bravosresearch.com/news-feed/booking-partial-profits-in-berkshire-hathaway-inc-brk-b-profit-booking/",
+          "date" : "2026-10-21",
+          "hash" : "c646ae83b329404940c6bc68834c517c3d3fd5aa99d1f028ec7866b2f4a332b1",
+          "symbol" : "BRK.B",
+          "action" : "REDUCE",
+          "price" : 542.32,
+          "before" : 8,
+          "after" : 6,
+          "stop" : 495,
+          "targets" : [ ]
         } ],
         "positionIds" : [ 3585988948 ],
-        "completed" : [ "bravos:post:487910", "bravos:post:488320" ],
+        "completed" : [ "bravos:post:490108", "bravos:post:487910", "bravos:post:488320" ],
         "additionSessions" : { }
       },
       "bravos:post:487920" : {
@@ -3228,6 +3240,19 @@
         "after" : 3,
         "stop" : null,
         "targets" : [ ]
+      } ],
+      "bravos:post:490108" : [ {
+        "key" : "bravos:post:490108",
+        "url" : "https://bravosresearch.com/news-feed/booking-partial-profits-in-berkshire-hathaway-inc-brk-b-profit-booking/",
+        "date" : "2026-10-21",
+        "hash" : "c646ae83b329404940c6bc68834c517c3d3fd5aa99d1f028ec7866b2f4a332b1",
+        "symbol" : "BRK.B",
+        "action" : "REDUCE",
+        "price" : 542.32,
+        "before" : 8,
+        "after" : 6,
+        "stop" : 495,
+        "targets" : [ ]
       } ]
     },
     "blockers" : [ ]
@@ -3827,6 +3852,72 @@
       "beforeOwnerUnits" : {
         "3586112809" : 0.372261
       }
+    },
+    "bravos:post:487910|bravos:post:490108|REDUCE|3585988948" : {
+      "intent" : {
+        "key" : "bravos:post:487910|bravos:post:490108|REDUCE|3585988948",
+        "cycleKey" : "bravos:post:487910",
+        "eventKey" : "bravos:post:490108",
+        "action" : "REDUCE",
+        "instrumentId" : 1118,
+        "positionId" : 3585988948,
+        "ownerAmount" : null,
+        "agentAmount" : null,
+        "units" : 0.39221,
+        "ceiling" : null,
+        "stop" : null,
+        "settlementType" : null,
+        "orderType" : "limitIOC",
+        "fullClose" : false
+      },
+      "reference" : "1d2aed7d-57f8-4cb0-acca-6f1a5168afc8",
+      "orderId" : 1618494930,
+      "status" : "CONFIRMED",
+      "createdAt" : "2026-10-21T20:22:01.995001500Z",
+      "result" : "PARTIAL_CLOSE_CONFIRMED",
+      "agentFilled" : null,
+      "ownerFilled" : null,
+      "ownerShortfall" : null,
+      "baselineSaved" : true,
+      "positionIds" : [ 3585988948 ],
+      "absorbedEvents" : [ ],
+      "beforeAgentUnits" : 1.568873,
+      "beforeOwnerUnits" : {
+        "3585988949" : 0.723231
+      }
+    },
+    "bravos:post:487910|bravos:post:490108|stop:495|3585988948" : {
+      "intent" : {
+        "key" : "bravos:post:487910|bravos:post:490108|stop:495|3585988948",
+        "cycleKey" : "bravos:post:487910",
+        "eventKey" : "bravos:post:490108",
+        "action" : "STOP",
+        "instrumentId" : 1118,
+        "positionId" : 3585988948,
+        "ownerAmount" : null,
+        "agentAmount" : null,
+        "units" : null,
+        "ceiling" : null,
+        "stop" : 495,
+        "settlementType" : null,
+        "orderType" : "limitIOC",
+        "fullClose" : false
+      },
+      "reference" : "3698e7eb-4ee4-4ed2-9083-0ec5625f8cf5",
+      "orderId" : null,
+      "status" : "CONFIRMED",
+      "createdAt" : "2026-10-21T20:22:38.845938700Z",
+      "result" : "STOP_READBACK",
+      "agentFilled" : null,
+      "ownerFilled" : null,
+      "ownerShortfall" : null,
+      "baselineSaved" : true,
+      "positionIds" : [ 3585988948 ],
+      "absorbedEvents" : [ ],
+      "beforeAgentUnits" : 1.176663,
+      "beforeOwnerUnits" : {
+        "3585988949" : 0.542427
+      }
     }
   },
   "batches" : {
@@ -4117,13 +4208,45 @@
       "settlementType" : null,
       "orderType" : "limitIOC",
       "fullClose" : false
+    } ],
+    "bravos:post:487910|bravos:post:490108|REDUCE" : [ {
+      "key" : "bravos:post:487910|bravos:post:490108|REDUCE|3585988948",
+      "cycleKey" : "bravos:post:487910",
+      "eventKey" : "bravos:post:490108",
+      "action" : "REDUCE",
+      "instrumentId" : 1118,
+      "positionId" : 3585988948,
+      "ownerAmount" : null,
+      "agentAmount" : null,
+      "units" : 0.39221,
+      "ceiling" : null,
+      "stop" : null,
+      "settlementType" : null,
+      "orderType" : "limitIOC",
+      "fullClose" : false
+    } ],
+    "bravos:post:487910|bravos:post:490108|STOP" : [ {
+      "key" : "bravos:post:487910|bravos:post:490108|stop:495|3585988948",
+      "cycleKey" : "bravos:post:487910",
+      "eventKey" : "bravos:post:490108",
+      "action" : "STOP",
+      "instrumentId" : 1118,
+      "positionId" : 3585988948,
+      "ownerAmount" : null,
+      "agentAmount" : null,
+      "units" : null,
+      "ceiling" : null,
+      "stop" : 495,
+      "settlementType" : null,
+      "orderType" : "limitIOC",
+      "fullClose" : false
     } ]
   },
   "holdings" : {
     "3585988948" : {
-      "agentUnits" : 1.568873,
+      "agentUnits" : 1.176663,
       "ownerUnits" : {
-        "3585988949" : 0.723231
+        "3585988949" : 0.542427
       }
     },
     "3585989325" : {
@@ -4146,5 +4269,5 @@
     }
   },
   "earlyExits" : [ ],
-  "report" : [ "ARTICLE_REQUIRES_REVIEW:https://bravosresearch.com/news-feed/booking-partial-profits-in-berkshire-hathaway-inc-brk-b-profit-booking/", "SOURCE_SCAN_INCOMPLETE" ]
+  "report" : [ "BRK.B: REDUCE units 0.39221, stop null", "BRK.B: CONFIRMED REDUCE", "BRK.B: STOP units null, stop 495", "BRK.B: CONFIRMED STOP", "MAGS: BLOCKED INSTRUMENT_NOT_LISTED", "IBIT: BLOCKED BOTH_ACCOUNTS_OPENING_DISABLED", "ETHA: BLOCKED BOTH_ACCOUNTS_OPENING_DISABLED", "ADI: HOLD_UNCHANGED", "MEDP: HOLD_UNCHANGED" ]
 }
