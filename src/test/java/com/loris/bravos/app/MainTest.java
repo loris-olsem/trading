@@ -4,6 +4,7 @@ import static com.loris.bravos.Fixtures.*;
 import static org.junit.jupiter.api.Assertions.*;
 
 import com.loris.bravos.broker.*;
+import com.loris.bravos.domain.Model.*;
 import com.loris.bravos.source.*;
 import com.loris.bravos.state.*;
 import com.loris.bravos.util.Json;
@@ -224,6 +225,140 @@ class MainTest {
         output.toString().replaceAll("\\s+", " ").contains("The order may already have executed"));
     assertEquals(2, market.submitted.size());
     assertEquals(com.loris.bravos.domain.Model.Action.REDUCE, market.submitted.getLast().action());
+  }
+
+  @Test
+  void remainingPositionStopRecoversDiscoveryAndExecutesBundledTrimOnce() throws Exception {
+    var holder = new WorkflowTest();
+    var market =
+        holder.new Market() {
+          @Override
+          public Quote quote(Instrument instrument) {
+            return com.loris.bravos.Fixtures.quote("505");
+          }
+        };
+    var publication = new java.util.concurrent.atomic.AtomicInteger();
+    String trimPath =
+        "/news-feed/booking-partial-profits-in-berkshire-hathaway-inc-brk-b-profit-booking/";
+    String trimUrl = "https://bravosresearch.com" + trimPath;
+    String openingKey = "bravos:post:487910", trimKey = "bravos:post:490108";
+    var source =
+        new BravosSource(
+            (m, p, h, b) -> {
+              String body;
+              if (p.equals(BravosSource.ARCHIVE)) {
+                body =
+                    (publication.get() > 0
+                            ? "<div class=right><a href='"
+                                + trimPath
+                                + "'>Booking Partial Profits in Berkshire Hathaway</a> 09/21/2026</div>"
+                            : "")
+                        + "<div class=right><a href='/news-feed/brkb/'>Initiating Long on Berkshire Hathaway</a> 09/01/2026</div>";
+              } else if (p.contains("/page/")) {
+                body =
+                    "<div class=right><a href='/news-feed/old/'>Initiating Long on OLD</a> 01/01/2020</div>";
+              } else if (p.equals("/research/")) {
+                body =
+                    "<div class=dash-newsletter><p class=h4>Tactical Portfolio</p><div class=asset-ratings><div class=tbody><div class=tr><div class=td>Berkshire Hathaway ($BRK.B)</div><div class=td>Long</div><div class=td>"
+                        + (publication.get() == 0 ? "8" : "6")
+                        + "</div></div></div></div></div>";
+              } else if (p.equals(trimPath)) {
+                body =
+                    """
+                    <article id=post-490108><h1>Booking Partial Profits in Berkshire Hathaway Inc. ($BRK.B) | Profit Booking</h1>
+                    <div class=entry-content>09/21/2026
+                    <p>We are trimming our position in Berkshire Hathaway Inc. ($BRK.B) at $542.32, and reducing our exposure from a weight of 8 to a weight of 6.</p>
+                    <p>Alongside taking partial profits, we are also raising our stop on the remaining position from $480 to $495.</p>
+                    <p>Raising our stop keeps the remaining investment protected.</p>
+                    </div></article>
+                    """;
+                if (publication.get() == 1)
+                  body = body.replace("on the remaining position", "on our remaining position");
+              } else if (p.equals("/news-feed/brkb/")) {
+                body =
+                    """
+                    <article id=post-487910><h1>Initiating Long on Berkshire Hathaway ($BRK.B)</h1>
+                    <div class=entry-content>09/01/2026
+                    <p>We are initiating Berkshire Hathaway at $506.50 with a weight of 8.</p>
+                    <p>Entry: $506.50<br>Weight Allocation: 8<br>Suggested Stop Loss (SL): $480</p>
+                    </div></article>
+                    """;
+              } else throw new IOException("UNEXPECTED_SOURCE_PATH");
+              return new Transport.Response(200, body, Map.of());
+            });
+    offline = (r, c, l) -> new Main.Connections(market, market, source);
+    assertEquals(0, run("initialize", "--since", "2026-08-21"), output.toString());
+    assertEquals(0, run("run"), output.toString());
+    assertEquals(1, market.submitted.size());
+    String attempts, holdings, batches;
+    try (var store = new StateStore(root.resolve("state/runtime"))) {
+      attempts = Json.MAPPER.writeValueAsString(store.state().attempts);
+      holdings = Json.MAPPER.writeValueAsString(store.state().holdings);
+      batches = Json.MAPPER.writeValueAsString(store.state().batches);
+      assertEquals(NOW, store.state().checkpoint);
+    }
+    var updateClock = Clock.offset(clock, Duration.ofSeconds(30));
+    java.util.function.ToIntFunction<String> refresh =
+        command -> {
+          output.reset();
+          return Main.run(
+              new String[] {command}, root, updateClock, new PrintStream(output), offline);
+        };
+    publication.set(1);
+    for (String command : List.of("plan", "run")) {
+      assertEquals(1, refresh.applyAsInt(command), output.toString());
+      assertTrue(output.toString().contains("SOURCE_DISCOVERY_INCOMPLETE_SEE_STATUS"));
+      assertEquals(1, market.submitted.size());
+      try (var store = new StateStore(root.resolve("state/runtime"))) {
+        var held = store.state().book.cycles.get(openingKey);
+        assertEquals(d("8"), held.weight);
+        assertEquals(d("480"), held.stop);
+        assertEquals(1, held.events.size());
+        assertFalse(store.state().book.revisions.containsKey(trimKey));
+        assertEquals(NOW, store.state().checkpoint);
+        assertEquals(attempts, Json.MAPPER.writeValueAsString(store.state().attempts));
+        assertEquals(holdings, Json.MAPPER.writeValueAsString(store.state().holdings));
+        assertEquals(batches, Json.MAPPER.writeValueAsString(store.state().batches));
+        assertEquals(
+            List.of("ARTICLE_REQUIRES_REVIEW:" + trimUrl, "SOURCE_SCAN_INCOMPLETE"),
+            store.state().report);
+      }
+    }
+    publication.set(2);
+    assertEquals(0, refresh.applyAsInt("plan"), output.toString());
+    assertEquals(1, market.submitted.size());
+    String plan = output.toString().replaceAll("\\s+", " ");
+    assertTrue(plan.contains("sale of 1.2500"), plan);
+    assertTrue(plan.contains("exact Bravos stop of $495"), plan);
+    assertTrue(plan.contains("Plan completed with blocked or unresolved items"), plan);
+    try (var store = new StateStore(root.resolve("state/runtime"))) {
+      var held = store.state().book.cycles.get(openingKey);
+      assertEquals(d("6"), held.weight);
+      assertEquals(d("495"), held.stop);
+      assertEquals(updateClock.instant(), store.state().checkpoint);
+      assertFalse(held.completed.contains(trimKey));
+      assertEquals(1, store.state().attempts.size());
+      assertTrue(store.state().report.contains("BRK.B: COPY_PROTECTION_UNVERIFIED"));
+    }
+    assertEquals(0, refresh.applyAsInt("run"), output.toString());
+    assertEquals(
+        List.of(Action.OPEN, Action.REDUCE, Action.STOP),
+        market.submitted.stream().map(Intent::action).toList());
+    var reduction = market.submitted.get(1);
+    var protection = market.submitted.get(2);
+    assertEquals(d("1.2500"), reduction.units());
+    assertEquals(reduction.positionId(), protection.positionId());
+    assertEquals(d("495"), protection.stop());
+    assertEquals(d("3.7500"), market.lots.getFirst().units());
+    assertEquals(d("495"), market.lots.getFirst().stop());
+    try (var store = new StateStore(root.resolve("state/runtime"))) {
+      assertTrue(store.state().book.cycles.get(openingKey).completed.contains(trimKey));
+      assertEquals(3, store.state().attempts.size());
+    }
+    assertEquals(0, refresh.applyAsInt("run"), output.toString());
+    assertEquals(3, market.submitted.size());
+    assertEquals(d("3.7500"), market.lots.getFirst().units());
+    assertEquals(d("495"), market.lots.getFirst().stop());
   }
 
   @Test

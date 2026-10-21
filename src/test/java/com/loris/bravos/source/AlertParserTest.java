@@ -19,6 +19,40 @@ class AlertParserTest {
       "We are initiating a position in CF ($CF) at $130.37 with a weight of 5.\n\nEntry: $130.37\nTake Profit (TP): $147.50, $153, and $160\nSuggested Stop Loss (SL): $119.5\nWeight Allocation: 5";
 
   @Test
+  void remainingPositionStopRetainsBundledTrimAndRejectsUnsupportedOrConflictingPrices() {
+    String title = "Booking Partial Profits in Berkshire Hathaway Inc. ($BRK.B) | Profit Booking";
+    String body =
+        """
+        We are trimming our position in Berkshire Hathaway Inc. ($BRK.B) at $542.32, and reducing our exposure from a weight of 8 to a weight of 6.
+        Alongside taking partial profits, we are also raising our stop on the remaining position from $480 to $495.
+        Raising our stop keeps the remaining investment protected.
+        """;
+    Alert trim = parse(title, body);
+    assertEquals("BRK.B", trim.symbol());
+    assertEquals(Action.REDUCE, trim.action());
+    assertEquals(d("542.32"), trim.price());
+    assertEquals(d("8"), trim.before());
+    assertEquals(d("6"), trim.after());
+    assertEquals(d("495"), trim.stop());
+    for (String unsupported :
+        java.util.List.of(
+            body.replace(" to $495", ""),
+            body.replace("$495", "an unspecified price"),
+            body.replace("on the remaining position", "on our remaining position"),
+            body.replace("on the remaining position", "on the remaining shares"))) {
+      var failure = assertThrows(IllegalArgumentException.class, () -> parse(title, unsupported));
+      assertEquals("UNPARSED_STOP_CHANGE", failure.getMessage());
+    }
+    for (String conflicting :
+        java.util.List.of(
+            body + "\nWe are raising our stop to $496.",
+            body + "\nWe are raising our stop on the remaining position to $496.")) {
+      var failure = assertThrows(IllegalArgumentException.class, () -> parse(title, conflicting));
+      assertEquals("CONFLICTING_STOPS", failure.getMessage());
+    }
+  }
+
+  @Test
   void conflictingInlineFactsAndConditionalQuantitiesAreHeld() {
     assertThrows(
         IllegalArgumentException.class,

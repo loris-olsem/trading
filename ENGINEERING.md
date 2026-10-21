@@ -7,6 +7,56 @@ The [implementation plan](docs/IMPLEMENTATION-PLAN.md) was committed before code
 
 ## Checks
 
+21 October BRK.B stop wording: **271 tests pass**, with **89.49% instruction
+coverage** (13,734/15,347) and **82.24% branch coverage** (1,940/2,359).
+`gr spotlessApply check pitest installDist` passed under the vfox pins. PIT
+recorded **1,118/1,225 direct kills (91.27%)**, 76 survivors, 17 uncovered and
+14 timeouts, with no execution errors. The direct-kill percentage excludes
+timeouts and still exceeds the unchanged 85% gate. All 14 timed-out mutations
+previously survived in the 20 October report and remain verification limits.
+Counting them as survivors gives 90 mutations not killed, versus 91 before.
+They affect the unchanged `Policy` and `StateStore` classes; none affected
+`AlertParser`, which has 104 killed and four surviving mutations. PIT does not
+mutate regex string literals, so the exact wording and near-miss regressions
+supply that evidence.
+
+The parser now accepts the observed phrase "on the remaining position" in an
+explicit stop instruction. Existing stop forms and conflicting-price checks are
+unchanged; unsupported wording still fails discovery. An extra recognized stop
+destination that disagrees with another one blocks the article.
+
+The two regressions retain the exact BRK.B instruction sentences and title,
+including the separate stop paragraph and a price-less narrative stop mention.
+Parser negatives assert the specific missing/unsupported-stop and conflicting-stop
+codes. The source-to-CLI fixture rejects unsupported near-miss stop wording in
+both plan and run, preserving the accepted checkpoint, weights, stops, attempts,
+holdings and batches. It then accepts the same post with the observed wording
+without trading in a plan. Its synthetic live run reduces a five-unit lot by
+25%, updates the remaining lot to exactly $495, and cannot repeat either action
+after restarting. All execution uses injected fixtures and temporary state in
+an isolated worktree. Opus reviewed the plan and patch, with no blocking code
+or test findings; its documentation clarifications are incorporated here.
+
+The ignored 21 October capture contains only the BRK.B reduction. Its nine
+dashboard weights match the saved open cycles except for BRK.B changing 8 to 6.
+It cannot independently reconstruct the dashboard without opening articles.
+Offline `gr replayCapture` now reports
+`Parsed 1 / 1; dashboard matches=false; blockers=[]`, with no parser error.
+The failed run preserved the previous accepted source checkpoint and submitted
+no new orders. The live reduction and stop update still await an owner or
+scheduled run; fixture success does not establish broker acceptance.
+
+For an owner retest, dot-source `env.ps1` and use `gr plan` in the scheduled
+checkout. It accepts source evidence and checkpoints local state without broker
+writes. With the recorded holding unchanged, expect a sale proposal for 0.39221
+internal agent units, an exact $495 stop update, then a copied-protection hold:
+a plan cannot apply that stop. "Plan completed with blocked or unresolved items"
+is expected in that case. The reduction remains pending for the next live run.
+That hold ends the plan before watchlist and addition checks, so their usual
+status blocks will be absent; this does not indicate changed availability.
+Owner-initiated execution should be during US market hours; sales currently do
+not have their own market-hours guard.
+
 20 October partial-sale recovery: **269 tests pass**, with **89.48% instruction
 coverage** (13,732/15,347) and **82.11% branch coverage** (1,937/2,359).
 `gr spotlessApply check pitest installDist` passed with the vfox pins. PIT killed

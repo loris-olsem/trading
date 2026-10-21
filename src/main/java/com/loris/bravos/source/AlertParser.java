@@ -127,7 +127,7 @@ public final class AlertParser {
     if (action != Action.OPEN) {
       Matcher stops =
           Pattern.compile(
-                  "(?i)(?:raising|moving|adjusting|lowering) our stop(?: loss)?(?: higher)?(?: from \\$[0-9.,]+)? to (?:near breakeven at )?\\$"
+                  "(?i)(?:raising|moving|adjusting|lowering) our stop(?: loss)?(?: on the remaining position)?(?: higher)?(?: from \\$[0-9.,]+)? to (?:near breakeven at )?\\$"
                       + N)
               .matcher(text);
       while (stops.find()) {
